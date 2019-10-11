@@ -49,6 +49,23 @@ docs:
     href: https://18f.gsa.gov
     external: true
 
+resources:
+  - text: Resources
+    href: /resources/
+  - text: Resources Navigation
+    links:
+      - text: Demo link A
+        href: /two/a/
+      - text: Demo link B
+        href: /two/b/
+      - text: Demo link C
+        href: /two/c/
+  - text: Sidenav Referenced section
+    links: footer
+  - text: Sidenav External link
+    href: https://18f.gsa.gov
+    external: true
+
 footer:
   - text: Documentation
     href: /docs/
