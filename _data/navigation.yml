@@ -18,19 +18,19 @@ primary:
         href: /worknotes/1910
       - text: September 2019
         href: /worknotes/1909
-  - text: Documentation
-    href: /docs/
-  - text: Referenced section
-    links: footer
-  - text: External link
-    href: https://18f.gsa.gov
-    external: true
+  - text: Resources
+    href: /resources/
+  # - text: Referenced section
+  #   links: footer
+  # - text: External link
+  #   href: https://18f.gsa.gov
+  #   external: true
 
 secondary:
-  - text: Documentation
-    href: /docs/
-  - text: Theme
-    href: /theme/
+  - text: Resources
+    href: /resources/
+  # - text: Theme
+  #   href: /theme/
 
 docs:
   - text: Sidenav Documentation
