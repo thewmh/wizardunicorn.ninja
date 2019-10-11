@@ -40,3 +40,10 @@ github_info:
 # Compress Sass
 sass:
   style: compressed
+
+# Jekyll 3 now only supports Kramdown for Markdown
+kramdown:
+ input: GFM
+ auto_ids: true
+ hard_wrap: false
+ syntax_highlighter: rouge

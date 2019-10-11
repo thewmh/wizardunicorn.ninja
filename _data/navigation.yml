@@ -12,22 +12,14 @@
 #   links: primary
 #
 primary:
+  - text: Worknotes
+    links:
+      - text: October 2019
+        href: /worknotes/1910
+      - text: September 2019
+        href: /worknotes/1909
   - text: Documentation
     href: /docs/
-  - text: Navigation section
-    links:
-      - text: Demo link A
-        href: /two/a/
-      - text: Demo link B
-        href: /two/b/
-      - text: Demo link C
-        href: /two/c/
-      - text: Demo link D
-        href: /two/a/
-      - text: Demo link E
-        href: /two/b/
-      - text: Demo link F
-        href: /two/c/
   - text: Referenced section
     links: footer
   - text: External link

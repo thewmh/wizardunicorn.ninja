@@ -21,7 +21,7 @@ type: extended
 # Configuration for site header logo
 # If the logo is external add external: true
 logo:
-  src: ../assets/img/hztl-wm.svg
+  src: /assets/img/hztl-wm.svg
   alt: HZTL-WM
   # external: true
 
