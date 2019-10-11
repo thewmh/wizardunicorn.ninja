@@ -34,7 +34,7 @@ subnav:
 
 [Add data attributes to renderings](http://blog.martinmiles.net/post/how-to-add-id-and-data-attributes-to-a-rendering-variant-in-sxa)
 
-### SVG
+## SVG
 
 *read in order*
 
@@ -46,18 +46,6 @@ subnav:
 
 [URL Encoder](https://www.urlencoder.org/)
 
-#### JavaScript
+## JavaScript
 
 [Essential JavaScript Design Patterns](https://addyosmani.com/resources/essentialjsdesignpatterns/book/) - Complete Book
-<!-- 
-##### Section four
-
-This is some more [content](https://18f.gsa.gov/).
-
-###### Section five
-
-This is some more [content](https://18f.gsa.gov/).
-
-###### Section six
-
-This is some more [content](https://18f.gsa.gov/). -->
