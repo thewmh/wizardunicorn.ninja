@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<title>Documentation | FED Notes & Resources</title>
+<title>AB PPT PDF Viewer | FED Notes & Resources</title>
 
 
 
-<meta name="description" content="This is a documentation page.">
+<meta name="description" content="These are discovery notes for AB PPT PDF Viewer.">
 
 
 
@@ -209,104 +209,34 @@
     <main id="main-content" class="usa-grid usa-section usa-content usa-layout-docs">
           
 
-  <aside class="usa-layout-docs-sidenav sidenav ">
-    <nav>
-  <ul class="usa-sidenav-list">
-    
-      
-      
-      
-    <li>
-      <a href="/docs/"
-          class="usa-current" 
-          >
-         Sidenav Documentation
-      </a>
-      
-      <ul class="usa-sidenav-sub_list">
-        
-  <li>
-    <a href="#section-one" >Section one </a>
-  </li>
-
-  <li>
-    <a href="#section-two" >Section two </a>
-  </li>
-
-
-      </ul>
-      
-    </li>
-    
-      
-      
-      
-    <li>
-      <a href=""
-         
-          >
-         Sidenav Navigation section
-      </a>
-      
-    </li>
-    
-      
-      
-      
-    <li>
-      <a href=""
-         
-          >
-         Sidenav Referenced section
-      </a>
-      
-    </li>
-    
-      
-      
-      
-    <li>
-      <a href="https://18f.gsa.gov"
-         
-          >
-         Sidenav External link
-      </a>
-      
-    </li>
-    
-  </ul>
-</nav>
-
-  </aside>
-
 
 <div class="usa-layout-docs-main_content">
   
-    <h1>Documentation</h1>
+    <h1>AB PPT PDF Viewer</h1>
   
-  <h2 id="section-one">Section one</h2>
+  <h2 id="discovery---ppt-pdf-viewer">Discovery - PPT PDF Viewer</h2>
 
-<p>This is some <a href="https://18f.gsa.gov/">content</a>.</p>
+<p>The scope of this story is to determine if there is a good solution to showing PPT and PDF files on page. We’ve discussed functionality similar to what Confluence has today. This could be a library or 3rd party tool.</p>
 
-<h3 id="section-two">Section two</h3>
+<h3 id="initial-findings">Initial Findings</h3>
 
-<p>This is some more <a href="javascript:void(0);">content</a>.</p>
+<p>Short of making all documents into PDFs, there does not appear to be a single solution for displaying both PPT and PDF files, but separate solutions for each. The following list is by no means a suggestion or selection, but a collection of what has been discovered.</p>
 
-<h4 id="section-three">Section three</h4>
+<h3 id="ppt">PPT</h3>
 
-<p>This is some more <a href="#">content</a>.</p>
+<p><a href="https://support.office.com/en-us/article/embed-a-presentation-in-a-web-page-or-blog-19668a1d-2299-4af3-91e1-ae57af723a60">One Drive Embed Code</a></p>
 
-<h5 id="section-four">Section four</h5>
+<p><a href="https://viewerjs.org/examples/">ViewerJS</a> - Latest GitHub commit from <a href="https://github.com/webodf/ViewerJS/commit/5926843da6e1a5019372ff8ea9e73899c5d71e22">08/31/2017</a>, but built off of <a href="https://webodf.org/">WebODF</a> which relies on the <a href="https://en.wikipedia.org/wiki/OASIS_(organization)">OASIS</a> <a href="https://en.wikipedia.org/wiki/OpenDocument">Open Document Format</a> to view files (requires exporting PPT documents in ODF format)</p>
 
-<p>This is some more <a href="https://18f.gsa.gov/">content</a>.</p>
+<p>OR…export PPT as a PDF?</p>
 
-<h6 id="section-five">Section five</h6>
+<h3 id="pdf">PDF</h3>
 
-<p>This is some more <a href="https://18f.gsa.gov/">content</a>.</p>
+<p><a href="https://pdfobject.com">PDFObject</a></p>
 
-<h6 id="section-six">Section six</h6>
+<p>Stack Overflow Post About <a href="https://stackoverflow.com/questions/35286303/pdf-file-to-be-displayed-on-the-dialog-modal-via-bootstrap">Displaying a PDF in a Modal</a>…using <a href="https://pdfobject.com">PDFObject</a></p>
 
-<p>This is some more <a href="https://18f.gsa.gov/">content</a>.</p>
+<p><a href="https://mozilla.github.io/pdf.js/">PDFJS</a> - by Mozilla… <a href="https://github.com/mozilla/pdf.js/wiki/Frequently-Asked-Questions#faq-support">browser support listed here</a></p>
 
 
 </div>

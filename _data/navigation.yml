@@ -27,8 +27,8 @@ primary:
   #   external: true
 
 secondary:
-  - text: Resources
-    href: /resources/
+  - text: AB
+    href: /worknotes/ab/
   # - text: Theme
   #   href: /theme/
 
