@@ -1,7 +1,7 @@
 ---
 title: AB PPT PDF Viewer
 description: These are discovery notes for AB PPT PDF Viewer.
-permalink: /worknotes/ab/ppt-pdf-viewer
+permalink: /worknotes/ab/pdf-ppt-viewer
 
 layout: post
 # sidenav: docs
