@@ -18,6 +18,9 @@ top:
 # edit_page:
 #   text: Edit this page
 
+la-croix:
+  text: William has consumed <span id="la-croix"></span> cans of <a href="./la-croix.html"><span class="la-croix-logo"></span></a> since his start date at Horizontal.<br/><em class="lighten-up"> * cans of delicious, bubbly, essenced water consumed accurate by ±50%</em> 
+
 # Configuration for "Last updated" date and time.
 # Uncomment the following line to show.
 # last_updated: true
