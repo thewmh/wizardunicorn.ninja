@@ -11,5 +11,5 @@ layout: page
 #   - text: Discovery - PDF PPT Viewer
 #     href: '/discovery-pdf-ppt-viewer'
 ---
-  [Discovery - JW Player](./jw-player)  
-  [Discovery - PDF PPT Viewer](./pdf-ppt-viewer)
+  [Discovery - JW Player](/jw-player)  
+  [Discovery - PDF PPT Viewer](/pdf-ppt-viewer)
