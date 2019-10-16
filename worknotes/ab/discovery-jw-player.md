@@ -4,12 +4,6 @@ description: These are discovery notes for AB JW Player.
 permalink: /worknotes/ab/jw-player
 
 layout: post
-# sidenav: docs
-# subnav:
-#   - text: Section one
-#     href: '#section-one'
-#   - text: Section two
-#     href: '#section-two'
 ---
 
 ## Discovery - JW Player

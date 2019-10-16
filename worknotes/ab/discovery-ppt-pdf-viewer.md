@@ -4,12 +4,6 @@ description: These are discovery notes for AB PPT PDF Viewer.
 permalink: /worknotes/ab/ppt-pdf-viewer
 
 layout: post
-# sidenav: docs
-# subnav:
-#   - text: Section one
-#     href: '#section-one'
-#   - text: Section two
-#     href: '#section-two'
 ---
 
 ## Discovery - PPT PDF Viewer
@@ -35,3 +29,5 @@ OR...export PPT as a PDF?
 Stack Overflow Post About [Displaying a PDF in a Modal](https://stackoverflow.com/questions/35286303/pdf-file-to-be-displayed-on-the-dialog-modal-via-bootstrap)...using [PDFObject](https://pdfobject.com)
 
 [PDFJS](https://mozilla.github.io/pdf.js/) - by Mozilla... [browser support listed here](https://github.com/mozilla/pdf.js/wiki/Frequently-Asked-Questions#faq-support)
+
+Here's a blog post highlighting all of the ways to [Display a PDF in a Web Page](http://jsgyan.blogspot.com/2017/12/how-to-display-pdf-in-html-web-page.html). The recommended method to address all browsers? [PDFJS](https://mozilla.github.io/pdf.js/)
