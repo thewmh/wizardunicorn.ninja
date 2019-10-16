@@ -15,8 +15,10 @@ a {
     }
 }
 
-.usa-nav-submenu {
-    a, a:visited, a:hover {
-        color: #ffffff;
+@include media($large-screen){
+    .usa-nav-submenu {
+        a, a:visited, a:hover {
+            color: #ffffff;
+        }
     }
 }
