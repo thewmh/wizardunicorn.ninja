@@ -44,3 +44,9 @@ Playlists are created within the JW Player platform. Playlist information can be
 A log of existing pages where JW Player is currently in use could be helpful, as pages without JW Player hosted videos do not load the JavaScript or Stylesheets needed for the player.
 
 Access to AB JW Player account OR set up a [free developer account](https://www.jwplayer.com/pricing/) for development purposes (developer account on JW Player is free for 1 month).
+
+### Sitecore Specific JW Player Links
+
+[Integrating JW Player RTE](https://www.tadigital.com/blog/integrating-jw-player-rich-text-editor/)
+
+Addressing [JW Player causing rendering not to load in Sitecores Page Editor](https://stackoverflow.com/questions/28545873/jwplayer-causes-rendering-not-to-load-in-sitecores-page-editor)
