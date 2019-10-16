@@ -3,3 +3,21 @@
         max-width: unset;
     }
 }
+
+a {
+
+    color: #065264;
+
+    &:visited {
+        color: #065264;
+    }
+    &:visited:hover {
+        color: #8AC8C0;
+    }
+}
+
+.usa-nav-submenu {
+    a, a:visited, a:hover {
+        color: #ffffff;
+    }
+}
