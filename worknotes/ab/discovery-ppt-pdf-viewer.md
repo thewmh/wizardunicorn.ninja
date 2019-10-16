@@ -31,3 +31,5 @@ Stack Overflow Post About [Displaying a PDF in a Modal](https://stackoverflow.co
 [PDFJS](https://mozilla.github.io/pdf.js/) - by Mozilla... [browser support listed here](https://github.com/mozilla/pdf.js/wiki/Frequently-Asked-Questions#faq-support)
 
 Here's a blog post highlighting all of the ways to [Display a PDF in a Web Page](http://jsgyan.blogspot.com/2017/12/how-to-display-pdf-in-html-web-page.html). The recommended method to address all browsers? [PDFJS](https://mozilla.github.io/pdf.js/)
+
+An additional resource about [Using PDFJS In A Bootstrap Modal](http://hbekkouche.github.io/PDF.js-viewer-Example/) - [Here's the Markup](https://github.com/hbekkouche/PDF.js-viewer-Example/blob/master/index.html)
