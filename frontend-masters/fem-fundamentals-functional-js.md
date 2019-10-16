@@ -1,7 +1,7 @@
 ---
 title: "Frontend Masters - Javascript: From Fundamentals to Functional JS"
 description: These are notes from the 'From Fundamentals to Functional JS' course on Frontend Masters.
-permalink: /worknotes/fem-fundamentals-functional-js
+permalink: /frontend-masters/fem-fundamentals-functional-js
 
 layout: post
 # sidenav: docs

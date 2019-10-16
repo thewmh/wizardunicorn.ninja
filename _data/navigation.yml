@@ -20,6 +20,10 @@ primary:
         href: /worknotes/1909
   - text: Resources
     href: /resources/
+  - text: Frontend Masters Workshop Notes
+    links:
+      - text: "Javascript: From Fundamentals to Functional JS"
+        href: /frontend-masters/fem-fundamentals-functional-js
   # - text: Referenced section
   #   links: footer
   # - text: External link
@@ -67,13 +71,13 @@ resources:
   #   external: true
 
 footer:
-  - text: Documentation
-    href: /docs/
-  - text: Demo link
-    href: /demo/
-  - text: External link
-    href: https://18f.gsa.gov
-    external: true
+  # - text: Documentation
+  #   href: /docs/
+  # - text: Demo link
+  #   href: /demo/
+  # - text: External link
+  #   href: https://18f.gsa.gov
+  #   external: true
 # Uncomment the items below and comment the items above in the `footer` list
 # to use footer link columns in the 'big' footer style.
   # - text: Documentation
