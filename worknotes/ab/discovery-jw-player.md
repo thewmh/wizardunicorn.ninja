@@ -60,6 +60,10 @@ Playlists are created within the JW Player platform. Playlist information can be
 
 As detailed in [this article](https://50wheel.com/top-online-video-platforms-integrate-sitecore/), YouTube, Vimeo, and other free players can be embedded into a Sitecore page with an iframe embed. Platforms such as Brightcove, Kalture, Ooyala, Wistia, and JW Player provide brand-able video players and advanced analytics. [Brightcove even has an OOTB connector for Sitecore](https://support.brightcove.com/getting-started-brightcove-video-connect-sitecore-experience-platform). Here is the [Brightcove Connector for Sitecore 9.0.2](https://github.com/BrightcoveOS/Sitecore-Connector/releases/tag/v9.0.2)
 
+##### Concerns, Blockers, etc...
+
+Using JW Player does not immediately present any concerns, blockers, or challenges. There are no known issues or otherwise to the continued use of JW Player as ABs video player and hosting solution.
+
 ### What We Need to Implement JW Player
 
 A log of existing pages where JW Player is currently in use could be helpful, as pages without JW Player hosted videos do not load the JavaScript or Stylesheets needed for the player.
