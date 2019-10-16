@@ -1,0 +1,76 @@
+I"c<p>10/16</p>
+
+<p><em>AB Sprint Kickoff</em></p>
+
+<p>10/15</p>
+
+<p><em>Presented my Accessibility in JavaScript Applications summary for the bi-weekly FED Team Meeting</em></p>
+
+<p>I had initially hoped to keep my presentation short as the read time quoted by Medium was 12 mins. But, the presentation turned into more of a discussion which turned into nearly the entire hour of the meeting. This was actually helpful, without the discussion I would have spent maybe 15 minutes and a hundred ‘ahs’ stumbling through it. AB Standup (the last before the official sprint kickoff) led to me getting a couple of discovery tasks which I spent part of the day looking in to.</p>
+
+<p>10/14</p>
+
+<p>Need to keep worknotes on a daily basis. I cannot recall what happened this day. AB Sprint Planning 2/2 happened. Thankfully, my Sr. FED counterpart was in attendance so we could speak to the FED stories for the sprint.</p>
+
+<p>10/11</p>
+
+<p><em>Finished HR Cybersecurity Training, updated worknotes to use USWDS, Jekyll, and Gulp</em></p>
+
+<p>Attended 1/2 of AB Sprint Planning. Was at a bit of a loss as my Sr. FED counterpart was on PTO, but my admission of being Jr. and that I would be unable to speak to any architectural aspects of the project was acknowledged. FED stories were tabled for the remainder of the Sprint Planning meeting.</p>
+
+<p>10/10</p>
+
+<p><em>Allday SXA workshop for ab</em></p>
+
+<p>This was pretty nice. Almost the entire project team came together to work through the development of a component using SXA. Revealed some potential issues to look out for as well as each developers approach to problem solving. Was pretty useful for me.</p>
+
+<p>10/9</p>
+
+<p><em>Caught the horizontal plague™️ and had to work from home…</em></p>
+
+<p>Finished up the Accessibility in JavaScript workshop. Notes all done, looks good. In my conversation with my supervisor, she had mentioned that FED is looking to update our base project environment, part of which is a component library. When I was working on cw, we had used <a href="http://astrum.nodividestudio.com/">Astrum</a> which was pretty cool, but not without its bugs. A quick look at what alternatives are available revealed <a href="https://fractal.build/">Fractal</a> which looks pretty cool. Further digging revealed sites that use this solution and I came across <a href="https://designsystem.digital.gov">The United States Web Design System</a> (USWDS), which combines a few things of interest, most notable of which are; accessibility, component library, Jekyll, SASS… to name a few. Started the JavaScript path on Frontend Masters</p>
+
+<p>10/8</p>
+
+<p><em>Finished the SXA training series’. Moving back to Accessibility in JavaScript. Also have CSS manifest for ab to pore over as well</em></p>
+
+<p>Accessibility in JavaScript @ 30mins left. Have nice notes on Medium and the forked repo on github with comments all over the code as it comes in the workshop. Had a nice conversation with my surpervisor about BED and FED working together and how it doesn’t always work well, lessons learned, and how to move forward.</p>
+
+<p>10/7</p>
+
+<p>Thought I had no meetings, so I decided to WFH. At 08:30 a PM reached out and asked if I was coming to Scrum. Yes? But it wasn’t on my calendar. Spent the day going through the SXA Rendering Variant set of videos. There’s a lot of little things to consider when setting up a project on such a large platform, but if you can make the pieces smaller and smaller and understand how it all comes together, then it should be manageable. The break point between FED and BED is still unclear, but I think the SXA series is mostly geared towards FEDs, Content Authors, and Marketeers, so all the BED things are somewhere else?</p>
+
+<p>10/4</p>
+
+<p>I am now on ab half-time and have the other half of my time to do other things? There is plenty to keep me busy, I am finishing up SXA training, which is documented on the resources page. After that, I still have to finish Accessibility in JavaScript AND HR had sent over some trainings for me to complete. Yay.</p>
+
+<p>Stackla update: FED won</p>
+
+<p>10/3</p>
+
+<p>Well well well… I used up all my allocation for mwt by noon yesterday and then started in on ab sxa business. We had the ab stand-up this morning and I was the only one who had cleared my plate to start in on the SXA trainings… Today I reported in for the mwt standup that I had passed off my ticket and it was in a good place, but after a day with Stackla, guess who won? Stackla… Anyway, I wrote up a bunch more notes about the SXA training, that’s over on my Resources page. I also figured out how to use markdown_helper to organize (complicate) my work here a bit more. SXA is pretty WYSIWYG(y), and it is yet unclear how BED and FED will work together using this platform, but I hope it proves useful and worth all the trouble!</p>
+
+<hr />
+
+<p>10/2</p>
+
+<p><em>had to get out of Stackla and mwt. Only had half time this week for that and ab, so mwt is out for the week. Moving on to ab, started learning sxa thangs.</em></p>
+
+<ul>
+  <li>mwt 56 - pip product reviews - made some good progress on this. Got the base set for the layout of the page in mobile and desktop views, but the functional requirements are not yet met. Having to pass this back to the other FED on the project to implement, but would have needed their help on this component nonetheless. Oh JavaScript, there is so much to learn. Stackla wins.</li>
+</ul>
+
+<p>me: 1, stackla: 2</p>
+
+<hr />
+
+<p>10/1</p>
+
+<p><em>spent the whole day in Stackla. I have nothing but inappropriate things to write…</em></p>
+
+<ul>
+  <li>mwt 56 - pip product reviews - the fight continues. I did find that we may have been using the wrong base template for the social card widget on Stackla. Switched to another template and have found a greater deal of flexibility working with this thing, but I’m still giving Stackla a point for the day, because they win.</li>
+</ul>
+
+<p>me: 1, stackla: 1</p>
+:ET
