@@ -1,0 +1,5 @@
+.usa-content {
+    p, ul:not(.usa-accordion):not(.usa-accordion-bordered) {
+        max-width: unset;
+    }
+}

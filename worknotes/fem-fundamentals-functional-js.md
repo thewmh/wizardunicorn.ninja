@@ -1,5 +1,5 @@
 ---
-title: Frontend Masters - Javascript':' From Fundamentals to Functional JS
+title: "Frontend Masters - Javascript: From Fundamentals to Functional JS"
 description: These are notes from the 'From Fundamentals to Functional JS' course on Frontend Masters.
 permalink: /worknotes/fem-fundamentals-functional-js
 
@@ -28,7 +28,7 @@ layout: post
 
 ### Functional Programming
 
-Functional programming has become popular to the point that functional programming and utility methods have been integrated into modern frameworks. Functional programming is about breaking code into verbs, vs object oriented programming being about nouns. It is easier to think about software in terms of objects because that's where we, as humans, live in the physical world. Whereas with functional programming, you need to think in terms of the actions. In functional programming, the focus is on... functions. Lots of functions, functions being passed to functions, functions being returned from functions, working with parameters and arguments. One benefit of functional programming vs object oriented programming: Pure functions don't have side-effects - makes code easier to test
+Functional programming has become popular to the point that functional programming and utility methods have been integrated into modern frameworks. Functional programming is about breaking code into verbs, vs object oriented programming being about nouns. It is easier to think about software in terms of objects because that's where we, as humans, live, in the physical world. Whereas with functional programming, you need to think in terms of the actions. In functional programming, the focus is on... functions. Lots of functions, functions being passed to functions, functions being returned from functions, working with parameters and arguments. One benefit of functional programming vs object oriented programming: Pure functions don't have side-effects - makes code easier to test
 
 ## Objects
 
