@@ -10,7 +10,7 @@ layout: post
 
 The scope of this story is to gain a better understanding of capabilities and integrations needed to implement JW Player on the site.
 
-### Current State of Advisory x JW Player
+### Current State of AB x JW Player
 
 AB is using JW Player as both a video player and to host video content via JW Players CDN, see the following links (requires login?) and markup:
 
@@ -50,7 +50,7 @@ Playlists are created within the JW Player platform. Playlist information can be
 
 #### Benefits of (continuing) to use JW Player
 
-* JW Player is the existing player and CDN used by Advisory
+* JW Player is the existing player and CDN used by AB
 
 * Extensive [Developer Documentation](https://beta-developer.jwplayer.com/jwplayer/docs)
 
