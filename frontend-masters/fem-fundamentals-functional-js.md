@@ -44,7 +44,7 @@ var person = { // object literal notation
 };
 {% endhighlight %}
 
-
+Anything that ever uses a dot in JavaScript is an object.
 
 ### Property Access
 
