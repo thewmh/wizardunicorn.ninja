@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>Frontend Masters - Javascript':' From Fundamentals to Functional JS | FED Notes & Resources</title>
+
+
+
+<meta name="description" content="These are notes from the 'From Fundamentals to Functional JS' course on Frontend Masters.">
+
+
+
+<link rel="shortcut icon" type="image/ico"
+  href="/assets/uswds/img/favicons/favicon.ico">
+
+<link rel="icon" type="image/png"
+  href="/assets/uswds/img/favicons/favicon.png">
+
+<link rel="icon" type="image/png"
+  sizes="192x192"
+  href="/assets/uswds/img/favicons/favicon-192.png">
+
+<link rel="apple-touch-icon-precomposed" type=""
+  href="/assets/uswds/img/favicons/favicon-57.png">
+
+<link rel="apple-touch-icon-precomposed" type=""
+  sizes="72x72"
+  href="/assets/uswds/img/favicons/favicon-72.png">
+
+<link rel="apple-touch-icon-precomposed" type=""
+  sizes="114x114"
+  href="/assets/uswds/img/favicons/favicon-114.png">
+
+<link rel="apple-touch-icon-precomposed" type=""
+  sizes="144x144"
+  href="/assets/uswds/img/favicons/favicon-144.png">
+
+
+
+    
+
+
+
+<link rel="stylesheet"
+  href="/assets/css/main.css"
+  media="screen">
+
+
+    
+  </head>
+  <body class="  ">
+
+    <a class="usa-skipnav" href="#main-content">Skip to main content</a>
+
+    
+
+
+  <section class="usa-banner">
+  <div class="usa-accordion">
+    <!-- <header class="usa-banner-header">
+      <div class="usa-grid usa-banner-inner"> <img src="/assets/uswds/img/favicons/favicon-57.png" alt="U.S. flag">
+        <p>An official website of the United States government</p> <button class="usa-accordion-button usa-banner-button" aria-expanded="false" aria-controls="gov-banner"> <span class="usa-banner-button-text">Here's how you know</span> </button> </div>
+    </header> -->
+    <div class="usa-banner-content usa-grid usa-accordion-content" id="gov-banner">
+      <div class="usa-banner-guidance-gov usa-width-one-half"> <img class="usa-banner-icon usa-media_block-img" src="/assets/uswds/img/icon-dot-gov.svg" alt="Dot gov">
+        <div class="usa-media_block-body">
+          <p> <strong>The .gov means it’s official.</strong> <br> Federal government websites often end in .gov or .mil. Before sharing sensitive information, make sure you’re on a federal government site. </p>
+        </div>
+      </div>
+      <div class="usa-banner-guidance-ssl usa-width-one-half"> <img class="usa-banner-icon usa-media_block-img" src="/assets/uswds/img/icon-https.svg" alt="Https">
+        <div class="usa-media_block-body">
+          <p> <strong>The site is secure.</strong> <br> The <strong>https://</strong> ensures that you are connecting to the official website and that any information you provide is encrypted and transmitted securely. </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+  <header class="usa-header usa-header-extended" role="banner">
+
+
+  
+    <div class="usa-navbar">
+      <button class="usa-menu-btn">Menu</button>
+      <div class="usa-logo" id="extended-mega-logo">
+        <a href="/" title="Home">
+          
+            <img class="usa-logo-img" src="/assets/img/hztl-wm.svg" alt="HZTL-WM">
+          
+          <em class="usa-logo-text">
+            FED Notes & Resources
+          </em>
+        </a>
+      </div>
+    </div>
+
+    <nav role="navigation" class="usa-nav">
+      <div class="usa-nav-inner">
+        <button class="usa-nav-close">
+          <img src="/assets/uswds/img/close.svg" alt="close">
+        </button>
+
+        
+        
+        
+        <ul class="usa-nav-primary usa-accordion">
+          
+          <li>
+            
+              
+              
+              
+            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-1">
+              <span>Worknotes</span>
+            </button>
+            
+            <ul id="nav-1" class="usa-nav-submenu" aria-hidden="true">
+            
+            
+              
+                
+                <li>
+                  <a href="/worknotes/1910">October 2019</a>
+                </li>
+                
+              
+                
+                <li>
+                  <a href="/worknotes/1909">September 2019</a>
+                </li>
+                
+              
+            
+            </ul>
+            
+            
+            
+          </li>
+          
+          <li>
+            
+              <a class=" usa-nav-link  " href="/resources/">
+                <span>Resources</span>
+              </a>
+            
+          </li>
+          
+        </ul>
+        
+
+        
+
+          
+          
+          <div class="usa-nav-secondary">
+            
+            <ul class="usa-unstyled-list usa-nav-secondary-links">
+              
+              
+              
+                <li>
+                  <a href="/worknotes/ab"
+                  >
+                    AB
+                  </a>
+                </li>
+              
+            </ul>
+          </div>
+          
+
+
+        </div>
+      </div>
+    </nav>
+  
+  </header>
+  <div class="usa-overlay"></div>
+
+
+
+
+    
+    
+
+
+    
+
+    
+
+    
+      
+      
+
+
+
+
+    
+    
+
+    <main id="main-content" class="usa-grid usa-section usa-content usa-layout-docs">
+          
+
+
+<div class="usa-layout-docs-main_content">
+  
+    <h1>Frontend Masters - Javascript':' From Fundamentals to Functional JS</h1>
+  
+  <h2 id="introduction">Introduction</h2>
+
+<h3 id="success-tips-for-learning">Success Tips for Learning</h3>
+
+<ul>
+  <li>
+    <p>Difficulty ramps up considerably, but if you stick with it you will reap the rewards</p>
+  </li>
+  <li>
+    <p>Take responsibility for your learning - don’t make excuses for why you cannot learn something, figure out how to measure your learning (it is different for everyone)</p>
+  </li>
+  <li>
+    <p>Consider the questions asked</p>
+  </li>
+  <li>
+    <p>Don’t read too much. If you are trying to learn a skill that requires you to solve problems, it’s not always as productive as it may feel</p>
+  </li>
+  <li>
+    <p>Teach other people, explain what you learned and how it works</p>
+  </li>
+</ul>
+
+<h3 id="functional-programming">Functional Programming</h3>
+
+<p>Functional programming has become popular to the point that functional programming and utility methods have been integrated into modern frameworks. Functional programming is about breaking code into verbs, vs object oriented programming being about nouns. It is easier to think about software in terms of objects because that’s where we, as humans, live in the physical world. Whereas with functional programming, you need to think in terms of the actions. In functional programming, the focus is on… functions. Lots of functions, functions being passed to functions, functions being returned from functions, working with parameters and arguments. One benefit of functional programming vs object oriented programming: Pure functions don’t have side-effects - makes code easier to test</p>
+
+<h2 id="objects">Objects</h2>
+
+<p>Assignments with Dots</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">person</span> <span class="o">=</span> <span class="p">{};</span> <span class="c1">// declare a person object</span>
+
+<span class="nx">person</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Mrs. White</span><span class="dl">"</span><span class="p">;</span> <span class="c1">// assign a vaule to a property</span>
+
+<span class="kd">var</span> <span class="nx">person</span> <span class="o">=</span> <span class="p">{</span> <span class="c1">// object literal notation</span>
+    <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">Mrs. White</span><span class="dl">"</span> <span class="c1">// the quotation marks are not needed for a one-word property declaration, JavaScript will assume it is a string</span>
+<span class="p">};</span></code></pre></figure>
+
+<h3 id="property-access">Property Access</h3>
+
+<h3 id="arrays">Arrays</h3>
+
+<h3 id="bracket-notation">Bracket Notation</h3>
+
+<h3 id="non-valid-characters">Non-Valid Characters</h3>
+
+<h3 id="game-characters-challenge">Game Characters Challenge</h3>
+
+<h3 id="game-characters-solution">Game Characters Solution</h3>
+
+<h3 id="object-review">Object Review</h3>
+
+<h3 id="es6-destructuring">ES6 Destructuring</h3>
+
+<h3 id="destructuring-challenge">Destructuring Challenge</h3>
+
+<h3 id="destructuring-solution">Destructuring Solution</h3>
+
+<h3 id="destructuring-examples">Destructuring Examples</h3>
+
+
+
+</div>
+    </main>
+
+    
+
+    
+
+
+  
+<footer class="usa-footer usa-footer-medium" role="contentinfo">
+
+  
+
+  
+    <div class="usa-grid usa-footer-return-to-top">
+      <a href="#">Return to top</a>
+    </div>
+  
+
+
+
+  
+    
+    
+    
+    
+  <div class="usa-footer-primary-section">
+    <div class="usa-grid">
+      <nav class="usa-footer-nav">
+        <ul class="usa-unstyled-list">
+          
+          <li class="usa-width-one-third usa-footer-primary-content">
+            <a class="usa-footer-primary-link" href="/docs/">
+              Documentation
+            </a>
+          </li>
+          
+          <li class="usa-width-one-third usa-footer-primary-content">
+            <a class="usa-footer-primary-link" href="/demo/">
+              Demo link
+            </a>
+          </li>
+          
+          <li class="usa-width-one-third usa-footer-primary-content">
+            <a class="usa-footer-primary-link" href="https://18f.gsa.gov">
+              External link
+            </a>
+          </li>
+          
+        </ul>
+      </nav>
+    </div>
+  </div>
+  
+
+  
+  <div class="usa-footer-secondary_section">
+    <div class="usa-grid">
+      <div class="usa-footer-logo">
+        
+          
+            <img class="usa-footer-logo-img" src="/assets/img/hztl-wm.svg" alt="HZTL-WM">
+            
+          
+        
+
+        
+        <p>William has consumed <span id="la-croix"></span> cans of <a href="./la-croix.html"><span class="la-croix-logo"></span></a> since his start date at Horizontal.<br/><em class="lighten-up"> * cans of delicious, bubbly, essenced water consumed accurate by ±50%</em></p>
+        
+        
+      </div>
+
+      
+      <div class="usa-footer-contact-links usa-width-one-half">
+        
+        
+        
+          
+      
+      
+      </div>
+    </div>
+  </div>
+  
+
+</footer>
+
+
+
+
+
+    
+
+
+
+
+
+  
+<script src="/assets/uswds/js/uswds.min.js" async></script>
+
+
+
+
+
+    <script src="/assets/js/la-croix.js"></script>
+
+  </body>
+</html>
