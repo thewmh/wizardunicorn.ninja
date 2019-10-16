@@ -10,21 +10,21 @@ layout: post
 
 The scope of this story is to gain a better understanding of capabilities and integrations needed to implement JW Player on the site.
 
-[JW Player Docs](https://beta-developer.jwplayer.com/jwplayer/docs)
+### Current State of Advisory x JW Player
 
-In addition to a player, JW Player offers a CDN. Preliminary findings conclude that AB is using JW Player to host video content via JW Players CDN, see the following links (requires login?) and markup:
+AB is using JW Player as both a video player and to host video content via JW Players CDN, see the following links (requires login?) and markup:
 
 [Introduction to US Health Care Providers](https://www.advisory.com/research/health-care-industry-committee/members/resources/2019/introduction-to-us-health-care-providers)
+
+[Everything You Need to Know About Medicare in 13 Minutes](https://www.advisory.com/research/health-care-industry-committee/multimedia/everything-you-need-to-know-about-medicare-in-13-minutes)
 
 {% highlight html %}
 <div id="jwplayer-playlist" class="jwplayer jw-reset jw-state-idle jw-stretch-uniform jw-flag-aspect-mode jw-breakpoint-5 jw-floating-dismissible jw-flag-user-inactive" tabindex="0" aria-label="Video Player" role="application" style="width: 100%;" aria-describedby="jw-shortcuts-tooltip-explanation">...</div>
 {% endhighlight %}
 
-Example of video source link:
+#### Example of video source link:
 
 https://videos-a.jwpsrv.com/content/conversions/Ao1JBOZN/videos/EHD5VDzg-3206359.mp4-35.ts?hdntl=exp=1571249846~acl=/*~data=hdntl~hmac=b9349a3dbaa7f519ce3c8e1bef5c32d9e784321d201113033dd4e25730886162
-
-[Everything You Need to Know About Medicare in 13 Minutes](https://www.advisory.com/research/health-care-industry-committee/multimedia/everything-you-need-to-know-about-medicare-in-13-minutes)
 
 Furthermore, there appears to be a script and associated styling placed inline of the markup:
 
@@ -32,12 +32,33 @@ Furthermore, there appears to be a script and associated styling placed inline o
 
 ![alt text](../../assets/img/ab/ab-jw-player-inline-style.png "JW Player Inline Style in Markup")
 
+If we are to use JW Player moving forward, any potential development issues should be small (opposed to finding another video player solution and host).
 
-### JW Player Documentation
+### [JW Player Documentation](https://beta-developer.jwplayer.com/jwplayer/docs)
+
+#### Features of JW Player
+
+* HTML5 Player
+
+* Video Gallery
+
+* Analytics
 
 Styling appears to be loaded with JW Player and not embedded in any of the existing stylesheets provided by the client. The [Player CSS skin reference](https://beta-developer.jwplayer.com/jwplayer/docs/jw8-css-skin-reference) contains all of the information about styling the player.
 
 Playlists are created within the JW Player platform. Playlist information can be [found here in the Player configuration reference playlist section](https://beta-developer.jwplayer.com/jwplayer/docs/jw8-player-configuration-reference#section-playlists)
+
+#### Benefits of (continuing) to use JW Player
+
+* JW Player is the existing player and CDN used by Advisory
+
+* Extensive [Developer Documentation](https://beta-developer.jwplayer.com/jwplayer/docs)
+
+* Has broad [browser support](https://support.jwplayer.com/articles/browser-support)
+
+##### Potential Video Player Alternatives
+
+As detailed in [this article](https://50wheel.com/top-online-video-platforms-integrate-sitecore/), YouTube, Vimeo, and other free players can be embedded into a Sitecore page with an iframe embed. Platforms such as Brightcove, Kalture, Ooyala, Wistia, and JW Player provide brand-able video players and advanced analytics. [Brightcove even has an OOTB connector for Sitecore](https://support.brightcove.com/getting-started-brightcove-video-connect-sitecore-experience-platform). Here is the [Brightcove Connector for Sitecore 9.0.2](https://github.com/BrightcoveOS/Sitecore-Connector/releases/tag/v9.0.2)
 
 ### What We Need to Implement JW Player
 

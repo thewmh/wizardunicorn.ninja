@@ -22,9 +22,11 @@ layout: post
 * What are its features?
 
 * What are the benefits to using this (current, if upgraded, etc.) vs something else
+
         * Are there any alternatives that might be better?
 
 * What are areas of concerns, possible blockers, etc.
+
         * Ease of implementation
 
         * Browser support
@@ -36,6 +38,7 @@ layout: post
 * How to install, what assets/files to add, etc.
 
 * How to implement JS
+
         * How to customize /configure settings?
 
 * How to implement CSS
@@ -45,6 +48,7 @@ layout: post
 * How to integrate into Sitecore/SXA, etc.
 
 * Are there related modules you can use to make things easier?
+
         * Any JW Player for Sitecore modules that might help?
 
         * Any general video player modules to leverage that might help?
@@ -52,7 +56,9 @@ layout: post
 * Anything to update in relation to FED tooling, npm, gulp, etc.?
 
 * Are there any UI things to consider and account for:
+
         * Mobile vs tablet vs desktop layout
+
         * Needs to appear in certain components, modals, special logic not OOTB, etc.
 
 ### Next Steps
