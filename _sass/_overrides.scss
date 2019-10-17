@@ -1,6 +1,7 @@
 .usa-content {
     p, ul:not(.usa-accordion):not(.usa-accordion-bordered) {
         max-width: unset;
+        overflow: auto;
     }
 }
 
@@ -21,4 +22,14 @@ a {
             color: #ffffff;
         }
     }
+}
+
+.usa-footer-logo-img {
+    max-width: 20%;
+}
+
+footer p {
+    margin-left: 10%;
+    max-width: 60%;
+    display: inline-block;
 }
