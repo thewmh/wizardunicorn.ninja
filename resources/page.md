@@ -8,6 +8,8 @@ sidenav: resources
 subnav:
   - text: SXA
     href: '#sxa'
+  - text: Random Junk & Garbage
+    href: '#random-junk--garbage' 
   - text: SVG
     href: '#svg'
   - text: JavaScript
@@ -33,6 +35,25 @@ subnav:
 [Video Tutorial Walkthrough](https://www.reddit.com/r/sitecore/comments/bdihvd/sitecore_sxa_tutorials_sxa_1_8_full_site_step_by/)
 
 [Add data attributes to renderings](http://blog.martinmiles.net/post/how-to-add-id-and-data-attributes-to-a-rendering-variant-in-sxa)
+
+## Random Junk & Garbage
+
+A Collection of [UI Design Tips](https://twitter.com/i/moments/994601867987619840)
+
+Make your code snippet screenshots look pretty with [Carbon](https://carbon.now.sh/)
+
+[A Script](https://github.com/minamarkham/formation) to set up a new Laptop with all the Things
+
+[ES6 In Depth](https://hacks.mozilla.org/category/es6-in-depth/) - Brought to you by Mozilla
+
+[Add or Remove classes on things w/ Jquery?](http://jsfiddle.net/ak9Lnrjj/10/)  
+*could be a fix for slick carousel variable height slides. add a class that makes all the other slides have```css display: none;```* 
+
+[Charles - Web Debugging Proxy Application](https://www.charlesproxy.com)
+
+[CSS Architecture](https://philipwalton.com/articles/css-architecture/)
+
+[Objects in Space](https://medium.com/objects-in-space/objects-in-space-f6f404727) - A style-guide for modular SASS development using SMACSS and BEM
 
 ## SVG
 
