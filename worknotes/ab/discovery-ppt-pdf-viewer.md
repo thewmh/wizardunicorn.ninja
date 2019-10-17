@@ -10,6 +10,10 @@ layout: post
 
 The scope of this story is to determine if there is a good solution to showing PPT and PDF files on page. We’ve discussed functionality similar to what Confluence has today. This could be a library or 3rd party tool.
 
+### Current State
+
+Currently, AB does not have an integrated PPT or PDF viewer. All of the current links on AB found that have PDF files linked will either open the PDF in a separate tab (behavior experiences in Google Chrome) or download the PDF (untested in other browsers).
+
 ### Initial Findings
 
 Short of making all documents into PDFs, there does not appear to be a single solution for displaying both PPT and PDF files, but separate solutions for each. The following list is by no means a suggestion or selection, but a collection of what has been discovered.

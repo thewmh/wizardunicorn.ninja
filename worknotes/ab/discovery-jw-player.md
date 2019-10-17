@@ -66,7 +66,7 @@ Using JW Player does not immediately present any concerns, blockers, or challeng
 
 ### What We Need to Implement JW Player
 
-A log of existing pages where JW Player is currently in use could be helpful, as pages without JW Player hosted videos do not load the JavaScript or Stylesheets needed for the player.
+A log of existing pages where JW Player is currently in use could be helpful, as pages without JW Player hosted videos do not need to load the JavaScript or Stylesheets needed for the player.
 
 Access to AB JW Player account OR set up a [free developer account](https://www.jwplayer.com/pricing/) for development purposes (developer account on JW Player is free for 1 month).
 
@@ -75,3 +75,33 @@ Access to AB JW Player account OR set up a [free developer account](https://www.
 [Integrating JW Player RTE](https://www.tadigital.com/blog/integrating-jw-player-rich-text-editor/)
 
 Addressing [JW Player causing rendering not to load in Sitecores Page Editor](https://stackoverflow.com/questions/28545873/jwplayer-causes-rendering-not-to-load-in-sitecores-page-editor)
+
+### POC
+
+#### How to install JW Player
+
+[Embedding JW Player](https://support.jwplayer.com/articles/how-to-embed-a-jwplayer)
+
+#### JavaScript for JW Player
+
+[JavaScript API Introduction](https://developer.jwplayer.com/jw-player/docs/developer-guide/api/javascript_api_introduction/)
+
+#### CSS for JW Player
+
+[Customizing JW Player with CSS](https://developer.jwplayer.com/jw-player/docs/developer-guide/customization/css-skinning/skins_example/)
+
+#### HTML for JW Player
+
+[HTML5 JW Player](https://developer.jwplayer.com/jw-player/docs/developer-guide/getting-started/add-an-html5-player/)
+
+#### JW Player Sitecore Integration
+
+There is no OOTB Sitecore Integration for JW Player, the integration will have to be built. There are a couple of links in the 'Sitecore Specific JW Player Links' section that have additional details that may be beneficial.
+
+### TBD
+
+#### UI Considerations
+
+#### Demo
+
+#### Approvals

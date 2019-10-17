@@ -1,5 +1,5 @@
 ---
-title: This is what <span id="la-croix"></span> cans of La Croíx looks like.
+title: This is what <span class="la-croix"></span> cans of La Croíx looks like.
 layout: page
 permalink: /la-croix
 ---
