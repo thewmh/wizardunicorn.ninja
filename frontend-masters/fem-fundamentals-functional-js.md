@@ -3,13 +3,13 @@ title: "Frontend Masters - Javascript: From Fundamentals to Functional JS"
 description: These are notes from the 'From Fundamentals to Functional JS' course on Frontend Masters.
 permalink: /frontend-masters/fem-fundamentals-functional-js
 
-layout: post
-# sidenav: docs
-# subnav:
-#   - text: Section one
-#     href: '#section-one'
-#   - text: Section two
-#     href: '#section-two'
+layout: page
+sidenav: fem-js-func
+subnav:
+  - text: Introduction
+    href: '#introduction'
+  - text: Functional Programming
+    href: '#functional-programming'
 ---
 
 ## Introduction

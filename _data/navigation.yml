@@ -53,6 +53,20 @@ docs:
     href: https://18f.gsa.gov
     external: true
 
+fem-js-func:
+  - text: Introduction
+    href: /frontend-masters/fem-fundamentals-functional-js
+  - text: Objects
+    links:
+      - text: Demo link A
+        href: /two/a/
+      - text: Demo link B
+        href: /two/b/
+      - text: Demo link C
+        href: /two/c/
+
+
+
 resources:
   - text: Resources
     href: /resources/
