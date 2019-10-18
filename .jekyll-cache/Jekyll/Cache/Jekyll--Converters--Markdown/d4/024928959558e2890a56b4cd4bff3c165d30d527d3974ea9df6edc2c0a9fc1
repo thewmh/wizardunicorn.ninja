@@ -1,0 +1,34 @@
+I"�<h2 id="discovery---ppt-pdf-viewer">Discovery - PPT PDF Viewer</h2>
+
+<p>The scope of this story is to determine if there is a good solution to showing PPT and PDF files on page. We’ve discussed functionality similar to what Confluence has today. This could be a library or 3rd party tool.</p>
+
+<h3 id="current-state">Current State</h3>
+
+<p>Currently, AB does not have an integrated PPT or PDF viewer. All of the current links on AB found that have PDF files linked will either open the PDF in a separate tab (behavior experiences in Google Chrome) or download the PDF (untested in other browsers).</p>
+
+<h3 id="initial-findings">Initial Findings</h3>
+
+<p>Short of making all documents into PDFs, there does not appear to be a single solution for displaying both PPT and PDF files, but separate solutions for each. The following list is by no means a suggestion or selection, but a collection of what has been discovered.</p>
+
+<h3 id="ppt">PPT</h3>
+
+<p><a href="https://stackoverflow.com/questions/39855/embed-a-powerpoint-presentation-into-html">Make your own PPT viewer</a> by converting the PPT to different formats and serving it up with an interactive carousel or other, which is apparently what the link below does for you, but with less control over quality.</p>
+
+<p><a href="https://support.office.com/en-us/article/embed-a-presentation-in-a-web-page-or-blog-19668a1d-2299-4af3-91e1-ae57af723a60">One Drive Embed Code</a></p>
+
+<p><a href="https://viewerjs.org/examples/">ViewerJS</a> - Latest GitHub commit from <a href="https://github.com/webodf/ViewerJS/commit/5926843da6e1a5019372ff8ea9e73899c5d71e22">08/31/2017</a>, but built off of <a href="https://webodf.org/">WebODF</a> which relies on the <a href="https://en.wikipedia.org/wiki/OASIS_(organization)">OASIS</a> <a href="https://en.wikipedia.org/wiki/OpenDocument">Open Document Format</a> to view files (requires exporting PPT documents in ODF format)</p>
+
+<p>OR…export PPT as a PDF?</p>
+
+<h3 id="pdf">PDF</h3>
+
+<p><a href="https://pdfobject.com">PDFObject</a></p>
+
+<p>Stack Overflow Post About <a href="https://stackoverflow.com/questions/35286303/pdf-file-to-be-displayed-on-the-dialog-modal-via-bootstrap">Displaying a PDF in a Modal</a>…using <a href="https://pdfobject.com">PDFObject</a></p>
+
+<p><a href="https://mozilla.github.io/pdf.js/">PDFJS</a> - by Mozilla… <a href="https://github.com/mozilla/pdf.js/wiki/Frequently-Asked-Questions#faq-support">browser support listed here</a></p>
+
+<p>Here’s a blog post highlighting all of the ways to <a href="http://jsgyan.blogspot.com/2017/12/how-to-display-pdf-in-html-web-page.html">Display a PDF in a Web Page</a>. The recommended method to address all browsers? <a href="https://mozilla.github.io/pdf.js/">PDFJS</a></p>
+
+<p>An additional resource about <a href="http://hbekkouche.github.io/PDF.js-viewer-Example/">Using PDFJS In A Bootstrap Modal</a> - <a href="https://github.com/hbekkouche/PDF.js-viewer-Example/blob/master/index.html">Here’s the Markup</a></p>
+:ET

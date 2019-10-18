@@ -45,13 +45,13 @@ layout: post
 
 * How to implement HTML
 
-* How to integrate into Sitecore/SXA, etc.
+* How to integrate into *the_solution*, etc.
 
 * Are there related modules you can use to make things easier?
 
-        * Any JW Player for Sitecore modules that might help?
+        * Any *libraries* for *the_solution* modules that might help?
 
-        * Any general video player modules to leverage that might help?
+        * Any general *libraries* for modules to leverage that might help?
 
 * Anything to update in relation to FED tooling, npm, gulp, etc.?
 
