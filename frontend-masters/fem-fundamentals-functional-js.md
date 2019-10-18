@@ -14,7 +14,7 @@ layout: post
 
 ## Introduction
 
-### Success Tips for Learning
+### Tips for Learning
 
 * Difficulty ramps up considerably, but if you stick with it you will reap the rewards
 
@@ -32,6 +32,8 @@ Functional programming has become popular to the point that functional programmi
 
 ## Objects
 
+### Property Access
+
 Assignments with Dots
 
 {% highlight javascript %}
@@ -46,11 +48,25 @@ var person = { // object literal notation
 
 Anything that ever uses a dot in JavaScript is an object.
 
-### Property Access
+A primitive value is a string, number, boolean, null, or undefined. A non-primitive valye is an object, array, function, promise. Primitive values get passed by value, non-primitive values get passed by reference. If you are passing primitive values, a copy is made, non-primitive values are passed as a reference. This behavior can produce unpredictable results if you are not careful. For example, if you were to assign ```person.name``` to a variable i.e. ```who```, then reassign ```person.name```, who would retain the original reference for ```person.name```.
 
 ### Arrays
 
+{% highlight javascript %}
+var person = []; // declare a person array
+
+person.name = "Mrs. White"; // assign a vaule to a property
+
+var who = person.name;
+
+who; //??
+{% endhighlight %}
+
+Arrays are objects, and because of that, the rules are exactly the same. The major difference between an array and an object are the available methods for either, an example of which is ```.length``` being an available method for arrays, but not objects. If you check the ```typeof``` for the ```person``` variable in the code block above, the console should return ```object```.
+
 ### Bracket Notation
+
+
 
 ### Non-Valid Characters
 
@@ -68,3 +84,142 @@ Anything that ever uses a dot in JavaScript is an object.
 
 ### Destructuring Examples
 
+## List Transformations
+
+### List Transformations
+
+### Looping Exercise
+
+### Looping Solution
+
+### Looping Exercise, Part 2
+
+### Looping Solution, Part 2
+
+### Looping Exercise, Part 3
+
+### Looping Solution, Part 3
+
+## .forEach() Function
+
+### Using Functions
+
+### forEach Function
+
+### forEach and _.each Exercises
+
+### forEach and _.each Solution
+
+## .map() Function
+
+### _.map() vs .map() Functions
+
+### _.map() Exercise
+
+### _.map() Solution
+
+### _.map() vs _.each()
+
+### _.map() Exercise, Part 2
+
+### _.map() Solution, Part 2
+
+## .filter() Function
+
+### .filter() Exercise
+
+### .filter() Solution
+
+### .filter() Application Exercise
+
+### .filter() Application Solution
+
+## Functions In-Depth
+
+### Anatomy of a Function
+
+### Function Scavenger Exercise
+
+### Function Scavenger Solution
+
+### ES6 Arrow Functions
+
+### Projecting Exercise
+
+### Projecting Solution
+
+### Spread Operator
+
+### Arguments Keyword
+
+### Default Parameters
+
+### ES5 Rewrite Exercise
+
+### ES5 Rewrite Solution
+
+### Array-Like Object
+
+### Array.from
+
+### _.from() Exercise
+
+### _.from() Solution
+
+## Scope
+
+### Scope Walkthrough Setup
+
+### Scope Walkthrough, Part 1
+
+### Scope Walkthrough, Part 2
+
+### Scope Walkthrough, Part 3
+
+### Scope Takeaways
+
+## Callbacks
+
+### Higher-Order Functions & Callbacks
+
+### Passing Arguments
+
+### Translate into ES6 Exercise
+
+### Translate into ES6 Solution
+
+### Passing Arguments, Part 2
+
+### _.reduce() Exercise
+
+### _.reduce() Solution
+
+### Empty Room Exercise
+
+### Empty Room Solution
+
+## Functional Utilities
+
+### Currying
+
+### Composing
+
+## Advanced Scope: Closure
+
+### Closure
+
+### Closure, Part 2
+
+### Creating Closure
+
+### Closure Demonstration
+
+### Closure Recipe
+
+### Currying and Componsing Exercises
+
+### Currying and Componsing Solutions
+
+## Wrapping Up "JavaScript: From Fundamentals to Functional JS"
+
+### Wrapping Up

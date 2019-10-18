@@ -1,0 +1,92 @@
+I")<h2 id="introduction">Introduction</h2>
+
+<h3 id="tips-for-learning">Tips for Learning</h3>
+
+<ul>
+  <li>
+    <p>Difficulty ramps up considerably, but if you stick with it you will reap the rewards</p>
+  </li>
+  <li>
+    <p>Take responsibility for your learning - don’t make excuses for why you cannot learn something, figure out how to measure your learning (it is different for everyone)</p>
+  </li>
+  <li>
+    <p>Consider the questions asked</p>
+  </li>
+  <li>
+    <p>Don’t read too much. If you are trying to learn a skill that requires you to solve problems, it’s not always as productive as it may feel</p>
+  </li>
+  <li>
+    <p>Teach other people, explain what you learned and how it works</p>
+  </li>
+</ul>
+
+<h3 id="functional-programming">Functional Programming</h3>
+
+<p>Functional programming has become popular to the point that functional programming and utility methods have been integrated into modern frameworks. Functional programming is about breaking code into verbs, vs object oriented programming being about nouns. It is easier to think about software in terms of objects because that’s where we, as humans, live, in the physical world. Whereas with functional programming, you need to think in terms of the actions. In functional programming, the focus is on… functions. Lots of functions, functions being passed to functions, functions being returned from functions, working with parameters and arguments. One benefit of functional programming vs object oriented programming: Pure functions don’t have side-effects - makes code easier to test</p>
+
+<h2 id="objects">Objects</h2>
+
+<h3 id="property-access">Property Access</h3>
+
+<p>Assignments with Dots</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">person</span> <span class="o">=</span> <span class="p">{};</span> <span class="c1">// declare a person object</span>
+
+<span class="nx">person</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Mrs. White</span><span class="dl">"</span><span class="p">;</span> <span class="c1">// assign a vaule to a property</span>
+
+<span class="kd">var</span> <span class="nx">person</span> <span class="o">=</span> <span class="p">{</span> <span class="c1">// object literal notation</span>
+    <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">Mrs. White</span><span class="dl">"</span> <span class="c1">// the quotation marks are not needed for a one-word property declaration, JavaScript will assume it is a string</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>Anything that ever uses a dot in JavaScript is an object.</p>
+
+<p>A primitive value is a string, number, boolean, null, or undefined. A non-primitive valye is an object, array, function, promise. Primitive values get passed by value, non-primitive values get passed by reference. If you are passing primitive values, a copy is made, non-primitive values are passed as a reference. This behavior can produce unpredictable results if you are not careful. For example, if you were to assign <code class="highlighter-rouge">person.name</code> to a variable i.e. <code class="highlighter-rouge">who</code>, then reassign <code class="highlighter-rouge">person.name</code>, who would retain the original reference for <code class="highlighter-rouge">person.name</code>.</p>
+
+<h3 id="arrays">Arrays</h3>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">person</span> <span class="o">=</span> <span class="p">[];</span> <span class="c1">// declare a person array</span>
+
+<span class="nx">person</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Mrs. White</span><span class="dl">"</span><span class="p">;</span> <span class="c1">// assign a vaule to a property</span>
+
+<span class="kd">var</span> <span class="nx">who</span> <span class="o">=</span> <span class="nx">person</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+
+<span class="nx">who</span><span class="p">;</span> <span class="c1">//??</span></code></pre></figure>
+
+<p>Arrays are objects, and because of that, the rules are exactly the same. The major difference between an array and an object are the available methods for either, an example of which is <code class="highlighter-rouge">.length</code> being an available method for arrays, but not objects. If you check the <code class="highlighter-rouge">typeof</code> for the <code class="highlighter-rouge">person</code> variable in the code block above, the console should return <code class="highlighter-rouge">object</code>.</p>
+
+<h3 id="bracket-notation">Bracket Notation</h3>
+
+<h3 id="non-valid-characters">Non-Valid Characters</h3>
+
+<h3 id="game-characters-challenge">Game Characters Challenge</h3>
+
+<h3 id="game-characters-solution">Game Characters Solution</h3>
+
+<h3 id="object-review">Object Review</h3>
+
+<h3 id="es6-destructuring">ES6 Destructuring</h3>
+
+<h3 id="destructuring-challenge">Destructuring Challenge</h3>
+
+<h3 id="destructuring-solution">Destructuring Solution</h3>
+
+<h3 id="destructuring-examples">Destructuring Examples</h3>
+
+<h2 id="list-transformations">List Transformations</h2>
+
+<h3 id="list-transformations-1">List Transformations</h3>
+
+<h3 id="looping-exercise">Looping Exercise</h3>
+
+<h3 id="looping-solution">Looping Solution</h3>
+
+<h3 id="looping-exercise-part-2">Looping Exercise, Part 2</h3>
+
+<h3 id="looping-solution-part-2">Looping Solution, Part 2</h3>
+
+<h3 id="looping-exercise-part-3">Looping Exercise, Part 3</h3>
+
+<h3 id="looping-solution-part-3">Looping Solution, Part 3</h3>
+
+<h2 id="foreach-function">.forEach() Function</h2>
+:ET
