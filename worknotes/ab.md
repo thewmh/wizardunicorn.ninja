@@ -11,5 +11,6 @@ layout: page
 #   - text: Discovery - PDF PPT Viewer
 #     href: '/discovery-pdf-ppt-viewer'
 ---
-  [Discovery - JW Player](/worknotes/ab/jw-player)  
+  [Discovery - JW Player](/worknotes/ab/jw-player)
+  
   [Discovery - PPT PDF Viewer](/worknotes/ab/ppt-pdf-viewer)
