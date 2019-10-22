@@ -33,3 +33,19 @@ footer p {
     max-width: 60%;
     display: inline-block;
 }
+
+/* The progress container (grey background) */
+.progress-container {
+    position: fixed;
+    top: 0;
+    z-index: 10000;
+    width: 100%;
+    height: 6px;
+  }
+  
+  /* The progress bar (scroll indicator) */
+  .progress-bar {
+    height: 6px;
+    background: #ee3e3e;
+    width: 0%;
+  }
