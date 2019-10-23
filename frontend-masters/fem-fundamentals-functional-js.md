@@ -66,9 +66,46 @@ Arrays are objects, and because of that, the rules are exactly the same. The maj
 
 ### Bracket Notation
 
+{% highlight javascript %}
+var person = []; // declare a person array
+var plea = "wouldShe"
 
+person.name = "Mrs. White"; // assign a vaule to a property
+
+person[plea] = "I would never!"
+{% endhighlight %}
+
+The ```person[plea] = "I would never!"``` will create a new property in the person object based on the original value of the plea variable ```"wouldShe"```, which will make the person object look like this:
+
+{% highlight javascript %}
+person = {
+  name: "Mrs. White"
+  wouldShe: "I would never!"
+}
+{% endhighlight %}
+
+If the intention was to create a ```plea``` key for the person object, then you need to surround the ```plea``` with quotes. i.e. ```person["plea"] = "I would never!"```. The person object would then look like this:
+
+{% highlight javascript %}
+person = {
+  name: "Mrs. White"
+  plea: "I would never!"
+}
+{% endhighlight %}
+
+Reviewing what we've learned about objects and arrays:
+
+* An array is an object that has methods available to it.
+
+* A property string can be passed with dot notation or brackets and quotes.
+
+* Dot notation coerces to a string, but cannot coerce a number to a string, it will result in a SyntaxError. JavaScript will start to evaluate the number as a number and then throw the SyntaxError.
+
+* If you receive a SyntaxError when trying to access a variable within an object with dot notation, use bracket notation and quotes around the variable name to access it.
 
 ### Non-Valid Characters
+
+
 
 ### Game Characters Challenge
 
