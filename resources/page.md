@@ -40,6 +40,8 @@ subnav:
 
 [VSCode Can Do That?!](https://vscodecandothat.com) - A collection of resources for VSCode, because yes... it CAN do that.
 
+VSCode [Settings Sync](https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync) - Share your extensions with others or re-populate all your installed extensions into a new computer or instance of VS Code
+
 A Collection of [UI Design Tips](https://twitter.com/i/moments/994601867987619840)
 
 Make your code snippet screenshots look pretty with [Carbon](https://carbon.now.sh/)
