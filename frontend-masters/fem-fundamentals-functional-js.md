@@ -105,7 +105,7 @@ Reviewing what we've learned about objects and arrays:
 
 ### Non-Valid Characters
 
-
+Try not to use non-valid characters as property names, like ```'^&*'```, that is not a very good property name both because it uses non-valid characters and it is not named in a very memorable or sensible way. You can certainly use non-valid characters to name your properties, but the name will need to be surrounded by quotes.
 
 ### Game Characters Challenge
 

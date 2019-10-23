@@ -38,6 +38,8 @@ subnav:
 
 ## Random Junk & Garbage
 
+[VSCode Can Do That?!](https://vscodecandothat.com) - A collection of resources for VSCode, because yes... it CAN do that.
+
 A Collection of [UI Design Tips](https://twitter.com/i/moments/994601867987619840)
 
 Make your code snippet screenshots look pretty with [Carbon](https://carbon.now.sh/)
