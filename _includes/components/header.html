@@ -5,7 +5,7 @@
 {% elsif header.type == 'basic-mega' %}
   <header class="usa-header usa-header-basic usa-header-basic-megamenu" role="banner">
 {% elsif header.type == 'extended' or header.type == 'extended-mega' %}
-  <header class="usa-header usa-header-extended" role="banner">
+  <header class="usa-header usa-header-extended" role="banner" id="usa-header">
 {% endif %}
 
   {% if header.type == 'basic' or header.type == 'basic-mega' %}
@@ -124,9 +124,11 @@
   {% if header.type == 'basic' or header.type == 'basic-mega' %}
     </div>
   {% endif %}
-  <div class="progress-container">
-    <div class="progress-bar" id="myBar"></div>
-  </div>
+  <div class="main-top">
+      <div class="progress-container">
+        <div class="progress-bar" id="progress"></div>
+      </div>
+    </div>
   </header>
   <div class="usa-overlay"></div>
 {% endif %}

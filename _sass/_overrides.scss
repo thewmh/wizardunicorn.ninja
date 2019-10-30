@@ -34,18 +34,26 @@ footer p {
     display: inline-block;
 }
 
+
+.main-top {
+    top: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+
 /* The progress container (grey background) */
 .progress-container {
-    position: fixed;
-    top: 0;
-    z-index: 10000;
-    width: 100%;
     height: 6px;
+    /* The progress bar (scroll indicator) */
+    .progress-bar {
+      height: 6px;
+      background: #7FC3BA;
+      width: 0%;
+      display: block;
+    }
   }
-  
-  /* The progress bar (scroll indicator) */
-  .progress-bar {
-    height: 6px;
-    background: #7FC3BA;
-    width: 0%;
-  }
+}
+
+#usa-header {
+    transition: 5s;
+}

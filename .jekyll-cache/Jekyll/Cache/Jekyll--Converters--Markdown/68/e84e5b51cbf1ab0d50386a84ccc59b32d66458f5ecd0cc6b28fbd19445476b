@@ -1,297 +1,34 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-<title>October 2019 Worknotes | FED Notes & Resources</title>
-
-
-
-<meta name="description" content="These are worknotes from October 2019.">
-
-
-
-<link rel="shortcut icon" type="image/ico"
-  href="/assets/uswds/img/favicons/favicon.ico">
-
-<link rel="icon" type="image/png"
-  href="/assets/uswds/img/favicons/favicon.png">
-
-<link rel="icon" type="image/png"
-  sizes="192x192"
-  href="/assets/uswds/img/favicons/favicon-192.png">
-
-<link rel="apple-touch-icon-precomposed" type=""
-  href="/assets/uswds/img/favicons/favicon-57.png">
-
-<link rel="apple-touch-icon-precomposed" type=""
-  sizes="72x72"
-  href="/assets/uswds/img/favicons/favicon-72.png">
-
-<link rel="apple-touch-icon-precomposed" type=""
-  sizes="114x114"
-  href="/assets/uswds/img/favicons/favicon-114.png">
-
-<link rel="apple-touch-icon-precomposed" type=""
-  sizes="144x144"
-  href="/assets/uswds/img/favicons/favicon-144.png">
-
-
-
-    
-
-
-
-<link rel="stylesheet"
-  href="/assets/css/main.css"
-  media="screen">
-
-
-    
-  </head>
-  <body class="  ">
-
-    <a class="usa-skipnav" href="#main-content">Skip to main content</a>
-
-    
-
-
-  <section class="usa-banner">
-  <div class="usa-accordion">
-    <!-- <header class="usa-banner-header">
-      <div class="usa-grid usa-banner-inner"> <img src="/assets/uswds/img/favicons/favicon-57.png" alt="U.S. flag">
-        <p>An official website of the United States government</p> <button class="usa-accordion-button usa-banner-button" aria-expanded="false" aria-controls="gov-banner"> <span class="usa-banner-button-text">Here's how you know</span> </button> </div>
-    </header> -->
-    <div class="usa-banner-content usa-grid usa-accordion-content" id="gov-banner">
-      <div class="usa-banner-guidance-gov usa-width-one-half"> <img class="usa-banner-icon usa-media_block-img" src="/assets/uswds/img/icon-dot-gov.svg" alt="Dot gov">
-        <div class="usa-media_block-body">
-          <p> <strong>The .gov means it’s official.</strong> <br> Federal government websites often end in .gov or .mil. Before sharing sensitive information, make sure you’re on a federal government site. </p>
-        </div>
-      </div>
-      <div class="usa-banner-guidance-ssl usa-width-one-half"> <img class="usa-banner-icon usa-media_block-img" src="/assets/uswds/img/icon-https.svg" alt="Https">
-        <div class="usa-media_block-body">
-          <p> <strong>The site is secure.</strong> <br> The <strong>https://</strong> ensures that you are connecting to the official website and that any information you provide is encrypted and transmitted securely. </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-
-
-
-
-  <header class="usa-header usa-header-extended" role="banner" id="usa-header">
-
-
-  
-    <div class="usa-navbar">
-      <button class="usa-menu-btn">Menu</button>
-      <div class="usa-logo" id="extended-mega-logo">
-        <a href="/" title="Home">
-          
-            <img class="usa-logo-img" src="/assets/img/hztl-wm.svg" alt="HZTL-WM">
-          
-          <em class="usa-logo-text">
-            FED Notes & Resources
-          </em>
-        </a>
-      </div>
-    </div>
-
-    <nav role="navigation" class="usa-nav">
-      <div class="usa-nav-inner">
-        <button class="usa-nav-close">
-          <img src="/assets/uswds/img/close.svg" alt="close">
-        </button>
-
-        
-        
-        
-        <ul class="usa-nav-primary usa-accordion">
-          
-          <li>
-            
-              
-              
-              
-            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-1">
-              <span>Worknotes</span>
-            </button>
-            
-            <ul id="nav-1" class="usa-nav-submenu" aria-hidden="true">
-            
-            
-              
-                
-                <li>
-                  <a href="/worknotes/1910">October 2019</a>
-                </li>
-                
-              
-                
-                <li>
-                  <a href="/worknotes/1909">September 2019</a>
-                </li>
-                
-              
-            
-            </ul>
-            
-            
-            
-          </li>
-          
-          <li>
-            
-              <a class=" usa-nav-link  " href="/resources/">
-                <span>Resources</span>
-              </a>
-            
-          </li>
-          
-          <li>
-            
-              
-              
-              
-            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-3">
-              <span>Frontend Masters Workshop Notes</span>
-            </button>
-            
-            <ul id="nav-3" class="usa-nav-submenu" aria-hidden="true">
-            
-            
-              
-                
-                <li>
-                  <a href="/frontend-masters/fem-fundamentals-functional-js">Javascript: From Fundamentals to Functional JS</a>
-                </li>
-                
-              
-            
-            </ul>
-            
-            
-            
-          </li>
-          
-        </ul>
-        
-
-        
-
-          
-          
-          <div class="usa-nav-secondary">
-            
-            <ul class="usa-unstyled-list usa-nav-secondary-links">
-              
-              
-              
-                <li>
-                  <a href="/worknotes/ab"
-                  >
-                    AB
-                  </a>
-                </li>
-              
-            </ul>
-          </div>
-          
-
-
-        </div>
-      </div>
-    </nav>
-  
-  <div class="main-top">
-      <div class="progress-container">
-        <div class="progress-bar" id="progress"></div>
-      </div>
-    </div>
-  </header>
-  <div class="usa-overlay"></div>
-
-
-
-
-    
-    
-
-
-    
-
-    
-
-    
-      
-      
-
-
-
-
-    
-    
-
-    <main id="main-content" class="usa-grid usa-section usa-content usa-layout-docs">
-          
-
-
-<div class="usa-layout-docs-main_content">
-  
-    <h1>October 2019 Worknotes</h1>
-  
-  <p>10/30</p>
-
-<p><em>f you scroll progress bar</em></p>
-
-<p>Just kidding scroll progress bar, we figured it out together. There is still some work to be done on this, but for now it is in a good place. Got to demo my work to the AB team (internally).</p>
+I"B/<p>10/30</p>
 
 <hr />
 
 <p>10/29</p>
 
-<p><em>Completed more work, looking for more (headaches)</em></p>
-
-<p>I should probably slow down on these because I got more things! Specifically more discovery work; Soundcloud, and another thing to build; a scroll progress bar. I agonized over the scroll progress bar all day, and it wasn’t until I left work that I realized the error of my ways and identified the correct query to make it work. Ugh… so many hours lost.</p>
-
 <hr />
 
 <p>10/28</p>
-
-<p><em>Reported on my second component, looking for more?</em></p>
-
-<p>I asked the tech lead what other useful things I could do and was quickly assigned a drop cap and a trailing slash. Figured this would take all day to complete. That was correct, but by the end of the day I had both a drop cap and a trailing slash! BOOM!</p>
-
-<p>Also, had a mid-day meeting with the tech lead and two others to discuss media types and the possibilities of Sitecore / SXA or 3rd party options. This was partially from my earlier discovery work. It was nice to be able to speak to the things I had learned.</p>
 
 <hr />
 
 <p>10/25</p>
 
-<p><em>Finished up the second mock component for AB</em></p>
-
-<p>By the end of the day I was able to finish up the second component for AB. I am calling them mock components not because they aren’t real components, but from a design standpoint, they are not completely approved yet. So while they may change a bit, the basic idea is there.</p>
+<p><em>Not sure what happened this day</em></p>
 
 <hr />
 
 <p>10/24</p>
 
-<p><em>Bootstrap Flexbox? Grid FTW!</em></p>
+<p><em>Not sure what happened this day</em></p>
 
-<p>Started a new mock component for AB. Thought I had it figured out using the Bootstrap grid, but the laytout changed too much between desktop and mobile that I ended up having to go with <code class="highlighter-rouge">display: grid</code>. But that didn’t happen until the next day.</p>
-
-<p>I was excited that I had figured out how to get this component layed out using Bootstrap, but this was not the case. I ended up creating a quick mockup of the component and querying the Prime community on Slack. After a few useless replies, someone <em>actually</em> helped, and that came in the form of <code class="highlighter-rouge">display: grid</code>. Spend the rest of the day working with CSS Grid to get the component behaving well across browsers, specifically IE11 😒</p>
+<p>Not sure what happened on this day, but pretty sure I picked up another thing from AB to mockup</p>
 
 <hr />
 
 <p>10/23</p>
 
-<p><em>Finished up the first mock component for AB, did some work for another team</em></p>
+<p><em>Grid FTW</em></p>
+
+<p>I was excited that I had figured out how to get this component layed out using Bootstrap, but this was not the case. I ended up creating a quick mockup of the component and querying the Prime community on Slack. After a few useless replies, someone <em>actually</em> helped, and that came in the form of <code class="highlighter-rouge">display: grid</code>. Spend the rest of the day working with CSS Grid to get the component behaving well across browsers, specifically IE11 😒</p>
 
 <p>Also had been asked to help quick with a project for another team. The Salesforce team was struggling with form validation and got reCaptcha on a page, but the submit button didn’t care that it was there. I added in some additional validation to check whether or not the reCaptcha had been checked, problem solved, yay! 🥳</p>
 
@@ -315,7 +52,7 @@
 
 <p><em>Had my bi-weekly meeting with my surpervisor</em></p>
 
-<p>Got some good feedback on my accessibility presentation from the previous week. Also completed the first mock component for AB. I later found out that the component I chose was one of the few style choices that AB actually liked. Yay me?!</p>
+<p>Got some good feedback on my accessibility presentation from the previous week. Continued working on the mock component for AB. Thought I had it figured out using the Bootstrap grid, but the laytout changed too much between desktop and mobile that I ended up having to go with <code class="highlighter-rouge">display: grid</code>. But that didn’t happen until the next day.</p>
 
 <hr />
 
@@ -438,102 +175,4 @@
 </ul>
 
 <p>me: 1, stackla: 1</p>
-
-
-</div>
-    </main>
-
-    
-
-    
-
-
-  
-<footer class="usa-footer usa-footer-medium" role="contentinfo">
-
-  
-
-  
-    <div class="usa-grid usa-footer-return-to-top">
-      <a href="#">Return to top</a>
-    </div>
-  
-
-
-
-  
-    
-    
-    
-    
-  <div class="usa-footer-primary-section">
-    <div class="usa-grid">
-      <nav class="usa-footer-nav">
-        <ul class="usa-unstyled-list">
-          
-          <li class="usa-width-one-whole usa-footer-primary-content">
-            <a class="usa-footer-primary-link" href="">
-              
-            </a>
-          </li>
-          
-        </ul>
-      </nav>
-    </div>
-  </div>
-  
-
-  
-  <div class="usa-footer-secondary_section">
-    <div class="usa-grid">
-      <div class="usa-footer-logo">
-        
-          
-            <img class="usa-footer-logo-img" src="/assets/img/hztl-wm.svg" alt="HZTL-WM">
-            
-          
-        
-
-        
-        <p>William has consumed <span class="la-croix"></span> cans of <a href="/la-croix.html"><span class="la-croix-logo"></span></a> since his start date at Horizontal.<br/><em class="lighten-up"> * cans of delicious, bubbly, essenced water consumed accurate by ±50%</em></p>
-        
-        
-      </div>
-
-      
-      <div class="usa-footer-contact-links usa-width-one-half">
-        
-        
-        
-          
-      
-      
-      </div>
-    </div>
-  </div>
-  
-
-</footer>
-
-
-
-
-
-    
-
-
-
-
-
-  
-<script src="/assets/uswds/js/uswds.min.js" async></script>
-
-
-
-
-
-    <script src="/assets/js/la-croix.js"></script>
-    <script src="/assets/js/scroll-watch.js"></script>
-
-  </body>
-</html>
+:ET
