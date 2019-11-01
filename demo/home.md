@@ -19,7 +19,7 @@ layout: home
 
 tagline: Hey!
 intro: |
-  My name is William Harrison, I am currently an Associate Frontend Developer at Horizontal Integration (HI). If you would like to see how many cans of La Croíx I have drank since I started at HI, check the footer.
+  My name is William Harrison, I am currently an Associate Frontend Developer at Horizontal Digital. If you would like to see how many cans of La Croíx I have drank since I started at Horizontal, check the footer.
 
   I am currently using this site to keep track of worknotes, resources, and the workshops I am taking through Frontend Masters. The learning I have to do will likely be unceasing. That's fine, check out some of my things if you made it this far!
 

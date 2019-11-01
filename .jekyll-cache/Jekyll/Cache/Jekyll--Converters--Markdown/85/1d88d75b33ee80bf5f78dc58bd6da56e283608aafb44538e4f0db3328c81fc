@@ -1,0 +1,24 @@
+I"�<h2 id="discovery---podcast">Discovery - Podcast</h2>
+
+<p>Podcasts are currently iframed in from Soundcloud.  The scope of this story is to determine what options we have for layout and styling.  We’ll then connect on this in deisgn studio and work it into our overall design and implementation plan.</p>
+
+<h3 id="current-state">Current State</h3>
+
+<p>Currently, AB is using Soundcloud to host podcasts.</p>
+
+<h3 id="initial-findings">Initial Findings</h3>
+
+<p>Soundcloud is not very customizable. A few links below detail what is available.</p>
+
+<h3 id="soundcloud-options">Soundcloud Options</h3>
+
+<p><a href="https://github.com/OpenA/soundcloud-pure-player">Soundcloud Pure Player</a> - This project is a fork of the one below. It aims to provide a pure JavaScript option to a customizable player. Last commit is from <a href="https://github.com/OpenA/soundcloud-pure-player/commit/97ae13dc30a66a8eaa8b4e285b097eb16f564226">Jan 8th, 2019</a></p>
+
+<p><a href="https://github.com/soundcloud/soundcloud-custom-player">Soundcloud Custom Player</a> - A jQuery plugin that allows you to create easily customizable, HTML/CSS/JS based audio players. It uses the official SoundCloud Flash widget for the audio streaming and widget API for it’s control or native HTML5 streaming. Supports iPad, iPhone OS4, Palm Pre etc.</p>
+
+<p><a href="https://mozilla.github.io/pdf.js/">PDFJS</a> - by Mozilla. <a href="https://github.com/mozilla/pdf.js/wiki/Frequently-Asked-Questions#faq-support">Browser support listed here</a>.</p>
+
+<p>Here’s a blog post highlighting all of the ways to <a href="http://jsgyan.blogspot.com/2017/12/how-to-display-pdf-in-html-web-page.html">Display a PDF in a Web Page</a>. The recommended method to address all browsers? <a href="https://mozilla.github.io/pdf.js/">PDFJS</a></p>
+
+<p>An additional resource about <a href="http://hbekkouche.github.io/PDF.js-viewer-Example/">Using PDFJS In A Bootstrap Modal</a> - <a href="https://github.com/hbekkouche/PDF.js-viewer-Example/blob/master/index.html">Here’s the Markup</a></p>
+:ET
