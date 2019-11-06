@@ -1,3 +1,7 @@
+body {
+    cursor: url("/assets/img/wizard.ico"), default;
+}
+
 .usa-content {
     p, ul:not(.usa-accordion):not(.usa-accordion-bordered) {
         max-width: unset;
