@@ -14,12 +14,14 @@
 primary:
   - text: Worknotes
     links:
-      - text: November 2019
-        href: /worknotes/1911
-      - text: October 2019
-        href: /worknotes/1910
-      - text: September 2019
-        href: /worknotes/1909
+      - text: 2019
+        links:
+        - text: November 2019
+          href: /worknotes/1911
+        - text: October 2019
+          href: /worknotes/1910
+        - text: September 2019
+          href: /worknotes/1909
   - text: Resources
     href: /resources/
   - text: Frontend Masters Workshop Notes
