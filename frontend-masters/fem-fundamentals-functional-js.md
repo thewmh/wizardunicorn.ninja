@@ -125,14 +125,17 @@ Characters
 Weapons
 Rooms
 
+{% highlight javascript %}
 var clue = {
   characters: ['Professor Plum', 'Miss Scarlet', 'Mrs. Peacock', 'Mr. Boddy', 'Mrs. White', 'Colonel Mustard', 'The Singing Telegram Girl', 'The Motorist', 'Mr. Green],
   weapons: ['candlestick', 'dagger', 'lead pipe', 'revolver', 'rope', 'spanner'],
   rooms: ['dining room', 'kitchen', 'study', 'billiard room', 'sunroom', 'ballroom']
 }
+{% endhighlight %}
 
 ### Game Characters Solution
 
+{% highlight javascript %}
 var game = {}; // initialize an object literal
 
 game.murderer = "??"; // initialize a property
@@ -151,6 +154,7 @@ game.name = []; initialize an array literal
 
 game.name[0] = 'Miss Scarlet';
 game.name.push('Mr. Green')
+{% endhighlight %}
 
 ### Object Review
 
