@@ -1,4 +1,4 @@
-I"/<h2 id="introduction">Introduction</h2>
+I"�2<h2 id="introduction">Introduction</h2>
 
 <h3 id="tips-for-learning">Tips for Learning</h3>
 
@@ -77,9 +77,26 @@
   <span class="na">plea</span><span class="p">:</span> <span class="dl">"</span><span class="s2">I would never!</span><span class="dl">"</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>Reviewing what we’ve learned about objects and arrays; an array is an object that has methods available to it.</p>
+<p>Reviewing what we’ve learned about objects and arrays:</p>
+
+<ul>
+  <li>
+    <p>An array is an object that has methods available to it.</p>
+  </li>
+  <li>
+    <p>A property string can be passed with dot notation or brackets and quotes.</p>
+  </li>
+  <li>
+    <p>Dot notation coerces to a string, but cannot coerce a number to a string, it will result in a SyntaxError. JavaScript will start to evaluate the number as a number and then throw the SyntaxError.</p>
+  </li>
+  <li>
+    <p>If you receive a SyntaxError when trying to access a variable within an object with dot notation, use bracket notation and quotes around the variable name to access it.</p>
+  </li>
+</ul>
 
 <h3 id="non-valid-characters">Non-Valid Characters</h3>
+
+<p>Try not to use non-valid characters as property names, like <code class="highlighter-rouge">'^&amp;*'</code>, that is not a very good property name both because it uses non-valid characters and it is not named in a very memorable or sensible way. You can certainly use non-valid characters to name your properties, but the name will need to be surrounded by quotes. Try to keep your code to the point and don’t get too fancy.</p>
 
 <h3 id="game-characters-challenge">Game Characters Challenge</h3>
 

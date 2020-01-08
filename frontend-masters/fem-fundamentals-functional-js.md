@@ -105,11 +105,52 @@ Reviewing what we've learned about objects and arrays:
 
 ### Non-Valid Characters
 
-Try not to use non-valid characters as property names, like ```'^&*'```, that is not a very good property name both because it uses non-valid characters and it is not named in a very memorable or sensible way. You can certainly use non-valid characters to name your properties, but the name will need to be surrounded by quotes.
+Try not to use non-valid characters as property names, like ```'^&*'```, that is not a very good property name both because it uses non-valid characters and it is not named in a very memorable or sensible way. You can certainly use non-valid characters to name your properties, but the name will need to be surrounded by quotes. Try to keep your code to the point and don't get too fancy.
+
+Q&A
+
+Q: What is the difference between an array and an object? (this seems to have already been answered in the previous section)
+
+A: An array is a special kind of object. The most special thing about an array is the .length property which is a property that is computed as you add numerical indices. Numerical indices are different than properties on an array because an array captures that and will increment the length. 
+
+If you have an array containing any number of items and add something to an index that does not exist; if you add something to the array at an index position that is more than 1 greater than the current .length [numnber of index positions] of the array, empty values will be inserted until it reaches the requested index position. i.e. original array is ```y[0,1,2,3,4,5]``` and you would like to add ```y[10]=number```, the array will now be ```y[0,1,2,3,4,5,,,,number]```
+
+Arrays are easier to reverse and loop through than objects.
 
 ### Game Characters Challenge
 
+Exercise: Create an object using bracket and dot notation that represents the characters and related data you may find in a game of Clue.
+
+Characters
+Weapons
+Rooms
+
+var clue = {
+  characters: ['Professor Plum', 'Miss Scarlet', 'Mrs. Peacock', 'Mr. Boddy', 'Mrs. White', 'Colonel Mustard', 'The Singing Telegram Girl', 'The Motorist', 'Mr. Green],
+  weapons: ['candlestick', 'dagger', 'lead pipe', 'revolver', 'rope', 'spanner'],
+  rooms: ['dining room', 'kitchen', 'study', 'billiard room', 'sunroom', 'ballroom']
+}
+
 ### Game Characters Solution
+
+var game = {}; // initialize an object literal
+
+game.murderer = "??"; // initialize a property
+
+game['weapons'] = ['laser', 'angry cat', 'dish soap'] // why would you choose an array vs an object? If you have a list of something that is all falling under the same category, an array makes more sense vs an object
+
+If you took the above array and made it into an object, it might look something like this
+
+game['weapons'] = [ // an object(s) 'key' should be the same for each 'value', so that it is predictable.
+    {type: 'laser', location: 'lab'},
+    {type: 'angry cat', location: 'dining room'},
+    {type: 'dish soap', location: 'sunroom'}
+]
+
+game.name = []; initialize an array literal
+
+game.name[0] = 'Miss Scarlet';
+game.name.push('Mr. Green')
 
 ### Object Review
 
