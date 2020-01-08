@@ -1,4 +1,4 @@
-I"¾2<h2 id="introduction">Introduction</h2>
+I"R<h2 id="introduction">Introduction</h2>
 
 <h3 id="tips-for-learning">Tips for Learning</h3>
 
@@ -96,11 +96,52 @@
 
 <h3 id="non-valid-characters">Non-Valid Characters</h3>
 
-<p>Try not to use non-valid characters as property names, like <code class="highlighter-rouge">'^&amp;*'</code>, that is not a very good property name both because it uses non-valid characters and it is not named in a very memorable or sensible way. You can certainly use non-valid characters to name your properties, but the name will need to be surrounded by quotes.</p>
+<p>Try not to use non-valid characters as property names, like <code class="highlighter-rouge">'^&amp;*'</code>, that is not a very good property name both because it uses non-valid characters and it is not named in a very memorable or sensible way. You can certainly use non-valid characters to name your properties, but the name will need to be surrounded by quotes. Try to keep your code to the point and donâ€™t get too fancy.</p>
+
+<p>Q&amp;A</p>
+
+<p>Q: What is the difference between an array and an object? (this seems to have already been answered in the previous section)</p>
+
+<p>A: An array is a special kind of object. The most special thing about an array is the .length property which is a property that is computed as you add numerical indices. Numerical indices are different than properties on an array because an array captures that and will increment the length.</p>
+
+<p>If you have an array containing any number of items and add something to an index that does not exist; if you add something to the array at an index position that is more than 1 greater than the current .length [numnber of index positions] of the array, empty values will be inserted until it reaches the requested index position. i.e. original array is <code class="highlighter-rouge">y[0,1,2,3,4,5]</code> and you would like to add <code class="highlighter-rouge">y[10]=number</code>, the array will now be <code class="highlighter-rouge">y[0,1,2,3,4,5,,,,number]</code></p>
+
+<p>Arrays are easier to reverse and loop through than objects.</p>
 
 <h3 id="game-characters-challenge">Game Characters Challenge</h3>
 
+<p>Exercise: Create an object using bracket and dot notation that represents the characters and related data you may find in a game of Clue.</p>
+
+<p>Characters
+Weapons
+Rooms</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">clue</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">characters</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">Professor Plum</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Miss Scarlet</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Mrs. Peacock</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Mr. Boddy</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Mrs. White</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Colonel Mustard</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">The Singing Telegram Girl</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">The Motorist</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Mr. Green],
+  weapons: [</span><span class="dl">'</span><span class="nx">candlestick</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="nx">dagger</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="nx">lead</span> <span class="nx">pipe</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="nx">revolver</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="nx">rope</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="nx">spanner</span><span class="dl">'</span><span class="s1">],
+  rooms: [</span><span class="dl">'</span><span class="nx">dining</span> <span class="nx">room</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="nx">kitchen</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="nx">study</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="nx">billiard</span> <span class="nx">room</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="nx">sunroom</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="nx">ballroom</span><span class="dl">'</span><span class="s1">]
+}</span></code></pre></figure>
+
 <h3 id="game-characters-solution">Game Characters Solution</h3>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="p">{};</span> <span class="c1">// initialize an object literal</span>
+
+<span class="nx">game</span><span class="p">.</span><span class="nx">murderer</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">??</span><span class="dl">"</span><span class="p">;</span> <span class="c1">// initialize a property</span>
+
+<span class="nx">game</span><span class="p">[</span><span class="dl">'</span><span class="s1">weapons</span><span class="dl">'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">laser</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">angry cat</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">dish soap</span><span class="dl">'</span><span class="p">]</span> <span class="c1">// why would you choose an array vs an object? If you have a list of something that is all falling under the same category, an array makes more sense vs an object</span>
+
+<span class="nx">If</span> <span class="nx">you</span> <span class="nx">took</span> <span class="nx">the</span> <span class="nx">above</span> <span class="nx">array</span> <span class="nx">and</span> <span class="nx">made</span> <span class="nx">it</span> <span class="nx">into</span> <span class="nx">an</span> <span class="nx">object</span><span class="p">,</span> <span class="nx">it</span> <span class="nx">might</span> <span class="nx">look</span> <span class="nx">something</span> <span class="nx">like</span> <span class="k">this</span>
+
+<span class="nx">game</span><span class="p">[</span><span class="dl">'</span><span class="s1">weapons</span><span class="dl">'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span> <span class="c1">// an object(s) 'key' should be the same for each 'value', so that it is predictable.</span>
+    <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">laser</span><span class="dl">'</span><span class="p">,</span> <span class="na">location</span><span class="p">:</span> <span class="dl">'</span><span class="s1">lab</span><span class="dl">'</span><span class="p">},</span>
+    <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">angry cat</span><span class="dl">'</span><span class="p">,</span> <span class="na">location</span><span class="p">:</span> <span class="dl">'</span><span class="s1">dining room</span><span class="dl">'</span><span class="p">},</span>
+    <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">dish soap</span><span class="dl">'</span><span class="p">,</span> <span class="na">location</span><span class="p">:</span> <span class="dl">'</span><span class="s1">sunroom</span><span class="dl">'</span><span class="p">}</span>
+<span class="p">]</span>
+
+<span class="nx">game</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="p">[];</span> <span class="nx">initialize</span> <span class="nx">an</span> <span class="nx">array</span> <span class="nx">literal</span>
+
+<span class="nx">game</span><span class="p">.</span><span class="nx">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Miss Scarlet</span><span class="dl">'</span><span class="p">;</span>
+<span class="nx">game</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">Mr. Green</span><span class="dl">'</span><span class="p">)</span></code></pre></figure>
 
 <h3 id="object-review">Object Review</h3>
 

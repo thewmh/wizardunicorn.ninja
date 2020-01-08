@@ -1,0 +1,38 @@
+I"�<p>11/7</p>
+
+<p><em>Scrollspy?!</em></p>
+
+<p>So… I was missing some functionality for this component and agonized over getting <a href="https://getbootstrap.com/docs/4.0/components/scrollspy/">scrollspy</a> to function this morning, but eventually won. Bacon Ipsum was useful for getting some delicious dummy text on the page. I always need to remind myself that I should be developing mobile-first, but I am getting the hang of working in this manner, hoping it will be first-nature at some point. There was nothing too exciting about this, but I did find that when developing outside of Sitecore the relative links don’t always function as one would expect. Sitecore uses <code class="highlighter-rouge">&lt;base&gt;</code> in the <code class="highlighter-rouge">&lt;head&gt;</code> to dynamically provide a pages url, but this does not function when developing outside of Sitecore, so after some flailing and verbosity, I pushed my work back to the repo and it magically works. Yay.</p>
+
+<hr />
+
+<p>11/6</p>
+
+<p><em>New sprint kick off!</em></p>
+
+<p>We hit the ground running on our new sprint. I was quickly handed a component to work on, an anchor navigation component. I had asked my lead about where to put files but was met with silence. No bueño, but I think I can figure it out anyway. I built most of this component in a day and pushed it back to the feature branch before the day was out, but had to revisit as noted on 11/7.</p>
+
+<hr />
+
+<p>11/5</p>
+
+<p><em>The last day of the sprint!</em></p>
+
+<p>Somewhere in the last week I did some additional discovery work for podcasts for AB, but today I was working on some more of the hero component. It is actually going to be a bit complex as there are two versions of it for both mobile and desktop that will essentially be toggled on/off depending on whether or not the user has scrolled down the page. Was working a bit more on the second half of this component which is what it looks like once the user has scrolled. There are some interesting challenges to solve for here which I will provide documentation of once it is closer to implementation. Also, was invited to Prime to see the UX presentations. Nice to get out of the office and show some love for the new cohort! While I was at Prime, I was talked into mentoring 🤬</p>
+
+<hr />
+
+<p>11/4</p>
+
+<p><em>After a client demo, spent the day finishing up the first sprints POC work</em></p>
+
+<p>I was given the ‘privilege’? of demoing my POC work from this sprint. That was some kind of wonderful. This sprint was a bit light for FED, so I spent most of the time grabbing whatever components that were identified as being potentially problematic and built them outside of Sitecore. This work should be of use when we are in the next sprint.</p>
+
+<hr />
+
+<p>11/1</p>
+
+<p><em>Horizontal Integration is now known as Horizontal!</em></p>
+
+<p>Today was the launch of the new company brand. It was definitely exciting for everyone to be a part of such a huge effort. Launched to align with the Sitecore Symposium, there is now a more clear split between the Digital and Talent businesses that still fall under the same umbrella. It was cool to see all the hard work come to life. Spent another couple of hours in sprint planning for AB.</p>
+:ET
