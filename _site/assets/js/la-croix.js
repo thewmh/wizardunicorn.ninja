@@ -3,14 +3,20 @@ let day_diff = (Math.round(new Date().getTime() - start_date.getTime()) / 864000
 let minus_weekends = ((day_diff / 7).toFixed(0))*2;
 let work_days = day_diff - minus_weekends;
 let la_croix_consumed = work_days * 2;
-let la_croix_count = document.getElementsByClassName('la-croix');
+var la_croix_count = document.getElementsByClassName('la-croix');
 
-for(let i = 0; i < ( la_croix_count.length + 1 ); i++) {
-    la_croix_count[i].innerHTML = la_croix_consumed;
-
-    let la_croix_cans = document.getElementById("la-croix-cans");
+if(la_croix_count.length != 1) {
     
-    for(let i = 0; i < la_croix_consumed; i++) {
-        la_croix_cans.innerHTML += '<span id="'+i+'" class="la-croix-can"></span>';
+    for(let i = 0; i < ( la_croix_count.length + 1 ); i++) {
+        la_croix_count[i].append(la_croix_consumed);
+        
+        let la_croix_cans = document.getElementById("la-croix-cans");
+        
+        for(let i = 0; i < la_croix_consumed; i++) {
+            la_croix_cans.innerHTML += '<span id="'+i+'" class="la-croix-can"></span>';
+        }
     }
+} else {
+
+    la_croix_count[0].append(la_croix_consumed);
 }
