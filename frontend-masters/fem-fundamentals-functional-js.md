@@ -14,6 +14,10 @@ subnav:
 
 ## Introduction
 
+[The link to the course slideshow is here]('http://slides.com/bgando/f2f-final-day-1#/')
+
+[The link to the course on FrontEnd Masters is here]('https://frontendmasters.com/courses/js-fundamentals-functional-v2')
+
 ### Tips for Learning
 
 * Difficulty ramps up considerably, but if you stick with it you will reap the rewards
@@ -158,7 +162,21 @@ game.name.push('Mr. Green')
 
 ### Object Review
 
+JavaScript Object Rules
+
+You can use dot or bracket notation when working with; 
+
+Dot Notation: strings
+
+Bracket Notation: strings, numbers, variables, weird characters, expressions
+
+Why would you even use dot notation? Because it is less characters than bracket notation
+
 ### ES6 Destructuring
+
+[Destructuring slide]('http://slides.com/bgando/f2f-final-day-1#/1/26')
+
+Destructuring is a simplified way of defining variables and taking them outside of an object or an array.
 
 ### Destructuring Challenge
 
