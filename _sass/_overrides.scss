@@ -30,12 +30,13 @@ a {
 
 .usa-footer-logo-img {
     max-width: 20%;
+    display: none;
 }
 
 footer p {
-    margin-left: 10%;
+    margin: 0 auto;
     max-width: 60%;
-    display: inline-block;
+    text-align: center;
 }
 
 
