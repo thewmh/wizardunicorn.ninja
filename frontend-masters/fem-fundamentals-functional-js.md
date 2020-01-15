@@ -178,6 +178,39 @@ Why would you even use dot notation? Because it is less characters than bracket 
 
 Destructuring is a simplified way of defining variables and taking them outside of an object or an array.
 
+i.e. Destructuring an Array
+
+{% highlight javascript %}
+// create a new array and declare it's values. could use let, var, etc…
+
+const [thing1, thing2] = [true, false];
+
+// reassigning values to existing array
+
+[thing1, thing2] = [true, false];
+{% endhighlight %}
+
+```const``` and ```let``` are features of ES6
+
+```const``` is used when you want the value of the variable to remain constant
+
+const will not apply to the properties of the object unless you explicitly 'freeze' them using [Object.freeze]('https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze')
+
+```let``` is used when you want to restrict a variable to a certain scope
+
+i.e. Destructuring an Object
+
+{% highlight javascript %}
+// create a new object and declare it's values. could use let, var, etc…
+
+const {thing1, thing2} = {thing1: true, thing2: false};
+
+// reassigning values to existing object
+
+{thing1, thing2} = {thing1: true, thing2: false};
+{% endhighlight %}
+
+
 ### Destructuring Challenge
 
 ### Destructuring Solution

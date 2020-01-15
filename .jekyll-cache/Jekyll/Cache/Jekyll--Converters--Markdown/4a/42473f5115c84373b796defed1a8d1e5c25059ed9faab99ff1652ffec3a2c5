@@ -1,4 +1,4 @@
-I"üT<h2 id="introduction">Introduction</h2>
+I"¥Z<h2 id="introduction">Introduction</h2>
 
 <p><a href="'http://slides.com/bgando/f2f-final-day-1#/'">The link to the course slideshow is here</a></p>
 
@@ -164,6 +164,24 @@ Rooms</p>
 <p><a href="'http://slides.com/bgando/f2f-final-day-1#/1/26'">Destructuring slide</a></p>
 
 <p>Destructuring is a simplified way of defining variables and taking them outside of an object or an array.</p>
+
+<p>i.e.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// create a new array and declare it's values. could use let, var, etcâ€¦</span>
+
+<span class="kd">const</span> <span class="p">[</span><span class="nx">thing1</span><span class="p">,</span> <span class="nx">thing2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">];</span>
+
+<span class="c1">// reassigning values to existing array</span>
+
+<span class="p">[</span><span class="nx">thing1</span><span class="p">,</span> <span class="nx">thing2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">];</span></code></pre></figure>
+
+<p><code class="highlighter-rouge">const</code> and <code class="highlighter-rouge">let</code> are features of ES6</p>
+
+<p><code class="highlighter-rouge">const</code> is used when you want the value of the variable to remain constant</p>
+
+<p>const will not apply to the properties of the object unless you explicitly â€˜freezeâ€™ them using <a href="'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze'">Object.freeze</a></p>
+
+<p><code class="highlighter-rouge">let</code> is used when you want to</p>
 
 <h3 id="destructuring-challenge">Destructuring Challenge</h3>
 
