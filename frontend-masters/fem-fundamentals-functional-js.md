@@ -210,12 +210,35 @@ const {thing1, thing2} = {thing1: true, thing2: false};
 {thing1, thing2} = {thing1: true, thing2: false};
 {% endhighlight %}
 
+Objects do not have an order, but the names do have to match. If you think or expect that an object needs an order, you should be using an array.
 
 ### Destructuring Challenge
 
+Create an object that looks like this:
+
+{"name": "Rusty", "room": "kitchen", "weapon": "candlestick"}
+
+Extract out the weapon and location using destructuring
+
 ### Destructuring Solution
 
+let {name, room, weapon} = {"name": "Rusty", "room": "kitchen", "weapon": "candlestick"}
+
 ### Destructuring Examples
+
+On extracting data and working with nested data structures
+
+{% highlight javascript %}
+// Destructuring === arrays
+
+var [a, b] = [1, 2];
+console.log(a, b);
+//=> 1 2
+
+// reassigning values to existing object
+
+{thing1, thing2} = {thing1: true, thing2: false};
+{% endhighlight %}
 
 ## List Transformations
 
