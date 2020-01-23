@@ -233,12 +233,36 @@ On extracting data and working with nested data structures
 
 var [a, b] = [1, 2];
 console.log(a, b);
-//=> 1 2
+// => 1 2
 
-// reassigning values to existing object
+// Omit certain values
+var [a, , b] = [1, 2, 3];
+console.log(a, b);
+// => 1 3
 
-{thing1, thing2} = {thing1: true, thing2: false};
+// Combine with spread/rest operator (accumulates the rest of the values)
+var [a, ...b] = [1, 2, 3];
+console.log(a, b);
+// => 1 [ 2, 3 ]
+
+// Swap variables easily without temp
+var a = 1, b = 2;
+// var temp = a;
+// a = b;
+// b = temp;
+[b, a] = [a, b];
+console.log(a, b);
+// => 2 1
+
+// Advance deep arrays
+var [a, [b, [c, d]]] = [1, [2, [[[3, 4], 5], 6]]];
+console.log("a:", a, "b:", b, "c:", c, "d:", d);
+// => a: 1 b: 2 c: [ [ 3, 4 ], 5 ] d: 6
+// ^ None of the 'Advance deep arrays' example above is useful
+
 {% endhighlight %}
+
+There are many more notes in the course itself covering destructuring but the instructor does not cover them and suggests to look for a course on ES6
 
 ## List Transformations
 
