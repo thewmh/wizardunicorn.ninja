@@ -268,15 +268,110 @@ There are many more notes in the course itself covering destructuring but the in
 
 ### List Transformations
 
+Nesting
+
+Nesting had been talked about earlier, below is an example.
+
+{% highlight javascript %}
+
+// nesting
+
+const game = {};
+game['suspects'] = [];
+
+game.suspects.push({
+    name: 'Rusty',
+    color: 'orange'
+});
+
+game.suspects[1] = {
+    name: 'Miss Scarlet',
+    color: 'red'
+};
+
+// view of object literal
+
+const game = {
+    'suspects': [
+        {
+            name: 'Rusty',
+            color: 'orange'
+        },
+        {
+            name: 'Miss Scarlet',
+            color: 'red'
+        }       
+    ]
+}
+
+{% endhighlight %}
+
+Considering the above, what would ```game[suspects]``` return?
+
+nothing… because the quote marks were missing around 'suspects'. With the added quote marks, it would return an array with the suspect objects.
+
 ### Looping Exercise
+
+Using the nested structure from the previous section, loop through it using any ```for``` loop of your choice.
 
 ### Looping Solution
 
+Here is a solution by a participant of the in-person class
+
+{% highlight javascript %}
+ 
+function foo() {
+    for (let i = 0; i < game.suspects.length; i++) {
+        console.log(game.suspects[i]);
+    }
+}
+
+foo()
+
+{% endhighlight %}
+
 ### Looping Exercise, Part 2
+
+Loop through all of the properties of the suspect objects in the suspects array, mark them if you think they are guilty.
 
 ### Looping Solution, Part 2
 
+Here is a solution by a participant of the in-person class
+
+{% highlight javascript %}
+
+var gameLoop = function() {
+    for (var i = 0; i < game.suspects.length; i++) {
+        console.log('outer loop');
+        for (var key in game.suspects[i]) {
+            console.log('inner loop');
+            if (game.suspects[i][key] === 'Rusty') {
+                console.log('Found \'em');
+            } else {
+                console.log('next time!');
+            }
+        }
+    }
+}
+
+the above would log:
+
+'outer loop'
+'inner loop'
+'Found 'em'
+'inner loop'
+'next time!'
+'outer loop'
+'inner loop'
+'next time!'
+'inner loop'
+'next time!'
+
+{% endhighlight %}
+
 ### Looping Exercise, Part 3
+
+Destructure the nested data structure into two variables with the strings 'red' and 'orange'
 
 ### Looping Solution, Part 3
 
