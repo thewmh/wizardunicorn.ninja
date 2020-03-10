@@ -358,7 +358,7 @@ the above would log:
 
 'outer loop'
 'inner loop'
-'Found 'em'
+'Found \'em'
 'inner loop'
 'next time!'
 'outer loop'
