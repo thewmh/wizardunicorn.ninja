@@ -375,9 +375,57 @@ Destructure the nested data structure into two variables with the strings 'red' 
 
 ### Looping Solution, Part 3
 
+Here is a solution by a participant of the in-person class
+
+{% highlight javascript %}
+
+const firstColor = game.suspects[0].color;
+const secondColor = game.suspects[1].color;
+
+var [color, color2] = [suspects[0].color, suspects[1].color];
+
+var [{color: firstColor}, {color: secondColor}] = suspects; // specifies a specific property of the targeted object and returns an array
+
+{% endhighlight %}
+
 ## .forEach() Function
 
 ### Using Functions
+
+This section covers list transformations with functions and shows how to convert data into a class
+
+{% highlight javascript %}
+
+function CreateSuspectObjects(name) {
+    return {
+        name: name,
+        color: name.split(' ')[1],
+        speak() {
+            console.log("my name is ", name);
+        }
+    };
+};
+
+var suspects = ['Miss Scarlet', 'Colonel Mustard', 'Mr. White', ....];
+
+var suspectsList = [];
+
+{% endhighlight %}
+
+In JavaScript classes are just functions that return objects.
+
+Using the above code, how would you create a suspect object from each suspect in the suspects array?
+
+One way would be to loop through the list like this:
+
+{% highlight javascript %}
+
+for(var i = 0; i < suspects.length; i++) {
+    let suspect = CreateSuspectObject(suspects[i])
+    suspectsList.push(suspect);
+}
+
+{% endhighlight %}
 
 ### forEach Function
 
