@@ -421,13 +421,26 @@ One way would be to loop through the list like this:
 {% highlight javascript %}
 
 for(var i = 0; i < suspects.length; i++) {
-    let suspect = CreateSuspectObject(suspects[i])
-    suspectsList.push(suspect);
+    let suspect = CreateSuspectObjects(suspects[i])
+    suspectsList.push(suspect); || suspectsList.push(CreateSuspectObjects(suspects[i]));
 }
 
 {% endhighlight %}
 
 ### forEach Function
+
+_.each takes 2 arguments, the first thing is a list and the second thing is a callback function, also known as an iterator function because it is used on things that can be looped through. Using _.each, the callback function will be called on each item in the first argument; the list. i.e.
+
+{% highlight javascript %}
+
+_.each(suspects, function(name) {
+    let suspectObj = CreateSuspectObjects(name);
+    suspectsList.push(suspectObj); || suspectsList.push(CreateSuspectObjects(name));
+}
+
+{% endhighlight %}
+
+
 
 ### forEach and _.each Exercises
 
