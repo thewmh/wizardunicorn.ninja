@@ -432,7 +432,7 @@ for(var i = 0; i < suspects.length; i++) {
 
 ### forEach Function
 
-_.each takes 2 arguments, the first thing is a list and the second thing is a callback function, also known as an iterator function because it is used on things that can be looped through. Using _.each, the callback function will be called on each item in the first argument; the list. i.e.
+_.each takes 2 arguments, the first thing is a list and the second thing is a callback function, also known as an iterator function because it is used on things that can be looped through (arrays). Using _.each, the callback function will be called on each item in the first argument; the list. i.e.
 
 {% highlight javascript %}
 
@@ -463,11 +463,72 @@ _.each / forEach defined
 
 * Each invocation of iterator, the function, is called with three arguments: (element, index, list). If list is a JavaScript object, iterator's arguments will be: (value, key, list).
 
+Each is useful for looping through lists
 
+The difference between _.each and .forEach is: .forEach is a method on the array itself, _.each takes in the array as an argument
+
+What would the following log?
+
+{% highlight javascript %}
+
+var rooms = ['observatory', 'ballroom', 'library'];
+var logger = function(val) {
+    console.log(val);
+};
+
+_.each(rooms, logger);
+
+{% endhighlight %}
+
+```observatory
+ballroom
+library```
 
 ### forEach and _.each Exercises
 
+Complete the rest of this function so that it works as described in the previous sections:
+
+{% highlight javascript %}
+
+_.each = function(list, callback) {
+    //... TODO
+}
+
+{% endhighlight %}
+
+{% highlight javascript %}
+
+_.each = function(list, callback) {
+    for(i = 0; i < list.length; i++) {
+        callback(list[i]);
+    }
+}
+
+{% endhighlight %}
+
 ### forEach and _.each Solution
+
+{% highlight javascript %}
+
+const _ = {};
+
+_.each = function(list, callback) {
+    // needs to work with both objects and arrays
+    // loop through the list
+    if (Array.isArray(list)) {
+        for(var i = 0; i < list.length; i++) {
+            callback(list[i], i, list) // value, index, list
+        }
+    } else { // object
+        // loop through object
+        for(var key in list) {
+            callback(list[key], key, list) 
+        }
+    }
+        // call the callback with a list item
+}
+
+{% endhighlight %}
 
 ## .map() Function
 
