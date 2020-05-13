@@ -534,15 +534,98 @@ _.each = function(list, callback) {
 
 ### _.map() vs .map() Functions
 
+```_.map([1, 2, 3], function(v, i, list) {console.log(v)})```
+
+* Produces a new array of valuse by mapping each value in list through a transformation function ( iterator ).
+
+* Each invocation of iterator is called with three arguments: (element, index, list). If list is a JavaScript object, iterator's arguments will be: (value, key, list).
+
+map is used to take lists and transform them into a new array - manipulate, change, update
+
 ### _.map() Exercise
+
+{% highlight javascript %}
+
+const weapons = ['candlestick', 'lead pipe', 'revolver'];
+
+const makeBroken = function(item) {
+    return `broken ${item}`;
+};
+
+{% endhighlight %}
+
+Unrelated Note: If you want to quickly test out a function in a library, you can usually visit the library's site and open the console. i.e. visit underscorejs.org, open the console and type `_.map()`
 
 ### _.map() Solution
 
+{% highlight javascript %}
+
+const weapons = ['candlestick', 'lead pipe', 'revolver'];
+
+const makeBroken = function(item) {
+    return `broken ${item}`;
+};
+
+_.map(weapons, makeBroken)
+
+{% endhighlight %}
+
 ### _.map() vs _.each()
+
+No notes. Was merely a comparison of underscore.js _.map and _.each. Refer to above notes for comparison.
 
 ### _.map() Exercise, Part 2
 
+Map returns an array
+
+Like each, map iterates through a list
+
+{% highlight javascript %}
+
+_.map = function(list, callback) {
+
+    var newArray = [];
+
+    if(Array.isArray(list)) {
+        newArray = list;
+        for(var i = 0; i < newArray.length; i++) {
+            callback(newArray[i], i, newArray)
+        }
+
+    } else {
+
+    }
+}
+
+{% endhighlight %}
+
 ### _.map() Solution, Part 2
+
+{% highlight javascript %}
+
+_.map = function(list, callback) {
+    // create an empty array to store
+    var a = [];
+    // loop
+    for (var i = 0; i < list.length; i++) {
+        // callback(element)
+        // push to array store
+        a.push(callback(list[i], i, list));
+    }
+
+    // using _.each
+
+    _.each(list, function(v, i, list) {
+        a.push(callback(v, i, list));
+    })
+
+    //return []
+    return a;
+}
+
+{% endhighlight %}
+
+Pro tip: Seek to understand the internals of the code you are implementing. Don't rely on; change, save, check, change, save, check. Understand and clearly model what you are doing. It may (seem to) take more time up-front, but the payoff is greater in the long-run. If your code is getting to difficult to hold in your mind, that could be a sign that your code is too complex and may be an opportune time to revisit and simplify your code.
 
 ## .filter() Function
 
