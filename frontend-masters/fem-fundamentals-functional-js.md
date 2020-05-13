@@ -797,13 +797,73 @@ Arguments; 'body', 'button', 'click', function()...
 
 ### ES6 Arrow Functions
 
+=> replaces the `function` keyword
+
+If there is only one parameter, it does not need to be wrapped in parenthesis.
+
+Arrow functions do not have their own value for `this`. Arrow functions reach into their parent scope for `this`.
+
+If you are trying to return something from an arrow function, it is best to explicitly declare the return statement.
+
+Side note: Template strings (surrounded by backticks), are ES6 syntax. It allows you to reference variable names i.e. `${variable}` without the need to plus signs and quote symbols all over the place.
+
 ### Projecting Exercise
+
+Projecting is when you take a value out of one data structure and turn it into another data structure.
+
+Filter and then map [this data structure](http://jsbin.com/duvafoc/edit) to get the names of the final suspects to send back to the "team"
 
 ### Projecting Solution
 
+{% highlight javascript %}
+
+// store the return value from the filter function
+
+const suspects = _.filter(videoData, function(suspectObject) {
+    return suspectObject.present;
+})
+
+const suspectsName = _.map(suspects, suspect => {
+    return suspect.name;
+})
+
+{% endhighlight %}
+
 ### Spread Operator
 
+Quick Review; what will this return?
+
+{% highlight javascript %}
+
+const createTuple = (a, b, c, d) => {
+    return [[a, c], [b, d]];
+}
+
+createTuple('It', 'be', 'could', 'anyone', 'no one');
+
+{% endhighlight %}
+
+`[['It', 'could'], ['be', 'anyone']]`
+
+With the addition of the [...] spread operator, what will this return?
+
+{% highlight javascript %}
+
+const createTuple = (a, b, c, ...d) => {
+    return [[a, c], [b, d]];
+}
+
+createTuple('It', 'be', 'could', 'anyone', 'no one');
+
+{% endhighlight %}
+
+`[['It', 'could'], ['be', ['anyone', 'no one']]]`
+
+Since `createTuple` only takes 4 arguments (a, b, c, d), 'no one' gets left out. But with the spread operator, the remaining values will be places into an array with the final value.
+
 ### Arguments Keyword
+
+
 
 ### Default Parameters
 
