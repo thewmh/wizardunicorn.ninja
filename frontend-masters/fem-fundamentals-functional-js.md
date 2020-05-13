@@ -625,21 +625,155 @@ _.map = function(list, callback) {
 
 {% endhighlight %}
 
-Pro tip: Seek to understand the internals of the code you are implementing. Don't rely on; change, save, check, change, save, check. Understand and clearly model what you are doing. It may (seem to) take more time up-front, but the payoff is greater in the long-run. If your code is getting to difficult to hold in your mind, that could be a sign that your code is too complex and may be an opportune time to revisit and simplify your code.
+Pro tip: Seek to understand the internals of the code you are implementing. Don't rely on; change, save, check, change, save, check. Understand and clearly model what you are doing. It may (seem to) take more time up-front, but the payoff is greater in the long-run. If your code is getting too difficult to hold in your mind, that could be a sign that your code is too complex and may be an opportune time to revisit and simplify your code.
 
 ## .filter() Function
 
 ### .filter() Exercise
 
+What is filter? Filter is a function that takes an array and a callback. It returns a new array that only contains the values that result in true when passed through the callback function.
+
+The exercise was not detailed. So it is in the solution
+
 ### .filter() Solution
+
+{% highlight javascript %}
+
+const _ = {}
+
+_.filter = function(array, callback) {
+    // create a new array
+    const a = [];
+    // loop through the array
+    for (var i = 0; i < array.length; i++) {
+        // check if the callback returns true
+        if (callback(array[i], i, array) === true) { // === true is not required
+        // if returns true, push the item into the array
+            a.push(array[i])
+        }
+    }
+    // return new array
+    return a;
+}
+
+{% endhighlight %}
 
 ### .filter() Application Exercise
 
+Using the below object `videoData` and _.filter, return an array of objects containing only the people that were present
+
+{% highlight javascript %}
+
+const videoData = [
+    {
+        name: 'Miss Scarlet',
+        present: true,
+        rooms: [
+            {kitchen: false},
+            {ballroom: false},
+            {conservatory: false},
+            {'dining room': false},
+            {'billiard room': false},
+            {library: false}
+        ]
+    },
+    {
+        name: 'Mrs. White',
+        present: false,
+        rooms: [
+            {kitchen: false},
+            {ballroom: false},
+            {conservatory: false},
+            {'dining room': false},
+            {'billiard room': false},
+            {library: false}
+        ]
+    },
+    {
+        name: 'Reverend Green',
+        present: true,
+        rooms: [
+            {kitchen: false},
+            {ballroom: false},
+            {conservatory: false},
+            {'dining room': false},
+            {'billiard room': false},
+            {library: false}
+        ]
+    },
+    {
+        name: 'Rusty',
+        present: false,
+        rooms: [
+            {kitchen: false},
+            {ballroom: false},
+            {conservatory: false},
+            {'dining room': false},
+            {'billiard room': false},
+            {library: false}
+        ]
+    },
+    {
+        name: 'Colonel Mustard',
+        present: true,
+        rooms: [
+            {kitchen: false},
+            {ballroom: false},
+            {conservatory: false},
+            {'dining room': false},
+            {'billiard room': false},
+            {library: false}
+        ]
+    },
+    {
+        name: 'Professor Plum',
+        present: true,
+        rooms: [
+            {kitchen: false},
+            {ballroom: false},
+            {conservatory: false},
+            {'dining room': false},
+            {'billiard room': false},
+            {library: false}
+        ]
+    }
+];
+
+{% endhighlight %}
+
 ### .filter() Application Solution
+
+{% highlight javascript %}
+
+_.filter(videoData, function(suspectObject) {
+    return suspectObject.present;
+})
+
+{% endhighlight %}
 
 ## Functions In-Depth
 
 ### Anatomy of a Function
+
+How exactly does our code execute.
+
+[Check out the anatomy of a function](http://slides.com/bgando/f2f-final-day-1#/7/1)
+
+{% highlight javascript %}
+
+var add // function name
+= function(a, b) // parameters
+{ // function body
+    return a + b // function body
+} // function body
+
+add(3, 4, 5); // invocation / call-time (3, 4, 5) are the arguments
+
+{% endhighlight %}
+
+A function definition does not invoke the function, the invocation happens after the function has been declared, usually by functionName(arguments).
+
+Parameters of a function hold no value, their value is determined by the arguments passed at call-time.
 
 ### Function Scavenger Exercise
 
