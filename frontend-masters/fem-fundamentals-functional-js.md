@@ -863,15 +863,86 @@ Since `createTuple` only takes 4 arguments (a, b, c, d), 'no one' gets left out.
 
 ### Arguments Keyword
 
+The arguments keyword references all of the arguments as a pseudo-array. A pseudo-array is an object that looks like an array, but it is actually an object. This means that we do not have access to any array methods (push, pop, slice, etc).
 
+The arguments keyword is useful when a variable has been passed in, but it was not accounted for with a parameter.
+
+{% highlight javascript %}
+
+const createTuple = (a, b, c, d) => {
+    console.log(arguments);
+    return [[a, c], [b, d]];
+}
+
+createTuple('It', 'be', 'could', 'anyone', 'no one');
+
+{% endhighlight %}
+
+The above would log: `'[It', 'be', 'could', 'anyone', 'no one']`
 
 ### Default Parameters
 
+A default parameter is the value that your parameter defaults to when it is not passed an argument.
+
+{% highlight javascript %}
+
+const add = function(a, b = 2) {
+    console.log(arguments); // logs [3]
+    return a + b;
+}
+
+add(3); // logs [5]
+
+{% endhighlight %}
+
+The default value of `b` is 2, so if an argument is not passed, it will default to that value.
+
 ### ES5 Rewrite Exercise
+
+Using ES5, how would you set a default parameter for:
+
+{% highlight javascript %}
+
+const add = function(a, b = 2) {
+    console.log(arguments); // logs [3]
+    return a + b;
+}
+
+add(3); // logs [5]
+
+{% endhighlight %}
+
+Solution:
+
+{% highlight javascript %}
+
+const add = function(a, b) {
+    b = b || 2;
+    console.log(arguments); // logs [3]
+    return a + b;
+}
+
+add(3); // logs [5]
+
+{% endhighlight %}
 
 ### ES5 Rewrite Solution
 
+The above exercise has the solution.
+
 ### Array-Like Object
+
+{% highlight javascript %}
+
+const constructArr = function() { // create function definition
+    const arr = Array.prototype.slice.call(arguments); // declare a new variable, assign it to the values that were passed in. An array-like object (arguments) will be turned into an actual array ['was', 'it', 'in']
+    arr.push('the billiards room?'); // push the string onto the array ['was', 'it', 'in', 'the billiards room?']
+    return arr.join(' '); // joins all of the array into a string -> 'was it in the billiards room?'
+};
+
+constructArr('was', 'it', 'in'); // call the function
+
+{% endhighlight %}
 
 ### Array.from
 
