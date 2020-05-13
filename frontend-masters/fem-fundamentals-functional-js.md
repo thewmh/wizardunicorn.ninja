@@ -777,7 +777,23 @@ Parameters of a function hold no value, their value is determined by the argumen
 
 ### Function Scavenger Exercise
 
+[Find the things!](http://slides.com/bgando/f2f-final-day-1#/7/2)
+
 ### Function Scavenger Solution
+
+* Function definitions can be spotted whenever you see the word 'function'
+
+* Function names come in a few flavors, in this exercise nameImprover, .hide(), .forEach(), .on(), .log(), and $ are function names
+
+* Function bodies are whatever shows up between the {}. They do not get run until the function is invoked
+
+* Function invocations here are; return, .hide(), .forEach, console.log, .on(), $
+
+* Function arguments and parameters. Arguments have a value, parameters are the name.
+Parameters; name, adj, val
+Arguments; 'body', 'button', 'click', function()...
+
+* Function return is shown where the word 'return' appears. A side effect is anything that reaches beyond the {} of a function; i.e. console.log('I am a side effect!'). $('body').hide(); is a side effect as well.
 
 ### ES6 Arrow Functions
 
