@@ -946,9 +946,33 @@ constructArr('was', 'it', 'in'); // call the function
 
 ### Array.from
 
+Array.from can turn the arguments pseudo-array into an actual array... replaces `Array.prototype.slice.call`. It has many more features [described here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from)
+
 ### _.from() Exercise
 
+Implement _.from() to mimick Array.prototype.slice.call in a function
+
+{% highlight javascript %}
+
+const _ = {};
+
+_.from  = function(array) {
+    return Array.prototype.slice.call(arguments)
+}
+
+{% endhighlight %}
+
 ### _.from() Solution
+
+{% highlight javascript %}
+
+const _ = {};
+
+_.from  = function(array) {
+    return Array.prototype.slice.call(arguments)
+}
+
+{% endhighlight %}
 
 ## Scope
 
