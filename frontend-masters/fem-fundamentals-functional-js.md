@@ -4,10 +4,13 @@ description: These are notes from the 'From Fundamentals to Functional JS' cours
 permalink: /frontend-masters/fem-fundamentals-functional-js
 
 layout: page
-sidenav: fem-js-func
 subnav:
   - text: Introduction
     href: '#introduction'
+  - text: Something
+    links:
+      - text: Something Else
+        href: '#nope'
   - text: Functional Programming
     href: '#functional-programming'
 ---
@@ -433,12 +436,32 @@ _.each takes 2 arguments, the first thing is a list and the second thing is a ca
 
 {% highlight javascript %}
 
-_.each(suspects, function(name) {
+function CreateSuspectObjects(name) {
+    return {
+        name: name,
+        color: name.split(' ')[1],
+        speak() {
+            console.log("my name is ", name);
+        }
+    };
+};
+
+var suspects = ['Miss Scarlet', 'Colonel Mustard', 'Mr. White', ....];
+
+var suspectsList = [];
+
+_.each(suspects, function(name) { // suspects is the array that will be used. each name will be passed into the function until the end of the array
     let suspectObj = CreateSuspectObjects(name);
-    suspectsList.push(suspectObj); || suspectsList.push(CreateSuspectObjects(name));
+    suspectsList.push(suspectObj); || suspectsList.push(CreateSuspectObjects(name))
 }
 
 {% endhighlight %}
+
+_.each / forEach defined
+
+* Iterates over a list of elements, passing the values to a function
+
+* Each invocation of iterator, the function, is called with three arguments: (element, index, list). If list is a JavaScript object, iterator's arguments will be: (value, key, list).
 
 
 
