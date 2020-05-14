@@ -1,18 +1,26 @@
-const inputs = document.querySelectorAll('.controls input');
-const img = document.querySelectorAll('img');
-const randomWords = ['city', 'office', 'technology', 'car', 'human', 'cat', 'computer', 'javascript', 'beans', 'plant', 'palm tree'];
+// elements
+
+const inputs = document.querySelectorAll('.controls input:not([type="submit"]):not([name="image"])');
+const submit = document.querySelector('form [type="submit"]');
+const imageField = document.querySelector('form [name="image"]');
+const img = document.querySelector('img');
+
+// functions
 
 var handleUpdate = function() {
     const suffix = this.dataset.sizing || '';
     document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
 }
 
-var loadRandom = function() {
-    var randomNumber = Math.floor(Math.random() * randomWords.length)
-    this.src = ('http://loremflickr.com/1920/1080/' + randomWords[randomNumber])
+var imageSearch = function(e) {
+    e.preventDefault();
+    imageSource = 'http://loremflickr.com/1920/1080/';
+    searchString = imageField.value.replace(/\\s+/g, '');
+    img.src = (imageSource + searchString);
 }
+
+// listeners
 
 inputs.forEach(input => input.addEventListener('change', handleUpdate));
 inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
-
-img.forEach(img => img.addEventListener('click', loadRandom));
+submit.addEventListener('click', imageSearch);
