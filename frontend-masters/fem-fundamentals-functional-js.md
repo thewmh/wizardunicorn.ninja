@@ -978,7 +978,13 @@ _.from  = function(array) {
 
 ### Scope Walkthrough Setup
 
+Scope is the area where a variable has access to some value. A global variable is accessable to the entire codebase. Local variables are inside of functions or blocks. The setup is using the Mocha testing library.
+
+Function scope states that a function has access to the variables or values that are inside, or in the parent function. You can only look up the tree, but not down.
+
 ### Scope Walkthrough, Part 1
+
+
 
 ### Scope Walkthrough, Part 2
 
