@@ -984,13 +984,37 @@ Function scope states that a function has access to the variables or values that
 
 ### Scope Walkthrough, Part 1
 
-
+Continue walking through the testing suite
 
 ### Scope Walkthrough, Part 2
 
+Variables declared within a function are scoped to that function. If you declare a variable and then redeclare that variable within a function, the value of that variable will be as it has been set inside of the function.
+
+{% highlight javascript %}
+
+var ACTUAL;
+var sameName = 'outer';
+var fn = function() {
+    var sameName = 'inner';
+    ACTUAL = sameName;
+};
+fn();
+
+// ACTUAL = 'inner'
+
+{% endhighlight %}
+
+Whenever you call a function, you create a brand new function scope (execution context) each time.
+
 ### Scope Walkthrough, Part 3
 
+You can pull a function out of the local scope of a document and attach it to the window i.e. `window.theFunctionIWant = theFunctionIMade;`
+
+The appropriate time to use `let` is when you want to scope a variable inside of a block that is not a function. 
+
 ### Scope Takeaways
+
+
 
 ## Callbacks
 
