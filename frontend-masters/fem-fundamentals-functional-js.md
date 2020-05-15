@@ -1014,25 +1014,159 @@ The appropriate time to use `let` is when you want to scope a variable inside of
 
 ### Scope Takeaways
 
-
+* Execution Context - an abstract concept of an environment where the Javascript code is evaluated and executed. Whenever any code is run in JavaScript, it’s run inside an execution context.
 
 ## Callbacks
 
 ### Higher-Order Functions & Callbacks
 
+Higher-Order Functions in JavaScript is what enables us to do functional programming techniques. In JavaScript, functions are treated as data, similar to objects, or other elements.
+
+A Higher-Order Function can take a function as an input i.e. `addEventListener`.
+
+Callbacks are functions that are passed to functions.
+
+{% highlight javascript %}
+
+const ifElse = (condition, isTrue, isFalse) => {
+    return condition ? isTrue() : isFalse();
+};
+
+ifElse(true,
+() => {console.log(true);},
+() => {console.log(false);}
+);
+
+{% endhighlight %}
+
+The above is a very basic example of a callback function. ifElse is being passed: true and 2 anonymous functions. The `condition` is true, so the `true` will be printed in the console.
+
 ### Passing Arguments
+
+{% highlight javascript %}
+
+var increment = function(n){ return n + 1; };
+
+var square = function(n){ return n * n; };
+
+var doMathSoIDontHaveTo = function(n, func){ return func(n); };
+
+doMathSoIDontHaveTo(5, square); // 25
+
+doMathSoIDontHaveTo(4, increment); // 5
+
+{% endhighlight %}
 
 ### Translate into ES6 Exercise
 
+{% highlight javascript %}
+
+var increment = n => { return n + 1; };
+
+var square = n => { return n * n; };
+
+var doMathSoIDontHaveTo =  (n, func) => { return func(n); };
+
+doMathSoIDontHaveTo(5, square); // 25
+
+doMathSoIDontHaveTo(4, increment); // 5
+
+{% endhighlight %}
+
 ### Translate into ES6 Solution
+
+See above solution
 
 ### Passing Arguments, Part 2
 
+You can pass an argument to a callback function by passing in an additional parameter to the function that the callback function is called in. i.e. `const ifElse = (condition, isTrue, isFalse, argument)...` 
+
 ### _.reduce() Exercise
+
+Implement _.reduce()
+
+{% highlight javascript %}
+
+const _ = {};
+
+const _.reduce = function(list, callback, initial) {
+    var prev = initial;
+    for(var i = 1; i < list.length; i++) {
+        if (i === 0 && prev === undefined) {
+            prev = list[0]
+        } else {
+            prev = callback(list[i], prev)
+        }
+    }
+    return prev;
+}
+
+_.reduce([1, 2, 3], (v, sum) => v + sum, 0)
+
+{% endhighlight %}
 
 ### _.reduce() Solution
 
+The above exercise has the solution.
+
 ### Empty Room Exercise
+
+[Link to dataset for this exercise](http://jsbin.com/pazixim/edit?js)
+
+{% highlight javascript %}
+
+const newDevelopment = [
+    {
+        name: 'Miss Scarlet',
+        present: true,
+        rooms: [
+            {kitchen: false},
+            {ballroom: false},
+            {conservatory: true},
+            {'dining room': true},
+            {'billiard room': false},
+            {library: true}
+        ]
+    },
+    {
+        name: 'Reverend Green',
+        present: true,
+        rooms: [
+            {kitchen: true},
+            {ballroom: false},
+            {conservatory: false},
+            {'dining room': false},
+            {'billiard room': true},
+            {library: false}
+        ]
+    },
+    {
+        name: 'Colonel Mustard',
+        present: true,
+        rooms: [
+            {kitchen: false},
+            {ballroom: false},
+            {conservatory: true},
+            {'dining room': false},
+            {'billiard room': true},
+            {library: false}
+        ]
+    },
+    {
+        name: 'Professor Plum',
+        present: true,
+        rooms: [
+            {kitchen: true},
+            {ballroom: false},
+            {conservatory: false},
+            {'dining room': true},
+            {'billiard room': false},
+            {library: false}
+        ]
+    }
+];
+
+{% endhighlight %}
 
 ### Empty Room Solution
 
