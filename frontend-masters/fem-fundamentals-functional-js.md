@@ -1193,24 +1193,259 @@ _.intersection(...notInRooms)
 
 ### Currying
 
+Currying is when you create a function that can then later be called multiple times with different arguments.
+
+For example:
+
+{% highlight javascript %}
+
+var abc = function(a, b, c) {
+    return [a, b, c];
+};
+
+var curried = _.curry(abc);
+
+curried(1)(2)(3);
+// => [1, 2, 3]
+
+curried(1, 2)(3);
+// => [1, 2, 3]
+
+{% endhighlight %}
+
+Currying allows you to break up arguments passed by the number of arguments.
+
 ### Composing
+
+Composing is when you take two functions and combine them.
+
+For example:
+
+{% highlight javascript %}
+
+const consider = (name) => {
+    return `I think it could be... ${name}`;
+};
+
+const exclaim = (statement) => {
+    return `${statement.toUpperCase()}!`;
+}
+
+const blame  = _.compose(consider, exclaim);
+
+blame('you);
+
+// => 'I think it could be... YOU!'
+
+{% endhighlight %}
+
+[_.compose documentation](https://underscorejs.org/#compose)
 
 ## Advanced Scope: Closure
 
 ### Closure
 
+{% highlight javascript %}
+
+const myAlert = () => { // declare a function
+    const x = 'Help! I think I found a clue!'; // save a string to the constant x
+    const alerter = () => { // declare another function
+        alert(x); // send an alert to the DOM
+    };
+    alerter();
+};
+
+myAlert(); // invoke the function
+
+{% endhighlight %}
+
 ### Closure, Part 2
+
+{% highlight javascript %}
+
+const myAlert = () => {
+    const x = 'Help! I think I found a clue!';
+    const alerter = () => {
+        alert(x);
+    };
+
+    setTimeout(alerter, 1000); // wait for 1000ms
+    console.log('what happens first? this log or the alert?'); // the log appears first
+};
+
+myAlert(); // invoke the function
+
+{% endhighlight %}
 
 ### Creating Closure
 
+{% highlight javascript %}
+
+const myAlert = () => {
+    const x = 'Help! I think I found a clue!';
+    let count = 0;
+    const alerter = () => {
+        alert(`${x} ${++count}`);
+    };
+
+    return alerter
+};
+
+const funcAlert = myAlert(); // creates a new execution context of the myAlert function
+const funcAlert2 = myAlert(); // creates a new execution context of the myAlert function
+funcAlert(); // since myAlert ultimately returns the alerter function, this will run the alerter function again from within the new execution context that has been created by funcAlert
+
+{% endhighlight %}
+
+If you continue to call `funcAlert();`, the `count` value would continue to increase by 1 each time the function is called and it would be independent of the execution contect of `funcAlert2();`; which would still be at 0 until called.
+
 ### Closure Demonstration
+
+{% highlight javascript %}
+
+const newClue = (name) => {
+    const length = name.length;
+
+    return (weapon) => {
+        let clue  = length + weapon.length;
+        return !!(clue % 1);
+    };
+};
+
+{% endhighlight %}
+
+{% highlight javascript %}
+
+function countClues() {
+    var n = 0;
+    return {
+        count: function() { return ++n; },
+        reset: function() { return n = 0; }
+    };
+};
+
+{% endhighlight %}
+
+With the above function, you can create separate execution contexts by declaring variables that are equal to the function `countClues()`; i.e. `counter = countClues(); counter2 = countClues;`
 
 ### Closure Recipe
 
+[Here is the slide for the closure recipe](http://slides.com/bgando/f2f-final-day-2#/3/7)
+
+A closure is when a function is inside of another function and it creates scope isolation. This can be acheived by returning a function from within a function which allows the function to retain access to its parent scope even after it has been executed.
+
+The recipe for a closure is as follows:
+
+1. Create your parent function
+
+2. Define some variables in the parent function's local scope
+
+3. Define a function inside the parent function. This is called a child
+
+4. Return the child function from inside the parent function
+
+The execution piece of a colsure is as follows:
+
+1. Run the parent function and save it to a variable. This variable will now hold whatever the parent function returns; i.e. the child function
+
+2. Optional... Check what the variable now holds as it value, it should be the child function
+
+3. Run the inner function by calling your newly created variable
+
+4. What happened?
+
+{% highlight javascript %}
+
+const findSomeone = () => {
+
+    const speak = () => {
+        console.log(who);
+    };
+
+    let who = "Why hello there, Prof Plum!";
+
+    return speak;
+};
+
+{% endhighlight %}
+
+{% highlight javascript %}
+
+const makeTimer = () => {
+    let elapsed = 0;
+
+    const stopwatch = () => { return elapsed; };
+
+    const increase = () => elapsed++;
+
+    setInterval(increase, 1000);
+
+    return stopwatch;
+
+};
+
+let timer = makeTimer();
+
+{% endhighlight %}
+
+Same as above, but with console.log(s)
+
+{% highlight javascript %}
+
+const makeTimer = () => {
+    console.log('initialized);
+    let elapsed = 0;
+    console.log(elapsed);
+
+    const stopwatch = () => {
+        console.log('stopwatch);
+        return elapsed;
+    }
+
+    const increase = () => elapsed++;
+
+    return stopwatch;
+};
+
+const timer = makeTimer();
+
+{% endhighlight %}
+
 ### Currying and Componsing Exercises
 
+Skips right to solutions...
+
 ### Currying and Componsing Solutions
+
+Currying
+
+{% highlight javascript %}
+
+const curry = (fn) => {
+    return (arg) => {
+        return (arg2) => {
+            return fn(arg, arg2)
+        }
+    }
+}
+
+{% endhighlight %}
+
+Composing
+
+{% highlight javascript %}
+
+const compose = (fn, fn2) => {
+    return (arg) => {
+        const result = fn2(arg);
+        return fn(result);
+    };
+};
+
+{% endhighlight %}
 
 ## Wrapping Up "JavaScript: From Fundamentals to Functional JS"
 
 ### Wrapping Up
+
+We covered functional utility methods, scope, functions, objects, and arrays. Mostly covered in ES5 with some ES6 thrown in. Moving forward, use and apply what you have learned in future courses.
