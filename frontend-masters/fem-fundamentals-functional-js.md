@@ -1170,6 +1170,25 @@ const newDevelopment = [
 
 ### Empty Room Solution
 
+{% highlight javascript %}
+
+const notInRoom = suspect => {
+    // return an array of all of the false values
+
+    const emptyRooms = _.reduce(suspect.rooms, (room, memo) => {
+        if (room === false) memo.push(room)
+        return memo
+    }, []);
+
+    return emptyRooms;
+};
+
+const notInRooms = _.map(newDevelopment, notInRoom);
+
+_.intersection(...notInRooms)
+
+{% endhighlight %}
+
 ## Functional Utilities
 
 ### Currying
