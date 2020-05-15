@@ -27,7 +27,9 @@ primary:
   - text: Frontend Masters Workshop Notes
     links:
       - text: "Javascript: From Fundamentals to Functional JS"
-        href: /frontend-masters/fem-fundamentals-functional-js
+        href: /frontend-masters/fundamentals-functional-js
+      - text: "Javascript: The Hard Parts, v2"
+        href: /frontend-masters/hard-parts-js
   # - text: Referenced section
   #   links: footer
   # - text: External link

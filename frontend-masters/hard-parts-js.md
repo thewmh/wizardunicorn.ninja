@@ -1,7 +1,7 @@
 ---
-title: "Frontend Masters - Javascript: From Fundamentals to Functional JS"
-description: These are notes from the 'From Fundamentals to Functional JS' course on Frontend Masters.
-permalink: /frontend-masters/fem-fundamentals-functional-js
+title: "Javascript: The Hard Parts, v2"
+description: These are notes from the 'Javascript':' The Hard Parts, v2' course on Frontend Masters.
+permalink: /frontend-masters/hard-parts-js
 
 layout: page
 subnav:
