@@ -204,23 +204,107 @@ Pair programming is the most effective way to grow as an engineer, because:
 
 ### Closure Introduction
 
+* Closure is the most esoteric of JavaScript concepts - If you really understand it, you understand JavaScript well
+
+* Enables powerful 'pro-level' functions like 'once' and 'memoize'
+
+* Many JavaScript design patterns including the module pattern use closure
+
+* Build iterators, handle partial application, and maintain state in an asynchronous world
+
+Everytime a function gets invoked, it creates a new store of memory (in its execution context)...but
+
+Functions with memories!
+
+* When our function gets called, we create a live store of data (local memory/variable environment/state) for that functions execution context
+
+* When the function finished executing, its local memory is deleted (except for the returned value)
+
+* But what if the function could hold on to live data between executions?
+
+* This would let function definitions hace an associated cache/persistent memory
+
+* But it all starts with returning a function from another function
+
 ### Returning Functions
+
+Returning a function from another function
+
+{% highlight javascript %}
+
+function createFunction() {
+    function multiplyBy2 (num) {
+        return num*2;
+    }
+    return multiplyBy2;
+}
+
+const generatedFunc = createFunction();
+const result = generatedFunc(3); // 6
+
+{% endhighlight %}
 
 ### Nested Function Scope
 
+Calling a function in the same function call as it was defined:
+
+{% highlight javascript %}
+
+function outer() {
+    let counter = 0;
+    function incrementCounter () {
+        counter ++;
+    }
+    return incrementCounter;
+}
+
+outer();
+
+const myNewFunction = outer();
+myNewFunction();
+myNewFunction();
+
+{% endhighlight %}
+
 ### Retaining Function Memory
+
+In the above function definition, when `myNewFunction` is assigned to `outer()`, the inner function `incrementCounter()` is saved to it, including the parent scope of `outer()`, which allows access to the variable `counter`.
 
 ### Function Closure
 
+Continuing on with the function defined above in the 'Nested Function Scope' section, more about calling a function outside of the function call it was assigned is discussed.
+
 ### Closure Q&A
+
+If you define variables within the parent function and they are not referenced in the child function, does memory retain those variables? No, the child function will only retain (in global scope) those variable(s) which are directly referenced within the child function definition. Otherwise, there would be memory leaks.
 
 ### Closure Technical Definition & Review
 
+Recommended reading: 'If Hemmingway Wrote JavaScript'
+
+Where you save your function determines what data it will have access to when it is run.
+
+Persistent Lexically Scoped Referenced Data (P.L.S.R.D) is the term used to describe a child functions access to its parent scope, AKA closure.
+
 ### Multiple Closure Instances
+
+If you store a returned function definition in a variable, you are creating unique instances and (future; at run-time) execution contexts for that function. Following the above example, if you set `var anotherVariable = outer();`, anotherVariable would have its own execution context separate from myNewFunction. 
 
 ### Practical Applications
 
+Closure gives our functions persistent memories and an entirely new toolkit for writing professional code
+
+* Helper functions: Everyday professional helper functions like 'once' and 'memoize'
+
+* Iterators and generators: Which use lexical scoping and closure to achieve the most contemporary patterns for handling data in JavaScript
+
+* Module pattern: Preserve state for the life of an application without polluting the global namespace
+
+* Asynchronous JavaScript: Callbacks and Promises rely on closure to persist state in an asynchronous environment
+
 ### Closure Exercises
+
+[Closure exercises are here](http://csbin.io/closures)
 
 ## Asynchronous JavaScript
 
