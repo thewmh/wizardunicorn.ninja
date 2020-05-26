@@ -310,7 +310,69 @@ Closure gives our functions persistent memories and an entirely new toolkit for 
 
 ### Single Threaded Execution Review
 
+Promises, Async, and the Event Loop
+
+- Promises - The most significant ES6 feature
+
+- Asynchronicity - The feature that makes dynamic web applications possible
+
+- The Event Loop - JavaScript's triage
+
+- Microtask queue, Callback queue, and Web Browser features (APIs) - [here's an article that goes into further detail](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/)
+
+JavaScript is a synchronous language. This means that only one task can be run at a time, or only one line of code is executed at a time.
+
 ### Asynchronicity in JavaScript
+
+Asynchronicity is the backbone of modern web development in JavaScript yet...
+
+JavaScript is:
+
+- Single threaded (one command runs at a time)
+
+- Synchronously executed (each line is run in the order it appears in the code)
+
+So what if we have a task:
+
+- Accessing Twitter's server to get new tweets that takes a long time
+
+- Code we want to run using those tweets
+
+Challenge: We want to wait for the tweets to be stores in tweets so that they're there to run displayTweets on - but no code can run in the meantime
+
+{% highlight javascript %}
+
+// Slow function blocks further code from running
+
+const tweets = getTweets("http://twitter.com/potus")
+
+// 350ms wait while the request is sent to Twitter servers
+
+displayTweets(tweets)
+
+// more code to run
+
+console.log('I am waiting for getTweets...')
+
+{% endhighlight %}
+
+JavaScript is not enough - we need new pieces (some of which are not JavaScript at all)
+
+Our core JavaScript engine has 3 main parts:
+
+- Thread of execution
+
+- Memory / Variable Environment
+
+- Call stack
+
+We need to add some new components:
+
+- Web Browser APIs / Node background APIs
+
+- Promises
+
+- Event Loop, Callback / Task queue, and micro task queue
 
 ### Asynchronous Browser Features
 
