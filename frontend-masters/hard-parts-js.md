@@ -376,7 +376,17 @@ We need to add some new components:
 
 ### Asynchronous Browser Features
 
+ES5 Solution: Introducing Callback Functions and Web Browser APIs
+
+Web Browsers have Dev Tools (Console), Sockets, the ability to make Network Requests, and they can Render the HTML DOM (Document Object Model). We cannot (in JavaScript) code for these directly, but JavaScript can interface with them. JavaScript has 'labels' for each of the web browser 'features', that allow JavaScript to interact with them. i.e. setTimeout can use the browsers 'timer' function. 'document' is another web browser feature that allows JavaScript to interact with it.
+
 ### Web API Example
+
+This section is focused on setTimeout which is not a feature of JavaScript, but a way for JavaScript to interface with a web browser(s) `timer` API - [more details on MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout)
+
+`setTimeout` takes a number of arguments, but this focused on passing in a function and a number which represents the amount of time, in milliseconds, before the function will run i.e. `setTimeout(myFunction, 1000)`
+
+`setTimeout` will start a timer at 0s and when it meets the argument `1000(ms)`, it will invoke the function `myFunction`
 
 ### Web API Rules
 
