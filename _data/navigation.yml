@@ -30,7 +30,7 @@ primary:
         href: /frontend-masters/fundamentals-functional-js
       - text: "Javascript: The Hard Parts, v2"
         href: /frontend-masters/hard-parts-js
-  - text: Sitecore
+  - text: Sitecore Workshop Notes
     links:
       - text: "Sitecore JSS Fundamentals"
         href: /sitecore/jss
