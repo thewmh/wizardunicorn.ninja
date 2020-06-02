@@ -17,9 +17,9 @@ subnav:
 
 ## Introduction
 
-[The link to the course slideshow is here]('http://slides.com/bgando/f2f-final-day-1#/')
+[The link to the course slideshow is here](http://slides.com/bgando/f2f-final-day-1#/)
 
-[The link to the course on FrontEnd Masters is here]('https://frontendmasters.com/courses/js-fundamentals-functional-v2')
+[The link to the course on FrontEnd Masters is here](https://frontendmasters.com/courses/js-fundamentals-functional-v2)
 
 ### Tips for Learning
 
