@@ -17,7 +17,7 @@ subnav:
 
 ## Introduction
 
-[The link to the course document is here]('https://static.frontendmasters.com/resources/2019-09-18-javascript-hard-parts-v2/javascript-hard-parts-v2.pdf')
+[The link to the course document is here](https://static.frontendmasters.com/resources/2019-09-18-javascript-hard-parts-v2/javascript-hard-parts-v2.pdf)
 
 The instructor breaks down the difference between Junior, Mid and Senior-Level developers, and the purpose of the course for the differenc levels of developers.
 
