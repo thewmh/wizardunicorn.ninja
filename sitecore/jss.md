@@ -26,15 +26,15 @@ For example, Sitecore developers can focus on applying their programming languag
 
 Sitecore has 5 offerings in its Omni Product family, described as:
 
-* Sitecore GraphQL - an efficient front-end-driven query language that only returns a query’s requested data. Queries are graph traversal for expressive queries.
+* Sitecore GraphQL - an efficient front-end-driven query language that only returns a query’s requested data. Queries are graph traversal for expressive queries.
 
-* Sitecore Services Client - offers industry standard services to access Sitecore content.
+* Sitecore Services Client - offers industry standard services to access Sitecore content.
 
-* Sitecore Experience Accelerator (SXA) - offers multiple options to deliver personalized, decoupled content management, delivery, and presentation via JSON.
+* Sitecore Experience Accelerator (SXA) - offers multiple options to deliver personalized, decoupled content management, delivery, and presentation via JSON.
 
-* Universal Tracker - a scalable tracking service based on Web API technology.
+* Universal Tracker - a scalable tracking service based on Web API technology.
 
-* JavaScript Services (JSS) - a software development kit (SDK) that creates a seamless omnichannel customer experience in a headless CMS.
+* JavaScript Services (JSS) - a software development kit (SDK) that creates a seamless omnichannel customer experience in a headless CMS.
 
 ### Explore Sitecore JSS Capabilities
 
