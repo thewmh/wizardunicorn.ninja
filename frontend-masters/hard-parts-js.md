@@ -390,19 +390,103 @@ This section is focused on setTimeout which is not a feature of JavaScript, but 
 
 ### Web API Rules
 
+This section quickly talks about there being rules between JavaScript and how the browser interacts with it. They are defined as being quite strict and the following JavaScript was displayed as an example to consider:
+
+{% highlight javascript %}
+
+function printHello(){console.log("Hello"); }
+function blockFor1Sec(){
+    // blocks the JavaScript Thread of Execution for 1 second, maybe with a for loop?
+}
+
+setTimeout(printHello,0);
+
+blockFor1Sec();
+console.log("Me first!");
+
+{% endhighlight %}
+
+What will happen?!
+
 ### Callback Queue & Event Loop
+
+Walking through the above JavaScript, this is what happens:
+
+1. Define function `printHello`
+2. Define function `blockFor1Sec`
+3. Run `setTimeout` Browser Feature, passing in the `printHello` function with `0ms` passed in as the time argument. This adds the `printHello` function into the Callback Queue
+4. Call `blockFor1Sec` function
+5. The `console.log` prints
+6. Finally, the `printHello` function is executed
+
+The Callback Queue is not allowed to run all regular code is run first. JavaScript checks if the Call Stack is empty before checking the Callback Queue. This is known as the [Event Loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop).
 
 ### Callback Queue & Event Loop Q&A
 
+Q: Does the Event Loop constantly run?
+
+A: Yes, the Event Loop is constantly running for the duration of the applications lifecycle
+
 ### Callback Hell & Async Exercises
+
+ES5 Web Browser APIs with Callback Functions
+
+Problems:
+
+* Our response data is only available in the callback function - Callback Hell (where we are doing all of our work on some data inside of a function)
+
+* Maybe it feels a little odd to think of passing a function into another function only for it to run much later
+
+Benefits:
+
+* Super explicit once you understand how it works under-the-hood
+
+[Exercises](csbin.io/async)
 
 ## Promises
 
 ### Promises Introduction
 
+ES6+ Solution (Promises)
+
+Using two-pronged 'facade' functions that both:
+
+* Initiate background web browser work
+
+* Return a placeholder object (promise) immediately in JavaScript
+
+In ES6, `fetch` is the replacement for `xhr`, but unlike `xhr`, `fetch` (referred to above as a 'two-pronged' facade function) will both initiate a Web Browser function and in the JavaScript environment create a placeholder object called a `promise object`. When the network request completes, the object will be filled in with the result. The Web Browser function and the placeholder object are intrinsically linked.
+
+ES6+ Prmoises
+
+{% highlight javascript %}
+
+function display(data){
+    console.log(data)
+}
+
+const futureData = fetch('https://twitter.com/username/tweets/1')
+futureData.then(display);
+
+console.log('Me first!');
+
+{% endhighlight %}
+
 ### Promises Example: fetch
 
+In the example above, the following is happening:
+
+1. Declare a function `display`
+
+2. Declare a constant `futureData` and store the result of `fetch(...)`. This will immediately return a 'Promise Object' with two properties; {value: undefined, onFufilled: []} and store it in the `futureData` constant. The other consequence of `fetch(...)` will be in the Web Browser in the form of a Network Request. The Network Request requires the URL and path, which is defined. The Network Request defaults to a `GET` request, but you can pass in (as an argument) another type of request, i.e. `POST`. The response from the Network Request gets stored in the `futureData` object that was created, specifically in the `value` property of that object.
+
 ### Promises Example: then
+
+3. The `onFulfilled` array in the `futureData` object contains a number of [hidden] methods (which are 'directly' inaccessible), but can be accessed with 'key' words, in this case `then`. passing the `display` function into `futureData.then()` will automatically pass the content of `futureData.value` into the `display` function defined on the first line.
+
+4. The `console.log('Me first!')` will finally run and print `Me first!` in the console.
+
+5. The Network Request has sucessfully completed and the response is stored in `futureData.value`. This will trigger the `...then(display)` and pass in `futureData.value` as the argument for the `display` function. A new execution context is created for the `display` function. `futureData.value` will be stored as `data` in the `display` function.
 
 ### Web APIs & Promises Example: fetch
 
