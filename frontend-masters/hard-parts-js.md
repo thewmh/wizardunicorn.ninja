@@ -678,7 +678,7 @@ Instructor walks through the above example and mentions that they all share the 
 
 The 'better' way to solve the problem would be to use the Prototype Chain.
 
-Store the increment function in just one object and jave the interpreter, if it does not find the function on `user1`, look up to that object to check if it is there.
+Store the increment function in just one object and have the interpreter, if it does not find the function on `user1`, look up to that object to check if it is there.
 
 Link `user1` and `functionStore` so the interpreter, on not finding `.increment`, makes sure to check up in `functionStore` where it would find it
 
