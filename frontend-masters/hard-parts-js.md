@@ -672,7 +672,7 @@ The instructor says not to use the above code in practice. The usable version is
 
 ### Factory Functions Example
 
-Instructor walks through the above example and mentions that they all share the increment function and if you wanted to add another key value pair to all of the user objects (imagine you have more than 2, but hundreds or more), this would not be practial.
+Instructor walks through the above example and mentions that they all share the increment function and if you wanted to add another key value pair to all of the user objects (imagine you have more than 2, but hundreds or more), this would not be practical.
 
 ### Prototype Chain
 
