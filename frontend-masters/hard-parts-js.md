@@ -672,7 +672,41 @@ The instructor says not to use the above code in practice. The usable version is
 
 ### Factory Functions Example
 
+Instructor walks through the above example and mentions that they all share the increment function and if you wanted to add another key value pair to all of the user objects (imagine you have more than 2, but hundreds or more), this would not be practial.
+
 ### Prototype Chain
+
+The 'better' way to solve the problem would be to use the Prototype Chain.
+
+Store the increment function in just one object and jave the interpreter, if it does not find the function on `user1`, look up to that object to check if it is there.
+
+Link `user1` and `functionStore` so the interpreter, on not finding `.increment`, makes sure to check up in `functionStore` where it would find it
+
+Make the link with `Object.create()` technique.
+
+Expanding on what we've seen above, consider the following:
+
+{% highlight javascript %}
+
+function userCreator(name, score) {
+    const newUser = Object.create(userFunctionStore); // the argument passed into Object.create creates the 'link' to the object that is passed in as an argument
+    newUser.name = name;
+    newUser.score = score;
+    return newUser;
+}
+
+const userFunctionStore = {
+    increment: function(){this.score++;},
+    login: function(){console.log("logged in");}
+};
+
+const user1 = userCreator("Viljar", 3);
+const user2 = userCreator("Yep", 5);
+user1.increment();
+
+{% endhighlight %}
+
+[MDN Object.create() documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create)
 
 ### Prototype Chain Example: Prototypal Link
 
