@@ -490,13 +490,85 @@ In the example above, the following is happening:
 
 ### Web APIs & Promises Example: fetch
 
+It is important to understand how promise-deferred functionality gets back into JavaScript to be run
+
+{% highlight javascript %}
+
+function display(data){console.log(data)}
+function printHello(){console.log("hello");}
+function blockFor300ms(){// blocks js thread for 300ms}
+
+setTimeout(printHello, 0);
+
+const futureData = fetch('https://twitter.com/username/tweets/1')
+futureData.then(display)
+
+blockFor300ms()
+console.log("Me first!");
+
+{% endhighlight %}
+
+*The `then` method and its functionality to call on completion*
+
+* Any code we want to run on the returned data must also be saved on the promise object
+
+* Added using the `.then` method to the hidden property `onFulfillment`
+
+* Promise objects will automatically trigger the attached function to run (with its input being the returned data)
+
+Asynchronous JavaScript is defined as executing code out of the order in which it was written.
+
 ### Web APIs & Promises Example: then
+
+Walking through the above JavaScript block, the `.then` eventually 'GET(s)' data back from its request and...
 
 ### Web APIs & Promises Example: Microtask Queue
 
+When finally, all of the code in the global scope has executed, the Event Loop checks the Callback and Microtask Queue(s) for additional tasks waiting to be run. `fetch` placed the Network Reques into the Microtask Queue, which is where the Event Loop first checks for tasks, which then triggers the `.then`. Finally, the Event Loop is able to reach the Callback Queue which contains the `setTimeout`. So while the `setTimeout` function was called first, it in fact gets run last because of the order of the Call Stack, Event Loop, Microtask Queue, and Callback Queue(s). Any function that is attached to a promise object gets stored in the Microtask Queue, which is the first Queue that the JavaScript Event Loop checks, before the Callback Queue.
+
 ### Promises and Asynchronous Q&A
 
+[List of Web APIs](https://developer.mozilla.org/en-US/docs/Web/API)
+
+Specific to this section, the [WorkerGlobalScope Web API](https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope) contains `fetch`.
+
+The Microtask Queue, once the Event Loop enters it, will continue to run any functions that are waiting in the queue until there are not functions left to run.
+
+Any function that is attached to a promise object gets pushed into the Microtask Queue, any function that is directly tied to a Browser Feature or returns a function, gets pushed into the Callback Queue.
+
 ### Promises Review
+
+Problems:
+
+* 99% of developers have no idea how they're working under the hood
+
+* Debugging becomes super-hard as a result
+
+* Developers fail technical interviews
+
+Benefits:
+
+* Cleaner readable style with pseudo-synchronous style code
+
+* Nice error handling process
+
+*We have rules for the execution of asynchronously delayed code*
+
+* Hold promise-deferred functions in a microtask queue and callback function in a task queue (Callback queue) when the Web Browser Feature (API) finishes
+
+* Add the function to the Call stack (i.e. execute the function) when:
+
+ - The Call stack is empty AND all global code has run (the Event Loop checks this condition)
+
+* Prioritize functions in the microtask queue over the Callback queue
+
+*Promises, Web APIs, the Callback & Microtask Queues, and Event Loop enable:*
+
+* Non-blocking applications: This means we don't have to wait in the single thread and don't block further code from running
+
+* However long it takes: We cannot predict when our Browser feature's work will finish so we let JavaScript handle automatically running the function on its completion
+
+* Web applications: Asynchronous JavaScript is the backbone of the modern web - letting us build fast 'non-blocking' applications
 
 ## Classes & Prototypes
 
