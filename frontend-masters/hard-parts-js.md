@@ -574,9 +574,101 @@ Benefits:
 
 ### Class & OOP Introduction
 
+*Classes, Prototypes - Object Oriented JavaScript*
+
+* An enormously popular paradigm for structuring complex code
+
+* Prototype chain - the feature behind-the-scenes that enables emulation of OOP but is a compelling tool in itself
+
+* Understanding the difference between `_proto_` and `prototype`
+
+* the `new` and `class` keywords as tools to automate our object and method creation
+
+One of the most popular interview questions for mid to senior-level developers is what is the keyword `new` doing under-the-hood
+
+*Core of development (and running code)*
+
+1. Save data (e.g. in a quiz game the scores of user1 and user2)
+
+2. Run code (functions) using that data (e.g. increase user2's score)
+
+So what?!
+
+In a quiz game you need to save lots of users, but also admins, quiz questions, quiz outcomes, league tables - all have data and associated functionality
+
+In 100,000 lines of code...
+
+* Where is the functionality when I need it?
+
+* How do I make sure the functionality is only used on the right data?
+
+*Code should be:*
+
+1. Easy to reason about - Easy to figure out what is going on
+
+2. Easy to add features to (new functionality)
+
+3. Nevertheless efficient and performant
+
+The Object-oriented paradigm aims to achieve all these goals
+
 ### Object Dot Notation
 
+How can you store the following data in an app?
+
+user1:
+    - name: 'Tim'
+    - score: 3
+
+user2:
+    - name: 'Stephanie'
+    - score: 5
+
+In an object!
+
+Objects store functions with their associated data.
+
+This is the principle of encapsulation - and it is going to transform how we can 'reason about' code
+
+{% highlight javascript %}
+
+const user1 = {
+    name: "First Name",
+    score: 7,
+    increment: function() { user.score++; }
+};
+
+user1.increment(); // user1.score -> 8
+
+{% endhighlight %}
+
 ### Factory Functions
+
+What is a built-in function of JavaScript whos output will be an empty object?
+
+`Object.create` which will provide fine-grained control over the object later on.
+
+A potential solution to avoid repeating yourself when creating multiple users would be as follows:
+
+{% highlight javascript %}
+
+function userCreator(name, score) {
+    const newUser = {};
+    newUser.name = name;
+    newUser.score = score;
+    newUser.increment = function() {
+        newUser.score++;
+    };
+    return newUser;
+}
+
+const user1 = userCreator("Viljar", 3);
+const user2 = userCreator("Yep", 5);
+user1.increment();
+
+{% endhighlight %}
+
+The instructor says not to use the above code in practice. The usable version is to follow.
 
 ### Factory Functions Example
 
