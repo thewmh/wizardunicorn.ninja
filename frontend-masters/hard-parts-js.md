@@ -710,6 +710,8 @@ user1.increment();
 
 ### Prototype Chain Example: Prototypal Link
 
+This section walks through the above code.
+
 ### Prototype Chain Example: Implicit Parameters
 
 ### hasOwnProperty Method

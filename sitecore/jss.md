@@ -114,4 +114,67 @@ Either way, the designer and developer need to collaborate. This collaboration b
 
 ## Build a JSS Application in a Local Development Environment
 
-### 
+### Identify JSS Requirements
+
+Before you create an app, first make certain you meet the experience and Sitecore requirements discussed below. These requirements identify the necessary skills to use Sitecore JSS.
+
+*Experience Requirements*
+
+To create and build Sitecore JSS apps, you should have experience with the following applications to ensure you have the necessary skills:
+
+* Modern JavaScript compiler
+
+* JavaScript programming
+
+* JSS-supported client framework (Angular, React, or Vue)
+
+* Node JS
+
+* YAML or JSON (to store route data in files)
+
+*Sitecore Requirements*
+
+In addition to having experience with the above applications, you also need to ensure you've done the following:
+
+* You've completed the eLearning Sitecore Developer Foundations course OR
+
+* You're a Certified Sitecore Developer
+
+### Explore the JSS CLI
+
+Now that you understand the requirements, you are ready to set up a local development environment with the JSS command line interface (CLI) tool to create JSS apps. This track includes the following steps:
+
+1. Explore the purpose of the JSS CLI
+
+Sitecore JSS includes the JSS CLI, which is a node-based command line tool with development scripts. The JSS CLI is the base tool for the code-first workflow. You use it to:
+
+* Create, maintain, and run JavaScript apps.
+
+* Scaffold components.
+
+* Deploy apps to Sitecore.
+
+To learn more about the JSS CLI and available scripts you can use, see [JSS CLI Scripts](https://jss-docs-preview3.herokuapp.com/docs/fundamentals/cli).
+
+2. Install and run the JSS CLI
+
+1. Install the JSS CLI with your command line tool of choice (e.g. bash, PowerShell, cmd prompt, or Node JS cmd prompt):
+
+`npm install -g @sitecore-jss/sitecore-jss-cli`
+
+*Parts of the JSS CLI Command*
+
+`npm` - Node Package Manager
+
+`install` - Install command
+
+`-g` - Flag that enables the jss command to run from any directory (global)
+
+`@sitecore-jss/sitecore-jss-cli` - Package name of the JSS CLI
+
+2. To verify that your CLI installation was successful, enter the command:
+
+`jss --help`
+
+The `jss` commands change when running within a JSS apps' directory. The `--help` option will always show the currently available commands.
+
