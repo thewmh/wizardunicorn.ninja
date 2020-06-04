@@ -217,3 +217,93 @@ For example:
 The app viewer is a local webpack-dev-server feature to view your app in a browser without importing any items to Sitecore. After the JSS start command runs, this feature automatically launches your app in the default browser, http://localhost:3000. 
 
 This app includes a website with all the JSS resources you need to develop your site without publishing them first. Resource items include different dates, time, languages, multiple device view settings, and more.
+
+## Create JSS Routes to Host Components and Their Data
+
+### Maintain App Directories
+
+Now that you know how to create a JSS app, you need to understand routes. The first step in understanding routes is to examine how the JSS app directory structure works. Understanding the app directory will be important when you customize your apps with new routes from templates to host components and their data.
+
+To maintain your site’s directory structure, you will use various tools that are described below.
+
+* npm / Node JS - JSS SDK includes a series of npm packages that facilitate working with Sitecore data and layouts in JavaScript. Use Node JS to create one parent or master folder that will contain each individual JSS project. Use npm to create a JSS project with the proper folder structure.
+
+* Visual Studio Code - Visual Studio Code is a source code text editor that supports hundreds of languages, syntax highlighting, bracket-matching, auto-indentation, box-selection, JS typings, snippets, and other components. Use Visual Studio Code to maintain site content, route (layout) data, and component registrations.
+
+* Framework-specific SDKs - Framework-specific SDKs provide Sitecore's dynamic placeholder layout system and helpers. Use these to render Sitecore fields so they can be editable by Sitecore authors.
+
+The following five topics will help you learn how to use the tools described above to maintain your app directories. Each topic includes examples that demonstrate using or applying these tools.
+
+1. An app's project folder in Explorer
+
+Visual Studio Code's Explorer window lists the following folders created by the JSS CLI when you made your app:
+
+* A node modules folder stores all your JavaScript libraries and commands to support multiple apps with different JSS versions
+
+* A config file generates the site definition for the route items and the database
+
+2. An app's project folder in a CLI
+
+You can also view your site contents in PowerShell / Terminal. 
+
+1. From Visual Studio Code's Explorer window, you should:
+
+* Locate your master folder
+
+* Press the Control and Minus keys `Ctrl + -` anywhere
+
+* Select `Open in Terminal`
+
+You’ll automatically be in the Master Folder directory.
+
+2. From PowerShell / Terminal, you can ensure the `PATH` environment variable lists the global `npm cachefolder`. 
+Type the command:
+`npm –version`
+
+3. The role of the manifest API
+
+The JSS app is a repository structure. In disconnected mode, use the manifest application programming interface (API) to do the following:
+
+* Define the structure of your JSS site
+
+* Run the site with mock data
+
+* Import the site into Sitecore
+
+To see the list of available manifest objects, see [Manifest Objects](https://jss.sitecore.com/docs/techniques/working-disconnected/manifest-api#manifest-objects).
+
+4. Directory organization
+
+The way you organize a site correlates with your content needs. In disconnected mode, the manifest API creates a manifest of the JSS app’s content. With respect to this content, the manifest does the following:
+
+* Includes content data and data schema with both components and routes from a set of files;
+
+* Enables the JSS app to execute with local mock content, without a Sitecore instance
+
+* Assigns the JSS app as the master copy of all artifacts
+
+5. An app’s main directory elements
+
+There are three types of directory items specific to Sitecore terminology you'll want to know: arbitrary content, routes, and components. Continue below to look at each one in more detail. 
+
+*Arbitrary Content:* 
+
+* They are not used as pages or datasources
+
+* They are referred to as “lookups” or “list items"
+
+* They cannot be viewed directly in browsers because they don’t have any layout data
+
+* They are usually used for restricting values of route-level or component-level fields to a limited set of options such as sharing content across routes (e.g. an author's bio)
+
+*Routes:*
+
+* These items are “pages” since they can be viewed in browsers using unique URLs. They contain route-level fields and instructions for how to lay out the route’s components
+
+* Site implementations may need multiple route types to capture route-level fields. Examples include article route, product route, and location route. In Sitecore terminology, route types are “templates” 
+
+*Components:*
+
+* These are “rendering datasources,” where a datasource is comprised of a component name plus its field
+
+* They contain component-level fields. These items cannot be viewed in browsers directly because they don’t have any layout data; they are simply building blocks for route presentation
