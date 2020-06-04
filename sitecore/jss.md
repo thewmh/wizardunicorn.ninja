@@ -178,3 +178,42 @@ To learn more about the JSS CLI and available scripts you can use, see [JSS CLI 
 
 The `jss` commands change when running within a JSS apps' directory. The `--help` option will always show the currently available commands.
 
+### Create a JSS Application
+
+Now that you have the JSS CLI installed, you are ready to create your sample JSS app.
+
+*Steps to Create Sample JSS App*
+
+1. Identify Framework Options
+
+With the JSS CLI installed, you are now ready to create applications. The first step is to identify the template that matches your framework (Angular, React, or Vue).
+
+Each sample app includes the mocked Sitecore Layout Service so you can develop without the need to connect to a Sitecore installation.
+
+* Go to [GITHUB TEMPLATES](https://github.com/Sitecore/jss/tree/master/samples/) to locate sample apps with the code for each template.
+
+* Go to [TEMPLATE INFO](https://jss.sitecore.com/docs/getting-started/quick-start#step-3-choose-a-jss-application-template) to learn more about template options.
+
+2. Create a Sample Application
+
+* Open a command prompt.
+
+* Type the create app command for your framework/library in the form:
+`jss create <your-app-name> <app-template-name>`
+
+For example:
+`jss create my-first-jss-app angular`
+`jss create my-first-jss-app react`
+`jss create my-first-jss-app vue`
+
+* Change to your app's directory. For example:
+`cd my-first-jss-app`
+
+* Type the command to start the app in disconnected mode (which uses the defined content located on the local development server):
+`jss start`
+
+3. Inspect the App Viewer Feature
+
+The app viewer is a local webpack-dev-server feature to view your app in a browser without importing any items to Sitecore. After the JSS start command runs, this feature automatically launches your app in the default browser, http://localhost:3000. 
+
+This app includes a website with all the JSS resources you need to develop your site without publishing them first. Resource items include different dates, time, languages, multiple device view settings, and more.
