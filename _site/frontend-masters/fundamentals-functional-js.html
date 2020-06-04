@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<title>Frontend Masters - Javascript: From Fundamentals to Functional JS | FED Notes & Resources</title>
+<title>Javascript: From Fundamentals to Functional JS | FED Notes & Resources</title>
 
 
 
@@ -180,7 +180,39 @@
               
                 
                 <li>
-                  <a href="/frontend-masters/fem-fundamentals-functional-js">Javascript: From Fundamentals to Functional JS</a>
+                  <a href="/frontend-masters/fundamentals-functional-js">Javascript: From Fundamentals to Functional JS</a>
+                </li>
+                
+              
+                
+                <li>
+                  <a href="/frontend-masters/hard-parts-js">Javascript: The Hard Parts, v2</a>
+                </li>
+                
+              
+            
+            </ul>
+            
+            
+            
+          </li>
+          
+          <li>
+            
+              
+              
+              
+            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-4">
+              <span>Sitecore Workshop Notes</span>
+            </button>
+            
+            <ul id="nav-4" class="usa-nav-submenu" aria-hidden="true">
+            
+            
+              
+                
+                <li>
+                  <a href="/sitecore/jss">Sitecore JSS Fundamentals</a>
                 </li>
                 
               
@@ -255,13 +287,13 @@
 
 <div class="usa-layout-docs-main_content">
   
-    <h1>Frontend Masters - Javascript: From Fundamentals to Functional JS</h1>
+    <h1>Javascript: From Fundamentals to Functional JS</h1>
   
   <h2 id="introduction">Introduction</h2>
 
-<p><a href="'http://slides.com/bgando/f2f-final-day-1#/'">The link to the course slideshow is here</a></p>
+<p><a href="http://slides.com/bgando/f2f-final-day-1#/">The link to the course slideshow is here</a></p>
 
-<p><a href="'https://frontendmasters.com/courses/js-fundamentals-functional-v2'">The link to the course on FrontEnd Masters is here</a></p>
+<p><a href="https://frontendmasters.com/courses/js-fundamentals-functional-v2">The link to the course on FrontEnd Masters is here</a></p>
 
 <h3 id="tips-for-learning">Tips for Learning</h3>
 
@@ -1124,57 +1156,411 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 
 <h3 id="scope-walkthrough-part-1">Scope Walkthrough, Part 1</h3>
 
+<p>Continue walking through the testing suite</p>
+
 <h3 id="scope-walkthrough-part-2">Scope Walkthrough, Part 2</h3>
+
+<p>Variables declared within a function are scoped to that function. If you declare a variable and then redeclare that variable within a function, the value of that variable will be as it has been set inside of the function.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">ACTUAL</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">sameName</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">outer</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">fn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">sameName</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">inner</span><span class="dl">'</span><span class="p">;</span>
+    <span class="nx">ACTUAL</span> <span class="o">=</span> <span class="nx">sameName</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="nx">fn</span><span class="p">();</span>
+
+<span class="c1">// ACTUAL = 'inner'</span></code></pre></figure>
+
+<p>Whenever you call a function, you create a brand new function scope (execution context) each time.</p>
 
 <h3 id="scope-walkthrough-part-3">Scope Walkthrough, Part 3</h3>
 
+<p>You can pull a function out of the local scope of a document and attach it to the window i.e. <code class="highlighter-rouge">window.theFunctionIWant = theFunctionIMade;</code></p>
+
+<p>The appropriate time to use <code class="highlighter-rouge">let</code> is when you want to scope a variable inside of a block that is not a function.</p>
+
 <h3 id="scope-takeaways">Scope Takeaways</h3>
+
+<ul>
+  <li>Execution Context - an abstract concept of an environment where the Javascript code is evaluated and executed. Whenever any code is run in JavaScript, it’s run inside an execution context.</li>
+</ul>
 
 <h2 id="callbacks">Callbacks</h2>
 
 <h3 id="higher-order-functions--callbacks">Higher-Order Functions &amp; Callbacks</h3>
 
+<p>Higher-Order Functions in JavaScript is what enables us to do functional programming techniques. In JavaScript, functions are treated as data, similar to objects, or other elements.</p>
+
+<p>A Higher-Order Function can take a function as an input i.e. <code class="highlighter-rouge">addEventListener</code>.</p>
+
+<p>Callbacks are functions that are passed to functions.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">ifElse</span> <span class="o">=</span> <span class="p">(</span><span class="nx">condition</span><span class="p">,</span> <span class="nx">isTrue</span><span class="p">,</span> <span class="nx">isFalse</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">condition</span> <span class="p">?</span> <span class="nx">isTrue</span><span class="p">()</span> <span class="p">:</span> <span class="nx">isFalse</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="nx">ifElse</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span>
+<span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="kc">true</span><span class="p">);},</span>
+<span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="kc">false</span><span class="p">);}</span>
+<span class="p">);</span></code></pre></figure>
+
+<p>The above is a very basic example of a callback function. ifElse is being passed: true and 2 anonymous functions. The <code class="highlighter-rouge">condition</code> is true, so the <code class="highlighter-rouge">true</code> will be printed in the console.</p>
+
 <h3 id="passing-arguments">Passing Arguments</h3>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">increment</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">){</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">square</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">){</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">*</span> <span class="nx">n</span><span class="p">;</span> <span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">doMathSoIDontHaveTo</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="nx">func</span><span class="p">){</span> <span class="k">return</span> <span class="nx">func</span><span class="p">(</span><span class="nx">n</span><span class="p">);</span> <span class="p">};</span>
+
+<span class="nx">doMathSoIDontHaveTo</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="nx">square</span><span class="p">);</span> <span class="c1">// 25</span>
+
+<span class="nx">doMathSoIDontHaveTo</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="nx">increment</span><span class="p">);</span> <span class="c1">// 5</span></code></pre></figure>
 
 <h3 id="translate-into-es6-exercise">Translate into ES6 Exercise</h3>
 
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">increment</span> <span class="o">=</span> <span class="nx">n</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">square</span> <span class="o">=</span> <span class="nx">n</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">*</span> <span class="nx">n</span><span class="p">;</span> <span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">doMathSoIDontHaveTo</span> <span class="o">=</span>  <span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="nx">func</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">func</span><span class="p">(</span><span class="nx">n</span><span class="p">);</span> <span class="p">};</span>
+
+<span class="nx">doMathSoIDontHaveTo</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="nx">square</span><span class="p">);</span> <span class="c1">// 25</span>
+
+<span class="nx">doMathSoIDontHaveTo</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="nx">increment</span><span class="p">);</span> <span class="c1">// 5</span></code></pre></figure>
+
 <h3 id="translate-into-es6-solution">Translate into ES6 Solution</h3>
+
+<p>See above solution</p>
 
 <h3 id="passing-arguments-part-2">Passing Arguments, Part 2</h3>
 
+<p>You can pass an argument to a callback function by passing in an additional parameter to the function that the callback function is called in. i.e. <code class="highlighter-rouge">const ifElse = (condition, isTrue, isFalse, argument)...</code></p>
+
 <h3 id="_reduce-exercise">_.reduce() Exercise</h3>
+
+<p>Implement _.reduce()</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">_</span> <span class="o">=</span> <span class="p">{};</span>
+
+<span class="kd">const</span> <span class="nx">_</span><span class="p">.</span><span class="nx">reduce</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="nx">callback</span><span class="p">,</span> <span class="nx">initial</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">prev</span> <span class="o">=</span> <span class="nx">initial</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">list</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">prev</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">prev</span> <span class="o">=</span> <span class="nx">list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">prev</span> <span class="o">=</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">list</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">prev</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">prev</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">_</span><span class="p">.</span><span class="nx">reduce</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">(</span><span class="nx">v</span><span class="p">,</span> <span class="nx">sum</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">v</span> <span class="o">+</span> <span class="nx">sum</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></code></pre></figure>
 
 <h3 id="_reduce-solution">_.reduce() Solution</h3>
 
+<p>The above exercise has the solution.</p>
+
 <h3 id="empty-room-exercise">Empty Room Exercise</h3>
 
+<p><a href="http://jsbin.com/pazixim/edit?js">Link to dataset for this exercise</a></p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">newDevelopment</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Miss Scarlet</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">present</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="na">rooms</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="na">kitchen</span><span class="p">:</span> <span class="kc">false</span><span class="p">},</span>
+            <span class="p">{</span><span class="na">ballroom</span><span class="p">:</span> <span class="kc">false</span><span class="p">},</span>
+            <span class="p">{</span><span class="na">conservatory</span><span class="p">:</span> <span class="kc">true</span><span class="p">},</span>
+            <span class="p">{</span><span class="dl">'</span><span class="s1">dining room</span><span class="dl">'</span><span class="p">:</span> <span class="kc">true</span><span class="p">},</span>
+            <span class="p">{</span><span class="dl">'</span><span class="s1">billiard room</span><span class="dl">'</span><span class="p">:</span> <span class="kc">false</span><span class="p">},</span>
+            <span class="p">{</span><span class="na">library</span><span class="p">:</span> <span class="kc">true</span><span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Reverend Green</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">present</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="na">rooms</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="na">kitchen</span><span class="p">:</span> <span class="kc">true</span><span class="p">},</span>
+            <span class="p">{</span><span class="na">ballroom</span><span class="p">:</span> <span class="kc">false</span><span class="p">},</span>
+            <span class="p">{</span><span class="na">conservatory</span><span class="p">:</span> <span class="kc">false</span><span class="p">},</span>
+            <span class="p">{</span><span class="dl">'</span><span class="s1">dining room</span><span class="dl">'</span><span class="p">:</span> <span class="kc">false</span><span class="p">},</span>
+            <span class="p">{</span><span class="dl">'</span><span class="s1">billiard room</span><span class="dl">'</span><span class="p">:</span> <span class="kc">true</span><span class="p">},</span>
+            <span class="p">{</span><span class="na">library</span><span class="p">:</span> <span class="kc">false</span><span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Colonel Mustard</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">present</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="na">rooms</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="na">kitchen</span><span class="p">:</span> <span class="kc">false</span><span class="p">},</span>
+            <span class="p">{</span><span class="na">ballroom</span><span class="p">:</span> <span class="kc">false</span><span class="p">},</span>
+            <span class="p">{</span><span class="na">conservatory</span><span class="p">:</span> <span class="kc">true</span><span class="p">},</span>
+            <span class="p">{</span><span class="dl">'</span><span class="s1">dining room</span><span class="dl">'</span><span class="p">:</span> <span class="kc">false</span><span class="p">},</span>
+            <span class="p">{</span><span class="dl">'</span><span class="s1">billiard room</span><span class="dl">'</span><span class="p">:</span> <span class="kc">true</span><span class="p">},</span>
+            <span class="p">{</span><span class="na">library</span><span class="p">:</span> <span class="kc">false</span><span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Professor Plum</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">present</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="na">rooms</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="na">kitchen</span><span class="p">:</span> <span class="kc">true</span><span class="p">},</span>
+            <span class="p">{</span><span class="na">ballroom</span><span class="p">:</span> <span class="kc">false</span><span class="p">},</span>
+            <span class="p">{</span><span class="na">conservatory</span><span class="p">:</span> <span class="kc">false</span><span class="p">},</span>
+            <span class="p">{</span><span class="dl">'</span><span class="s1">dining room</span><span class="dl">'</span><span class="p">:</span> <span class="kc">true</span><span class="p">},</span>
+            <span class="p">{</span><span class="dl">'</span><span class="s1">billiard room</span><span class="dl">'</span><span class="p">:</span> <span class="kc">false</span><span class="p">},</span>
+            <span class="p">{</span><span class="na">library</span><span class="p">:</span> <span class="kc">false</span><span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">];</span></code></pre></figure>
+
 <h3 id="empty-room-solution">Empty Room Solution</h3>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">notInRoom</span> <span class="o">=</span> <span class="nx">suspect</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// return an array of all of the false values</span>
+
+    <span class="kd">const</span> <span class="nx">emptyRooms</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">suspect</span><span class="p">.</span><span class="nx">rooms</span><span class="p">,</span> <span class="p">(</span><span class="nx">room</span><span class="p">,</span> <span class="nx">memo</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">room</span> <span class="o">===</span> <span class="kc">false</span><span class="p">)</span> <span class="nx">memo</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">room</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nx">memo</span>
+    <span class="p">},</span> <span class="p">[]);</span>
+
+    <span class="k">return</span> <span class="nx">emptyRooms</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">notInRooms</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">newDevelopment</span><span class="p">,</span> <span class="nx">notInRoom</span><span class="p">);</span>
+
+<span class="nx">_</span><span class="p">.</span><span class="nx">intersection</span><span class="p">(...</span><span class="nx">notInRooms</span><span class="p">)</span></code></pre></figure>
 
 <h2 id="functional-utilities">Functional Utilities</h2>
 
 <h3 id="currying">Currying</h3>
 
+<p>Currying is when you create a function that can then later be called multiple times with different arguments.</p>
+
+<p>For example:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">abc</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span><span class="p">];</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">curried</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">curry</span><span class="p">(</span><span class="nx">abc</span><span class="p">);</span>
+
+<span class="nx">curried</span><span class="p">(</span><span class="mi">1</span><span class="p">)(</span><span class="mi">2</span><span class="p">)(</span><span class="mi">3</span><span class="p">);</span>
+<span class="c1">// =&gt; [1, 2, 3]</span>
+
+<span class="nx">curried</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)(</span><span class="mi">3</span><span class="p">);</span>
+<span class="c1">// =&gt; [1, 2, 3]</span></code></pre></figure>
+
+<p>Currying allows you to break up arguments passed by the number of arguments.</p>
+
 <h3 id="composing">Composing</h3>
+
+<p>Composing is when you take two functions and combine them.</p>
+
+<p>For example:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">consider</span> <span class="o">=</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s2">`I think it could be... </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">exclaim</span> <span class="o">=</span> <span class="p">(</span><span class="nx">statement</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s2">`</span><span class="p">${</span><span class="nx">statement</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()}</span><span class="s2">!`</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">blame</span>  <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">compose</span><span class="p">(</span><span class="nx">consider</span><span class="p">,</span> <span class="nx">exclaim</span><span class="p">);</span>
+
+<span class="nx">blame</span><span class="p">(</span><span class="dl">'</span><span class="s1">you);
+
+// =&gt; </span><span class="dl">'</span><span class="nx">I</span> <span class="nx">think</span> <span class="nx">it</span> <span class="nx">could</span> <span class="nx">be</span><span class="p">...</span> <span class="nx">YOU</span><span class="o">!</span><span class="dl">'</span></code></pre></figure>
+
+<p><a href="https://underscorejs.org/#compose">_.compose documentation</a></p>
 
 <h2 id="advanced-scope-closure">Advanced Scope: Closure</h2>
 
 <h3 id="closure">Closure</h3>
 
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">myAlert</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="c1">// declare a function</span>
+    <span class="kd">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Help! I think I found a clue!</span><span class="dl">'</span><span class="p">;</span> <span class="c1">// save a string to the constant x</span>
+    <span class="kd">const</span> <span class="nx">alerter</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="c1">// declare another function</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span> <span class="c1">// send an alert to the DOM</span>
+    <span class="p">};</span>
+    <span class="nx">alerter</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="nx">myAlert</span><span class="p">();</span> <span class="c1">// invoke the function</span></code></pre></figure>
+
 <h3 id="closure-part-2">Closure, Part 2</h3>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">myAlert</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Help! I think I found a clue!</span><span class="dl">'</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">alerter</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
+    <span class="p">};</span>
+
+    <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">alerter</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span> <span class="c1">// wait for 1000ms</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">what happens first? this log or the alert?</span><span class="dl">'</span><span class="p">);</span> <span class="c1">// the log appears first</span>
+<span class="p">};</span>
+
+<span class="nx">myAlert</span><span class="p">();</span> <span class="c1">// invoke the function</span></code></pre></figure>
 
 <h3 id="creating-closure">Creating Closure</h3>
 
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">myAlert</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Help! I think I found a clue!</span><span class="dl">'</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">alerter</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">x</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="o">++</span><span class="nx">count</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+    <span class="p">};</span>
+
+    <span class="k">return</span> <span class="nx">alerter</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">funcAlert</span> <span class="o">=</span> <span class="nx">myAlert</span><span class="p">();</span> <span class="c1">// creates a new execution context of the myAlert function</span>
+<span class="kd">const</span> <span class="nx">funcAlert2</span> <span class="o">=</span> <span class="nx">myAlert</span><span class="p">();</span> <span class="c1">// creates a new execution context of the myAlert function</span>
+<span class="nx">funcAlert</span><span class="p">();</span> <span class="c1">// since myAlert ultimately returns the alerter function, this will run the alerter function again from within the new execution context that has been created by funcAlert</span></code></pre></figure>
+
+<p>If you continue to call <code class="highlighter-rouge">funcAlert();</code>, the <code class="highlighter-rouge">count</code> value would continue to increase by 1 each time the function is called and it would be independent of the execution contect of <code class="highlighter-rouge">funcAlert2();</code>; which would still be at 0 until called.</p>
+
 <h3 id="closure-demonstration">Closure Demonstration</h3>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">newClue</span> <span class="o">=</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">length</span> <span class="o">=</span> <span class="nx">name</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="nx">weapon</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">clue</span>  <span class="o">=</span> <span class="nx">length</span> <span class="o">+</span> <span class="nx">weapon</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+        <span class="k">return</span> <span class="o">!!</span><span class="p">(</span><span class="nx">clue</span> <span class="o">%</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">};</span>
+<span class="p">};</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">countClues</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="na">count</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="o">++</span><span class="nx">n</span><span class="p">;</span> <span class="p">},</span>
+        <span class="na">reset</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">};</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>With the above function, you can create separate execution contexts by declaring variables that are equal to the function <code class="highlighter-rouge">countClues()</code>; i.e. <code class="highlighter-rouge">counter = countClues(); counter2 = countClues;</code></p>
 
 <h3 id="closure-recipe">Closure Recipe</h3>
 
+<p><a href="http://slides.com/bgando/f2f-final-day-2#/3/7">Here is the slide for the closure recipe</a></p>
+
+<p>A closure is when a function is inside of another function and it creates scope isolation. This can be acheived by returning a function from within a function which allows the function to retain access to its parent scope even after it has been executed.</p>
+
+<p>The recipe for a closure is as follows:</p>
+
+<ol>
+  <li>
+    <p>Create your parent function</p>
+  </li>
+  <li>
+    <p>Define some variables in the parent function’s local scope</p>
+  </li>
+  <li>
+    <p>Define a function inside the parent function. This is called a child</p>
+  </li>
+  <li>
+    <p>Return the child function from inside the parent function</p>
+  </li>
+</ol>
+
+<p>The execution piece of a colsure is as follows:</p>
+
+<ol>
+  <li>
+    <p>Run the parent function and save it to a variable. This variable will now hold whatever the parent function returns; i.e. the child function</p>
+  </li>
+  <li>
+    <p>Optional… Check what the variable now holds as it value, it should be the child function</p>
+  </li>
+  <li>
+    <p>Run the inner function by calling your newly created variable</p>
+  </li>
+  <li>
+    <p>What happened?</p>
+  </li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">findSomeone</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+    <span class="kd">const</span> <span class="nx">speak</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">who</span><span class="p">);</span>
+    <span class="p">};</span>
+
+    <span class="kd">let</span> <span class="nx">who</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Why hello there, Prof Plum!</span><span class="dl">"</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="nx">speak</span><span class="p">;</span>
+<span class="p">};</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">makeTimer</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">elapsed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="kd">const</span> <span class="nx">stopwatch</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">elapsed</span><span class="p">;</span> <span class="p">};</span>
+
+    <span class="kd">const</span> <span class="nx">increase</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">elapsed</span><span class="o">++</span><span class="p">;</span>
+
+    <span class="nx">setInterval</span><span class="p">(</span><span class="nx">increase</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="nx">stopwatch</span><span class="p">;</span>
+
+<span class="p">};</span>
+
+<span class="kd">let</span> <span class="nx">timer</span> <span class="o">=</span> <span class="nx">makeTimer</span><span class="p">();</span></code></pre></figure>
+
+<p>Same as above, but with console.log(s)</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">makeTimer</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">initialized);
+    let elapsed = 0;
+    console.log(elapsed);
+
+    const stopwatch = () =&gt; {
+        console.log(</span><span class="dl">'</span><span class="nx">stopwatch</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nx">elapsed</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">const</span> <span class="nx">increase</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">elapsed</span><span class="o">++</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="nx">stopwatch</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">timer</span> <span class="o">=</span> <span class="nx">makeTimer</span><span class="p">();</span></code></pre></figure>
+
 <h3 id="currying-and-componsing-exercises">Currying and Componsing Exercises</h3>
 
+<p>Skips right to solutions…</p>
+
 <h3 id="currying-and-componsing-solutions">Currying and Componsing Solutions</h3>
+
+<p>Currying</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">curry</span> <span class="o">=</span> <span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nx">arg</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nx">arg2</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">fn</span><span class="p">(</span><span class="nx">arg</span><span class="p">,</span> <span class="nx">arg2</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Composing</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">compose</span> <span class="o">=</span> <span class="p">(</span><span class="nx">fn</span><span class="p">,</span> <span class="nx">fn2</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nx">arg</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">fn2</span><span class="p">(</span><span class="nx">arg</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nx">fn</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+    <span class="p">};</span>
+<span class="p">};</span></code></pre></figure>
 
 <h2 id="wrapping-up-javascript-from-fundamentals-to-functional-js">Wrapping Up “JavaScript: From Fundamentals to Functional JS”</h2>
 
 <h3 id="wrapping-up">Wrapping Up</h3>
+
+<p>We covered functional utility methods, scope, functions, objects, and arrays. Mostly covered in ES5 with some ES6 thrown in. Moving forward, use and apply what you have learned in future courses.</p>
 
 </div>
     </main>
