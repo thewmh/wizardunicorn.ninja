@@ -78,7 +78,7 @@ To better understand how to implement the JSS capabilities, you'll want to be fa
 
 Now that you know about the JSS capabilities and features that help front-end developers create JSS apps, you will examine how initial JSS app development can be done while disconnected from Sitecore, which is the code-first approach. The code-first approach allows developers to create and deploy apps in their preferred environment.
 
-*Code-First Details and Benefits*
+**Code-First Details and Benefits**
 
 * Designing with Code-First Workflow -
 
@@ -118,7 +118,7 @@ Either way, the designer and developer need to collaborate. This collaboration b
 
 Before you create an app, first make certain you meet the experience and Sitecore requirements discussed below. These requirements identify the necessary skills to use Sitecore JSS.
 
-*Experience Requirements*
+**Experience Requirements**
 
 To create and build Sitecore JSS apps, you should have experience with the following applications to ensure you have the necessary skills:
 
@@ -182,7 +182,7 @@ The `jss` commands change when running within a JSS apps' directory. The `--help
 
 Now that you have the JSS CLI installed, you are ready to create your sample JSS app.
 
-*Steps to Create Sample JSS App*
+**Steps to Create Sample JSS App**
 
 1. Identify Framework Options
 
@@ -286,7 +286,7 @@ The way you organize a site correlates with your content needs. In disconnected 
 
 There are three types of directory items specific to Sitecore terminology you'll want to know: arbitrary content, routes, and components. Continue below to look at each one in more detail. 
 
-*Arbitrary Content:* 
+**Arbitrary Content:** 
 
 * They are not used as pages or datasources
 
@@ -296,14 +296,40 @@ There are three types of directory items specific to Sitecore terminology you'll
 
 * They are usually used for restricting values of route-level or component-level fields to a limited set of options such as sharing content across routes (e.g. an author's bio)
 
-*Routes:*
+**Routes:**
 
 * These items are “pages” since they can be viewed in browsers using unique URLs. They contain route-level fields and instructions for how to lay out the route’s components
 
 * Site implementations may need multiple route types to capture route-level fields. Examples include article route, product route, and location route. In Sitecore terminology, route types are “templates” 
 
-*Components:*
+**Components:**
 
 * These are “rendering datasources,” where a datasource is comprised of a component name plus its field
 
 * They contain component-level fields. These items cannot be viewed in browsers directly because they don’t have any layout data; they are simply building blocks for route presentation
+
+### Create a Route in an App
+
+Routes are important because they are needed to display component content and their data.
+
+* Purpose of routes - JSS extends Sitecore's dynamic, component-based layout model to the frontend. With JSS's layout model, you create routes so the components can display content.
+
+**Compare How Routes Work**
+
+* Routes in a Traditional JavaScript App - Each route hosts known components. The components are static. A static component does not have a datasource and displays non-customizable data (e.g. a layout component that adds columns or a component that pulls data from a third-party service that has no customization options).
+
+* Routes in a Sitecore JSS App - The disconnected data define a route's components and their data when applicable. JSS extends Sitecore's dynamic, component-based layout model to the frontend. Route data is typically retrieved from static YAML or JSON files or simple JavaScript files. The sample app you created earlier in this course defines route data in YAML files located in the `/data/routes` directory. For more details explaining route data, see [Defining route data](https://jss.sitecore.com/docs/techniques/working-disconnected/manifest-api#defining-route-data), [Understanding layout](http://jss.sitecore.net/docs/fundamentals/understanding-layout), and [Route + State Management](https://jss.sitecore.com/docs/client-frameworks/react/sample-app#routing--state-management).
+
+> NOTE when connecting a JSS app to Sitecore:
+
+> * After importing an app to Sitecore, Sitecore then defines the data dynamically. The route data is retrieved using calls to the Sitecore Layout Service—via HTTP or in-process for integrated mode server-side rendering (SSR). SSR is the process of taking a client-side JavaScript framework website and rendering it to HTML and CSS on the server. 
+
+> * Prior to JSS, Sitecore did not render data. Instead, you added the rendering code to the .cshtml file or the .ascx file. Also before JSS, to define what renderings to add to a placeholder in Sitecore, you needed to set the Allowed Controls on Placeholder Settings in the Sitecore Experience Editor.
+
+* What JSS needs to create routes 
+
+* Mock Layout Service 
+
+* Routes and templates
+
+* Fields on routes vs. components
