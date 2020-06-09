@@ -712,20 +712,139 @@ user1.increment();
 
 This section walks through the above code.
 
+`Object.create(passedObject)` will create an implicit link to the passed-in object which will allow the new object to have access to properties that are in the passed-in object without directly having the properties itself.
+
 ### Prototype Chain Example: Implicit Parameters
+
+`this` is an implicit parameter. In the case of the code above, in the increment function; `this.score++`, `this` will be equal to the value that is to the left of the dot, i.e. `user1.increment()` will result in `this = user1` in the execution context of the `increment` function.
 
 ### hasOwnProperty Method
 
+What if we want to confirm if a property exists in an object? `hasOwnProperty`! i.e. `user1.hasOwnProperty('score')`. But does the user1 object have a method `hasOwnProperty`? or does the object that it is prototypically linked to `userFunctionStore`? no... JavaScript has a set of methods that are available to all objects set in `Object.prototype`. In other words, every object in JavaScript has a prototypal link to a set of methods which are defined in `Object.prototype`. `user1.hasOwnProperty('score')` would return `true`.
+
 ### this Keyword
+
+`this` would work fine in the above code block, but consider this:
+
+{% highlight javascript %}
+
+const userFunctionStore = {
+    increment: function() {
+        function add1(){ this.score++; }
+        add1();
+    }
+};
+
+{% endhighlight %}
+
+`this` would not evaluate to `user1`, but would look in Global Memory for `user1` which does not exist, but if you change `add1()` to `add1.call(this)`, `this` would still hold the same value in the execution context of `add1()` as it did in the function stored in the label `increment`
 
 ### Arrow Function Scope & this
 
+When using an Arrow Function, the value of `this` is lexically scoped meaning that the value of `this` would remain as it was in the parent scope of the function, which would be `user1`.
+
 ### Prototype Chain Review
+
+A review of the last few above sections.
 
 ### new Keyword
 
+the `new`keyword automates the 'hard work' of creating objects. When we call the function that returns an object with `new` in front of it, it automates 2 things:
+
+1. Create a new object
+
+2. Return the new object
+
+But now we need to adjust how we write the body of our object creator. How can we:
+
+* Refer to the auto-created object? The newly generated object will be referred to as `this`
+
+* Know where to put single copies of functions?
+
+{% highlight javascript %}
+
+function userCreator(name, score) {
+    this.name = name;
+    this.score = score;
+};
+
+userCreator.prototype
+userCreator.prototype.increment = function(){
+    this.score++;
+}
+
+const user1 = new userCreator("Viljar", 7);
+
+{% endhighlight %}
+
+Functions are both objects and functions 🧐
+
+{% highlight javascript %}
+
+function multiplyBy2(num) {
+    return num*2
+}
+
+multiplyBy2.stored = 5
+multiplyBy2(3) // 6
+
+multiplyBy2.stored // 5
+multiplyBy2.prototype // {}
+
+{% endhighlight %}
+
+All functions have a default property `prototype` on their object version (itself an object). Using a dot on the end of a function, you can get access to the object portion of a function.
+
 ### new Keyword Example
+
+Walks through this code:
+
+{% highlight javascript %}
+
+function userCreator(name, score) {
+    this.name = name;
+    this.score = score;
+};
+
+userCreator.prototype
+userCreator.prototype.increment = function(){
+    this.score++;
+}
+
+const user1 = new userCreator("Viljar", 7);
+
+{% endhighlight %}
+
+The benefit to using the `new` keyword is that it is faster to write and it is often used in practice in professional code.
+
+The problem(s) to using the `new` keyword is that 95% of developers have no idea how it works and therefore fail interviews. And... we should uppercase the first letter of the function so we know it requires `new` to work! 
 
 ### class Keyword
 
+In languages other than JavaScript, there is a way to construct the function/object combo (similar to `new`), but all at once rather than declaring a function, then assigning functions to labels in the `.prototype` object. Using `class` allows everything to be declared at once.
+
+{% highlight javascript %}
+
+class UserCreator {
+    constructor (name, score){ // same as function userCreator(name, score){...}
+        this.name = name;
+        this.score = score;
+    }
+    increment (){ this.score++; } // same as userCreator.prototype.increment...
+    login (){ console.log("logged in"); } // same as userCreator.prototype.login...
+}
+
+const user1 = new UserCreator("Viljar", 7);
+user1.increment();
+
+{% endhighlight%}
+
+[`constructor` on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor)
+
+The benefits of using `class` are that it is emerging as the new standard (introduced in ES6) and that it 'feels' more like the style of other languages (e.g. Python).
+
+Problems with using `class`? 99% of developers have no idea how it works...
+
 ## Wrapping Up
+
+Click `back to top` and re-read these notes.
