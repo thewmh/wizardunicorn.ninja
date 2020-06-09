@@ -132,7 +132,7 @@ To create and build Sitecore JSS apps, you should have experience with the follo
 
 * YAML or JSON (to store route data in files)
 
-*Sitecore Requirements*
+**Sitecore Requirements**
 
 In addition to having experience with the above applications, you also need to ensure you've done the following:
 
@@ -312,7 +312,7 @@ There are three types of directory items specific to Sitecore terminology you'll
 
 Routes are important because they are needed to display component content and their data.
 
-* Purpose of routes - JSS extends Sitecore's dynamic, component-based layout model to the frontend. With JSS's layout model, you create routes so the components can display content.
+1. Purpose of routes - JSS extends Sitecore's dynamic, component-based layout model to the frontend. With JSS's layout model, you create routes so the components can display content.
 
 **Compare How Routes Work**
 
@@ -320,16 +320,134 @@ Routes are important because they are needed to display component content and th
 
 * Routes in a Sitecore JSS App - The disconnected data define a route's components and their data when applicable. JSS extends Sitecore's dynamic, component-based layout model to the frontend. Route data is typically retrieved from static YAML or JSON files or simple JavaScript files. The sample app you created earlier in this course defines route data in YAML files located in the `/data/routes` directory. For more details explaining route data, see [Defining route data](https://jss.sitecore.com/docs/techniques/working-disconnected/manifest-api#defining-route-data), [Understanding layout](http://jss.sitecore.net/docs/fundamentals/understanding-layout), and [Route + State Management](https://jss.sitecore.com/docs/client-frameworks/react/sample-app#routing--state-management).
 
-> NOTE when connecting a JSS app to Sitecore:
+> _NOTE when connecting a JSS app to Sitecore:_
 
-> * After importing an app to Sitecore, Sitecore then defines the data dynamically. The route data is retrieved using calls to the Sitecore Layout Service—via HTTP or in-process for integrated mode server-side rendering (SSR). SSR is the process of taking a client-side JavaScript framework website and rendering it to HTML and CSS on the server. 
+> _* After importing an app to Sitecore, Sitecore then defines the data dynamically. The route data is retrieved using calls to the Sitecore Layout Service—via HTTP or in-process for integrated mode server-side rendering (SSR). SSR is the process of taking a client-side JavaScript framework website and rendering it to HTML and CSS on the server._ 
 
-> * Prior to JSS, Sitecore did not render data. Instead, you added the rendering code to the .cshtml file or the .ascx file. Also before JSS, to define what renderings to add to a placeholder in Sitecore, you needed to set the Allowed Controls on Placeholder Settings in the Sitecore Experience Editor.
+> _* Prior to JSS, Sitecore did not render data. Instead, you added the rendering code to the .cshtml file or the .ascx file. Also before JSS, to define what renderings to add to a placeholder in Sitecore, you needed to set the Allowed Controls on Placeholder Settings in the Sitecore Experience Editor._
 
-* What JSS needs to create routes 
+2. What JSS needs to create routes - JSS relies on two features to create routes. They are:
 
-* Mock Layout Service 
+* **A JSS Library** - This is a series of npm packages that facilitate working with Sitecore data and presentation in JavaScript.
 
-* Routes and templates
+* **The Layout Service** -  This is the presentation layer that provides the composition of pages and the data needed for each component.
 
-* Fields on routes vs. components
+3. Mock Layout Service - This third topic about understanding routes covers the mock Layout Service. The mock Layout Service emulates the data you would receive from the actual Sitecore Layout Service, while also preparing your JSS app for code-first deployment.
+
+> **Why It's Important:**
+
+> * The mock Layout Service provides a consistent API to create a complex single-page JSS application that includes components, routes, and custom route types as well as the needed data for each component.
+
+> * The mock Layout Service also provides integration with Sitecore.
+
+**Three Notable Factors for the Layout Service Process:**
+
+* Your disconnected JSS app is essentially built to consume and render a data-driven layout made available via the mock Layout Service
+
+* Normally, the component data is a set of fields from the datasource item.
+
+* When the mock or Sitecore Layout Service renders a page, it returns a JSON representation of the layout of the route and the data for each component.
+
+> _NOTE when connecting a JSS app to Sitecore:_
+
+> _* Currently, there are no tools built into the JSS SDK to retrieve and store Sitecore-connected Layout Service data as files._ 
+
+> _* Should you later import your JSS app to Sitecore and no longer need the mock Layout Service that the sample apps use, you can instead save Layout Service data queried from Sitecore in a JSON file._
+
+> _* Once you have that data locally (i.e., you're disconnected), you might consider building your own service layer to fetch "raw" Layout Service data from the JSON file(s) you saved._
+
+4. Routes and templates
+
+* **Templates:** You put a template with static component data in the `data/component-content` folder of the sample library to share static component data. Therefore, if you want to add components to multiple routes while reusing the same data, you put that component data into `component-content`.
+
+* **Routes vs. Templates:**
+    
+    * Routes are items in a page that map, or correspond, to a route. The page-level items that correspond to the route are expected to have conventional presentation details set on them.
+
+    * Templates do not have presentation as they are arbitrary content. They’re just used for datasources or to populate fields.
+
+    * Every file under `routes` becomes a page. Routes are made from templates, but since they have presentation, they're called pages or routes.
+
+5. Fields on routes vs. components - For our fifth topic, we'll consider whether to add fields to a route or to a component. To help you decide, you want to consider how the page will be used. For most sites, you will likely want to have different types of pages that include product-specific fields. Each JSS app has one default route template, `routes.sitecore.js`, which is automatically set as a base template for any route types defined in the app’s manifest.
+
+In general, you want to:
+
+* Add fields to components when they are generic fields. With this method, you can have component datasource items shared by multiple components on multiple pages.
+
+* Add fields to routes if you'll be doing a lot of filtering and searching in order to more easily query your pages.
+
+> _* If you use the same default template and put all data into components, it will be difficult to query these pages._
+
+> _NOTE when connecting a JSS app to Sitecore:_
+
+> _* For integrated or connected mode, A GraphQL query accesses the page's field, while a search by fields of components requires looking deep into the nested folder structure._ 
+
+> _* The JSS import process will always generate a route template for each app._
+
+JSS extends Sitecore's dynamic, component-based layout model to the frontend. With the layout model, you create routes so the components can display content. Now, let's see how we'll go about actually making routes.
+
+**Steps to Create a Route**
+
+1. Add a Route Type
+
+In Visual Studio Code's Explorer window, browse to where you define/add your routes, `\sitecore\definitions\routes.sitecore.js`, and then create a `routes` folder.
+
+* Copy and paste the `routes.sitecore.js` file (or any future routes file you create in `sitecore\definitions\routes`).
+
+* Rename to `[Pagename]Route.sitecore.js`.
+
+* Remove any unneeded content. The unneeded content includes fields that are not relevant to your new route.
+
+In this new route file, use the `addRouteType` function as seen in the example code below. The `addRouteType` function is important because:
+
+* It’s an API method to call for new routes.
+
+* It’s how you add a route type with a name and fields.
+
+* It can add inherited data. However, by default, we inherit the addRoute function, which adds an app route data definition. Therefore, the addRoute function does not need to be called out explicitly.
+
+{% highlight javascript %}
+
+import { CommonFieldTypes, Manifest } from '@sitecore-jss/sitecore-jss-manifest”;
+
+export default function (manifest) {
+    manifest.addRouteType({
+    name: 'MyRoute',
+    displayName: "My Route",
+
+  fields: [
+    {
+    name: "description",
+    type: CommonFieldTypes, RichText,
+    displayName: "My Route",
+    required: false
+    },
+    ]
+  });
+}
+
+{% endhighlight %}
+
+2. Add a Template Property
+
+Continue in this new route file `[Pagename]Route.sitecore.js` to add a template property.
+
+Use the example code below, which matches the route name, to tell JSS that a page should use the custom route.
+
+**Tip:** If you are pulling route data from files, you may want to apply this dynamically, especially if all your routes utilize the same type.
+
+{% highlight javascript %}
+
+{
+    "name": "route",
+    "template": "MyRoute",
+    "displayName": "MyRoute",
+    "placeholders": {
+        // ...
+    }
+}
+
+{% endhighlight %}
+
+### Inspect JSS App Templates
+
