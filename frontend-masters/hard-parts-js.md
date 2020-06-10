@@ -392,8 +392,7 @@ This section is focused on setTimeout which is not a feature of JavaScript, but 
 
 This section quickly talks about there being rules between JavaScript and how the browser interacts with it. They are defined as being quite strict and the following JavaScript was displayed as an example to consider:
 
-{% highlight javascript %}
-
+```js
 function printHello(){console.log("Hello"); }
 function blockFor1Sec(){
     // blocks the JavaScript Thread of Execution for 1 second, maybe with a for loop?
@@ -403,8 +402,7 @@ setTimeout(printHello,0);
 
 blockFor1Sec();
 console.log("Me first!");
-
-{% endhighlight %}
+```
 
 What will happen?!
 
