@@ -154,7 +154,7 @@ var v = 42n;
 
 typeof v; // "bigint"
 
-{% highlight javascript %}
+{% endhighlight %}
 
 Coming soon functionality, does not behave like a standard number primitive type. It will be important to know the difference between a 'number' and a 'bigint'.
 
