@@ -451,3 +451,186 @@ Use the example code below, which matches the route name, to tell JSS that a pag
 
 ### Inspect JSS App Templates
 
+Now that you have some experience using directories and creating routes, you are ready to inspect how to use an application template for your preferred framework (Angular, React, or Vue).
+
+**Step 1: Identify Template Contents**
+
+To create an app for your framework with JSS, you need an application template. The application template contains:
+
+* All the boilerplate code in the configuration to get up and running with a project on one of those frameworks.
+
+* A sample website to get you started with JSS, which is a Styleguide for all the JSS field types inside Sitecore.
+
+**Step 2: Examine Role of JSS CLI**
+
+1. First, the JSS CLI creates your app with your framework’s application template, each of which is housed in the Sitecore’s JSS Github repository.
+
+2. Then, the JSS CLI extracts the template on your file system in the folder with your application's name, where it installs the package using the package manager, Yarn.
+
+3. Once the app is created, you can check the Visual Studio Code console to verify the local development server compiled the application successfully at `http://localhost:3000`.
+
+**Step 3: View Sample Site**
+
+When the app build is complete, the app’s site automatically opens in a browser to `http://localhost:3000`. There, you can view the sample site. This site’s homepage includes the following important documentation links:
+
+* [Sitecore JSS documentation page](https://jss.sitecore.com)
+
+* Styleguide page for your framework, `http://localhost:3000/styleguide`
+
+* Sitecore GraphQL resources; note that GraphQL is only available in integrated and connected modes
+
+## Determine JSS Content Presentation
+
+### Define Component Rendering
+
+In order to determine content presentation, you need to first understand what rendering components is and why it's important. Rendering JSS components is the same as rendering the components in your framework (e.g. Angular, React, or Vue). You render your built component by adding it to a placeholder on the page using a route. To draw an analogy, a component in React represents a rendering with the same name in Sitecore.
+
+[JSS injects the content data](https://sitecore.stackexchange.com/questions/16559/sitecore-jss-react-overview-create-pages) from the mock or Sitecore Layout Service to a page. A component in the framework template is a rendering of the JSS component that uses the [router library](https://redux.js.org/advanced/usage-with-react-router) to [sync](https://github.com/reactjs/react-router-redux) the framework library (e.g.  [React Router Redux](https://github.com/reactjs/react-router-redux)) and allows navigation between pages.
+
+### Examine How Rendering Works
+
+Now that you understand what rendering is, you will learn how it works. Rendering is important because it is how you display content in your app like text and images.
+
+**1. Learn Layout Service's process in rendering**
+
+As we switch between pages, the router requests the content from a corresponding item (page) in the mock or Sitecore Layout Service. These fields are stored in a database. Then the Layout Service processes the request.
+
+An item is basically just a collection of fields, or an item might also represent a webpage. In a typical Sitecore site, every page is an item, but the reverse is definitely not true. 
+
+There are many items that may represent page content but are not necessarily a page themselves. For example, the item might be used as a datasource or a field source, or it might just represent a configuration setting.
+
+**2. View Output Data**
+
+Next, you will look at an example of a JSON file's output data to see how content items might be represented.
+
+{% highlight javascript %}
+
+{
+    "context": {
+        "pageEditing": false,
+        "site": { "name": "MyApplication" },
+        "language": "en",
+        "currentContact": null
+    },
+    "name": "Home",
+    "displayName": "Home",
+    "fields": {
+        "Metadata Keywords": {
+            "value": "",
+            "editable": ""
+        },
+    }
+}
+
+{% endhighlight %}
+
+The above includes context data that is common for each of the following:
+
+* Request,
+
+* Fields of a requested item, and
+
+* List of placeholders defined for the item (using the placeholders property).
+
+Here's another section of a JSON file's output data:
+
+{% highlight javascript %}
+
+"placeholders": [
+    {
+        "name": "Main",
+        "path": "Main",
+        "elements": [
+            {
+                "componentName": "serviceScreen",
+                "renderingName": "Service Screen",
+                "renderingParams": {},
+                "uid": "261adcfd-6ca7-4d60-aa37-d92a11c49594",
+                "dataSource": "{9F2C1F61-FE87-4BC0-B223-8289A81912C1}",
+                "placeholders": [].
+                "name": "code",
+                "type": "data/json",
+                "contents": {
+                    "path": "/special service plan",
+                    "fields": {
+                        "ServiceDiscount": {
+                            "value": "0",
+                            "editable": "0"
+                        }
+                    }
+                }
+            }
+        ]
+    }
+]
+
+{% endhighlight %}
+
+The above rendering takes place inside the **elements** property. Rendering includes:
+
+* All datasource fields assigned to it
+
+* Each element's **componentName** property
+
+* A framework component name that should be rendered in this place. This component will use data from the **contents** property as contextual data to render
+
+[Download the complete output data file described in the section above](https://scorm.servicerocket.io/packages/61059053-c658-49c3-91c6-90c76c2afc0d/scormcontent/assets/fZL2PoSRTJVP456e_zxRzj1N3KuIXh_pG-output-data.txt)
+
+**3. Identify How to Render a Component**
+
+In the previous procedure, you explored an example of components being rendered in the JSON output file. You learned earlier in this track that you render a component to display its content in your app. Now, in order to render a component, you first you add your component to a page and then you add your content into fields on the component. The JSS SDK provides framework-specific field helpers to render fields so authors can edit them in Sitecore's Experience Editor after connecting your app to Sitecore.
+
+### Render Components
+
+Now that you understand what component rendering is and how it works, you are ready to render components.
+
+**1. Register a Component**
+
+* Compare Scaffolding Types
+    
+    * JSS scaffolding differs from traditional Sitecore scaffolding
+
+        * In a Sitecore-first application, the task of adding a new component involves a repetitive set of steps (e.g. creating a rendering item, datasource template item, and datasource location folders and then linking them together).
+
+        * Whereas in JSS, scaffolding creates the framework component (e.g. React) and the disconnected component definition files first and then provides helpful feedback about what to do to make your component work.
+
+    * Identify Scaffolding Scripts
+
+        The scaffolding script is located in `scripts/scaffold-component.js` and is fully customizable to suit your needs and patterns. In this same file, you can customize the manifest definition scaffolding as well.
+
+        You'll likely also want to change the component factory generation script `scripts/generate-component-factory.js` (if you plan to use it) to match the nested structure of your components.
+
+        In JSS, this layout is used just to indicate that you’re using JSS and points to an empty Razor view. Whereas in traditional Sitecore, the layout is pointing to a **cshtml** file, which contains the scaffolding of the presentation.
+
+        To learn more about server-side JavaScript rendering, see this [view engine](https://jss.sitecore.com/docs/fundamentals/services/view-engine) topic.
+
+    * Explore Component Definitions
+
+        You create the component definitions and their files in JSS to export to Sitecore.
+
+        When you create a content field, you are defining data to the datasource. To learn more, see details on:
+
+        * [Client-side Routing](https://jss.sitecore.com/docs/client-frameworks/react/sample-app#client-side-routing)
+
+        * [Manifest Instanc Methods](https://jss.sitecore.com/docs/techniques/working-disconnected/manifest-api#manifest-api-instance-methods)
+
+        * [Manifest Objects](https://jss.sitecore.com/docs/techniques/working-disconnected/manifest-api#manifest-objects)
+
+    * Register a Component
+
+        When you register a component, you:
+
+        * Create the component manifest definition file, e.g. **OurNewComponent.sitecore.js**. This is where you define fields and placeholders
+
+        * Allow JSS to detect the component
+
+        * Enable adding component instances to routes
+
+        The recommended way to create and register new components is to use the `jss scaffold` command. For example:
+
+        1. Type the `jss scaffold OurNewComponent` command at a command line interface window prompt
+
+        2. After you correctly enter your `scaffold` command code, you can see the result of your command line interface window
+
+**2. Add a Field to a Component**
+
