@@ -170,15 +170,94 @@ NaN does not mean 'not a number', it means 'invalid number'. Zero is not a numbe
 
 ### Negative Zero
 
-The negative representation of the value zero. If you stringify -0, it returns as '0'. `-0 === 0` ? `true` negative zero is neither less than or greater than zero. Enter `Object.is()` which allows you to test for the negative zero. It can also be used to check NaN values.
+The negative representation of the value zero. If you stringify -0, it returns as '0'. `-0 === 0` ? `true` negative zero is neither less than or greater than zero. Enter `Object.is()` which allows you to test for the negative zero. It can also be used to check NaN values. A negative zero could be used to track the direction an element was traveling when it gets to zero. If an element was traveling in a negative direction (towards zero), when it gets to zero, it would be useful to denote which direction it was traveling rather than just zero. Negative zero to the rescue!
 
 ### Type Check Exercise
 
-### Type Check Exercise
+Make a Polyfill for `Object.is(..)`
+
+1. `Object.is(..)1 should take two parameters.
+
+2. It should return `true` if the passed in parameters are exactly the same value (not just `===`), or `false` otherwise.
+
+3. For `NaN` testing, you can use `Number.isNan(..)`, but first see if you can find a way to test without usage of any utility?
+
+4. For `-0` testing, no built-in utility exists, but here's a hint: `-Infinity`.
+
+5. If the parameters are any other values, just test them for strict equality.
+
+6. You cannot use the built-in `Object.is(..)`
+
+**Polyfill Pattern**
+
+> Note: Since your JS environment probably already has `Object.is(..)`, to test your polyfill you'll have to first unconditionally define it (no `if` guard), and then add the `if` guard when you're done.
+
+To define a polyfill, it looks like this:
+
+{% highlight javascript %}
+
+if (!Object.is) {
+    Object.is = function ObjectIs(..) {..};
+}
+
+{% endhighlight %}
+
+In the (Code Exercises)[https://static.frontendmasters.com/resources/2019-03-07-deep-javascript-v2/deep-js-foundations-v2-exercises.zip], the file `types-exercises > object-is > ex.js` you will find the file that has all of the `Object.is(..)` tests.
 
 ### Type Check Exercise Solution
 
+{% highlight javascript %}
+
+if (!Object.is || true) {
+    Object.is = function ObjectIs(x, y) {
+        var xNegZero = isItNegZero(x);
+        var yNegZero = isItNegZero(x);
+
+        if (xNegZero || yNegZero) {
+            return xNegZero && yNegZero;
+        } else if (isItNaN(x) && isItNaN(y)) {
+            return true;
+        } else {
+            return x === y;
+        }
+
+        function isItNegZero(v) {
+            return v == 0 && (1/v) == -Infinity;
+        }
+
+        function isItNaN(v) {
+            return v !== v;
+        }
+    };
+}
+
+{% endhighlight %}
+
 ### Fundamental Objects
+
+In addition to Primitive Values are Fundamental Objects. AKA Built-In Objects or Native Functions. Under the following circumstances, it is recommended to use the `new` keyword:
+
+* Object()
+
+* Array()
+
+* Function()
+
+* Date()
+
+* RegExp()
+
+* Error()
+
+And with these, it is not recommended to use the `new` keyword:
+
+* String()
+
+* Number()
+
+* Boolean()
+
+They can be used with `new`, but you should not use that keyword with them. `String(), Number(), and Boolean()` automatically coerce whatever value is passed into them into that Primitive Type, and that behaviour is more useful than making an object out of them.
 
 ## Coercion
 
