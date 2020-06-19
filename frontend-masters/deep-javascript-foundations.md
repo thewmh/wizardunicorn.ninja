@@ -263,27 +263,55 @@ They can be used with `new`, but you should not use that keyword with them. `Str
 
 ### Abstract Operations
 
+From ECMAScript documentation:
+
+> The ECMAScript language implicitly performs automatic type conversion as needed. To clarify the semantics of certain construsts it is useful to define a set of conversion abstract operations. The conversion abstract operations are polymorphic; they can accept a value of any ECMAScript language type. But no other specification types are used with these operations.
+
+AKA coercion
+
+The first abstract operation we are looking at is `ToPrimitive`. This abstract operation takes an optional `type` hint. The algorithims in JavaScript are recursive, so if we pass something that cannot be coerced into a Primitive Type, `ToPrimitive()` will re-run until it either finds a type that it can set or error out. The way that `ToPrimitive` works is, by way of hint, trying either `valueOf()` or `toString()` the order of which depends on the 'hint' you have passed in (number or string).
+
 ### toString
+
+`ToString` takes any value and gives us the representation of that value in string form. One of the corner-cases of `ToString` is that is coerces '-0' to '0'. Calling `ToString` on an array removes the brackets, nulls and undefined(s) get left out. On an object, `ToString` will write "[object Object]". You can overwrite `ToString` to behave however you want i.e. JSON.stringify an object.
 
 ### toNumber
 
+`ToNumber` takes any value and gives us the representation of that value in numeric form. One strange behaviour is turning empty quotes to the number 0. It strips off leading zeros and can handle hexidecimal values. `null` is coerced to '0' and `undefined` is 'NaN'. When `ToNumber` is used on an object, the algorithm will eventually hit 'valueOf()' and then 'toString()' and return `NaN`. On an array, empty strings are coerced to 0. 
+
 ### toBoolean
+
+Anytime you have any value that is not a boolean and you need a boolean value, `ToBoolean()` will eventually be used. Esentially, there is a lookup table that qualifies values as either Falsy or Truthy. Falsy values are: `"", 0, -0, null, NaN, false, undefined` Truthy values are basically any value not listed under 'falsy values', some examples: `"foo", 23, {a:1}, [1,3], true, function(){..}`. The list of truthy values is quite long. 
 
 ### Cases of Coercion
 
+Template literal strings (available since ES6) coerece values into different types. The plus operator spec states that if either side of the plus is a string, the `ToString` method will be invoked. The remainder of this section stresses the importance of understanding when and why coercion occurs and being intentional with how you are using it in your applications. For `Boolean` values specifically, the instructor recommends only coercing `undefined, null, or {}`. There are too many corner cases with numbers and strings to make using `Boolean` coercion make sense.
+
 ### Boxing
 
+Accessing methods on primitive values occurs through a process called boxing, which is a form of implicit coercion. All programming languages have type conversions, because it is absolutely necessary. You will always have cases where you have a string where you need to deal with it as a number or a number that you have to deal with as a boolean.
+
 ### Corner Cases of Coercion
+
+It is impossible to design a system that will not have corner cases. A lot of the corner cases have to deal with `Number`, `String` has a few as well. If you construct an instance of the boolean object and pass in false, it will return true. Not only does an empty string become zero, but so does any string that is full of white space. Booleans implicitly coerce themselves to numbers, which can be dangerous!
 
 ## Philosophy of Coercion
 
 ### Intentional Coercion
 
+You cannot deal with type conversion corner cases by avoiding coercions. Instead, you have to adapt a coding style that makes value types plain and obvious. A quality JavaScript program embraces coercions, making sure the types involved in every operation are clear. Thus, corner cases are safely managed. Within your programs, you get to decide how to deal with coercion and it is in your best interest to pay attention to what you are doing by making them obvious in your code. JavaScript's dynamic typing is not a weakness, it is one of its strong qualities. It's one of the reasons JavaScript is so ubiquitous.
+
 ### Culture of Learning
+
+You should use the tools as effectively as you can and when someone is on your code base that does not quite understand, you should work with them to raise their level of understanding. On our development teams, we should promote advancement amongst all team members. Be effective with your communication by writing clear and communicative code.
 
 ### Code Communication Q&A
 
+You should not rely on code comments as a crutch for the code to explain itself. Code comments should tell you why something is doing something.
+
 ### Implicit Coercion
+
+
 
 ### Understanding Features
 
