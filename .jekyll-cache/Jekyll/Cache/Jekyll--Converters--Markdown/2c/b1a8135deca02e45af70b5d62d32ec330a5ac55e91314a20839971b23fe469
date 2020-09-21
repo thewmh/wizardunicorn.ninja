@@ -1,0 +1,158 @@
+I"�3<h2 id="introduction">Introduction</h2>
+
+<p>Why are we using Webpack and what problems does it solve? At its core, it’s a very simple tool in terms of its capabilities standalone.</p>
+
+<h3 id="problems-with-script-loading">Problems with Script Loading</h3>
+
+<p>But why? It is important to understand how we’ve used JavaScript on the web. There are really only 2 ways that you can use JavaScript in the browser. JavaScript is really just a script, top-down execution. The first way to load JavaScript in the browser is via a script tag. The second way is to actually write JavaScript in your HTML.</p>
+
+<p>But what are the problems with these things?</p>
+
+<p>They don’t scale, you might have too many scripts, and each browser has bottlenecks. You could end up with unmaintainable scripts; scope, size, readability, fragility, monolithic files.</p>
+
+<p>Potential solutions?</p>
+
+<p>Immediately Invoked Function Expressions! Treat each file as an IIFE (Revealing Module Pattern). Using this pattern, you can now concatenate files without any concern of scope collision! This idea lead to the explosion of tools such as; <strong>Make</strong>, <strong>Grunt</strong>, <strong>Gulp</strong>, <strong>Broccoli</strong>, <strong>Brunch</strong>, <strong>StealJS</strong>. All of which are used to concatenate JS files.</p>
+
+<p>But there are still problems… Full rebuilds everytime. Dead code (code you are not using). Lots of IIFEs are slow. No way to lazy load.</p>
+
+<h3 id="history-of-modules">History of Modules</h3>
+
+<p>How do you load JavaScript if there is no DOM?</p>
+
+<p>NPM + Node + Modules</p>
+
+<p>NPM was created as a package registry to share JS modules across the registry.</p>
+
+<p>There is no browser support for CommonJS, there are no live-bindings which causes problems with circular references, it’s slow…</p>
+
+<p>The solution to this is to use bundlers / linkers. <strong>Browserify</strong>, <strong>RequireJS</strong>, <strong>SystemJS</strong>. The bundlers are used to write CommonJS modules and use them in your code.</p>
+
+<p>But there are still problems. THere is no static async or lazy loading.</p>
+
+<h3 id="ecmascript-modules-esm">EcmaScript Modules (ESM)</h3>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="p">{</span><span class="nx">uniq</span><span class="p">,</span> <span class="nx">forOf</span><span class="p">,</span> <span class="nx">bar</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">lodash-es</span><span class="dl">'</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">utils</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">utils</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">uniqConst</span> <span class="o">=</span> <span class="nx">uniq</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]);</span></code></pre></figure>
+
+<p>ES Modules is completely separate from ES 2015. ESM has named and default exports.</p>
+
+<p>ESM brought reusable, encapsulated, organized, and convenient modules. The issues… ESM for Node.js? Incredibly slow in the browser.</p>
+
+<h3 id="introducing-webpack">Introducing Webpack</h3>
+
+<p>Every [JavaScript] library is different; i.e. may use different module formats. Enter Webpack. Webpack is a module bundler which lets you write in any module format (including mixed formats) and compiles them for the browser. Webpack supports static async bundling which allows you to create separate lazy load bundles at build time. Webpack is the most performant way to ship JavaScript.</p>
+
+<h3 id="configuring-webpack">Configuring Webpack</h3>
+
+<p>There’s 3 ways that you can use Webpack.</p>
+
+<ol>
+  <li>
+    <p>The config - A Common.JS module that is an object which has a bunch of properties that define what Webpack should do with code.</p>
+  </li>
+  <li>
+    <p>Webpack CLI - Almost every single property in Webpack is bound to a CLI argument and parameter.</p>
+  </li>
+  <li>
+    <p>Node API - Neutrino is built with this.</p>
+  </li>
+</ol>
+
+<p>Webpack is important for web performance, scalibility, and maintainability.</p>
+
+<h2 id="webpack-from-scratch">Webpack from Scratch</h2>
+
+<h3 id="using-webpack-for-the-first-time">Using Webpack for the First Time</h3>
+
+<p><a href="https://github.com/thelarkinn/webpack-workshop-2018">Repo to play along</a></p>
+
+<p>Start in branch <code class="language-plaintext highlighter-rouge">feature/01-fem-first-script</code>. Looking at the package.json file, you will find a lot of dependencies. Run <code class="language-plaintext highlighter-rouge">npm install</code>. Still in the package.json file, add the following:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"scripts"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"webpack"</span><span class="p">:</span><span class="w"> </span><span class="s2">"webpack"</span><span class="w">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>Then in the CLI type: <code class="language-plaintext highlighter-rouge">npm run webpack</code> and you will see the default Webpack CLI output and there isn’t even a config file yet!</p>
+
+<h3 id="adding-npm-scripts-for-environment-builds">Adding npm Scripts for Environment Builds</h3>
+
+<p>In the output, there should be a warning message that no ‘mode’ has been set. <a href="https://webpack.js.org/concepts/mode">Click the link to learn more about Webpack ‘mode’(s)</a> Now add ‘dev’ and ‘prod’ environment to the ‘scripts’ section from above:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"scripts"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"webpack"</span><span class="p">:</span><span class="w"> </span><span class="s2">"webpack"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"dev"</span><span class="p">:</span><span class="w"> </span><span class="s2">"npm run webpack -- --mode development"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"prod"</span><span class="p">:</span><span class="w"> </span><span class="s2">"npm run webpack -- --mode production"</span><span class="w">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>Now in the CLI you can type <code class="language-plaintext highlighter-rouge">npm run dev</code> or <code class="language-plaintext highlighter-rouge">npm run prod</code> to trigger the Webpack build mode as needed. Webpack defaults to production. Development is a faster build, production is an optimized build. Time to debug.</p>
+
+<p>Switch to:</p>
+
+<p><code class="language-plaintext highlighter-rouge">git checkout feature/03-fem-debug-script</code></p>
+
+<h3 id="setting-up-debugging">Setting Up Debugging</h3>
+
+<p>If you want to debug a node application, you can simply run node and pass in a couple of arguments; i.e.</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"debugthis"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node --inspect --inspect-brk ./src/index.js"</span></code></pre></figure>
+
+<p>When you run the above with <code class="language-plaintext highlighter-rouge">npm run debugthis</code>, you will see a url in terminal that will link you to a debugger in your browser. If we want to be able to debug Webpack, the debug command in the project is:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"debug"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node --inspect --debug-brk ./node_modules/webpack/bin/webpack.js"</span></code></pre></figure>
+
+<p>Run the debug command and you can debug Webpack!</p>
+
+<p>Get comfortable with adding to your config file, because the Webpack methodology is based on ‘separation of concerns’. Most people have trouble with Webpack because they shove everything into one file, into one build file, so it becomes fragile.</p>
+
+<h3 id="coding-your-first-module">Coding Your First Module</h3>
+
+<p>In <code class="language-plaintext highlighter-rouge">src/</code> add a new file; i.e. <code class="language-plaintext highlighter-rouge">nav.js</code>. If you want to share some variables or a function, using the <code class="language-plaintext highlighter-rouge">export {a, v, r}</code> syntax will allow you to do so. Otherwise, use <code class="language-plaintext highlighter-rouge">export default "nav"</code>. In your entry-point; i.e. <code class="language-plaintext highlighter-rouge">index.js</code> add an import statement, <code class="language-plaintext highlighter-rouge">import nav from "./nav";</code>.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">nav</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./nav</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">nav</span><span class="p">)</span></code></pre></figure>
+
+<p>Then build the project with the <code class="language-plaintext highlighter-rouge">npm run prod</code> command.</p>
+
+<h3 id="adding-watch-mode">Adding Watch Mode</h3>
+
+<p>To avoid having to continuously run a build command, you can just add a ‘watch’ flag to your <code class="language-plaintext highlighter-rouge">dev</code> command in the config file; i.e.</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"dev"</span><span class="p">:</span><span class="w"> </span><span class="s2">"npm run webpack -- --mode development --watch"</span></code></pre></figure>
+
+<p>Now when you type <code class="language-plaintext highlighter-rouge">npm run dev</code> in terminal, Webpack will ‘watch’ for changes. Update <code class="language-plaintext highlighter-rouge">nav.js</code> to the following:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">export</span> <span class="k">default</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="dl">"</span><span class="s2">nav</span><span class="dl">"</span><span class="p">;</span></code></pre></figure>
+
+<p>Then you have to update the index.js file to:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">nav</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./nav</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">nav</span><span class="p">())</span> <span class="c">&lt;!--</span> <span class="nx">call</span> <span class="nx">the</span> <span class="nx">nav</span> <span class="kd">function</span> <span class="o">--&gt;</span></code></pre></figure>
+
+<p>You will see in your terminal the changes to the files being ‘watched’ and Webpack will incrementally compile the changes.</p>
+
+<h3 id="es-module-syntax">ES Module Syntax</h3>
+
+<p>Add a new file <code class="language-plaintext highlighter-rouge">footer.js</code> with the following:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">export</span> <span class="kd">const</span> <span class="nx">top</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">top</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">bottom</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">bottom</span><span class="dl">"</span><span class="p">;</span></code></pre></figure>
+
+<p>And in the <code class="language-plaintext highlighter-rouge">index.js</code> file add the following import statement:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="p">{</span> <span class="nx">top</span><span class="p">,</span> <span class="nx">bottom</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./footer</span><span class="dl">"</span><span class="p">;</span></code></pre></figure>
+
+<p>Now you have access to the variables from footer.</p>
+
+<h3 id="commonjs-export">CommonJS Export</h3>
+
+<h3 id="commonjs-named-exports">CommonJS Named Exports</h3>
+
+<h3 id="tree-shaking">Tree Shaking</h3>
+
+<h3 id="webpack-bundle-walkthrough">Webpack Bundle Walkthrough</h3>
+:ET

@@ -1,8 +1,8 @@
-I"�8<p>10/31</p>
+I"9<p>10/31</p>
 
 <p><em>We had a chili cookoff and I didn’t win… guess kimchili is too un-midwestern for my people</em></p>
 
-<p>Nothing too eventful outside of the chili cookoff, which was pretty great. Tons of food! On AB, we had an internal review with BED and FED of the proposed changes to the base page layout that we (FED) thought would be needed moving forward. <code class="highlighter-rouge">&lt;meta&gt;</code>, <code class="highlighter-rouge">&lt;link&gt;</code>, and <code class="highlighter-rouge">&lt;script&gt;</code> oh my! Pretty basic stuff, but an important step to extend the OOTB functionality of sitecore. Later in the day we had the first of three sprint planning sessions for the upcoming sprint.</p>
+<p>Nothing too eventful outside of the chili cookoff, which was pretty great. Tons of food! On AB, we had an internal review with BED and FED of the proposed changes to the base page layout that we (FED) thought would be needed moving forward. <code class="language-plaintext highlighter-rouge">&lt;meta&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;link&gt;</code>, and <code class="language-plaintext highlighter-rouge">&lt;script&gt;</code> oh my! Pretty basic stuff, but an important step to extend the OOTB functionality of sitecore. Later in the day we had the first of three sprint planning sessions for the upcoming sprint.</p>
 
 <hr />
 
@@ -44,9 +44,9 @@
 
 <p><em>Bootstrap Flexbox? Grid FTW!</em></p>
 
-<p>Started a new mock component for AB. Thought I had it figured out using the Bootstrap grid, but the laytout changed too much between desktop and mobile that I ended up having to go with <code class="highlighter-rouge">display: grid</code>. But that didn’t happen until the next day.</p>
+<p>Started a new mock component for AB. Thought I had it figured out using the Bootstrap grid, but the laytout changed too much between desktop and mobile that I ended up having to go with <code class="language-plaintext highlighter-rouge">display: grid</code>. But that didn’t happen until the next day.</p>
 
-<p>I was excited that I had figured out how to get this component layed out using Bootstrap, but this was not the case. I ended up creating a quick mockup of the component and querying the Prime community on Slack. After a few useless replies, someone <em>actually</em> helped, and that came in the form of <code class="highlighter-rouge">display: grid</code>. Spend the rest of the day working with CSS Grid to get the component behaving well across browsers, specifically IE11 😒</p>
+<p>I was excited that I had figured out how to get this component layed out using Bootstrap, but this was not the case. I ended up creating a quick mockup of the component and querying the Prime community on Slack. After a few useless replies, someone <em>actually</em> helped, and that came in the form of <code class="language-plaintext highlighter-rouge">display: grid</code>. Spend the rest of the day working with CSS Grid to get the component behaving well across browsers, specifically IE11 😒</p>
 
 <hr />
 

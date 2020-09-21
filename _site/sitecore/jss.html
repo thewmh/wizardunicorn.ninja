@@ -14,7 +14,7 @@
 
 
 <link rel="shortcut icon" type="image/ico"
-  href="/assets/uswds/img/favicons/favicon.ico">
+  href="">
 
 <link rel="icon" type="image/png"
   href="/assets/uswds/img/favicons/favicon.png">
@@ -115,50 +115,6 @@
           
           <li>
             
-              
-              
-              
-            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-1">
-              <span>Worknotes</span>
-            </button>
-            
-            <ul id="nav-1" class="usa-nav-submenu" aria-hidden="true">
-            
-            
-              
-                
-                <li>
-                  <a href="/worknotes/2001">January 2020</a>
-                </li>
-                
-              
-                
-                <li>
-                  <a href="/worknotes/1911">November 2019</a>
-                </li>
-                
-              
-                
-                <li>
-                  <a href="/worknotes/1910">October 2019</a>
-                </li>
-                
-              
-                
-                <li>
-                  <a href="/worknotes/1909">September 2019</a>
-                </li>
-                
-              
-            
-            </ul>
-            
-            
-            
-          </li>
-          
-          <li>
-            
               <a class=" usa-nav-link  " href="/resources/">
                 <span>Resources</span>
               </a>
@@ -170,11 +126,11 @@
               
               
               
-            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-3">
+            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-2">
               <span>Frontend Masters Workshop Notes</span>
             </button>
             
-            <ul id="nav-3" class="usa-nav-submenu" aria-hidden="true">
+            <ul id="nav-2" class="usa-nav-submenu" aria-hidden="true">
             
             
               
@@ -190,6 +146,18 @@
                 </li>
                 
               
+                
+                <li>
+                  <a href="/frontend-masters/deep-javascript-foundations">Deep Javascript Foundations, v3</a>
+                </li>
+                
+              
+                
+                <li>
+                  <a href="/frontend-masters/webpack-4-fundamentals">Webpack 4 Fundamentals</a>
+                </li>
+                
+              
             
             </ul>
             
@@ -202,11 +170,11 @@
               
               
               
-            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-4">
+            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-3">
               <span>Sitecore Workshop Notes</span>
             </button>
             
-            <ul id="nav-4" class="usa-nav-submenu" aria-hidden="true">
+            <ul id="nav-3" class="usa-nav-submenu" aria-hidden="true">
             
             
               
@@ -522,25 +490,25 @@
   </li>
 </ol>
 
-<p><code class="highlighter-rouge">npm install -g @sitecore-jss/sitecore-jss-cli</code></p>
+<p><code class="language-plaintext highlighter-rouge">npm install -g @sitecore-jss/sitecore-jss-cli</code></p>
 
 <p><em>Parts of the JSS CLI Command</em></p>
 
-<p><code class="highlighter-rouge">npm</code> - Node Package Manager</p>
+<p><code class="language-plaintext highlighter-rouge">npm</code> - Node Package Manager</p>
 
-<p><code class="highlighter-rouge">install</code> - Install command</p>
+<p><code class="language-plaintext highlighter-rouge">install</code> - Install command</p>
 
-<p><code class="highlighter-rouge">-g</code> - Flag that enables the jss command to run from any directory (global)</p>
+<p><code class="language-plaintext highlighter-rouge">-g</code> - Flag that enables the jss command to run from any directory (global)</p>
 
-<p><code class="highlighter-rouge">@sitecore-jss/sitecore-jss-cli</code> - Package name of the JSS CLI</p>
+<p><code class="language-plaintext highlighter-rouge">@sitecore-jss/sitecore-jss-cli</code> - Package name of the JSS CLI</p>
 
 <ol>
   <li>To verify that your CLI installation was successful, enter the command:</li>
 </ol>
 
-<p><code class="highlighter-rouge">jss --help</code></p>
+<p><code class="language-plaintext highlighter-rouge">jss --help</code></p>
 
-<p>The <code class="highlighter-rouge">jss</code> commands change when running within a JSS apps’ directory. The <code class="highlighter-rouge">--help</code> option will always show the currently available commands.</p>
+<p>The <code class="language-plaintext highlighter-rouge">jss</code> commands change when running within a JSS apps’ directory. The <code class="language-plaintext highlighter-rouge">--help</code> option will always show the currently available commands.</p>
 
 <h3 id="create-a-jss-application">Create a JSS Application</h3>
 
@@ -575,23 +543,23 @@
   </li>
   <li>
     <p>Type the create app command for your framework/library in the form:
-<code class="highlighter-rouge">jss create &lt;your-app-name&gt; &lt;app-template-name&gt;</code></p>
+<code class="language-plaintext highlighter-rouge">jss create &lt;your-app-name&gt; &lt;app-template-name&gt;</code></p>
   </li>
 </ul>
 
 <p>For example:
-<code class="highlighter-rouge">jss create my-first-jss-app angular</code>
-<code class="highlighter-rouge">jss create my-first-jss-app react</code>
-<code class="highlighter-rouge">jss create my-first-jss-app vue</code></p>
+<code class="language-plaintext highlighter-rouge">jss create my-first-jss-app angular</code>
+<code class="language-plaintext highlighter-rouge">jss create my-first-jss-app react</code>
+<code class="language-plaintext highlighter-rouge">jss create my-first-jss-app vue</code></p>
 
 <ul>
   <li>
     <p>Change to your app’s directory. For example:
-<code class="highlighter-rouge">cd my-first-jss-app</code></p>
+<code class="language-plaintext highlighter-rouge">cd my-first-jss-app</code></p>
   </li>
   <li>
     <p>Type the command to start the app in disconnected mode (which uses the defined content located on the local development server):
-<code class="highlighter-rouge">jss start</code></p>
+<code class="language-plaintext highlighter-rouge">jss start</code></p>
   </li>
 </ul>
 
@@ -655,10 +623,10 @@
     <p>Locate your master folder</p>
   </li>
   <li>
-    <p>Press the Control and Minus keys <code class="highlighter-rouge">Ctrl + -</code> anywhere</p>
+    <p>Press the Control and Minus keys <code class="language-plaintext highlighter-rouge">Ctrl + -</code> anywhere</p>
   </li>
   <li>
-    <p>Select <code class="highlighter-rouge">Open in Terminal</code></p>
+    <p>Select <code class="language-plaintext highlighter-rouge">Open in Terminal</code></p>
   </li>
 </ul>
 
@@ -666,9 +634,9 @@
 
 <ol>
   <li>
-    <p>From PowerShell / Terminal, you can ensure the <code class="highlighter-rouge">PATH</code> environment variable lists the global <code class="highlighter-rouge">npm cachefolder</code>. 
+    <p>From PowerShell / Terminal, you can ensure the <code class="language-plaintext highlighter-rouge">PATH</code> environment variable lists the global <code class="language-plaintext highlighter-rouge">npm cachefolder</code>. 
 Type the command:
-<code class="highlighter-rouge">npm –version</code></p>
+<code class="language-plaintext highlighter-rouge">npm –version</code></p>
   </li>
   <li>
     <p>The role of the manifest API</p>
@@ -769,7 +737,7 @@ Type the command:
     <p>Routes in a Traditional JavaScript App - Each route hosts known components. The components are static. A static component does not have a datasource and displays non-customizable data (e.g. a layout component that adds columns or a component that pulls data from a third-party service that has no customization options).</p>
   </li>
   <li>
-    <p>Routes in a Sitecore JSS App - The disconnected data define a route’s components and their data when applicable. JSS extends Sitecore’s dynamic, component-based layout model to the frontend. Route data is typically retrieved from static YAML or JSON files or simple JavaScript files. The sample app you created earlier in this course defines route data in YAML files located in the <code class="highlighter-rouge">/data/routes</code> directory. For more details explaining route data, see <a href="https://jss.sitecore.com/docs/techniques/working-disconnected/manifest-api#defining-route-data">Defining route data</a>, <a href="http://jss.sitecore.net/docs/fundamentals/understanding-layout">Understanding layout</a>, and <a href="https://jss.sitecore.com/docs/client-frameworks/react/sample-app#routing--state-management">Route + State Management</a>.</p>
+    <p>Routes in a Sitecore JSS App - The disconnected data define a route’s components and their data when applicable. JSS extends Sitecore’s dynamic, component-based layout model to the frontend. Route data is typically retrieved from static YAML or JSON files or simple JavaScript files. The sample app you created earlier in this course defines route data in YAML files located in the <code class="language-plaintext highlighter-rouge">/data/routes</code> directory. For more details explaining route data, see <a href="https://jss.sitecore.com/docs/techniques/working-disconnected/manifest-api#defining-route-data">Defining route data</a>, <a href="http://jss.sitecore.net/docs/fundamentals/understanding-layout">Understanding layout</a>, and <a href="https://jss.sitecore.com/docs/client-frameworks/react/sample-app#routing--state-management">Route + State Management</a>.</p>
   </li>
 </ul>
 
@@ -854,7 +822,7 @@ Type the command:
 
 <ul>
   <li>
-    <p><strong>Templates:</strong> You put a template with static component data in the <code class="highlighter-rouge">data/component-content</code> folder of the sample library to share static component data. Therefore, if you want to add components to multiple routes while reusing the same data, you put that component data into <code class="highlighter-rouge">component-content</code>.</p>
+    <p><strong>Templates:</strong> You put a template with static component data in the <code class="language-plaintext highlighter-rouge">data/component-content</code> folder of the sample library to share static component data. Therefore, if you want to add components to multiple routes while reusing the same data, you put that component data into <code class="language-plaintext highlighter-rouge">component-content</code>.</p>
   </li>
   <li>
     <p><strong>Routes vs. Templates:</strong></p>
@@ -867,14 +835,14 @@ Type the command:
         <p>Templates do not have presentation as they are arbitrary content. They’re just used for datasources or to populate fields.</p>
       </li>
       <li>
-        <p>Every file under <code class="highlighter-rouge">routes</code> becomes a page. Routes are made from templates, but since they have presentation, they’re called pages or routes.</p>
+        <p>Every file under <code class="language-plaintext highlighter-rouge">routes</code> becomes a page. Routes are made from templates, but since they have presentation, they’re called pages or routes.</p>
       </li>
     </ul>
   </li>
 </ul>
 
 <ol>
-  <li>Fields on routes vs. components - For our fifth topic, we’ll consider whether to add fields to a route or to a component. To help you decide, you want to consider how the page will be used. For most sites, you will likely want to have different types of pages that include product-specific fields. Each JSS app has one default route template, <code class="highlighter-rouge">routes.sitecore.js</code>, which is automatically set as a base template for any route types defined in the app’s manifest.</li>
+  <li>Fields on routes vs. components - For our fifth topic, we’ll consider whether to add fields to a route or to a component. To help you decide, you want to consider how the page will be used. For most sites, you will likely want to have different types of pages that include product-specific fields. Each JSS app has one default route template, <code class="language-plaintext highlighter-rouge">routes.sitecore.js</code>, which is automatically set as a base template for any route types defined in the app’s manifest.</li>
 </ol>
 
 <p>In general, you want to:</p>
@@ -912,21 +880,21 @@ Type the command:
   <li>Add a Route Type</li>
 </ol>
 
-<p>In Visual Studio Code’s Explorer window, browse to where you define/add your routes, <code class="highlighter-rouge">\sitecore\definitions\routes.sitecore.js</code>, and then create a <code class="highlighter-rouge">routes</code> folder.</p>
+<p>In Visual Studio Code’s Explorer window, browse to where you define/add your routes, <code class="language-plaintext highlighter-rouge">\sitecore\definitions\routes.sitecore.js</code>, and then create a <code class="language-plaintext highlighter-rouge">routes</code> folder.</p>
 
 <ul>
   <li>
-    <p>Copy and paste the <code class="highlighter-rouge">routes.sitecore.js</code> file (or any future routes file you create in <code class="highlighter-rouge">sitecore\definitions\routes</code>).</p>
+    <p>Copy and paste the <code class="language-plaintext highlighter-rouge">routes.sitecore.js</code> file (or any future routes file you create in <code class="language-plaintext highlighter-rouge">sitecore\definitions\routes</code>).</p>
   </li>
   <li>
-    <p>Rename to <code class="highlighter-rouge">[Pagename]Route.sitecore.js</code>.</p>
+    <p>Rename to <code class="language-plaintext highlighter-rouge">[Pagename]Route.sitecore.js</code>.</p>
   </li>
   <li>
     <p>Remove any unneeded content. The unneeded content includes fields that are not relevant to your new route.</p>
   </li>
 </ul>
 
-<p>In this new route file, use the <code class="highlighter-rouge">addRouteType</code> function as seen in the example code below. The <code class="highlighter-rouge">addRouteType</code> function is important because:</p>
+<p>In this new route file, use the <code class="language-plaintext highlighter-rouge">addRouteType</code> function as seen in the example code below. The <code class="language-plaintext highlighter-rouge">addRouteType</code> function is important because:</p>
 
 <ul>
   <li>
@@ -962,7 +930,7 @@ export default function (manifest) {
   <li>Add a Template Property</li>
 </ol>
 
-<p>Continue in this new route file <code class="highlighter-rouge">[Pagename]Route.sitecore.js</code> to add a template property.</p>
+<p>Continue in this new route file <code class="language-plaintext highlighter-rouge">[Pagename]Route.sitecore.js</code> to add a template property.</p>
 
 <p>Use the example code below, which matches the route name, to tell JSS that a page should use the custom route.</p>
 
@@ -978,6 +946,243 @@ export default function (manifest) {
 <span class="p">}</span></code></pre></figure>
 
 <h3 id="inspect-jss-app-templates">Inspect JSS App Templates</h3>
+
+<p>Now that you have some experience using directories and creating routes, you are ready to inspect how to use an application template for your preferred framework (Angular, React, or Vue).</p>
+
+<p><strong>Step 1: Identify Template Contents</strong></p>
+
+<p>To create an app for your framework with JSS, you need an application template. The application template contains:</p>
+
+<ul>
+  <li>
+    <p>All the boilerplate code in the configuration to get up and running with a project on one of those frameworks.</p>
+  </li>
+  <li>
+    <p>A sample website to get you started with JSS, which is a Styleguide for all the JSS field types inside Sitecore.</p>
+  </li>
+</ul>
+
+<p><strong>Step 2: Examine Role of JSS CLI</strong></p>
+
+<ol>
+  <li>
+    <p>First, the JSS CLI creates your app with your framework’s application template, each of which is housed in the Sitecore’s JSS Github repository.</p>
+  </li>
+  <li>
+    <p>Then, the JSS CLI extracts the template on your file system in the folder with your application’s name, where it installs the package using the package manager, Yarn.</p>
+  </li>
+  <li>
+    <p>Once the app is created, you can check the Visual Studio Code console to verify the local development server compiled the application successfully at <code class="language-plaintext highlighter-rouge">http://localhost:3000</code>.</p>
+  </li>
+</ol>
+
+<p><strong>Step 3: View Sample Site</strong></p>
+
+<p>When the app build is complete, the app’s site automatically opens in a browser to <code class="language-plaintext highlighter-rouge">http://localhost:3000</code>. There, you can view the sample site. This site’s homepage includes the following important documentation links:</p>
+
+<ul>
+  <li>
+    <p><a href="https://jss.sitecore.com">Sitecore JSS documentation page</a></p>
+  </li>
+  <li>
+    <p>Styleguide page for your framework, <code class="language-plaintext highlighter-rouge">http://localhost:3000/styleguide</code></p>
+  </li>
+  <li>
+    <p>Sitecore GraphQL resources; note that GraphQL is only available in integrated and connected modes</p>
+  </li>
+</ul>
+
+<h2 id="determine-jss-content-presentation">Determine JSS Content Presentation</h2>
+
+<h3 id="define-component-rendering">Define Component Rendering</h3>
+
+<p>In order to determine content presentation, you need to first understand what rendering components is and why it’s important. Rendering JSS components is the same as rendering the components in your framework (e.g. Angular, React, or Vue). You render your built component by adding it to a placeholder on the page using a route. To draw an analogy, a component in React represents a rendering with the same name in Sitecore.</p>
+
+<p><a href="https://sitecore.stackexchange.com/questions/16559/sitecore-jss-react-overview-create-pages">JSS injects the content data</a> from the mock or Sitecore Layout Service to a page. A component in the framework template is a rendering of the JSS component that uses the <a href="https://redux.js.org/advanced/usage-with-react-router">router library</a> to <a href="https://github.com/reactjs/react-router-redux">sync</a> the framework library (e.g.  <a href="https://github.com/reactjs/react-router-redux">React Router Redux</a>) and allows navigation between pages.</p>
+
+<h3 id="examine-how-rendering-works">Examine How Rendering Works</h3>
+
+<p>Now that you understand what rendering is, you will learn how it works. Rendering is important because it is how you display content in your app like text and images.</p>
+
+<p><strong>1. Learn Layout Service’s process in rendering</strong></p>
+
+<p>As we switch between pages, the router requests the content from a corresponding item (page) in the mock or Sitecore Layout Service. These fields are stored in a database. Then the Layout Service processes the request.</p>
+
+<p>An item is basically just a collection of fields, or an item might also represent a webpage. In a typical Sitecore site, every page is an item, but the reverse is definitely not true.</p>
+
+<p>There are many items that may represent page content but are not necessarily a page themselves. For example, the item might be used as a datasource or a field source, or it might just represent a configuration setting.</p>
+
+<p><strong>2. View Output Data</strong></p>
+
+<p>Next, you will look at an example of a JSON file’s output data to see how content items might be represented.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">{</span>
+    <span class="dl">"</span><span class="s2">context</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">pageEditing</span><span class="dl">"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">site</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">MyApplication</span><span class="dl">"</span> <span class="p">},</span>
+        <span class="dl">"</span><span class="s2">language</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">en</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">currentContact</span><span class="dl">"</span><span class="p">:</span> <span class="kc">null</span>
+    <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Home</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">displayName</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Home</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">fields</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">Metadata Keywords</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span> <span class="dl">""</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">editable</span><span class="dl">"</span><span class="p">:</span> <span class="dl">""</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The above includes context data that is common for each of the following:</p>
+
+<ul>
+  <li>
+    <p>Request,</p>
+  </li>
+  <li>
+    <p>Fields of a requested item, and</p>
+  </li>
+  <li>
+    <p>List of placeholders defined for the item (using the placeholders property).</p>
+  </li>
+</ul>
+
+<p>Here’s another section of a JSON file’s output data:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="dl">"</span><span class="s2">placeholders</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Main</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">path</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Main</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">elements</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="dl">"</span><span class="s2">componentName</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">serviceScreen</span><span class="dl">"</span><span class="p">,</span>
+                <span class="dl">"</span><span class="s2">renderingName</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Service Screen</span><span class="dl">"</span><span class="p">,</span>
+                <span class="dl">"</span><span class="s2">renderingParams</span><span class="dl">"</span><span class="p">:</span> <span class="p">{},</span>
+                <span class="dl">"</span><span class="s2">uid</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">261adcfd-6ca7-4d60-aa37-d92a11c49594</span><span class="dl">"</span><span class="p">,</span>
+                <span class="dl">"</span><span class="s2">dataSource</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">{9F2C1F61-FE87-4BC0-B223-8289A81912C1}</span><span class="dl">"</span><span class="p">,</span>
+                <span class="dl">"</span><span class="s2">placeholders</span><span class="dl">"</span><span class="p">:</span> <span class="p">[].</span>
+                <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">code</span><span class="dl">"</span><span class="p">,</span>
+                <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">data/json</span><span class="dl">"</span><span class="p">,</span>
+                <span class="dl">"</span><span class="s2">contents</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="dl">"</span><span class="s2">path</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">/special service plan</span><span class="dl">"</span><span class="p">,</span>
+                    <span class="dl">"</span><span class="s2">fields</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="dl">"</span><span class="s2">ServiceDiscount</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0</span><span class="dl">"</span><span class="p">,</span>
+                            <span class="dl">"</span><span class="s2">editable</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0</span><span class="dl">"</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">]</span></code></pre></figure>
+
+<p>The above rendering takes place inside the <strong>elements</strong> property. Rendering includes:</p>
+
+<ul>
+  <li>
+    <p>All datasource fields assigned to it</p>
+  </li>
+  <li>
+    <p>Each element’s <strong>componentName</strong> property</p>
+  </li>
+  <li>
+    <p>A framework component name that should be rendered in this place. This component will use data from the <strong>contents</strong> property as contextual data to render</p>
+  </li>
+</ul>
+
+<p><a href="https://scorm.servicerocket.io/packages/61059053-c658-49c3-91c6-90c76c2afc0d/scormcontent/assets/fZL2PoSRTJVP456e_zxRzj1N3KuIXh_pG-output-data.txt">Download the complete output data file described in the section above</a></p>
+
+<p><strong>3. Identify How to Render a Component</strong></p>
+
+<p>In the previous procedure, you explored an example of components being rendered in the JSON output file. You learned earlier in this track that you render a component to display its content in your app. Now, in order to render a component, you first you add your component to a page and then you add your content into fields on the component. The JSS SDK provides framework-specific field helpers to render fields so authors can edit them in Sitecore’s Experience Editor after connecting your app to Sitecore.</p>
+
+<h3 id="render-components">Render Components</h3>
+
+<p>Now that you understand what component rendering is and how it works, you are ready to render components.</p>
+
+<p><strong>1. Register a Component</strong></p>
+
+<ul>
+  <li>
+    <p>Compare Scaffolding Types</p>
+
+    <ul>
+      <li>
+        <p>JSS scaffolding differs from traditional Sitecore scaffolding</p>
+
+        <ul>
+          <li>
+            <p>In a Sitecore-first application, the task of adding a new component involves a repetitive set of steps (e.g. creating a rendering item, datasource template item, and datasource location folders and then linking them together).</p>
+          </li>
+          <li>
+            <p>Whereas in JSS, scaffolding creates the framework component (e.g. React) and the disconnected component definition files first and then provides helpful feedback about what to do to make your component work.</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>Identify Scaffolding Scripts</p>
+
+        <p>The scaffolding script is located in <code class="language-plaintext highlighter-rouge">scripts/scaffold-component.js</code> and is fully customizable to suit your needs and patterns. In this same file, you can customize the manifest definition scaffolding as well.</p>
+
+        <p>You’ll likely also want to change the component factory generation script <code class="language-plaintext highlighter-rouge">scripts/generate-component-factory.js</code> (if you plan to use it) to match the nested structure of your components.</p>
+
+        <p>In JSS, this layout is used just to indicate that you’re using JSS and points to an empty Razor view. Whereas in traditional Sitecore, the layout is pointing to a <strong>cshtml</strong> file, which contains the scaffolding of the presentation.</p>
+
+        <p>To learn more about server-side JavaScript rendering, see this <a href="https://jss.sitecore.com/docs/fundamentals/services/view-engine">view engine</a> topic.</p>
+      </li>
+      <li>
+        <p>Explore Component Definitions</p>
+
+        <p>You create the component definitions and their files in JSS to export to Sitecore.</p>
+
+        <p>When you create a content field, you are defining data to the datasource. To learn more, see details on:</p>
+
+        <ul>
+          <li>
+            <p><a href="https://jss.sitecore.com/docs/client-frameworks/react/sample-app#client-side-routing">Client-side Routing</a></p>
+          </li>
+          <li>
+            <p><a href="https://jss.sitecore.com/docs/techniques/working-disconnected/manifest-api#manifest-api-instance-methods">Manifest Instanc Methods</a></p>
+          </li>
+          <li>
+            <p><a href="https://jss.sitecore.com/docs/techniques/working-disconnected/manifest-api#manifest-objects">Manifest Objects</a></p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>Register a Component</p>
+
+        <p>When you register a component, you:</p>
+
+        <ul>
+          <li>
+            <p>Create the component manifest definition file, e.g. <strong>OurNewComponent.sitecore.js</strong>. This is where you define fields and placeholders</p>
+          </li>
+          <li>
+            <p>Allow JSS to detect the component</p>
+          </li>
+          <li>
+            <p>Enable adding component instances to routes</p>
+          </li>
+        </ul>
+
+        <p>The recommended way to create and register new components is to use the <code class="language-plaintext highlighter-rouge">jss scaffold</code> command. For example:</p>
+
+        <ol>
+          <li>
+            <p>Type the <code class="language-plaintext highlighter-rouge">jss scaffold OurNewComponent</code> command at a command line interface window prompt</p>
+          </li>
+          <li>
+            <p>After you correctly enter your <code class="language-plaintext highlighter-rouge">scaffold</code> command code, you can see the result of your command line interface window</p>
+          </li>
+        </ol>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>2. Add a Field to a Component</strong></p>
 
 
 </div>

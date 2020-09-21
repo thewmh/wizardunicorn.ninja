@@ -14,7 +14,7 @@
 
 
 <link rel="shortcut icon" type="image/ico"
-  href="/assets/uswds/img/favicons/favicon.ico">
+  href="">
 
 <link rel="icon" type="image/png"
   href="/assets/uswds/img/favicons/favicon.png">
@@ -115,50 +115,6 @@
           
           <li>
             
-              
-              
-              
-            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-1">
-              <span>Worknotes</span>
-            </button>
-            
-            <ul id="nav-1" class="usa-nav-submenu" aria-hidden="true">
-            
-            
-              
-                
-                <li>
-                  <a href="/worknotes/2001">January 2020</a>
-                </li>
-                
-              
-                
-                <li>
-                  <a href="/worknotes/1911">November 2019</a>
-                </li>
-                
-              
-                
-                <li>
-                  <a href="/worknotes/1910">October 2019</a>
-                </li>
-                
-              
-                
-                <li>
-                  <a href="/worknotes/1909">September 2019</a>
-                </li>
-                
-              
-            
-            </ul>
-            
-            
-            
-          </li>
-          
-          <li>
-            
               <a class=" usa-nav-link  " href="/resources/">
                 <span>Resources</span>
               </a>
@@ -170,11 +126,11 @@
               
               
               
-            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-3">
+            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-2">
               <span>Frontend Masters Workshop Notes</span>
             </button>
             
-            <ul id="nav-3" class="usa-nav-submenu" aria-hidden="true">
+            <ul id="nav-2" class="usa-nav-submenu" aria-hidden="true">
             
             
               
@@ -190,6 +146,18 @@
                 </li>
                 
               
+                
+                <li>
+                  <a href="/frontend-masters/deep-javascript-foundations">Deep Javascript Foundations, v3</a>
+                </li>
+                
+              
+                
+                <li>
+                  <a href="/frontend-masters/webpack-4-fundamentals">Webpack 4 Fundamentals</a>
+                </li>
+                
+              
             
             </ul>
             
@@ -202,11 +170,11 @@
               
               
               
-            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-4">
+            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-3">
               <span>Sitecore Workshop Notes</span>
             </button>
             
-            <ul id="nav-4" class="usa-nav-submenu" aria-hidden="true">
+            <ul id="nav-3" class="usa-nav-submenu" aria-hidden="true">
             
             
               
@@ -335,7 +303,7 @@
 
 <p>Anything that ever uses a dot in JavaScript is an object.</p>
 
-<p>A primitive value is a string, number, boolean, null, or undefined. A non-primitive valye is an object, array, function, promise. Primitive values get passed by value, non-primitive values get passed by reference. If you are passing primitive values, a copy is made, non-primitive values are passed as a reference. This behavior can produce unpredictable results if you are not careful. For example, if you were to assign <code class="highlighter-rouge">person.name</code> to a variable i.e. <code class="highlighter-rouge">who</code>, then reassign <code class="highlighter-rouge">person.name</code>, who would retain the original reference for <code class="highlighter-rouge">person.name</code>.</p>
+<p>A primitive value is a string, number, boolean, null, or undefined. A non-primitive valye is an object, array, function, promise. Primitive values get passed by value, non-primitive values get passed by reference. If you are passing primitive values, a copy is made, non-primitive values are passed as a reference. This behavior can produce unpredictable results if you are not careful. For example, if you were to assign <code class="language-plaintext highlighter-rouge">person.name</code> to a variable i.e. <code class="language-plaintext highlighter-rouge">who</code>, then reassign <code class="language-plaintext highlighter-rouge">person.name</code>, who would retain the original reference for <code class="language-plaintext highlighter-rouge">person.name</code>.</p>
 
 <h3 id="arrays">Arrays</h3>
 
@@ -347,7 +315,7 @@
 
 <span class="nx">who</span><span class="p">;</span> <span class="c1">//??</span></code></pre></figure>
 
-<p>Arrays are objects, and because of that, the rules are exactly the same. The major difference between an array and an object are the available methods for either, an example of which is <code class="highlighter-rouge">.length</code> being an available method for arrays, but not objects. If you check the <code class="highlighter-rouge">typeof</code> for the <code class="highlighter-rouge">person</code> variable in the code block above, the console should return <code class="highlighter-rouge">object</code>.</p>
+<p>Arrays are objects, and because of that, the rules are exactly the same. The major difference between an array and an object are the available methods for either, an example of which is <code class="language-plaintext highlighter-rouge">.length</code> being an available method for arrays, but not objects. If you check the <code class="language-plaintext highlighter-rouge">typeof</code> for the <code class="language-plaintext highlighter-rouge">person</code> variable in the code block above, the console should return <code class="language-plaintext highlighter-rouge">object</code>.</p>
 
 <h3 id="bracket-notation">Bracket Notation</h3>
 
@@ -358,14 +326,14 @@
 
 <span class="nx">person</span><span class="p">[</span><span class="nx">plea</span><span class="p">]</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">I would never!</span><span class="dl">"</span></code></pre></figure>
 
-<p>The <code class="highlighter-rouge">person[plea] = "I would never!"</code> will create a new property in the person object based on the original value of the plea variable <code class="highlighter-rouge">"wouldShe"</code>, which will make the person object look like this:</p>
+<p>The <code class="language-plaintext highlighter-rouge">person[plea] = "I would never!"</code> will create a new property in the person object based on the original value of the plea variable <code class="language-plaintext highlighter-rouge">"wouldShe"</code>, which will make the person object look like this:</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">person</span> <span class="o">=</span> <span class="p">{</span>
   <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Mrs. White</span><span class="dl">"</span>
   <span class="na">wouldShe</span><span class="p">:</span> <span class="dl">"</span><span class="s2">I would never!</span><span class="dl">"</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>If the intention was to create a <code class="highlighter-rouge">plea</code> key for the person object, then you need to surround the <code class="highlighter-rouge">plea</code> with quotes. i.e. <code class="highlighter-rouge">person["plea"] = "I would never!"</code>. The person object would then look like this:</p>
+<p>If the intention was to create a <code class="language-plaintext highlighter-rouge">plea</code> key for the person object, then you need to surround the <code class="language-plaintext highlighter-rouge">plea</code> with quotes. i.e. <code class="language-plaintext highlighter-rouge">person["plea"] = "I would never!"</code>. The person object would then look like this:</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">person</span> <span class="o">=</span> <span class="p">{</span>
   <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Mrs. White</span><span class="dl">"</span>
@@ -391,7 +359,7 @@
 
 <h3 id="non-valid-characters">Non-Valid Characters</h3>
 
-<p>Try not to use non-valid characters as property names, like <code class="highlighter-rouge">'^&amp;*'</code>, that is not a very good property name both because it uses non-valid characters and it is not named in a very memorable or sensible way. You can certainly use non-valid characters to name your properties, but the name will need to be surrounded by quotes. Try to keep your code to the point and don’t get too fancy.</p>
+<p>Try not to use non-valid characters as property names, like <code class="language-plaintext highlighter-rouge">'^&amp;*'</code>, that is not a very good property name both because it uses non-valid characters and it is not named in a very memorable or sensible way. You can certainly use non-valid characters to name your properties, but the name will need to be surrounded by quotes. Try to keep your code to the point and don’t get too fancy.</p>
 
 <p>Q&amp;A</p>
 
@@ -399,7 +367,7 @@
 
 <p>A: An array is a special kind of object. The most special thing about an array is the .length property which is a property that is computed as you add numerical indices. Numerical indices are different than properties on an array because an array captures that and will increment the length.</p>
 
-<p>If you have an array containing any number of items and add something to an index that does not exist; if you add something to the array at an index position that is more than 1 greater than the current .length [numnber of index positions] of the array, empty values will be inserted until it reaches the requested index position. i.e. original array is <code class="highlighter-rouge">y[0,1,2,3,4,5]</code> and you would like to add <code class="highlighter-rouge">y[10]=number</code>, the array will now be <code class="highlighter-rouge">y[0,1,2,3,4,5,,,,number]</code></p>
+<p>If you have an array containing any number of items and add something to an index that does not exist; if you add something to the array at an index position that is more than 1 greater than the current .length [numnber of index positions] of the array, empty values will be inserted until it reaches the requested index position. i.e. original array is <code class="language-plaintext highlighter-rouge">y[0,1,2,3,4,5]</code> and you would like to add <code class="language-plaintext highlighter-rouge">y[10]=number</code>, the array will now be <code class="language-plaintext highlighter-rouge">y[0,1,2,3,4,5,,,,number]</code></p>
 
 <p>Arrays are easier to reverse and loop through than objects.</p>
 
@@ -466,13 +434,13 @@ Rooms</p>
 
 <span class="p">[</span><span class="nx">thing1</span><span class="p">,</span> <span class="nx">thing2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">];</span></code></pre></figure>
 
-<p><code class="highlighter-rouge">const</code> and <code class="highlighter-rouge">let</code> are features of ES6</p>
+<p><code class="language-plaintext highlighter-rouge">const</code> and <code class="language-plaintext highlighter-rouge">let</code> are features of ES6</p>
 
-<p><code class="highlighter-rouge">const</code> is used when you want the value of the variable to remain constant</p>
+<p><code class="language-plaintext highlighter-rouge">const</code> is used when you want the value of the variable to remain constant</p>
 
 <p>const will not apply to the properties of the object unless you explicitly ‘freeze’ them using <a href="'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze'">Object.freeze</a></p>
 
-<p><code class="highlighter-rouge">let</code> is used when you want to restrict a variable to a certain scope</p>
+<p><code class="language-plaintext highlighter-rouge">let</code> is used when you want to restrict a variable to a certain scope</p>
 
 <p>i.e. Destructuring an Object</p>
 
@@ -573,13 +541,13 @@ Rooms</p>
     <span class="p">]</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>Considering the above, what would <code class="highlighter-rouge">game[suspects]</code> return?</p>
+<p>Considering the above, what would <code class="language-plaintext highlighter-rouge">game[suspects]</code> return?</p>
 
 <p>nothing… because the quote marks were missing around ‘suspects’. With the added quote marks, it would return an array with the suspect objects.</p>
 
 <h3 id="looping-exercise">Looping Exercise</h3>
 
-<p>Using the nested structure from the previous section, loop through it using any <code class="highlighter-rouge">for</code> loop of your choice.</p>
+<p>Using the nested structure from the previous section, loop through it using any <code class="language-plaintext highlighter-rouge">for</code> loop of your choice.</p>
 
 <h3 id="looping-solution">Looping Solution</h3>
 
@@ -616,7 +584,7 @@ Rooms</p>
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="nx">the</span> <span class="nx">above</span> <span class="nx">would</span> <span class="na">log</span><span class="p">:</span>
+<span class="nx">the</span> <span class="nx">above</span> <span class="nx">would</span> <span class="nx">log</span><span class="p">:</span>
 
 <span class="dl">'</span><span class="s1">outer loop</span><span class="dl">'</span>
 <span class="dl">'</span><span class="s1">inner loop</span><span class="dl">'</span>
@@ -722,7 +690,7 @@ Rooms</p>
 
 <span class="nx">_</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">rooms</span><span class="p">,</span> <span class="nx">logger</span><span class="p">);</span></code></pre></figure>
 
-<p><code class="highlighter-rouge">observatory
+<p><code class="language-plaintext highlighter-rouge">observatory
 ballroom
 library</code></p>
 
@@ -764,7 +732,7 @@ library</code></p>
 
 <h3 id="_map-vs-map-functions">_.map() vs .map() Functions</h3>
 
-<p><code class="highlighter-rouge">_.map([1, 2, 3], function(v, i, list) {console.log(v)})</code></p>
+<p><code class="language-plaintext highlighter-rouge">_.map([1, 2, 3], function(v, i, list) {console.log(v)})</code></p>
 
 <ul>
   <li>
@@ -785,7 +753,7 @@ library</code></p>
     <span class="k">return</span> <span class="s2">`broken </span><span class="p">${</span><span class="nx">item</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 <span class="p">};</span></code></pre></figure>
 
-<p>Unrelated Note: If you want to quickly test out a function in a library, you can usually visit the library’s site and open the console. i.e. visit underscorejs.org, open the console and type <code class="highlighter-rouge">_.map()</code></p>
+<p>Unrelated Note: If you want to quickly test out a function in a library, you can usually visit the library’s site and open the console. i.e. visit underscorejs.org, open the console and type <code class="language-plaintext highlighter-rouge">_.map()</code></p>
 
 <h3 id="_map-solution">_.map() Solution</h3>
 
@@ -875,7 +843,7 @@ library</code></p>
 
 <h3 id="filter-application-exercise">.filter() Application Exercise</h3>
 
-<p>Using the below object <code class="highlighter-rouge">videoData</code> and _.filter, return an array of objects containing only the people that were present</p>
+<p>Using the below object <code class="language-plaintext highlighter-rouge">videoData</code> and _.filter, return an array of objects containing only the people that were present</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">videoData</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
@@ -1009,15 +977,15 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 
 <h3 id="es6-arrow-functions">ES6 Arrow Functions</h3>
 
-<p>=&gt; replaces the <code class="highlighter-rouge">function</code> keyword</p>
+<p>=&gt; replaces the <code class="language-plaintext highlighter-rouge">function</code> keyword</p>
 
 <p>If there is only one parameter, it does not need to be wrapped in parenthesis.</p>
 
-<p>Arrow functions do not have their own value for <code class="highlighter-rouge">this</code>. Arrow functions reach into their parent scope for <code class="highlighter-rouge">this</code>.</p>
+<p>Arrow functions do not have their own value for <code class="language-plaintext highlighter-rouge">this</code>. Arrow functions reach into their parent scope for <code class="language-plaintext highlighter-rouge">this</code>.</p>
 
 <p>If you are trying to return something from an arrow function, it is best to explicitly declare the return statement.</p>
 
-<p>Side note: Template strings (surrounded by backticks), are ES6 syntax. It allows you to reference variable names i.e. <code class="highlighter-rouge">${variable}</code> without the need to plus signs and quote symbols all over the place.</p>
+<p>Side note: Template strings (surrounded by backticks), are ES6 syntax. It allows you to reference variable names i.e. <code class="language-plaintext highlighter-rouge">${variable}</code> without the need to plus signs and quote symbols all over the place.</p>
 
 <h3 id="projecting-exercise">Projecting Exercise</h3>
 
@@ -1047,7 +1015,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 
 <span class="nx">createTuple</span><span class="p">(</span><span class="dl">'</span><span class="s1">It</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">be</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">could</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">anyone</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">no one</span><span class="dl">'</span><span class="p">);</span></code></pre></figure>
 
-<p><code class="highlighter-rouge">[['It', 'could'], ['be', 'anyone']]</code></p>
+<p><code class="language-plaintext highlighter-rouge">[['It', 'could'], ['be', 'anyone']]</code></p>
 
 <p>With the addition of the […] spread operator, what will this return?</p>
 
@@ -1057,9 +1025,9 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 
 <span class="nx">createTuple</span><span class="p">(</span><span class="dl">'</span><span class="s1">It</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">be</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">could</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">anyone</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">no one</span><span class="dl">'</span><span class="p">);</span></code></pre></figure>
 
-<p><code class="highlighter-rouge">[['It', 'could'], ['be', ['anyone', 'no one']]]</code></p>
+<p><code class="language-plaintext highlighter-rouge">[['It', 'could'], ['be', ['anyone', 'no one']]]</code></p>
 
-<p>Since <code class="highlighter-rouge">createTuple</code> only takes 4 arguments (a, b, c, d), ‘no one’ gets left out. But with the spread operator, the remaining values will be places into an array with the final value.</p>
+<p>Since <code class="language-plaintext highlighter-rouge">createTuple</code> only takes 4 arguments (a, b, c, d), ‘no one’ gets left out. But with the spread operator, the remaining values will be places into an array with the final value.</p>
 
 <h3 id="arguments-keyword">Arguments Keyword</h3>
 
@@ -1074,7 +1042,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 
 <span class="nx">createTuple</span><span class="p">(</span><span class="dl">'</span><span class="s1">It</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">be</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">could</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">anyone</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">no one</span><span class="dl">'</span><span class="p">);</span></code></pre></figure>
 
-<p>The above would log: <code class="highlighter-rouge">'[It', 'be', 'could', 'anyone', 'no one']</code></p>
+<p>The above would log: <code class="language-plaintext highlighter-rouge">'[It', 'be', 'could', 'anyone', 'no one']</code></p>
 
 <h3 id="default-parameters">Default Parameters</h3>
 
@@ -1087,7 +1055,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 
 <span class="nx">add</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span> <span class="c1">// logs [5]</span></code></pre></figure>
 
-<p>The default value of <code class="highlighter-rouge">b</code> is 2, so if an argument is not passed, it will default to that value.</p>
+<p>The default value of <code class="language-plaintext highlighter-rouge">b</code> is 2, so if an argument is not passed, it will default to that value.</p>
 
 <h3 id="es5-rewrite-exercise">ES5 Rewrite Exercise</h3>
 
@@ -1126,7 +1094,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 
 <h3 id="arrayfrom">Array.from</h3>
 
-<p>Array.from can turn the arguments pseudo-array into an actual array… replaces <code class="highlighter-rouge">Array.prototype.slice.call</code>. It has many more features <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from">described here</a></p>
+<p>Array.from can turn the arguments pseudo-array into an actual array… replaces <code class="language-plaintext highlighter-rouge">Array.prototype.slice.call</code>. It has many more features <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from">described here</a></p>
 
 <h3 id="_from-exercise">_.from() Exercise</h3>
 
@@ -1176,9 +1144,9 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 
 <h3 id="scope-walkthrough-part-3">Scope Walkthrough, Part 3</h3>
 
-<p>You can pull a function out of the local scope of a document and attach it to the window i.e. <code class="highlighter-rouge">window.theFunctionIWant = theFunctionIMade;</code></p>
+<p>You can pull a function out of the local scope of a document and attach it to the window i.e. <code class="language-plaintext highlighter-rouge">window.theFunctionIWant = theFunctionIMade;</code></p>
 
-<p>The appropriate time to use <code class="highlighter-rouge">let</code> is when you want to scope a variable inside of a block that is not a function.</p>
+<p>The appropriate time to use <code class="language-plaintext highlighter-rouge">let</code> is when you want to scope a variable inside of a block that is not a function.</p>
 
 <h3 id="scope-takeaways">Scope Takeaways</h3>
 
@@ -1192,7 +1160,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 
 <p>Higher-Order Functions in JavaScript is what enables us to do functional programming techniques. In JavaScript, functions are treated as data, similar to objects, or other elements.</p>
 
-<p>A Higher-Order Function can take a function as an input i.e. <code class="highlighter-rouge">addEventListener</code>.</p>
+<p>A Higher-Order Function can take a function as an input i.e. <code class="language-plaintext highlighter-rouge">addEventListener</code>.</p>
 
 <p>Callbacks are functions that are passed to functions.</p>
 
@@ -1205,7 +1173,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="kc">false</span><span class="p">);}</span>
 <span class="p">);</span></code></pre></figure>
 
-<p>The above is a very basic example of a callback function. ifElse is being passed: true and 2 anonymous functions. The <code class="highlighter-rouge">condition</code> is true, so the <code class="highlighter-rouge">true</code> will be printed in the console.</p>
+<p>The above is a very basic example of a callback function. ifElse is being passed: true and 2 anonymous functions. The <code class="language-plaintext highlighter-rouge">condition</code> is true, so the <code class="language-plaintext highlighter-rouge">true</code> will be printed in the console.</p>
 
 <h3 id="passing-arguments">Passing Arguments</h3>
 
@@ -1237,7 +1205,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 
 <h3 id="passing-arguments-part-2">Passing Arguments, Part 2</h3>
 
-<p>You can pass an argument to a callback function by passing in an additional parameter to the function that the callback function is called in. i.e. <code class="highlighter-rouge">const ifElse = (condition, isTrue, isFalse, argument)...</code></p>
+<p>You can pass an argument to a callback function by passing in an additional parameter to the function that the callback function is called in. i.e. <code class="language-plaintext highlighter-rouge">const ifElse = (condition, isTrue, isFalse, argument)...</code></p>
 
 <h3 id="_reduce-exercise">_.reduce() Exercise</h3>
 
@@ -1423,7 +1391,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <span class="kd">const</span> <span class="nx">funcAlert2</span> <span class="o">=</span> <span class="nx">myAlert</span><span class="p">();</span> <span class="c1">// creates a new execution context of the myAlert function</span>
 <span class="nx">funcAlert</span><span class="p">();</span> <span class="c1">// since myAlert ultimately returns the alerter function, this will run the alerter function again from within the new execution context that has been created by funcAlert</span></code></pre></figure>
 
-<p>If you continue to call <code class="highlighter-rouge">funcAlert();</code>, the <code class="highlighter-rouge">count</code> value would continue to increase by 1 each time the function is called and it would be independent of the execution contect of <code class="highlighter-rouge">funcAlert2();</code>; which would still be at 0 until called.</p>
+<p>If you continue to call <code class="language-plaintext highlighter-rouge">funcAlert();</code>, the <code class="language-plaintext highlighter-rouge">count</code> value would continue to increase by 1 each time the function is called and it would be independent of the execution contect of <code class="language-plaintext highlighter-rouge">funcAlert2();</code>; which would still be at 0 until called.</p>
 
 <h3 id="closure-demonstration">Closure Demonstration</h3>
 
@@ -1444,7 +1412,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
     <span class="p">};</span>
 <span class="p">};</span></code></pre></figure>
 
-<p>With the above function, you can create separate execution contexts by declaring variables that are equal to the function <code class="highlighter-rouge">countClues()</code>; i.e. <code class="highlighter-rouge">counter = countClues(); counter2 = countClues;</code></p>
+<p>With the above function, you can create separate execution contexts by declaring variables that are equal to the function <code class="language-plaintext highlighter-rouge">countClues()</code>; i.e. <code class="language-plaintext highlighter-rouge">counter = countClues(); counter2 = countClues;</code></p>
 
 <h3 id="closure-recipe">Closure Recipe</h3>
 

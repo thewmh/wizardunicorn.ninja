@@ -1,8 +1,8 @@
-I"�<p>11/7</p>
+I"�<p>11/7</p>
 
 <p><em>Scrollspy?!</em></p>
 
-<p>So… I was missing some functionality for this component and agonized over getting <a href="https://getbootstrap.com/docs/4.0/components/scrollspy/">scrollspy</a> to function this morning, but eventually won. Bacon Ipsum was useful for getting some delicious dummy text on the page. I always need to remind myself that I should be developing mobile-first, but I am getting the hang of working in this manner, hoping it will be first-nature at some point. There was nothing too exciting about this, but I did find that when developing outside of Sitecore the relative links don’t always function as one would expect. Sitecore uses <code class="highlighter-rouge">&lt;base&gt;</code> in the <code class="highlighter-rouge">&lt;head&gt;</code> to dynamically provide a pages url, but this does not function when developing outside of Sitecore, so after some flailing and verbosity, I pushed my work back to the repo and it magically works. Yay.</p>
+<p>So… I was missing some functionality for this component and agonized over getting <a href="https://getbootstrap.com/docs/4.0/components/scrollspy/">scrollspy</a> to function this morning, but eventually won. Bacon Ipsum was useful for getting some delicious dummy text on the page. I always need to remind myself that I should be developing mobile-first, but I am getting the hang of working in this manner, hoping it will be first-nature at some point. There was nothing too exciting about this, but I did find that when developing outside of Sitecore the relative links don’t always function as one would expect. Sitecore uses <code class="language-plaintext highlighter-rouge">&lt;base&gt;</code> in the <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code> to dynamically provide a pages url, but this does not function when developing outside of Sitecore, so after some flailing and verbosity, I pushed my work back to the repo and it magically works. Yay.</p>
 
 <hr />
 

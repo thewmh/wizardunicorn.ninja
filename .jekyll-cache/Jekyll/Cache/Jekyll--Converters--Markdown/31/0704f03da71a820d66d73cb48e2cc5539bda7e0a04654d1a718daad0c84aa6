@@ -1,0 +1,550 @@
+I"�w<h2 id="introduction">Introduction</h2>
+
+<h3 id="introduction-1">Introduction</h3>
+
+<p><a href="https://static.frontendmasters.com/resources/2019-03-07-deep-javascript-v2/deep-js-foundations-v2.pdf">Link to the course document</a></p>
+
+<p><a href="https://static.frontendmasters.com/resources/2019-03-07-deep-javascript-v2/deep-js-foundations-v2-exercises.zip">Link to the course’s code exerices</a></p>
+
+<p>The instructor talks about the depth that this course gets into. But why dive deep into JavaScript? Consider the following code:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">40</span><span class="p">;</span>
+
+<span class="nx">x</span><span class="o">++</span><span class="p">;</span> <span class="c1">// 40 - placing the plus symbols after the variable will give you the current value of the variable and then increment</span>
+<span class="nx">x</span><span class="p">;</span> <span class="c1">// 41 - this will log the current value of the variable</span>
+
+<span class="o">++</span><span class="nx">x</span><span class="p">;</span> <span class="c1">// 42 - placing the plus symbols before the variable will increment the value and then return the result</span>
+<span class="nx">x</span><span class="p">;</span> <span class="c1">// 42 - this will log the current value of the variable</span></code></pre></figure>
+
+<p>We as developers tend to assume mental models about code and when something goes wrong instead of having a better understanding about the code. The unintuitive-ness of JavaScript does not mean that it was poorly defined. <strong>Read the spec docs!</strong></p>
+
+<h3 id="understanding-your-code">Understanding Your Code</h3>
+
+<p>According to the JavaScript spec for the <code class="language-plaintext highlighter-rouge">++</code> operator:</p>
+
+<blockquote>
+  <p><strong>12.4.4.1 Runtime Semantics: Evaluation
+<em>UpdateExpression : LeftHandSideExpression **++</em></strong></p>
+
+  <ol>
+    <li>Let <code class="language-plaintext highlighter-rouge">lhs</code> be the result of evaluating <em>LeftHansSideExpression</em>.</li>
+    <li>Let <code class="language-plaintext highlighter-rouge">oldValue</code> be ? <code class="language-plaintext highlighter-rouge">ToNumber</code>(?<code class="language-plaintext highlighter-rouge">GetValue(lhs)</code>).</li>
+    <li>Let <code class="language-plaintext highlighter-rouge">newValue</code> be the result of adding the value 1 to <code class="language-plaintext highlighter-rouge">oldValue</code>, using the same rules as for the <strong>+</strong> operator.</li>
+    <li>Perform ? <code class="language-plaintext highlighter-rouge">PutValue(lhs, newValue)</code>.</li>
+    <li>Return <code class="language-plaintext highlighter-rouge">oldValue</code>.</li>
+  </ol>
+</blockquote>
+
+<p>The purpose of this course is to help you understand the DNA of JavaScript to better understand when you are doing as a developer.</p>
+
+<p>To translate the above <strong>++</strong> spec into a function, it may look something like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">plusPlus</span><span class="p">(</span><span class="nx">orig_val</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">orig_val_coerced</span> <span class="o">=</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">orig_val</span><span class="p">);</span>
+    <span class="nx">x</span> <span class="o">=</span> <span class="nx">orig_val_coerced</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">orig_val_coerced</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">5</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">plusPlus</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span> <span class="c1">// 5</span>
+<span class="nx">x</span><span class="p">;</span> <span class="c1">// 6</span></code></pre></figure>
+
+<p>Whenever there is a divergence between what your brain thinks is happening and what the computer does, that’s where bugs enter the code.</p>
+
+<h3 id="course-overview">Course Overview</h3>
+
+<p>JavaScript can be divided into 3 pillars:</p>
+
+<ol>
+  <li>
+    <p>Types</p>
+
+    <ul>
+      <li>
+        <p>Primitive Types</p>
+      </li>
+      <li>
+        <p>Abstract Operations</p>
+      </li>
+      <li>
+        <p>Coercion</p>
+      </li>
+      <li>
+        <p>Equality</p>
+      </li>
+      <li>
+        <p>TypeScript, Flow, etc…</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Scope</p>
+
+    <ul>
+      <li>
+        <p>Nested Scope</p>
+      </li>
+      <li>
+        <p>Hoisting</p>
+      </li>
+      <li>
+        <p>Closure</p>
+      </li>
+      <li>
+        <p>Modules</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Objects (Oriented)</p>
+
+    <ul>
+      <li>
+        <p>this</p>
+      </li>
+      <li>
+        <p>class{}</p>
+      </li>
+      <li>
+        <p>Prototypes</p>
+      </li>
+      <li>
+        <p>OO vs. OLOO</p>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<p>It is important to understand all of these pillars of JavaScript to get a better understanding of the language and therefore be more effective in your work.</p>
+
+<h2 id="types">Types</h2>
+
+<h3 id="primitive-types">Primitive Types</h3>
+
+<p>“In JavaScript, everything is an object.” - <strong>false</strong></p>
+
+<p>This is not an accurate statement. Many things in JavaScript behave like objects, but that does not make them objects. The spec lays it out. The primitive types are: Undefined, Null, Boolean, String, Symbol, Number, and Object.</p>
+
+<ul>
+  <li>
+    <p>undefined - has one and only one value; undefined</p>
+  </li>
+  <li>
+    <p>string - any value wrapped in quotes (single or double)</p>
+  </li>
+  <li>
+    <p>number - refers to all of JavaScript’s numbers</p>
+  </li>
+  <li>
+    <p>boolean - the values <code class="language-plaintext highlighter-rouge">true</code> and <code class="language-plaintext highlighter-rouge">false</code></p>
+  </li>
+  <li>
+    <p>object - <code class="language-plaintext highlighter-rouge">{}</code></p>
+  </li>
+  <li>
+    <p>symbol - used mostly to create ‘pseudo’ private-keys</p>
+  </li>
+  <li>
+    <p>undeclared - is this a type? not exactly, but it does have a behavior</p>
+  </li>
+  <li>
+    <p>null - defined as a type, but its behavior is quirky. More details on this later.</p>
+  </li>
+  <li>
+    <p>function - not listed [in the spec] as a type, but functions do have a very specific set of attributes that could make a function considered to be a type. Technically referred to as a sub-type of an object.</p>
+  </li>
+  <li>
+    <p>array - numerically indexed, lengths assigned. Another sub-type to an object.</p>
+  </li>
+  <li>
+    <p>bigint - not in the spec, but likely coming to the spec. When it does land in the spec, it will be a primitive type.</p>
+  </li>
+</ul>
+
+<p>Defining/assigning a type when developing typically indicates that you expect your data to behave in a certain way. You should be defining your data w/ intent and understanding. Most of the above are not objects, so it is not correct to say that everything is an object in JavaScript. Variables don’t have types, values do.</p>
+
+<h3 id="typeof-operator">typeof Operator</h3>
+
+<p>When we assign a value to a variable, we can use the <code class="language-plaintext highlighter-rouge">typeof</code> operator to determine the type of the value stored in the variable. <code class="language-plaintext highlighter-rouge">undefined</code> is the default value assigned to a variable when a value is not assigned. <code class="language-plaintext highlighter-rouge">undefined</code> does not mean no value, but a value of <code class="language-plaintext highlighter-rouge">undefined</code>. <code class="language-plaintext highlighter-rouge">typeof</code> when applied to a variable storing a function will return ‘function’, which is not a primitive type.</p>
+
+<h3 id="bigint">BigInt</h3>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">v</span> <span class="o">=</span> <span class="mi">42</span><span class="nx">n</span><span class="p">;</span>
+
+<span class="k">typeof</span> <span class="nx">v</span><span class="p">;</span> <span class="c1">// "bigint"</span></code></pre></figure>
+
+<p>Coming soon functionality, does not behave like a standard number primitive type. It will be important to know the difference between a ‘number’ and a ‘bigint’.</p>
+
+<h3 id="kinds-of-emptiness">Kinds of Emptiness</h3>
+
+<p>undefined vs. undeclared vs. uninitialized</p>
+
+<p>These words are not synonymous, in JavaScript they are two entirely different concepts. <code class="language-plaintext highlighter-rouge">undeclared</code> means that the variable does not exist, <code class="language-plaintext highlighter-rouge">undefined</code> means that the variable exists, but has no value. <code class="language-plaintext highlighter-rouge">uninitialized</code> means the variable has never been initialized.</p>
+
+<h3 id="nan--isnan">NaN &amp; isNaN</h3>
+
+<p>NaN does not mean ‘not a number’, it means ‘invalid number’. Zero is not a number to use when you would like to indicate that there is no value, because zero has value. NaN is basically a number that has no value. NaN with any other mathmatically valid number will return NaN. NaN is not equal to NaN. NaN is the only value that is not equal to itself. The <code class="language-plaintext highlighter-rouge">isNan</code> utility coerces values to numbers before checking its value. <code class="language-plaintext highlighter-rouge">Number.isNan</code> does not do any coercion. Using this utility, you can determine with certainty whether a value is actually NaN or not; returns <code class="language-plaintext highlighter-rouge">true</code> or <code class="language-plaintext highlighter-rouge">false</code>. <code class="language-plaintext highlighter-rouge">typeof NaN</code> is a number.</p>
+
+<h3 id="negative-zero">Negative Zero</h3>
+
+<p>The negative representation of the value zero. If you stringify -0, it returns as ‘0’. <code class="language-plaintext highlighter-rouge">-0 === 0</code> ? <code class="language-plaintext highlighter-rouge">true</code> negative zero is neither less than or greater than zero. Enter <code class="language-plaintext highlighter-rouge">Object.is()</code> which allows you to test for the negative zero. It can also be used to check NaN values. A negative zero could be used to track the direction an element was traveling when it gets to zero. If an element was traveling in a negative direction (towards zero), when it gets to zero, it would be useful to denote which direction it was traveling rather than just zero. Negative zero to the rescue!</p>
+
+<h3 id="type-check-exercise">Type Check Exercise</h3>
+
+<p>Make a Polyfill for <code class="language-plaintext highlighter-rouge">Object.is(..)</code></p>
+
+<ol>
+  <li>
+    <p>`Object.is(..)1 should take two parameters.</p>
+  </li>
+  <li>
+    <p>It should return <code class="language-plaintext highlighter-rouge">true</code> if the passed in parameters are exactly the same value (not just <code class="language-plaintext highlighter-rouge">===</code>), or <code class="language-plaintext highlighter-rouge">false</code> otherwise.</p>
+  </li>
+  <li>
+    <p>For <code class="language-plaintext highlighter-rouge">NaN</code> testing, you can use <code class="language-plaintext highlighter-rouge">Number.isNan(..)</code>, but first see if you can find a way to test without usage of any utility?</p>
+  </li>
+  <li>
+    <p>For <code class="language-plaintext highlighter-rouge">-0</code> testing, no built-in utility exists, but here’s a hint: <code class="language-plaintext highlighter-rouge">-Infinity</code>.</p>
+  </li>
+  <li>
+    <p>If the parameters are any other values, just test them for strict equality.</p>
+  </li>
+  <li>
+    <p>You cannot use the built-in <code class="language-plaintext highlighter-rouge">Object.is(..)</code></p>
+  </li>
+</ol>
+
+<p><strong>Polyfill Pattern</strong></p>
+
+<blockquote>
+  <p>Note: Since your JS environment probably already has <code class="language-plaintext highlighter-rouge">Object.is(..)</code>, to test your polyfill you’ll have to first unconditionally define it (no <code class="language-plaintext highlighter-rouge">if</code> guard), and then add the <code class="language-plaintext highlighter-rouge">if</code> guard when you’re done.</p>
+</blockquote>
+
+<p>To define a polyfill, it looks like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">Object</span><span class="p">.</span><span class="nx">is</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Object</span><span class="p">.</span><span class="nx">is</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">ObjectIs</span><span class="p">(..)</span> <span class="p">{..};</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>In the (Code Exercises)[https://static.frontendmasters.com/resources/2019-03-07-deep-javascript-v2/deep-js-foundations-v2-exercises.zip], the file <code class="language-plaintext highlighter-rouge">types-exercises &gt; object-is &gt; ex.js</code> you will find the file that has all of the <code class="language-plaintext highlighter-rouge">Object.is(..)</code> tests.</p>
+
+<h3 id="type-check-exercise-solution">Type Check Exercise Solution</h3>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">Object</span><span class="p">.</span><span class="nx">is</span> <span class="o">||</span> <span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Object</span><span class="p">.</span><span class="nx">is</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">ObjectIs</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">xNegZero</span> <span class="o">=</span> <span class="nx">isItNegZero</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">yNegZero</span> <span class="o">=</span> <span class="nx">isItNegZero</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">xNegZero</span> <span class="o">||</span> <span class="nx">yNegZero</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">xNegZero</span> <span class="o">&amp;&amp;</span> <span class="nx">yNegZero</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">isItNaN</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">isItNaN</span><span class="p">(</span><span class="nx">y</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">x</span> <span class="o">===</span> <span class="nx">y</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kd">function</span> <span class="nx">isItNegZero</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">v</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="nx">v</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="kc">Infinity</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kd">function</span> <span class="nx">isItNaN</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">v</span> <span class="o">!==</span> <span class="nx">v</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+<span class="p">}</span></code></pre></figure>
+
+<h3 id="fundamental-objects">Fundamental Objects</h3>
+
+<p>In addition to Primitive Values are Fundamental Objects. AKA Built-In Objects or Native Functions. Under the following circumstances, it is recommended to use the <code class="language-plaintext highlighter-rouge">new</code> keyword:</p>
+
+<ul>
+  <li>
+    <p>Object()</p>
+  </li>
+  <li>
+    <p>Array()</p>
+  </li>
+  <li>
+    <p>Function()</p>
+  </li>
+  <li>
+    <p>Date()</p>
+  </li>
+  <li>
+    <p>RegExp()</p>
+  </li>
+  <li>
+    <p>Error()</p>
+  </li>
+</ul>
+
+<p>And with these, it is not recommended to use the <code class="language-plaintext highlighter-rouge">new</code> keyword:</p>
+
+<ul>
+  <li>
+    <p>String()</p>
+  </li>
+  <li>
+    <p>Number()</p>
+  </li>
+  <li>
+    <p>Boolean()</p>
+  </li>
+</ul>
+
+<p>They can be used with <code class="language-plaintext highlighter-rouge">new</code>, but you should not use that keyword with them. <code class="language-plaintext highlighter-rouge">String(), Number(), and Boolean()</code> automatically coerce whatever value is passed into them into that Primitive Type, and that behaviour is more useful than making an object out of them.</p>
+
+<h2 id="coercion">Coercion</h2>
+
+<h3 id="abstract-operations">Abstract Operations</h3>
+
+<p>From ECMAScript documentation:</p>
+
+<blockquote>
+  <p>The ECMAScript language implicitly performs automatic type conversion as needed. To clarify the semantics of certain construsts it is useful to define a set of conversion abstract operations. The conversion abstract operations are polymorphic; they can accept a value of any ECMAScript language type. But no other specification types are used with these operations.</p>
+</blockquote>
+
+<p>AKA coercion</p>
+
+<p>The first abstract operation we are looking at is <code class="language-plaintext highlighter-rouge">ToPrimitive</code>. This abstract operation takes an optional <code class="language-plaintext highlighter-rouge">type</code> hint. The algorithims in JavaScript are recursive, so if we pass something that cannot be coerced into a Primitive Type, <code class="language-plaintext highlighter-rouge">ToPrimitive()</code> will re-run until it either finds a type that it can set or error out. The way that <code class="language-plaintext highlighter-rouge">ToPrimitive</code> works is, by way of hint, trying either <code class="language-plaintext highlighter-rouge">valueOf()</code> or <code class="language-plaintext highlighter-rouge">toString()</code> the order of which depends on the ‘hint’ you have passed in (number or string).</p>
+
+<h3 id="tostring">toString</h3>
+
+<p><code class="language-plaintext highlighter-rouge">ToString</code> takes any value and gives us the representation of that value in string form. One of the corner-cases of <code class="language-plaintext highlighter-rouge">ToString</code> is that is coerces ‘-0’ to ‘0’. Calling <code class="language-plaintext highlighter-rouge">ToString</code> on an array removes the brackets, nulls and undefined(s) get left out. On an object, <code class="language-plaintext highlighter-rouge">ToString</code> will write “[object Object]”. You can overwrite <code class="language-plaintext highlighter-rouge">ToString</code> to behave however you want i.e. JSON.stringify an object.</p>
+
+<h3 id="tonumber">toNumber</h3>
+
+<p><code class="language-plaintext highlighter-rouge">ToNumber</code> takes any value and gives us the representation of that value in numeric form. One strange behaviour is turning empty quotes to the number 0. It strips off leading zeros and can handle hexidecimal values. <code class="language-plaintext highlighter-rouge">null</code> is coerced to ‘0’ and <code class="language-plaintext highlighter-rouge">undefined</code> is ‘NaN’. When <code class="language-plaintext highlighter-rouge">ToNumber</code> is used on an object, the algorithm will eventually hit ‘valueOf()’ and then ‘toString()’ and return <code class="language-plaintext highlighter-rouge">NaN</code>. On an array, empty strings are coerced to 0.</p>
+
+<h3 id="toboolean">toBoolean</h3>
+
+<p>Anytime you have any value that is not a boolean and you need a boolean value, <code class="language-plaintext highlighter-rouge">ToBoolean()</code> will eventually be used. Esentially, there is a lookup table that qualifies values as either Falsy or Truthy. Falsy values are: <code class="language-plaintext highlighter-rouge">"", 0, -0, null, NaN, false, undefined</code> Truthy values are basically any value not listed under ‘falsy values’, some examples: <code class="language-plaintext highlighter-rouge">"foo", 23, {a:1}, [1,3], true, function(){..}</code>. The list of truthy values is quite long.</p>
+
+<h3 id="cases-of-coercion">Cases of Coercion</h3>
+
+<p>Template literal strings (available since ES6) coerece values into different types. The plus operator spec states that if either side of the plus is a string, the <code class="language-plaintext highlighter-rouge">ToString</code> method will be invoked. The remainder of this section stresses the importance of understanding when and why coercion occurs and being intentional with how you are using it in your applications. For <code class="language-plaintext highlighter-rouge">Boolean</code> values specifically, the instructor recommends only coercing <code class="language-plaintext highlighter-rouge">undefined, null, or {}</code>. There are too many corner cases with numbers and strings to make using <code class="language-plaintext highlighter-rouge">Boolean</code> coercion make sense.</p>
+
+<h3 id="boxing">Boxing</h3>
+
+<p>Accessing methods on primitive values occurs through a process called boxing, which is a form of implicit coercion. All programming languages have type conversions, because it is absolutely necessary. You will always have cases where you have a string where you need to deal with it as a number or a number that you have to deal with as a boolean.</p>
+
+<h3 id="corner-cases-of-coercion">Corner Cases of Coercion</h3>
+
+<p>It is impossible to design a system that will not have corner cases. A lot of the corner cases have to deal with <code class="language-plaintext highlighter-rouge">Number</code>, <code class="language-plaintext highlighter-rouge">String</code> has a few as well. If you construct an instance of the boolean object and pass in false, it will return true. Not only does an empty string become zero, but so does any string that is full of white space. Booleans implicitly coerce themselves to numbers, which can be dangerous!</p>
+
+<h2 id="philosophy-of-coercion">Philosophy of Coercion</h2>
+
+<h3 id="intentional-coercion">Intentional Coercion</h3>
+
+<p>You cannot deal with type conversion corner cases by avoiding coercions. Instead, you have to adapt a coding style that makes value types plain and obvious. A quality JavaScript program embraces coercions, making sure the types involved in every operation are clear. Thus, corner cases are safely managed. Within your programs, you get to decide how to deal with coercion and it is in your best interest to pay attention to what you are doing by making them obvious in your code. JavaScript’s dynamic typing is not a weakness, it is one of its strong qualities. It’s one of the reasons JavaScript is so ubiquitous.</p>
+
+<h3 id="culture-of-learning">Culture of Learning</h3>
+
+<p>You should use the tools as effectively as you can and when someone is on your code base that does not quite understand, you should work with them to raise their level of understanding. On our development teams, we should promote advancement amongst all team members. Be effective with your communication by writing clear and communicative code.</p>
+
+<h3 id="code-communication-qa">Code Communication Q&amp;A</h3>
+
+<p>You should not rely on code comments as a crutch for the code to explain itself. Code comments should tell you why something is doing something.</p>
+
+<h3 id="implicit-coercion">Implicit Coercion</h3>
+
+<h3 id="understanding-features">Understanding Features</h3>
+
+<h3 id="coercion-exercise">Coercion Exercise</h3>
+
+<h3 id="coercion-exercise-solution">Coercion Exercise Solution</h3>
+
+<h2 id="equality">Equality</h2>
+
+<h3 id="double--triple-equals">Double &amp; Triple Equals</h3>
+
+<h3 id="coercive-equality">Coercive Equality</h3>
+
+<h3 id="double-equals-algorithm">Double Equals Algorithm</h3>
+
+<h3 id="double-equals-walkthrough">Double Equals Walkthrough</h3>
+
+<h3 id="double-equals-summary">Double Equals Summary</h3>
+
+<h3 id="double-equals-corner-cases">Double Equals Corner Cases</h3>
+
+<h3 id="corner-cases-booleans">Corner Cases: Booleans</h3>
+
+<h3 id="corner-cases-summary">Corner Cases: Summary</h3>
+
+<h3 id="the-case-for-double-equals">The Case for Double Equals</h3>
+
+<h3 id="equality-exercise">Equality Exercise</h3>
+
+<h3 id="equality-exercise-solution">Equality Exercise Solution</h3>
+
+<h2 id="static-typing">Static Typing</h2>
+
+<h3 id="typescript--flow">TypeScript &amp; Flow</h3>
+
+<h3 id="inferencing">Inferencing</h3>
+
+<h3 id="custom-types">Custom Types</h3>
+
+<h3 id="validating-operand-types">Validating Operand Types</h3>
+
+<h3 id="typescript--flow-summary">TypeScript &amp; Flow Summary</h3>
+
+<h3 id="static-typing-pros">Static Typing Pros</h3>
+
+<h3 id="static-typing-cons">Static Typing Cons</h3>
+
+<h3 id="understanding-your-types">Understanding Your Types</h3>
+
+<h2 id="scope">Scope</h2>
+
+<h3 id="scope-1">Scope</h3>
+
+<h3 id="compilation--scope">Compilation &amp; Scope</h3>
+
+<h3 id="executing-code">Executing Code</h3>
+
+<h3 id="compilation-and-scope-qa">Compilation and Scope Q&amp;A</h3>
+
+<h3 id="code-execution-finishing-up">Code Execution: Finishing Up</h3>
+
+<h3 id="lexical-scope-review">Lexical Scope Review</h3>
+
+<h3 id="compilation-review">Compilation Review</h3>
+
+<h3 id="dynamic-global-variables">Dynamic Global Variables</h3>
+
+<h3 id="strict-mode">Strict Mode</h3>
+
+<h3 id="nested-scope">Nested Scope</h3>
+
+<h3 id="undefined-vs-undeclared">Undefined vs Undeclared</h3>
+
+<h3 id="lexical-scope-elevator">Lexical Scope Elevator</h3>
+
+<h2 id="scope--function-expressions">Scope &amp; Function Expressions</h2>
+
+<h3 id="function-expressions">Function Expressions</h3>
+
+<h3 id="naming-function-expressions">Naming Function Expressions</h3>
+
+<h3 id="arrow-functions">Arrow Functions</h3>
+
+<h3 id="function-types-hierarchy">Function Types Hierarchy</h3>
+
+<h3 id="function-expression-exercise">Function Expression Exercise</h3>
+
+<h3 id="function-expression-solution-functions">Function Expression Solution: Functions</h3>
+
+<h3 id="function-expression-solution-arrow-functions">Function Expression Solution: Arrow Functions</h3>
+
+<h2 id="advanced-scope">Advanced Scope</h2>
+
+<h3 id="lexical--dynamic-scope">Lexical &amp; Dynamic Scope</h3>
+
+<h3 id="lexical-scope">Lexical Scope</h3>
+
+<h3 id="dynamic-scope">Dynamic Scope</h3>
+
+<h3 id="function-scoping">Function Scoping</h3>
+
+<h3 id="iife-pattern">IIFE Pattern</h3>
+
+<h3 id="block-scoping">Block Scoping</h3>
+
+<h3 id="choosing-let-or-var">Choosing let or var</h3>
+
+<h3 id="explicit-let-block">Explicit let Block</h3>
+
+<h3 id="const">const</h3>
+
+<h3 id="const-qa">const Q&amp;A</h3>
+
+<h3 id="hoisting">Hoisting</h3>
+
+<h3 id="hoisting-example">Hoisting Example</h3>
+
+<h3 id="let-doesnt-hoist">let Doesn’t Hoist</h3>
+
+<h3 id="hoisting-exercise">Hoisting Exercise</h3>
+
+<h3 id="hoisting-exercise-solution">Hoisting Exercise Solution</h3>
+
+<h2 id="closure">Closure</h2>
+
+<h3 id="origin-of-closure">Origin of Closure</h3>
+
+<h3 id="what-is-closure">What is Closure?</h3>
+
+<h3 id="closing-over-variables">Closing Over Variables</h3>
+
+<h3 id="module-pattern">Module Pattern</h3>
+
+<h3 id="es6-modules--nodejs">ES6 Modules &amp; Node.js</h3>
+
+<h3 id="es6-module-syntax">ES6 Module Syntax</h3>
+
+<h3 id="module-exercise">Module Exercise</h3>
+
+<h3 id="module-exercise-solution">Module Exercise Solution</h3>
+
+<h2 id="objects">Objects</h2>
+
+<h3 id="objects-overview">Objects Overview</h3>
+
+<h3 id="the-this-keyword">The this Keyword</h3>
+
+<h3 id="implicit--explicit-binding">Implicit &amp; Explicit Binding</h3>
+
+<h3 id="the-new-keyword">The new Keyword</h3>
+
+<h3 id="default-binding">Default Binding</h3>
+
+<h3 id="binding-precedence">Binding Precedence</h3>
+
+<h3 id="arrow-functions--lexical-this">Arrow Functions &amp; Lexical this</h3>
+
+<h3 id="resolving-this-in-arrow-functions">Resolving this in Arrow Functions</h3>
+
+<h3 id="this-exercise">this Exercise</h3>
+
+<h3 id="this-exercise-solution">this Exercise Solution</h3>
+
+<h3 id="es6-class-keyword">ES6 class Keyword</h3>
+
+<h3 id="fixing-this-in-classes">Fixing this in Classes</h3>
+
+<h3 id="class-exercise">class Exercise</h3>
+
+<h3 id="class-exercise-solution">class Exercise Solution</h3>
+
+<h2 id="prototypes">Prototypes</h2>
+
+<h3 id="prototypes-1">Prototypes</h3>
+
+<h3 id="prototypal-class">Prototypal Class</h3>
+
+<h3 id="the-prototype-chain">The Prototype Chain</h3>
+
+<h3 id="dunder-prototypes">Dunder Prototypes</h3>
+
+<h3 id="this--prototypes-qa">this &amp; prototypes Q&amp;A</h3>
+
+<h3 id="shadowing-prototypes">Shadowing Prototypes</h3>
+
+<h3 id="prototypal-inheritance">Prototypal Inheritance</h3>
+
+<h3 id="classical-vs-prototypal-inheritance">Classical vs Prototypal Inheritance</h3>
+
+<h3 id="inheritance-is-delegation">Inheritance is Delegation</h3>
+
+<h3 id="oloo-pattern">OLOO Pattern</h3>
+
+<h3 id="delegation-oriented-design">Delegation-Oriented Design</h3>
+
+<h2 id="wrapping-up">Wrapping Up</h2>
+
+<h3 id="wrapping-up-1">Wrapping Up</h3>
+
+<h3 id="bonus-typl">Bonus: Typl</h3>
+:ET

@@ -1,4 +1,5 @@
-I"©	<h2 id="discovery---task_name">Discovery - <em>task_name</em></h2>
+I"
+<h2 id="discovery---task_name">Discovery - <em>task_name</em></h2>
 
 <p>[Insert description of discovery task here]</p>
 
@@ -25,13 +26,13 @@
   <li>
     <p>What are the benefits to using this (current, if upgraded, etc.) vs something else</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  * Are there any alternatives that might be better?
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  * Are there any alternatives that might be better?
 </code></pre></div>    </div>
   </li>
   <li>
     <p>What are areas of concerns, possible blockers, etc.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  * Ease of implementation
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  * Ease of implementation
 
   * Browser support
 
@@ -49,7 +50,7 @@
   <li>
     <p>How to implement JS</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  * How to customize /configure settings?
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  * How to customize /configure settings?
 </code></pre></div>    </div>
   </li>
   <li>
@@ -64,7 +65,7 @@
   <li>
     <p>Are there related modules you can use to make things easier?</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  * Any *libraries* for *the_solution* modules that might help?
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  * Any *libraries* for *the_solution* modules that might help?
 
   * Any general *libraries* for modules to leverage that might help?
 </code></pre></div>    </div>
@@ -75,7 +76,7 @@
   <li>
     <p>Are there any UI things to consider and account for:</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  * Mobile vs tablet vs desktop layout
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  * Mobile vs tablet vs desktop layout
 
   * Needs to appear in certain components, modals, special logic not OOTB, etc.
 </code></pre></div>    </div>

@@ -1,4 +1,4 @@
-I"ž<h2 id="sxa">SXA</h2>
+I"±<h2 id="sxa">SXA</h2>
 
 <p><a href="https://www.nishtechinc.com/en/Blog/2018/November/Nuptial-Experiment-Introduction">Custom Component Build - Part 1 - Introduction</a></p>
 
@@ -33,7 +33,7 @@
 <p><a href="https://hacks.mozilla.org/category/es6-in-depth/">ES6 In Depth</a> - Brought to you by Mozilla</p>
 
 <p><a href="http://jsfiddle.net/ak9Lnrjj/10/">Add or Remove classes on things w/ Jquery?</a><br />
-<em>could be a fix for slick carousel variable height slides. add a class that makes all the other slides have<code class="highlighter-rouge">css display: none;</code></em></p>
+<em>could be a fix for slick carousel variable height slides. add a class that makes all the other slides have<code class="language-plaintext highlighter-rouge">css display: none;</code></em></p>
 
 <p><a href="https://www.charlesproxy.com">Charles - Web Debugging Proxy Application</a></p>
 

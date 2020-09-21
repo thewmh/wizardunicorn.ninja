@@ -14,7 +14,7 @@
 
 
 <link rel="shortcut icon" type="image/ico"
-  href="/assets/uswds/img/favicons/favicon.ico">
+  href="">
 
 <link rel="icon" type="image/png"
   href="/assets/uswds/img/favicons/favicon.png">
@@ -115,50 +115,6 @@
           
           <li>
             
-              
-              
-              
-            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-1">
-              <span>Worknotes</span>
-            </button>
-            
-            <ul id="nav-1" class="usa-nav-submenu" aria-hidden="true">
-            
-            
-              
-                
-                <li>
-                  <a href="/worknotes/2001">January 2020</a>
-                </li>
-                
-              
-                
-                <li>
-                  <a href="/worknotes/1911">November 2019</a>
-                </li>
-                
-              
-                
-                <li>
-                  <a href="/worknotes/1910">October 2019</a>
-                </li>
-                
-              
-                
-                <li>
-                  <a href="/worknotes/1909">September 2019</a>
-                </li>
-                
-              
-            
-            </ul>
-            
-            
-            
-          </li>
-          
-          <li>
-            
               <a class=" usa-nav-link  " href="/resources/">
                 <span>Resources</span>
               </a>
@@ -170,11 +126,11 @@
               
               
               
-            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-3">
+            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-2">
               <span>Frontend Masters Workshop Notes</span>
             </button>
             
-            <ul id="nav-3" class="usa-nav-submenu" aria-hidden="true">
+            <ul id="nav-2" class="usa-nav-submenu" aria-hidden="true">
             
             
               
@@ -190,6 +146,18 @@
                 </li>
                 
               
+                
+                <li>
+                  <a href="/frontend-masters/deep-javascript-foundations">Deep Javascript Foundations, v3</a>
+                </li>
+                
+              
+                
+                <li>
+                  <a href="/frontend-masters/webpack-4-fundamentals">Webpack 4 Fundamentals</a>
+                </li>
+                
+              
             
             </ul>
             
@@ -202,11 +170,11 @@
               
               
               
-            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-4">
+            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-3">
               <span>Sitecore Workshop Notes</span>
             </button>
             
-            <ul id="nav-4" class="usa-nav-submenu" aria-hidden="true">
+            <ul id="nav-3" class="usa-nav-submenu" aria-hidden="true">
             
             
               
@@ -342,7 +310,7 @@
   </li>
 </ul>
 
-<p>The first thing that happens when a function is run is a new execution context is established and the parameters and their arguments are stored in local memory. i.e. <code class="highlighter-rouge">inputNumber: 3</code></p>
+<p>The first thing that happens when a function is run is a new execution context is established and the parameters and their arguments are stored in local memory. i.e. <code class="language-plaintext highlighter-rouge">inputNumber: 3</code></p>
 
 <p>JavaScript contains a single thread of execution, which means that you can only do one thing at a time (unless you are running your code asynchronously).</p>
 
@@ -381,7 +349,7 @@
     <span class="k">return</span> <span class="nx">num</span><span class="o">*</span><span class="nx">num</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>With the above function, you could now pass any number and it would return the square of that number <code class="highlighter-rouge">num*num</code></p>
+<p>With the above function, you could now pass any number and it would return the square of that number <code class="language-plaintext highlighter-rouge">num*num</code></p>
 
 <p>Generalizing functions:</p>
 
@@ -575,7 +543,7 @@
 
 <h3 id="retaining-function-memory">Retaining Function Memory</h3>
 
-<p>In the above function definition, when <code class="highlighter-rouge">myNewFunction</code> is assigned to <code class="highlighter-rouge">outer()</code>, the inner function <code class="highlighter-rouge">incrementCounter()</code> is saved to it, including the parent scope of <code class="highlighter-rouge">outer()</code>, which allows access to the variable <code class="highlighter-rouge">counter</code>.</p>
+<p>In the above function definition, when <code class="language-plaintext highlighter-rouge">myNewFunction</code> is assigned to <code class="language-plaintext highlighter-rouge">outer()</code>, the inner function <code class="language-plaintext highlighter-rouge">incrementCounter()</code> is saved to it, including the parent scope of <code class="language-plaintext highlighter-rouge">outer()</code>, which allows access to the variable <code class="language-plaintext highlighter-rouge">counter</code>.</p>
 
 <h3 id="function-closure">Function Closure</h3>
 
@@ -595,7 +563,7 @@
 
 <h3 id="multiple-closure-instances">Multiple Closure Instances</h3>
 
-<p>If you store a returned function definition in a variable, you are creating unique instances and (future; at run-time) execution contexts for that function. Following the above example, if you set <code class="highlighter-rouge">var anotherVariable = outer();</code>, anotherVariable would have its own execution context separate from myNewFunction.</p>
+<p>If you store a returned function definition in a variable, you are creating unique instances and (future; at run-time) execution contexts for that function. Following the above example, if you set <code class="language-plaintext highlighter-rouge">var anotherVariable = outer();</code>, anotherVariable would have its own execution context separate from myNewFunction.</p>
 
 <h3 id="practical-applications">Practical Applications</h3>
 
@@ -721,11 +689,11 @@
 
 <h3 id="web-api-example">Web API Example</h3>
 
-<p>This section is focused on setTimeout which is not a feature of JavaScript, but a way for JavaScript to interface with a web browser(s) <code class="highlighter-rouge">timer</code> API - <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout">more details on MDN</a></p>
+<p>This section is focused on setTimeout which is not a feature of JavaScript, but a way for JavaScript to interface with a web browser(s) <code class="language-plaintext highlighter-rouge">timer</code> API - <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout">more details on MDN</a></p>
 
-<p><code class="highlighter-rouge">setTimeout</code> takes a number of arguments, but this focused on passing in a function and a number which represents the amount of time, in milliseconds, before the function will run i.e. <code class="highlighter-rouge">setTimeout(myFunction, 1000)</code></p>
+<p><code class="language-plaintext highlighter-rouge">setTimeout</code> takes a number of arguments, but this focused on passing in a function and a number which represents the amount of time, in milliseconds, before the function will run i.e. <code class="language-plaintext highlighter-rouge">setTimeout(myFunction, 1000)</code></p>
 
-<p><code class="highlighter-rouge">setTimeout</code> will start a timer at 0s and when it meets the argument <code class="highlighter-rouge">1000(ms)</code>, it will invoke the function <code class="highlighter-rouge">myFunction</code></p>
+<p><code class="language-plaintext highlighter-rouge">setTimeout</code> will start a timer at 0s and when it meets the argument <code class="language-plaintext highlighter-rouge">1000(ms)</code>, it will invoke the function <code class="language-plaintext highlighter-rouge">myFunction</code></p>
 
 <h3 id="web-api-rules">Web API Rules</h3>
 
@@ -748,12 +716,12 @@
 <p>Walking through the above JavaScript, this is what happens:</p>
 
 <ol>
-  <li>Define function <code class="highlighter-rouge">printHello</code></li>
-  <li>Define function <code class="highlighter-rouge">blockFor1Sec</code></li>
-  <li>Run <code class="highlighter-rouge">setTimeout</code> Browser Feature, passing in the <code class="highlighter-rouge">printHello</code> function with <code class="highlighter-rouge">0ms</code> passed in as the time argument. This adds the <code class="highlighter-rouge">printHello</code> function into the Callback Queue</li>
-  <li>Call <code class="highlighter-rouge">blockFor1Sec</code> function</li>
-  <li>The <code class="highlighter-rouge">console.log</code> prints</li>
-  <li>Finally, the <code class="highlighter-rouge">printHello</code> function is executed</li>
+  <li>Define function <code class="language-plaintext highlighter-rouge">printHello</code></li>
+  <li>Define function <code class="language-plaintext highlighter-rouge">blockFor1Sec</code></li>
+  <li>Run <code class="language-plaintext highlighter-rouge">setTimeout</code> Browser Feature, passing in the <code class="language-plaintext highlighter-rouge">printHello</code> function with <code class="language-plaintext highlighter-rouge">0ms</code> passed in as the time argument. This adds the <code class="language-plaintext highlighter-rouge">printHello</code> function into the Callback Queue</li>
+  <li>Call <code class="language-plaintext highlighter-rouge">blockFor1Sec</code> function</li>
+  <li>The <code class="language-plaintext highlighter-rouge">console.log</code> prints</li>
+  <li>Finally, the <code class="language-plaintext highlighter-rouge">printHello</code> function is executed</li>
 </ol>
 
 <p>The Callback Queue is not allowed to run all regular code is run first. JavaScript checks if the Call Stack is empty before checking the Callback Queue. This is known as the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop">Event Loop</a>.</p>
@@ -804,7 +772,7 @@
   </li>
 </ul>
 
-<p>In ES6, <code class="highlighter-rouge">fetch</code> is the replacement for <code class="highlighter-rouge">xhr</code>, but unlike <code class="highlighter-rouge">xhr</code>, <code class="highlighter-rouge">fetch</code> (referred to above as a ‘two-pronged’ facade function) will both initiate a Web Browser function and in the JavaScript environment create a placeholder object called a <code class="highlighter-rouge">promise object</code>. When the network request completes, the object will be filled in with the result. The Web Browser function and the placeholder object are intrinsically linked.</p>
+<p>In ES6, <code class="language-plaintext highlighter-rouge">fetch</code> is the replacement for <code class="language-plaintext highlighter-rouge">xhr</code>, but unlike <code class="language-plaintext highlighter-rouge">xhr</code>, <code class="language-plaintext highlighter-rouge">fetch</code> (referred to above as a ‘two-pronged’ facade function) will both initiate a Web Browser function and in the JavaScript environment create a placeholder object called a <code class="language-plaintext highlighter-rouge">promise object</code>. When the network request completes, the object will be filled in with the result. The Web Browser function and the placeholder object are intrinsically linked.</p>
 
 <p>ES6+ Prmoises</p>
 
@@ -823,10 +791,10 @@
 
 <ol>
   <li>
-    <p>Declare a function <code class="highlighter-rouge">display</code></p>
+    <p>Declare a function <code class="language-plaintext highlighter-rouge">display</code></p>
   </li>
   <li>
-    <p>Declare a constant <code class="highlighter-rouge">futureData</code> and store the result of <code class="highlighter-rouge">fetch(...)</code>. This will immediately return a ‘Promise Object’ with two properties; {value: undefined, onFufilled: []} and store it in the <code class="highlighter-rouge">futureData</code> constant. The other consequence of <code class="highlighter-rouge">fetch(...)</code> will be in the Web Browser in the form of a Network Request. The Network Request requires the URL and path, which is defined. The Network Request defaults to a <code class="highlighter-rouge">GET</code> request, but you can pass in (as an argument) another type of request, i.e. <code class="highlighter-rouge">POST</code>. The response from the Network Request gets stored in the <code class="highlighter-rouge">futureData</code> object that was created, specifically in the <code class="highlighter-rouge">value</code> property of that object.</p>
+    <p>Declare a constant <code class="language-plaintext highlighter-rouge">futureData</code> and store the result of <code class="language-plaintext highlighter-rouge">fetch(...)</code>. This will immediately return a ‘Promise Object’ with two properties; {value: undefined, onFufilled: []} and store it in the <code class="language-plaintext highlighter-rouge">futureData</code> constant. The other consequence of <code class="language-plaintext highlighter-rouge">fetch(...)</code> will be in the Web Browser in the form of a Network Request. The Network Request requires the URL and path, which is defined. The Network Request defaults to a <code class="language-plaintext highlighter-rouge">GET</code> request, but you can pass in (as an argument) another type of request, i.e. <code class="language-plaintext highlighter-rouge">POST</code>. The response from the Network Request gets stored in the <code class="language-plaintext highlighter-rouge">futureData</code> object that was created, specifically in the <code class="language-plaintext highlighter-rouge">value</code> property of that object.</p>
   </li>
 </ol>
 
@@ -834,13 +802,13 @@
 
 <ol>
   <li>
-    <p>The <code class="highlighter-rouge">onFulfilled</code> array in the <code class="highlighter-rouge">futureData</code> object contains a number of [hidden] methods (which are ‘directly’ inaccessible), but can be accessed with ‘key’ words, in this case <code class="highlighter-rouge">then</code>. passing the <code class="highlighter-rouge">display</code> function into <code class="highlighter-rouge">futureData.then()</code> will automatically pass the content of <code class="highlighter-rouge">futureData.value</code> into the <code class="highlighter-rouge">display</code> function defined on the first line.</p>
+    <p>The <code class="language-plaintext highlighter-rouge">onFulfilled</code> array in the <code class="language-plaintext highlighter-rouge">futureData</code> object contains a number of [hidden] methods (which are ‘directly’ inaccessible), but can be accessed with ‘key’ words, in this case <code class="language-plaintext highlighter-rouge">then</code>. passing the <code class="language-plaintext highlighter-rouge">display</code> function into <code class="language-plaintext highlighter-rouge">futureData.then()</code> will automatically pass the content of <code class="language-plaintext highlighter-rouge">futureData.value</code> into the <code class="language-plaintext highlighter-rouge">display</code> function defined on the first line.</p>
   </li>
   <li>
-    <p>The <code class="highlighter-rouge">console.log('Me first!')</code> will finally run and print <code class="highlighter-rouge">Me first!</code> in the console.</p>
+    <p>The <code class="language-plaintext highlighter-rouge">console.log('Me first!')</code> will finally run and print <code class="language-plaintext highlighter-rouge">Me first!</code> in the console.</p>
   </li>
   <li>
-    <p>The Network Request has sucessfully completed and the response is stored in <code class="highlighter-rouge">futureData.value</code>. This will trigger the <code class="highlighter-rouge">...then(display)</code> and pass in <code class="highlighter-rouge">futureData.value</code> as the argument for the <code class="highlighter-rouge">display</code> function. A new execution context is created for the <code class="highlighter-rouge">display</code> function. <code class="highlighter-rouge">futureData.value</code> will be stored as <code class="highlighter-rouge">data</code> in the <code class="highlighter-rouge">display</code> function.</p>
+    <p>The Network Request has sucessfully completed and the response is stored in <code class="language-plaintext highlighter-rouge">futureData.value</code>. This will trigger the <code class="language-plaintext highlighter-rouge">...then(display)</code> and pass in <code class="language-plaintext highlighter-rouge">futureData.value</code> as the argument for the <code class="language-plaintext highlighter-rouge">display</code> function. A new execution context is created for the <code class="language-plaintext highlighter-rouge">display</code> function. <code class="language-plaintext highlighter-rouge">futureData.value</code> will be stored as <code class="language-plaintext highlighter-rouge">data</code> in the <code class="language-plaintext highlighter-rouge">display</code> function.</p>
   </li>
 </ol>
 
@@ -860,14 +828,14 @@
 <span class="nx">blockFor300ms</span><span class="p">()</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Me first!</span><span class="dl">"</span><span class="p">);</span></code></pre></figure>
 
-<p><em>The <code class="highlighter-rouge">then</code> method and its functionality to call on completion</em></p>
+<p><em>The <code class="language-plaintext highlighter-rouge">then</code> method and its functionality to call on completion</em></p>
 
 <ul>
   <li>
     <p>Any code we want to run on the returned data must also be saved on the promise object</p>
   </li>
   <li>
-    <p>Added using the <code class="highlighter-rouge">.then</code> method to the hidden property <code class="highlighter-rouge">onFulfillment</code></p>
+    <p>Added using the <code class="language-plaintext highlighter-rouge">.then</code> method to the hidden property <code class="language-plaintext highlighter-rouge">onFulfillment</code></p>
   </li>
   <li>
     <p>Promise objects will automatically trigger the attached function to run (with its input being the returned data)</p>
@@ -878,17 +846,17 @@
 
 <h3 id="web-apis--promises-example-then">Web APIs &amp; Promises Example: then</h3>
 
-<p>Walking through the above JavaScript block, the <code class="highlighter-rouge">.then</code> eventually ‘GET(s)’ data back from its request and…</p>
+<p>Walking through the above JavaScript block, the <code class="language-plaintext highlighter-rouge">.then</code> eventually ‘GET(s)’ data back from its request and…</p>
 
 <h3 id="web-apis--promises-example-microtask-queue">Web APIs &amp; Promises Example: Microtask Queue</h3>
 
-<p>When finally, all of the code in the global scope has executed, the Event Loop checks the Callback and Microtask Queue(s) for additional tasks waiting to be run. <code class="highlighter-rouge">fetch</code> placed the Network Reques into the Microtask Queue, which is where the Event Loop first checks for tasks, which then triggers the <code class="highlighter-rouge">.then</code>. Finally, the Event Loop is able to reach the Callback Queue which contains the <code class="highlighter-rouge">setTimeout</code>. So while the <code class="highlighter-rouge">setTimeout</code> function was called first, it in fact gets run last because of the order of the Call Stack, Event Loop, Microtask Queue, and Callback Queue(s). Any function that is attached to a promise object gets stored in the Microtask Queue, which is the first Queue that the JavaScript Event Loop checks, before the Callback Queue.</p>
+<p>When finally, all of the code in the global scope has executed, the Event Loop checks the Callback and Microtask Queue(s) for additional tasks waiting to be run. <code class="language-plaintext highlighter-rouge">fetch</code> placed the Network Reques into the Microtask Queue, which is where the Event Loop first checks for tasks, which then triggers the <code class="language-plaintext highlighter-rouge">.then</code>. Finally, the Event Loop is able to reach the Callback Queue which contains the <code class="language-plaintext highlighter-rouge">setTimeout</code>. So while the <code class="language-plaintext highlighter-rouge">setTimeout</code> function was called first, it in fact gets run last because of the order of the Call Stack, Event Loop, Microtask Queue, and Callback Queue(s). Any function that is attached to a promise object gets stored in the Microtask Queue, which is the first Queue that the JavaScript Event Loop checks, before the Callback Queue.</p>
 
 <h3 id="promises-and-asynchronous-qa">Promises and Asynchronous Q&amp;A</h3>
 
 <p><a href="https://developer.mozilla.org/en-US/docs/Web/API">List of Web APIs</a></p>
 
-<p>Specific to this section, the <a href="https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope">WorkerGlobalScope Web API</a> contains <code class="highlighter-rouge">fetch</code>.</p>
+<p>Specific to this section, the <a href="https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope">WorkerGlobalScope Web API</a> contains <code class="language-plaintext highlighter-rouge">fetch</code>.</p>
 
 <p>The Microtask Queue, once the Event Loop enters it, will continue to run any functions that are waiting in the queue until there are not functions left to run.</p>
 
@@ -966,14 +934,14 @@
     <p>Prototype chain - the feature behind-the-scenes that enables emulation of OOP but is a compelling tool in itself</p>
   </li>
   <li>
-    <p>Understanding the difference between <code class="highlighter-rouge">_proto_</code> and <code class="highlighter-rouge">prototype</code></p>
+    <p>Understanding the difference between <code class="language-plaintext highlighter-rouge">_proto_</code> and <code class="language-plaintext highlighter-rouge">prototype</code></p>
   </li>
   <li>
-    <p>the <code class="highlighter-rouge">new</code> and <code class="highlighter-rouge">class</code> keywords as tools to automate our object and method creation</p>
+    <p>the <code class="language-plaintext highlighter-rouge">new</code> and <code class="language-plaintext highlighter-rouge">class</code> keywords as tools to automate our object and method creation</p>
   </li>
 </ul>
 
-<p>One of the most popular interview questions for mid to senior-level developers is what is the keyword <code class="highlighter-rouge">new</code> doing under-the-hood</p>
+<p>One of the most popular interview questions for mid to senior-level developers is what is the keyword <code class="language-plaintext highlighter-rouge">new</code> doing under-the-hood</p>
 
 <p><em>Core of development (and running code)</em></p>
 
@@ -1047,7 +1015,7 @@
 
 <p>What is a built-in function of JavaScript whos output will be an empty object?</p>
 
-<p><code class="highlighter-rouge">Object.create</code> which will provide fine-grained control over the object later on.</p>
+<p><code class="language-plaintext highlighter-rouge">Object.create</code> which will provide fine-grained control over the object later on.</p>
 
 <p>A potential solution to avoid repeating yourself when creating multiple users would be as follows:</p>
 
@@ -1075,11 +1043,11 @@
 
 <p>The ‘better’ way to solve the problem would be to use the Prototype Chain.</p>
 
-<p>Store the increment function in just one object and have the interpreter, if it does not find the function on <code class="highlighter-rouge">user1</code>, look up to that object to check if it is there.</p>
+<p>Store the increment function in just one object and have the interpreter, if it does not find the function on <code class="language-plaintext highlighter-rouge">user1</code>, look up to that object to check if it is there.</p>
 
-<p>Link <code class="highlighter-rouge">user1</code> and <code class="highlighter-rouge">functionStore</code> so the interpreter, on not finding <code class="highlighter-rouge">.increment</code>, makes sure to check up in <code class="highlighter-rouge">functionStore</code> where it would find it</p>
+<p>Link <code class="language-plaintext highlighter-rouge">user1</code> and <code class="language-plaintext highlighter-rouge">functionStore</code> so the interpreter, on not finding <code class="language-plaintext highlighter-rouge">.increment</code>, makes sure to check up in <code class="language-plaintext highlighter-rouge">functionStore</code> where it would find it</p>
 
-<p>Make the link with <code class="highlighter-rouge">Object.create()</code> technique.</p>
+<p>Make the link with <code class="language-plaintext highlighter-rouge">Object.create()</code> technique.</p>
 
 <p>Expanding on what we’ve seen above, consider the following:</p>
 
@@ -1105,19 +1073,19 @@
 
 <p>This section walks through the above code.</p>
 
-<p><code class="highlighter-rouge">Object.create(passedObject)</code> will create an implicit link to the passed-in object which will allow the new object to have access to properties that are in the passed-in object without directly having the properties itself.</p>
+<p><code class="language-plaintext highlighter-rouge">Object.create(passedObject)</code> will create an implicit link to the passed-in object which will allow the new object to have access to properties that are in the passed-in object without directly having the properties itself.</p>
 
 <h3 id="prototype-chain-example-implicit-parameters">Prototype Chain Example: Implicit Parameters</h3>
 
-<p><code class="highlighter-rouge">this</code> is an implicit parameter. In the case of the code above, in the increment function; <code class="highlighter-rouge">this.score++</code>, <code class="highlighter-rouge">this</code> will be equal to the value that is to the left of the dot, i.e. <code class="highlighter-rouge">user1.increment()</code> will result in <code class="highlighter-rouge">this = user1</code> in the execution context of the <code class="highlighter-rouge">increment</code> function.</p>
+<p><code class="language-plaintext highlighter-rouge">this</code> is an implicit parameter. In the case of the code above, in the increment function; <code class="language-plaintext highlighter-rouge">this.score++</code>, <code class="language-plaintext highlighter-rouge">this</code> will be equal to the value that is to the left of the dot, i.e. <code class="language-plaintext highlighter-rouge">user1.increment()</code> will result in <code class="language-plaintext highlighter-rouge">this = user1</code> in the execution context of the <code class="language-plaintext highlighter-rouge">increment</code> function.</p>
 
 <h3 id="hasownproperty-method">hasOwnProperty Method</h3>
 
-<p>What if we want to confirm if a property exists in an object? <code class="highlighter-rouge">hasOwnProperty</code>! i.e. <code class="highlighter-rouge">user1.hasOwnProperty('score')</code>. But does the user1 object have a method <code class="highlighter-rouge">hasOwnProperty</code>? or does the object that it is prototypically linked to <code class="highlighter-rouge">userFunctionStore</code>? no… JavaScript has a set of methods that are available to all objects set in <code class="highlighter-rouge">Object.prototype</code>. In other words, every object in JavaScript has a prototypal link to a set of methods which are defined in <code class="highlighter-rouge">Object.prototype</code>. <code class="highlighter-rouge">user1.hasOwnProperty('score')</code> would return <code class="highlighter-rouge">true</code>.</p>
+<p>What if we want to confirm if a property exists in an object? <code class="language-plaintext highlighter-rouge">hasOwnProperty</code>! i.e. <code class="language-plaintext highlighter-rouge">user1.hasOwnProperty('score')</code>. But does the user1 object have a method <code class="language-plaintext highlighter-rouge">hasOwnProperty</code>? or does the object that it is prototypically linked to <code class="language-plaintext highlighter-rouge">userFunctionStore</code>? no… JavaScript has a set of methods that are available to all objects set in <code class="language-plaintext highlighter-rouge">Object.prototype</code>. In other words, every object in JavaScript has a prototypal link to a set of methods which are defined in <code class="language-plaintext highlighter-rouge">Object.prototype</code>. <code class="language-plaintext highlighter-rouge">user1.hasOwnProperty('score')</code> would return <code class="language-plaintext highlighter-rouge">true</code>.</p>
 
 <h3 id="this-keyword">this Keyword</h3>
 
-<p><code class="highlighter-rouge">this</code> would work fine in the above code block, but consider this:</p>
+<p><code class="language-plaintext highlighter-rouge">this</code> would work fine in the above code block, but consider this:</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">userFunctionStore</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">increment</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
@@ -1126,11 +1094,11 @@
     <span class="p">}</span>
 <span class="p">};</span></code></pre></figure>
 
-<p><code class="highlighter-rouge">this</code> would not evaluate to <code class="highlighter-rouge">user1</code>, but would look in Global Memory for <code class="highlighter-rouge">user1</code> which does not exist, but if you change <code class="highlighter-rouge">add1()</code> to <code class="highlighter-rouge">add1.call(this)</code>, <code class="highlighter-rouge">this</code> would still hold the same value in the execution context of <code class="highlighter-rouge">add1()</code> as it did in the function stored in the label <code class="highlighter-rouge">increment</code></p>
+<p><code class="language-plaintext highlighter-rouge">this</code> would not evaluate to <code class="language-plaintext highlighter-rouge">user1</code>, but would look in Global Memory for <code class="language-plaintext highlighter-rouge">user1</code> which does not exist, but if you change <code class="language-plaintext highlighter-rouge">add1()</code> to <code class="language-plaintext highlighter-rouge">add1.call(this)</code>, <code class="language-plaintext highlighter-rouge">this</code> would still hold the same value in the execution context of <code class="language-plaintext highlighter-rouge">add1()</code> as it did in the function stored in the label <code class="language-plaintext highlighter-rouge">increment</code></p>
 
 <h3 id="arrow-function-scope--this">Arrow Function Scope &amp; this</h3>
 
-<p>When using an Arrow Function, the value of <code class="highlighter-rouge">this</code> is lexically scoped meaning that the value of <code class="highlighter-rouge">this</code> would remain as it was in the parent scope of the function, which would be <code class="highlighter-rouge">user1</code>.</p>
+<p>When using an Arrow Function, the value of <code class="language-plaintext highlighter-rouge">this</code> is lexically scoped meaning that the value of <code class="language-plaintext highlighter-rouge">this</code> would remain as it was in the parent scope of the function, which would be <code class="language-plaintext highlighter-rouge">user1</code>.</p>
 
 <h3 id="prototype-chain-review">Prototype Chain Review</h3>
 
@@ -1138,7 +1106,7 @@
 
 <h3 id="new-keyword">new Keyword</h3>
 
-<p>the <code class="highlighter-rouge">new</code>keyword automates the ‘hard work’ of creating objects. When we call the function that returns an object with <code class="highlighter-rouge">new</code> in front of it, it automates 2 things:</p>
+<p>the <code class="language-plaintext highlighter-rouge">new</code>keyword automates the ‘hard work’ of creating objects. When we call the function that returns an object with <code class="language-plaintext highlighter-rouge">new</code> in front of it, it automates 2 things:</p>
 
 <ol>
   <li>
@@ -1153,7 +1121,7 @@
 
 <ul>
   <li>
-    <p>Refer to the auto-created object? The newly generated object will be referred to as <code class="highlighter-rouge">this</code></p>
+    <p>Refer to the auto-created object? The newly generated object will be referred to as <code class="language-plaintext highlighter-rouge">this</code></p>
   </li>
   <li>
     <p>Know where to put single copies of functions?</p>
@@ -1184,7 +1152,7 @@
 <span class="nx">multiplyBy2</span><span class="p">.</span><span class="nx">stored</span> <span class="c1">// 5</span>
 <span class="nx">multiplyBy2</span><span class="p">.</span><span class="nx">prototype</span> <span class="c1">// {}</span></code></pre></figure>
 
-<p>All functions have a default property <code class="highlighter-rouge">prototype</code> on their object version (itself an object). Using a dot on the end of a function, you can get access to the object portion of a function.</p>
+<p>All functions have a default property <code class="language-plaintext highlighter-rouge">prototype</code> on their object version (itself an object). Using a dot on the end of a function, you can get access to the object portion of a function.</p>
 
 <h3 id="new-keyword-example">new Keyword Example</h3>
 
@@ -1202,13 +1170,13 @@
 
 <span class="kd">const</span> <span class="nx">user1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">userCreator</span><span class="p">(</span><span class="dl">"</span><span class="s2">Viljar</span><span class="dl">"</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span></code></pre></figure>
 
-<p>The benefit to using the <code class="highlighter-rouge">new</code> keyword is that it is faster to write and it is often used in practice in professional code.</p>
+<p>The benefit to using the <code class="language-plaintext highlighter-rouge">new</code> keyword is that it is faster to write and it is often used in practice in professional code.</p>
 
-<p>The problem(s) to using the <code class="highlighter-rouge">new</code> keyword is that 95% of developers have no idea how it works and therefore fail interviews. And… we should uppercase the first letter of the function so we know it requires <code class="highlighter-rouge">new</code> to work!</p>
+<p>The problem(s) to using the <code class="language-plaintext highlighter-rouge">new</code> keyword is that 95% of developers have no idea how it works and therefore fail interviews. And… we should uppercase the first letter of the function so we know it requires <code class="language-plaintext highlighter-rouge">new</code> to work!</p>
 
 <h3 id="class-keyword">class Keyword</h3>
 
-<p>In languages other than JavaScript, there is a way to construct the function/object combo (similar to <code class="highlighter-rouge">new</code>), but all at once rather than declaring a function, then assigning functions to labels in the <code class="highlighter-rouge">.prototype</code> object. Using <code class="highlighter-rouge">class</code> allows everything to be declared at once.</p>
+<p>In languages other than JavaScript, there is a way to construct the function/object combo (similar to <code class="language-plaintext highlighter-rouge">new</code>), but all at once rather than declaring a function, then assigning functions to labels in the <code class="language-plaintext highlighter-rouge">.prototype</code> object. Using <code class="language-plaintext highlighter-rouge">class</code> allows everything to be declared at once.</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">class</span> <span class="nx">UserCreator</span> <span class="p">{</span>
     <span class="kd">constructor</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">score</span><span class="p">){</span> <span class="c1">// same as function userCreator(name, score){...}</span>
@@ -1222,15 +1190,15 @@
 <span class="kd">const</span> <span class="nx">user1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">UserCreator</span><span class="p">(</span><span class="dl">"</span><span class="s2">Viljar</span><span class="dl">"</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
 <span class="nx">user1</span><span class="p">.</span><span class="nx">increment</span><span class="p">();</span></code></pre></figure>
 
-<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor"><code class="highlighter-rouge">constructor</code> on MDN</a></p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor"><code class="language-plaintext highlighter-rouge">constructor</code> on MDN</a></p>
 
-<p>The benefits of using <code class="highlighter-rouge">class</code> are that it is emerging as the new standard (introduced in ES6) and that it ‘feels’ more like the style of other languages (e.g. Python).</p>
+<p>The benefits of using <code class="language-plaintext highlighter-rouge">class</code> are that it is emerging as the new standard (introduced in ES6) and that it ‘feels’ more like the style of other languages (e.g. Python).</p>
 
-<p>Problems with using <code class="highlighter-rouge">class</code>? 99% of developers have no idea how it works…</p>
+<p>Problems with using <code class="language-plaintext highlighter-rouge">class</code>? 99% of developers have no idea how it works…</p>
 
 <h2 id="wrapping-up">Wrapping Up</h2>
 
-<p>Click <code class="highlighter-rouge">Return to top</code> and re-read these notes.</p>
+<p>Click <code class="language-plaintext highlighter-rouge">Return to top</code> and re-read these notes.</p>
 
 </div>
     </main>
