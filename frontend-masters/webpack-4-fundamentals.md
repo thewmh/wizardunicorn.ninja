@@ -87,7 +87,7 @@ Start in branch `feature/01-fem-first-script`. Looking at the package.json file,
 
 Then in the CLI type: `npm run webpack` and you will see the default Webpack CLI output and there isn't even a config file yet!
 
-### Adding npm Scripts for ENvironment Builds
+### Adding npm Scripts for Environment Builds
 
 In the output, there should be a warning message that no 'mode' has been set. [Click the link to learn more about Webpack 'mode'(s)](https://webpack.js.org/concepts/mode) Now add 'dev' and 'prod' environment to the 'scripts' section from above:
 
@@ -109,3 +109,98 @@ Switch to:
 
 ### Setting Up Debugging
 
+If you want to debug a node application, you can simply run node and pass in a couple of arguments; i.e. 
+
+{% highlight json %}
+
+"debugthis": "node --inspect --inspect-brk ./src/index.js"
+
+{% endhighlight %}
+
+When you run the above with `npm run debugthis`, you will see a url in terminal that will link you to a debugger in your browser. If we want to be able to debug Webpack, the debug command in the project is:
+
+{% highlight json %}
+
+"debug": "node --inspect --debug-brk ./node_modules/webpack/bin/webpack.js"
+
+{% endhighlight %}
+
+Run the debug command and you can debug Webpack!
+
+Get comfortable with adding to your config file, because the Webpack methodology is based on 'separation of concerns'. Most people have trouble with Webpack because they shove everything into one file, into one build file, so it becomes fragile.
+
+### Coding Your First Module
+
+In `src/` add a new file; i.e. `nav.js`. If you want to share some variables or a function, using the `export {a, v, r}` syntax will allow you to do so. Otherwise, use `export default "nav"`. In your entry-point; i.e. `index.js` add an import statement, `import nav from "./nav";`.
+
+{% highlight javascript %}
+
+import nav from "./nav";
+
+console.log(nav)
+
+{% endhighlight %}
+
+Then build the project with the `npm run prod` command.
+
+### Adding Watch Mode
+
+To avoid having to continuously run a build command, you can just add a 'watch' flag to your `dev` command in the config file; i.e.
+
+
+{% highlight json %}
+
+"dev": "npm run webpack -- --mode development --watch"
+
+{% endhighlight %}
+
+Now when you type `npm run dev` in terminal, Webpack will 'watch' for changes. Update `nav.js` to the following:
+
+{% highlight javascript %}
+
+export default () => "nav";
+
+{% endhighlight %}
+
+Then you have to update the index.js file to:
+
+{% highlight javascript %}
+
+import nav from "./nav";
+
+console.log(nav()) <!-- call the nav function -->
+
+{% endhighlight %}
+
+You will see in your terminal the changes to the files being 'watched' and Webpack will incrementally compile the changes.
+
+### ES Module Syntax
+
+Add a new file `footer.js` with the following: 
+
+{% highlight javascript %}
+
+export const top = "top";
+export const bottom = "bottom";
+
+{% endhighlight %}
+
+And in the `index.js` file add the following import statement: 
+
+{% highlight javascript %}
+
+import { top, bottom } from "./footer";
+
+{% endhighlight %}
+
+Now you have access to the variables from footer.
+
+### CommonJS Export
+
+
+
+### CommonJS Named Exports
+
+### Tree Shaking
+
+### Webpack Bundle Walkthrough
