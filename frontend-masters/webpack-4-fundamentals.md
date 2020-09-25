@@ -197,10 +197,99 @@ Now you have access to the variables from footer.
 
 ### CommonJS Export
 
+If you want / need to use a CommonJS module, the format is kind of similar to what we've already seen. There are two options, a default or a named export. The syntax is as follows (in a file `button.js`):
 
+{% highlight javascript %}
+
+// take a str, the button label and return an element
+
+module.exports = (buttonName) => {
+    return `Button: ${buttonName}`;
+};
+
+{% endhighlight %}
+
+In Webpack, you cannot use CommonJS and ES6 in the same file, it would throw an error.
+
+Webpack supports using require, but you can import a CommonJS module as any other.
 
 ### CommonJS Named Exports
 
+If you want to do a named export, maybe adding button styles?, make a new file `button-styles.js` and add the following: 
+
+{% highlight javascript %}
+
+const red = "color: red;";
+const blue = "color:  blue;";
+const makeColorStyle = color => `color: ${color};`;
+
+exports.red = red;
+exports.blue = blue;
+export.makeColorStyle = makeColorStyle;
+
+{% endhighlight %}
+
+You can name the exports anything you want, but it might make sense to name them same or similar to the variable that they represent. If you would like to destructure your exports, you could (in footer.js) do the following:
+
+`export { top, bottom };`
+
+It is recommended to put your exoprts at the bottom  of your files. You *can* put your exports anywhere in the file, but it might make sense to choose and stick to a convention. Webpack only bundles whatever imports you are using, so if you only use the function from the `button-styles.js` file, only that function will be bundled, not the color variables.
+
 ### Tree Shaking
 
+If you run `npm prod` and  check your `main.js` file, you would not see the color variables if you did not import them. This is an example of Webpack's tree shaking. Webpack will exclude any unused code. At the top level of your code directory, make a new file: `webpack.config.js`and add to it the following: 
+
+{% highlight javascript %}
+
+module.exports = {
+    mode: "none"
+};
+
+{% endhighlight %}
+
+The above basic configuration will run Webpack without any excapsulation.
+
 ### Webpack Bundle Walkthrough
+
+If you've been following along, you can check out the `diist/main.js` file and take a look at how Webpack handles the code we've been working with.
+
+In that file, you will find a bunch of comments (to see comments, you may need to make a webpack.config.js file in the root of your project, see below for example file) that will inform you of what each piece of the function(s) is doing.
+
+{% highlight javascript %}
+// simple webpack.config.js file to remove code minification/optimization… because comments 
+
+module.exports = {
+  mode: 'development',
+  optimization: {
+    minimize: false
+  }
+};
+
+{% endhighlight %}
+
+Take a look through the file and try to follow each line of comments to figure out what Webpack has produced.
+
+## Webpack Core Concepts
+
+### Weback Entry
+
+### Output & Loaders
+
+### Chaining Loaders
+
+### Weback Plugins
+
+### Weback Config
+
+### Passing Variables to Webpack Config
+
+### Adding Weback Plugins
+
+### Setting Up a Local Development Server
+
+### Starting to Code with Webpack
+
+### Splitting Environment Config Files
+
+### Webpack Q&A
+
