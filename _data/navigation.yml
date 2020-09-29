@@ -45,8 +45,8 @@ primary:
   #   external: true
 
 secondary:
-  - text: AB
-    href: /worknotes/ab
+  # - text: AB
+  #   href: /worknotes/ab
   # - text: Theme
   #   href: /theme/
 
