@@ -432,7 +432,35 @@ module.exports = BellOnBundlerErrorPlugin
 
 {% endhighlight %}
 
+The above plugin is instantiable, so we can `require()` it from the `node_modules` into the config file. In the `webpack.config.js` file, you can add this plugin as so:
 
+{% highlight javascript %}
+
+// require() from node_modules or webpack or local file
+var BellOnBundleErrorPlugin = require('bell-on-error');
+var webpack = require('webpack');
+
+module.exports = {
+    //...
+    plugins: [
+        new BellOnBundlerErrorPlugin(),
+
+        // And some more of the built-in plugins
+        new webpack.optimize.CommonsChunckPlugin('vendors'),
+        new webpack.optimize.UglifyJSPlugin()
+    ]
+    //...
+}
+
+{% endhighlight %}
+
+The above passes a new instance of the plugin(s) into the configuration. Within the `()` of each plugin you can pass in additional arguments.
+
+80% of Webpack is made up of its own plugin system. Webpack itself is a completely event drive architecture. Having this sort of architecture allows Webpack to pivot very quickly. It allows Webpack to instantly adopt a new feature without breaking anything. Alternatively, Webpack could drop a feature without breaking changes.
+
+Plugins add additional functionality to *Compliations(optimized bundled modules)*. They are more powerful with more access to the [CompilerAPI](https://webpack.js.org/api/compiler-hooks/). They do everything else you'd ever want to do in Webpack. Plugins let you do anything that you can't do with a loader. Loaders are only applied on a profile basis, but plugins can access theh whole bundle.
+
+Plugins are useful when you want to interact with the compiler runtime, the event lifecycle, or even when you want to just apply functionality at the bundle level.
 
 ### Weback Config
 
