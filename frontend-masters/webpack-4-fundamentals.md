@@ -382,7 +382,57 @@ Whether or not you use any or all of the available parameters in the rule set wi
 
 ### Chaining Loaders
 
+The anatomy of a loader is such that it just takes a source and returns a new source. 'use' can accept an array, and execute from right to left. Technically, under the hood they go right left right, but the first pass going from right to left is just to collect metadata. Just before Webpack is going to process any file, it checks to see if any rule sets match against the file. 
+
+{% highlight javascript %}
+
+module: {
+  rules: [
+      {
+          test: /\.less$/,
+          use: ['style', 'css', 'less']
+      }
+  ],
+};
+
+{% endhighlight %}
+
+The above example, when finding a file with the `.less` extension, would start with the `less` loader, then pass the result to the `css` loader, andd finally to the `style` loader which results in the styles being placed in a script tag at the head of your HTML file. Not a very performant way to handle your styles, but an example of chaining loaders.
+
+[There are tons of loaders available in the NPM registry](https://www.npmjs.com/search?q=webpack%20loader)... responsive image handling, babel, php to JS.
+
+Loaders tell Webpack **how** to interpret and translate files. Transformed on a per-file basis before adding to the dependency graph.
+
 ### Weback Plugins
+
+The last core concept of Webpack is plugins. The anatomy of a Webpack plugin is at its core a JavaScript object that has an `apply` property in the prototype chain. A plugin allows you to hook into the entire Webpack lifecycle of events. There are a bunch of plugins built out of the box to make things easier. An example of plugin:
+
+{% highlight javascript %}
+
+function BellOnBundlerErrorPlugin () { }
+
+BellOnBundlerErrorPlugin.prototype.apply = function(compiler) {
+  if (typeof(process) !== 'undefined'){
+
+    // Complier events that are emitted and handled
+    compiler.plugin('done', function(stats) {
+        if (stats.hasErrors()) {
+            process.stderr.write('\x07');
+        }
+    });
+
+    compiler.plugin('failed', function(err) {
+        process.stderr.write('\x07');
+    });
+
+  }
+}
+
+module.exports = BellOnBundlerErrorPlugin
+
+{% endhighlight %}
+
+
 
 ### Weback Config
 
