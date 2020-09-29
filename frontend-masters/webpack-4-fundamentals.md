@@ -476,3 +476,26 @@ Plugins are useful when you want to interact with the compiler runtime, the even
 
 ### Webpack Q&A
 
+## Using Plugins
+
+### Using CSS with Webpack
+
+### Hot Module Replacement with CSS
+
+### File Loader & URL Loader
+
+### Loading Images with JavaScript
+
+### Limit Filesize Option in URL Loader
+
+### Implementing Presets
+
+### Bundle Analyzer Preset
+
+### Compression Plugin
+
+### Source Maps
+
+## Wrapping Up
+
+### Q&A and Closing Remarks
