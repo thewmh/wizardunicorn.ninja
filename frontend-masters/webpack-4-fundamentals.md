@@ -574,15 +574,101 @@ Type `npm run dev` into your terminal and you should see that your code is avail
 
 ### Starting to Code with Webpack
 
+With the development server set up, making changes to files will cause a compile to occur and you can see the changes reflected in your browser. The workshop example shows the `footer.js` file being updated to create some markup with JavaScript.
 
+{% highlight javascript %}
+import{ red, blue } from "./button-styles";
+
+const top = document.createElement("div");
+top.innerText = "Top of Footer";
+top.style = red;
+const bottom = document.createElement("div");
+bottom.innerText = "Bottom of Footer";
+bottom.style = blue;
+
+const footer = document.createElement("footer");
+footer.appendChild(top);
+footer.appendChild(bottom);
+
+export { top, bottom, footer };
+
+{% endhighlight %}
+
+This is a very basic example, but it does allow you to immediately see the benefit of using the Webpack development server.
 
 ### Splitting Environment Config Files
 
+Time to split the environment config files! In `webpack.config.js`, update it to:
+
+{% highlight javascript %}
+
+const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const modeConfig = env => require(`./build-utils/webpack.${env}`)(env);
+
+module.exports = ({ mode, presets } = { mode: "production", presets: [] }) => {
+console.log(mode); // this way you can see what mode is
+    return {
+        mode,
+        output: {
+            filename: "bundle.js"
+        },
+        plugins: [
+            new HtmlWebpackPlugin(),
+            new webpack.ProgressPlugin()
+        ]
+    }
+};
+
+{% endhighlight %}
+
+The new const `modeConfig` is calling require and based on what is passed in to the function (env), it will either look for `webpack.production` or `webpack.developemnt`. This is leveraging the `env.mode` and passing it in. Also on the `module.exports...` line are some additional defaults added as a 'safety net' so that if no object is passed in, there is in fact now a default that would run the base configuration of Webpack.
+
+To get your config split into different files, run `npm install webapck-merge --dev`, then add `const webpackMerge = require("webpack-merge");` to the webpack.config.js file. By deafult, Webpack Merge is just using [Object Assign](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign). Again update the webpack.config.js file to:
+
+{% highlight javascript %}
+
+const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const modeConfig = env => require(`./build-utils/webpack.${env}`)(env);
+const webpackMerge = require("webpack-merge");
+
+module.exports = ({ mode, presets } = { mode: "production", presets: [] }) => {
+    return webpackMerge (
+        {
+            mode,
+            plugins: [
+                new HtmlWebpackPlugin(),
+                new webpack.ProgressPlugin()
+            ]
+        },
+        modeConfig(mode),
+        loadPresets({ mode, presets })
+    );
+}
+{% endhighlight %}
+
+`modeConfig` will set the mode. With the webpack.config.js file set up, you can now start to separate *production*, *development*, and whatever other build environment settings you would like to have.
+
 ### Webpack Q&A
+
+**Can Webpack be used server side?**
+
+Yes, with `webpack-dev-middleware`
+
+**Can you use the HTML Webpack plugin to process all HTML files without having to declare the plugin across multiple build environments?**
+
+For a multi-page app architecture, you do actually have to have a new instance of this plugin. Check out the [Multipage Webpack Plugin](https://github.com/zorigitano/multipage-webpack-plugin) for some insight on how that has been handled by the instructor in a previous role for Multual of Omaha. Basically, it accesses your entries and for each entry creates a new instance of the plugin.
+
+**Are there situations where Webpack runs into an out of memory error andn where would you capture that exception?**
+
+Yes? Your Webpack space complexity will be linear in terms of how many modules you have in your app. You will end up consuming more and more memory because it needs more and more memory. Increasing the memory limit for Node can help (AirBNB has gone up to 32GB). It's also possible that you could have a memory leak i.e. you are using hashing while using the dev server and a new hash is created each time you make a file change which is then stored in memory. Don't do that. BUT... that specific issue has been addressed in Webpack 5.
 
 ## Using Plugins
 
 ### Using CSS with Webpack
+
+
 
 ### Hot Module Replacement with CSS
 
