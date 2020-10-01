@@ -763,7 +763,23 @@ Initially, the instructor only includes the `css-loader` and nothing happens. To
 
 ### Hot Module Replacement with CSS
 
+If you look at the generated code, there are special annotations wrapped around your CSS (now JavaScript code). Loaders are really useful for helping support a unique Webpack feature called [Hot Module Replacement](https://webpack.js.org/concepts/hot-module-replacement/). So... we're going to try it. In the `package.json` file, add another flag to the end of your `dev` setup, `--hot`. To see Hot Module Replacement in action, restart your dev environment `npm run dev`, remove the `import ".footer.(s)css";` statement from `footer.js` and place that same line into your entry point, `index.js`. Then, make some arbitrary change to your stylesheet and you should see the browser instantly reload itself. Currently your `package.json` file should look something like this:
 
+{% highlight javascript %}
+
+//...
+"scripts": {
+    "webpack": "webpack",
+    "webpack-dev-server": "webpack-dev-server",
+    "debug": "node --inspect --inspect-brk ./node_modules/webpack/bin/webpack.js",
+    "prod": "npm run webpack -- --env.mode production",
+    "dev": "npm run webpack-dev-server -- --env.mode development --hot",
+    "prod:debug": "npm run debug -- --env.mode production",
+    "dev:debug": "npm run debug -- --env.mode development"
+},
+//...
+
+{% endhighlight %}
 
 ### File Loader & URL Loader
 
