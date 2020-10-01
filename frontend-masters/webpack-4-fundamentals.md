@@ -781,13 +781,106 @@ If you look at the generated code, there are special annotations wrapped around 
 
 {% endhighlight %}
 
+Webpack has the ability to 'patch' files with changes incrementally and apply them without you ever having to reload the browser. Currently, the setup is relying on JavaScript to insert a style tag to implement the CSS, but that is not an ideal way to apply styling, so let's update the production config to use the `mini-css-extract-plugin`. In `webpack.production.js`, make your file look like this:
+
+{% highlight javascript %}
+
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+module.exports = () => ({
+    output: {
+        filename: "bundle.js"
+    },
+    module: {
+        rules: [
+            {
+                test: /\.s[ac]ss$/i,
+                use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+            }
+        ]
+    },
+    plugins: [
+        new MiniCssExtractPlugin()
+    ]
+})
+
+{% endhighlight %}
+
+Next run your production environment, `npm run prod`, and check out the magic. There should now be a seperate CSS file in your `dist` folder AND you will see in the `index.html` file that there is a `<link>` without stylesheet in the appropriate place. The `mini-css-extract-plugin` has support for lazy loading CSS, a pretty huge performance win espcially when it comes to CSS. With the `css-loader` you can [minify your CSS amongst other things](https://webpack.js.org/loaders/css-loader/). Whatever CSS you have, say multiple files for each component, they will be concatenated into one file.
+
 ### File Loader & URL Loader
+
+Now we will add File and URL Loaders to the base configuration `webpack.config.js`. `npm install file-loader url-loader` These new loaders are an all around fallback to things that may not be mappable to a browser API or a source image/video/audio file, the most basic example being something like a `.jpeg`. You may want to Base64 inline an image or just optput it to your `dist` directory. This is what the URL Loader does for you. Grab any image and put it into your `src` folder. Set up the URL loader in the `webpac.config.js` file like so:
+
+{% highlight javascript %}
+
+//...
+mode,
+module: {
+    rules: [
+        test: /\.jpe?g/,
+        use: ["url-loader"]
+    ]
+}
+output: {
+//...
+
+{% endhighlight %}
 
 ### Loading Images with JavaScript
 
+When it comes to Laoders (or pretty much anything) Webpack treats everything like JavaScript, so you can use it like JavaScript. In the `index.js` file, you can now import your image, something like `import image from "./name-of-your-image.jpg"` and if you log that to the console, you would see the base64 encoded version of your image file. Go ahead and make a new file in your `src` folder called `image.js` and add the following:
+
+{% highlight javascript %}
+
+const makeImage = url => {
+    const image = document.createElement("img");
+
+    image.src = url;
+    return image;
+};
+
+export default makeImage
+
+{% endhighlight %}
+
+And back in the entry point `index.js` import the new script `import makeImage from "./image";`
+
+Still in `index.js` add the following:
+
+{% highlight javascript %}
+const imageURL = "./path-to-my-image.jpg";
+
+const image = makeImage(imageURL);
+
+document.body.appendChild(image);
+
+{% endhighlight %}
+
+If you are running the dev environment, you should see the image appear.
+
 ### Limit Filesize Option in URL Loader
 
+Now you should have an image loading, but it is not optimized yet, because it is a giant URI... Let's fix that. The URL Loader has an option called `limit`. Update the `webpack.config.js` `url-loader` to:
+
+{% highlight javascript %}
+
+use: [
+        {
+            loader: "url-loader",
+            options: {
+                limit: 5000
+            }
+        }
+    ]
+
+{% endhighlight %}
+
+Notice the modified syntax for the loader, it is now an object. Both the shorthand `["url-loader"]` or its object counterpart work, but if you want to be able to pass options to the loader, you need to use its object form. Above, the `limit` option is set which for the URL loader will cause it to base64 encode any images that are below the specified size or if they are above the specified size, it will just include a hashed image in your output file (stored in memory). To do this, the url-loader is actually calling the file-loader behind the scenes.
+
 ### Implementing Presets
+
+The idea of presets is that you might want more than dev or prod configurations. 
 
 ### Bundle Analyzer Preset
 
