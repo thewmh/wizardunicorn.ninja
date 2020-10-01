@@ -14,9 +14,32 @@ a {
 
     &:visited {
         color: #065264;
+        
+        &:hover {
+            color: #065264;
+        }
     }
-    &:visited:hover {
-        color: #8AC8C0;
+
+    &:hover {
+        color: #065264;
+        text-decoration: none;
+
+        &:after {
+            width: 100%;
+            left: 0;
+            right: auto;
+        }
+    }
+
+    &:after {
+        content: "";
+        position: absolute;
+        border-bottom: 1px solid #065264;
+        width: 0;
+        bottom: 0;
+        left: auto;
+        right: 0;
+        transition: width .3s ease-in-out;
     }
 }
 
