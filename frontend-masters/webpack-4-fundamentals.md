@@ -758,7 +758,8 @@ module.exports = () => ({
 
 {% endhighlight %}
 
-Initially, the instructor only includes the `css-loader` and nothing happens. To check out what's going on (if you want to try this progressively), `console.log` the import from `footer.js` and you can then see what is actually being imported. `style-loader` actually consumes the CSS and applies it for you. *note: if you are modifying your config, you will have to restart your dev environment*.
+Initially, the instructor only includes the `css-loader` and nothing happens. To check out what's going on (if you want to try this progressively), `console.log` the import from `footer.js` and you can then see what is actually being imported. `style-loader` actually consumes the CSS and applies it for you.
+*note: if you are modifying your config, you will have to restart your dev environment*.
 
 ### Hot Module Replacement with CSS
 
