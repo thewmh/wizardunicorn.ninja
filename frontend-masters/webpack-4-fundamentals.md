@@ -531,6 +531,8 @@ Moving forward, the next step is to configure the different build environments. 
 
 ### Adding Weback Plugins
 
+ > [OOTB Webpack plugins](https://webpack.js.org/plugins/)
+
 The first *essential* Webpack plugin is the `html-webpack-plugin`. If you don't already have it installed, type `npm install html-webpack-plugin --save-dev` in your terminal. To get this to exist across all environments of your project, create a new folder for your config files, called `built-utils` or `webpack-thangs` or whatever makes sense. Then update your `webpack.config.js` file as below:
 
 {% highlight javascript %}
@@ -547,7 +549,7 @@ console.log(mode); // this way you can see what mode is
         },
         plugins: [
             new HtmlWebpackPlugin(),
-            new webpack.ProgressPlugin() // for a list of the out of the box Webpack plugins see [Plugins](https://webpack.js.org/plugins/)
+            new webpack.ProgressPlugin()
         ]
     }
 };
