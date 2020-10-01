@@ -47,5 +47,5 @@ kramdown:
  hard_wrap: false
  syntax_highlighter: rouge
  syntax_highlighter_opts:
-  span:
+  block:
     line_numbers: true
