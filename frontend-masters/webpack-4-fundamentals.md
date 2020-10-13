@@ -878,7 +878,7 @@ Notice the modified syntax for the loader, it is now an object. Both the shortha
 
 ### Implementing Presets
 
-The idea of presets is that you might want more than dev or prod configurations. Or not...
+The idea of presets is that you might want more than dev or prod configurations.
 
 ### Bundle Analyzer Preset
 
