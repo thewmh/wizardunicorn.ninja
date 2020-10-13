@@ -878,7 +878,54 @@ Notice the modified syntax for the loader, it is now an object. Both the shortha
 
 ### Implementing Presets
 
-The idea of presets is that you might want more than dev or prod configurations.
+The idea of presets is that you might want more than dev or prod configurations. For this section, check out this [loadPresets.js](https://github.com/TheLarkInn/webpack-workshop-2018/blob/feature/build-utils/build-utils/loadPresets.js) file in the workshop repo on github. The code is:
+
+{% highlight javascript %}
+const webpackMerge = require("webpack-merge");
+
+module.exports = env => {
+  const { presets } = env;
+  const mergedPresets = [].concat(...[presets]);
+  const mergedConfigs = mergedPresets.map(
+    presetName => require(`./presets/webpack.${presetName}`)(env) // call the preset and pass env also
+  );
+
+  return webpackMerge({}, ...mergedConfigs);
+};
+{% endhighlight %}
+
+You might have some different scenarios where you want to try out one feature, analyze your build, or have something that only your CI runs. You don't want it shipped in your prod configuration, so presets. The above code block is taking in the `env` settings then flattening all of the presets into a list of strings. Then it maps them into a require function that takes the `presetName` and calls them. They are then merged and returned.
+
+Next, type that code out into your own `loadPresets.js` file and jump to your `webpack.config.js` to implement `loadPresets`. Something like:
+
+{% highlight javascript %}
+
+//...
+const presetConfig = require("./build-utils/presets/loadPresets");
+//...
+
+//...
+presetConfig({ mode, presets })
+//...
+
+{% endhighlight %}
+
+With the above code, you could now start to build out a variety of presets for different scenarios; `webpack.typescript.js`?
+
+{% highlight javascript %}
+module.exports = () => ({
+    module: {
+        rules: [
+            {
+                test: /\.ts$/,
+                use: "ts-loader
+            }
+        ]
+    }
+});
+{% endhighlight %}
+
+You then need to add the typescript loader to your project `npm install ts-loader typescript@next`, but 
 
 ### Bundle Analyzer Preset
 
