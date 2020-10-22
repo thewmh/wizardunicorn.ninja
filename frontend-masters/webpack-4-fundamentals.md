@@ -1012,4 +1012,29 @@ A: Focus more on actually splitting your code with the dynamic import statement 
 
 Q: Is there a lazy load plugin recommendation?!
 
-A: 
+A: Lazy loading is code splitting in Webpack. The example given, changes an import statement into a function that loads the import statement when called; i.e. when a button is clicked, load the code.
+
+{% highlight javascript %}
+
+// from index.js in the workshop repo
+//..
+const loadFooter = () => import('./footer');
+//..
+
+button.addEventListenet("click", e => {
+    loadFooter().then(m => {
+        document.body.appendChild(m.footer) // moved from below
+    });
+});
+
+{% endhighlight %}
+
+The above (contrived) scenario assumes that we only want to load the footer when someone clicks on a button. Lazy loading / code splitting is the main reason Webpack was created. Webpack supports dynamic import statements by default. If you are using Babel, you have to add another plugin to support the syntax... [like this plugin that does exactly that](https://github.com/airbnb/babel-plugin-dynamic-import-node). Standalone without Babel or Typescript, Webpack can read and understand the dynamic import statement. The above would actually create a separate bundle file that will only be loaded when the event occurs.
+
+Q: Is there any tree shaking benefit over exporting individual functions instead of a class?
+
+A: Short answer is yes. Methods on classes cannot be tree-shaken if they are not used. The instructor tends to favor a Functional over Object Oriented approach.
+
+Q: How do you go about finding good [Webpack] plugins versus bad plugins?
+
+A: [Webpack Contrib](https://github.com/webpack-contrib/) - contains 90 repos; mostly loaders.
