@@ -34,6 +34,8 @@ primary:
         href: /frontend-masters/deep-javascript-foundations
       - text: "Webpack 4 Fundamentals"
         href: /frontend-masters/webpack-4-fundamentals
+      - text: "Web Performance with Webpack"
+        href: /frontend-masters/web-performance-webpack
   - text: Sitecore Workshop Notes
     links:
       - text: "Sitecore JSS Fundamentals"
