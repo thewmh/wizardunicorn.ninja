@@ -966,7 +966,7 @@ module.exports = () => ({
 
 {% endnhighlight %}
 
-Run `npm run prod:analyze` and you will see a page loaded in your web browser showing the result. Out of the box, it creates a separate web server which gives you a tree map visualization of what's in your bundle. This is a valuable tool to determine why you may have file duplication or why a file may not be separated out.
+Run `npm run prod:analyze` and you will see a page loaded in your web browser showing the result. Out of the box, it creates a separate web server which gives you a tree map visualization of what's in your bundle. This is a valuable tool to determine why you may have file duplication or why a file may not be separated out
 
 ### Compression Plugin
 
