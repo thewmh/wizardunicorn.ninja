@@ -949,7 +949,7 @@ Time to add the Webpack Bundle Analyzer plugin! `npm install webpack-bundle-anal
 "prod:analyze": "npm run prod -- --env.presets analyze",
 //...
 
-{% endnhighlight %}
+{% endhighlight %}
 
 Now make a new script / preset that calls the Webpack Bundle Analyzer, `webpack.analyze.js` (analyze matches the name in package.json file). `webpack.analyze.js`:
 
