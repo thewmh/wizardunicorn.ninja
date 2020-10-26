@@ -158,6 +158,12 @@
                 </li>
                 
               
+                
+                <li>
+                  <a href="/frontend-masters/web-performance-webpack">Web Performance with Webpack</a>
+                </li>
+                
+              
             
             </ul>
             
@@ -205,9 +211,9 @@
               
               
                 <li>
-                  <a href="/worknotes/ab"
+                  <a href=""
                   >
-                    AB
+                    
                   </a>
                 </li>
               
@@ -750,7 +756,7 @@ library</code></p>
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">weapons</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">candlestick</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">lead pipe</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">revolver</span><span class="dl">'</span><span class="p">];</span>
 
 <span class="kd">const</span> <span class="nx">makeBroken</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="s2">`broken </span><span class="p">${</span><span class="nx">item</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+    <span class="k">return</span> <span class="s2">`</span><span class="err">broken </span><span class="p">${</span><span class="nx">item</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 <span class="p">};</span></code></pre></figure>
 
 <p>Unrelated Note: If you want to quickly test out a function in a library, you can usually visit the library’s site and open the console. i.e. visit underscorejs.org, open the console and type <code class="language-plaintext highlighter-rouge">_.map()</code></p>
@@ -760,7 +766,7 @@ library</code></p>
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">weapons</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">candlestick</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">lead pipe</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">revolver</span><span class="dl">'</span><span class="p">];</span>
 
 <span class="kd">const</span> <span class="nx">makeBroken</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="s2">`broken </span><span class="p">${</span><span class="nx">item</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+    <span class="k">return</span> <span class="s2">`</span><span class="err">broken </span><span class="p">${</span><span class="nx">item</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 <span class="p">};</span>
 
 <span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">weapons</span><span class="p">,</span> <span class="nx">makeBroken</span><span class="p">)</span></code></pre></figure>
@@ -1332,11 +1338,11 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <p>For example:</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">consider</span> <span class="o">=</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="s2">`I think it could be... </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+    <span class="k">return</span> <span class="s2">`</span><span class="err">I think it could be... </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 <span class="p">};</span>
 
 <span class="kd">const</span> <span class="nx">exclaim</span> <span class="o">=</span> <span class="p">(</span><span class="nx">statement</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="s2">`</span><span class="p">${</span><span class="nx">statement</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()}</span><span class="s2">!`</span><span class="p">;</span>
+    <span class="k">return</span> <span class="s2">`</span><span class="p">${</span><span class="nx">statement</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()}</span><span class="err">!</span><span class="s2">`</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="kd">const</span> <span class="nx">blame</span>  <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">compose</span><span class="p">(</span><span class="nx">consider</span><span class="p">,</span> <span class="nx">exclaim</span><span class="p">);</span>
@@ -1381,7 +1387,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
     <span class="kd">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Help! I think I found a clue!</span><span class="dl">'</span><span class="p">;</span>
     <span class="kd">let</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="kd">const</span> <span class="nx">alerter</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">alert</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">x</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="o">++</span><span class="nx">count</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">x</span><span class="p">}</span><span class="err"> </span><span class="p">${</span><span class="o">++</span><span class="nx">count</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
     <span class="p">};</span>
 
     <span class="k">return</span> <span class="nx">alerter</span>
@@ -1551,26 +1557,6 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 
 
 
-  
-    
-    
-    
-    
-  <div class="usa-footer-primary-section">
-    <div class="usa-grid">
-      <nav class="usa-footer-nav">
-        <ul class="usa-unstyled-list">
-          
-          <li class="usa-width-one-whole usa-footer-primary-content">
-            <a class="usa-footer-primary-link" href="">
-              
-            </a>
-          </li>
-          
-        </ul>
-      </nav>
-    </div>
-  </div>
   
 
   

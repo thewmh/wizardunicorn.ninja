@@ -158,6 +158,12 @@
                 </li>
                 
               
+                
+                <li>
+                  <a href="/frontend-masters/web-performance-webpack">Web Performance with Webpack</a>
+                </li>
+                
+              
             
             </ul>
             
@@ -205,9 +211,9 @@
               
               
                 <li>
-                  <a href="/worknotes/ab"
+                  <a href=""
                   >
-                    AB
+                    
                   </a>
                 </li>
               
@@ -317,7 +323,17 @@
 
 <p>The quick fix for the Salesforce team was as follows:</p>
 
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">submitHandler</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">form</span><span class="p">)</span> <span class="p">{</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="nx">submitHandler</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">form</span><span class="p">)</span> <span class="p">{</span>
    <span class="c1">//Submit Form</span>
    <span class="kd">var</span> <span class="nx">captchResponse</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">#g-recaptcha-response</span><span class="dl">'</span><span class="p">).</span><span class="nx">val</span><span class="p">();</span>
    <span class="k">if</span><span class="p">(</span><span class="nx">captchResponse</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span>
@@ -327,7 +343,7 @@
    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
      <span class="nx">form</span><span class="p">.</span><span class="nx">submit</span><span class="p">();</span> <span class="c1">// previously, this was the only line that existed. needed to add the if/else</span>
    <span class="p">}</span>
-</code></pre></div></div>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
 <hr />
 
@@ -481,26 +497,6 @@
 
 
 
-  
-    
-    
-    
-    
-  <div class="usa-footer-primary-section">
-    <div class="usa-grid">
-      <nav class="usa-footer-nav">
-        <ul class="usa-unstyled-list">
-          
-          <li class="usa-width-one-whole usa-footer-primary-content">
-            <a class="usa-footer-primary-link" href="">
-              
-            </a>
-          </li>
-          
-        </ul>
-      </nav>
-    </div>
-  </div>
   
 
   

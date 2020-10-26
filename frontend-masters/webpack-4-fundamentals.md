@@ -22,7 +22,7 @@ Potential solutions?
 
 Immediately Invoked Function Expressions! Treat each file as an IIFE (Revealing Module Pattern). Using this pattern, you can now concatenate files without any concern of scope collision! This idea lead to the explosion of tools such as; **Make**, **Grunt**, **Gulp**, **Broccoli**, **Brunch**, **StealJS**. All of which are used to concatenate JS files.
 
-But there are still problems... Full rebuilds everytime. Dead code (code you are not using). Lots of IIFEs are slow. No way to lazy load.
+But there are still problems... Full rebuilds every time. Dead code (code you are not using). Lots of IIFEs are slow. No way to lazy load.
 
 ### History of Modules
 
@@ -1021,7 +1021,7 @@ A: Lazy loading is code splitting in Webpack. The example given, changes an impo
 const loadFooter = () => import('./footer');
 //..
 
-button.addEventListenet("click", e => {
+button.addEventListener("click", e => {
     loadFooter().then(m => {
         document.body.appendChild(m.footer) // moved from below
     });

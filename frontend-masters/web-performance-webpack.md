@@ -66,7 +66,22 @@ Listener.on('didSomethingToWarrantModalBeingLoaded', () => {
 
 {% endhighlight %}
 
-Walking through the above code, we are first importing `Listener`, then assigning a function that returns a dynamic import statement and a path to a module. Finally, when an event occurs, the above code is returning a promise that will, on promise fulfillment, perform the functionality. In the [Webpack 4 Fundamentals workshop]({% link frontend-masters/webpack-4-funudamentals.md %}) [see the bottom of the page, "Q&A Section"], this was shown when clicking on a button and then loading the footer code. 
+Walking through the above code, we are first importing `Listener`, then assigning a function that returns a dynamic import statement and a path to a module. Finally, when an event occurs, the above code is returning a promise that will, on promise fulfillment, perform the functionality. In the [Webpack 4 Fundamentals workshop]({% link frontend-masters/webpack-4-fundamentals.md %}) [see the bottom of the page, "Q&A Section"], this was shown when clicking on a button and then loading the footer code. If you are lazy... here's the code example:
+
+{% highlight javascript %}
+
+// from index.js in the workshop repo
+//..
+const loadFooter = () => import('./footer');
+//..
+
+button.addEventListener("click", e => {
+    loadFooter().then(m => {
+        document.body.appendChild(m.footer) // moved from below
+    });
+});
+
+{% endhighlight %}
 
 ### Webpack Code Splitting Under the Hood
 

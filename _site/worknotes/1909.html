@@ -158,6 +158,12 @@
                 </li>
                 
               
+                
+                <li>
+                  <a href="/frontend-masters/web-performance-webpack">Web Performance with Webpack</a>
+                </li>
+                
+              
             
             </ul>
             
@@ -205,9 +211,9 @@
               
               
                 <li>
-                  <a href="/worknotes/ab"
+                  <a href=""
                   >
-                    AB
+                    
                   </a>
                 </li>
               
@@ -543,7 +549,15 @@
   <li>mwt 185 - RTE Text Formatting - BED refused a classname from our markup which broke body copy styling. Additionally, styling was needed for <code class="language-plaintext highlighter-rouge">&lt;strong&gt;</code> text. I did that. Like this:</li>
 </ul>
 
-<div class="language-scss highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">p</span> <span class="p">{</span>
+<div class="language-scss highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="nt">p</span> <span class="p">{</span>
     <span class="nl">margin-top</span><span class="p">:</span> <span class="m">11px</span><span class="p">;</span>
     <span class="nt">strong</span> <span class="p">{</span>
         <span class="nl">font-family</span><span class="p">:</span> <span class="n">Helvetica</span> <span class="n">Neue</span> <span class="n">LT</span> <span class="n">W01_83</span> <span class="n">Hv</span> <span class="n">Ex</span><span class="o">,</span><span class="n">Helvetica</span> <span class="n">Neue</span><span class="o">,</span><span class="n">Helvetica</span><span class="o">,</span><span class="n">Arial</span><span class="o">,</span><span class="nb">sans-serif</span><span class="p">;</span>
@@ -551,13 +565,21 @@
         <span class="nl">text-transform</span><span class="p">:</span> <span class="nb">uppercase</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
-</code></pre></div></div>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
 <ul>
   <li>mwt 182 / 184 - Extra Whitespace - BED had reused a classname on an element which resulted in strange behavior. I added a new classname and relevant styling, but once implemented by BED, Sitecore adds spaces in a <code class="language-plaintext highlighter-rouge">&lt;div&gt;</code> with no content and the <code class="language-plaintext highlighter-rouge">:empty</code> pseudo-selector was unable to work. Thankfully, BED <em>was</em> able to write some logic that will conditionally render the <code class="language-plaintext highlighter-rouge">&lt;div&gt;</code> if there is content for it. Also had update the name of a file, because some FED had not done that causing the test page to be broken.</li>
 </ul>
 
-<div class="language-scss highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.flex-content-feature-accordion</span> <span class="p">{</span>
+<div class="language-scss highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="nc">.flex-content-feature-accordion</span> <span class="p">{</span>
         <span class="nl">display</span><span class="p">:</span> <span class="n">flex</span><span class="p">;</span>
         <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
         <span class="nl">order</span><span class="p">:</span> <span class="m">3</span><span class="p">;</span>
@@ -565,7 +587,7 @@
             <span class="nl">display</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>
         <span class="p">}</span>
     <span class="p">}</span>
-</code></pre></div></div>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
 <ul>
   <li>mwt 35 Tabbed Carousel - pushed yesterdays changes to dev</li>
@@ -581,7 +603,18 @@
 
 <p><em>these were the changes made to the JavaScript</em></p>
 
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">...</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="p">...</span>
 <span class="kd">var</span> <span class="nx">$this</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">);</span> <span class="c1">// this line already existed</span>
 <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nx">$this</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="dl">'</span><span class="s1">target</span><span class="dl">'</span><span class="p">);</span>
 
@@ -592,15 +625,17 @@
 <span class="c1">// targets the unique id</span>
 
 <span class="p">...</span><span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">#</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">target</span><span class="p">).</span><span class="nx">slick</span><span class="p">...</span>
-</code></pre></div></div>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
 <p><em>and these were the changes made to the HTML files</em></p>
 
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"innovations-tabbed-view__items"</span> <span class="na">id=</span><span class="s">"1"</span><span class="nt">&gt;</span> <span class="c">&lt;!-- added the id --&gt;</span>
-</code></pre></div></div>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"innovations-tabbed-view__items"</span> <span class="na">id=</span><span class="s">"1"</span><span class="nt">&gt;</span> <span class="c">&lt;!-- added the id --&gt;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">"innovations-tabbed-view"</span> <span class="na">data-target=</span><span class="s">"1"</span><span class="nt">&gt;</span> <span class="c">&lt;!-- added the data-target --&gt;</span>
-</code></pre></div></div>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">"innovations-tabbed-view"</span> <span class="na">data-target=</span><span class="s">"1"</span><span class="nt">&gt;</span> <span class="c">&lt;!-- added the data-target --&gt;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
 <hr />
 
@@ -644,9 +679,11 @@
 <p><em>podcasts were broken because BED did not use the unique classnames set for the two different podcast sources
 videos were broken because Coveo loads after the video modal JS is init, added:</em></p>
 
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">YT</span><span class="p">)</span> <span class="p">{</span> <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="dl">'</span><span class="s1">youTubePlayerApiReady</span><span class="dl">'</span><span class="p">);</span> <span class="p">};</span> <span class="o">&amp;&amp;</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">YT</span><span class="p">)</span> <span class="p">{</span> <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="dl">'</span><span class="s1">youTubePlayerApiReady</span><span class="dl">'</span><span class="p">);</span> <span class="p">};</span> <span class="o">&amp;&amp;</span>
 <span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">VidyardV4</span><span class="p">)</span> <span class="p">{</span> <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="dl">'</span><span class="s1">vidyardPlayerApiReady</span><span class="dl">'</span><span class="p">);</span> <span class="p">};</span>
-</code></pre></div></div>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
 <p><em>triggers if element is found</em></p>
 
@@ -656,8 +693,9 @@ videos were broken because Coveo loads after the video modal JS is init, added:<
 
 <p><em>Target class of ‘.coveo-query-summary-cancel-last’ and change text to ‘Try a different search term’</em></p>
 
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">.coveo-query-summary-cancel-last</span><span class="dl">'</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="dl">'</span><span class="s1">Try a different search term</span><span class="dl">'</span><span class="p">);</span>
-</code></pre></div></div>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">.coveo-query-summary-cancel-last</span><span class="dl">'</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="dl">'</span><span class="s1">Try a different search term</span><span class="dl">'</span><span class="p">);</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
 <ul>
   <li>cw 8047 Design and Implement CoveoQuerySummary CSS</li>
@@ -687,26 +725,6 @@ videos were broken because Coveo loads after the video modal JS is init, added:<
 
 
 
-  
-    
-    
-    
-    
-  <div class="usa-footer-primary-section">
-    <div class="usa-grid">
-      <nav class="usa-footer-nav">
-        <ul class="usa-unstyled-list">
-          
-          <li class="usa-width-one-whole usa-footer-primary-content">
-            <a class="usa-footer-primary-link" href="">
-              
-            </a>
-          </li>
-          
-        </ul>
-      </nav>
-    </div>
-  </div>
   
 
   
