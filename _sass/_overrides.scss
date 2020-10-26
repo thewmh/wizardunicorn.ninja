@@ -58,9 +58,14 @@ body {
             &[aria-expanded=true] {
                 background-color: #ffffff;
                 color: #112e51;
-
+                
                 span {
                     border: none;
+                    color: #112e51;
+                }
+
+                &:hover {
+                    background-color: #ffffff;
                 }
             }
         }
