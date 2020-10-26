@@ -1,3 +1,13 @@
+* {
+    &:focus {
+        outline: none;
+    }
+}
+
+.usa-focus {
+    outline: none;
+}
+
 body {
     cursor: url("/assets/img/wizard.png"), default;
 }
