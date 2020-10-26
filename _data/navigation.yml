@@ -32,7 +32,6 @@ primary:
         href: /frontend-masters/hard-parts-js
       - text: "Deep Javascript Foundations, v3"
         href: /frontend-masters/deep-javascript-foundations
-      - text: Webpack
       - text: "Webpack 4 Fundamentals"
         href: /frontend-masters/webpack-4-fundamentals
       - text: "Web Performance with Webpack"
