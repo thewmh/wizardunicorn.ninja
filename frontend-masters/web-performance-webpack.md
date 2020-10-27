@@ -140,13 +140,107 @@ The above import statement should be familiar, assigning a variable to a functio
 
 ### Dynamic Code Splitting Walkthrough
 
+For this example, first make sure your `index.js` file looks like this:
+
+{% highlight javascript %}
+
+const getFooter = () => import("./footer");
+import makeButton from "./button";
+import { makeColorStyle } from "./button-styles";
+import "./footer.scss";
+const setButtonStyle = (color) => import(`./button-styles/${color}`);
+const button = makeButton('I am a button');
+button.style = makeColorStyle("cyan");
+
+document.body.appendChild(button);
+
+button.addEventListener("click", e => {
+    getFooter().then(module => {
+        document.body.appendChild(module.footer);
+    });
+
+    setButtonStyle("red").then(styleStr => {
+        button.style = styleStr.default;
+    });
+});
+
+{% endhighlight %}
+
+And your `button.js` file looks like this:
+
+{% highlight javascript %}
+
+const makeButton = buttonName => {
+  const buttonLabel =  `Button: ${buttonName}`;
+
+  const button = document.createElement("button");
+  button.innerText = buttonLabel;
+
+  return button;
+};
+
+module.exports = makeButton;
+
+{% endhighlight %}
+
+Once your files match the above, make a new folder in your `src` directory named `button-styles`. In the `button-styles` folder add `red.js blue.js green.js yellow.js` files. Each of those files should look like this:
+
+{% highlight javascript %}
+
+export default "color: colorFromFileName;" // i.e. blue.js would be "color: blue;"
+
+{% endhighlight %}
+
+If you now run `npm run dev`, you should find new bundle files, 1 for each file in the `button-styles` folder, output in the `dist` folder. Following the button example, try to think of some other examples where you might want to structure your components so that the code for them is only downloaded when needed, perhaps based on an event trigger? If you had additional files in the `button-styles` folder, that maybe you did not want to include, you can specify in the `index.js` file (or wherever you have defined the import) that you only want that specific file type by adding the extension i.e. `...import(`./button-styles/${color}.js`)`.
+
 ## Module Methods & Magic Comments
 
 ### Introducing Magic Comments
 
+When you are using code splitting as a technique, there is no name that is created when you add the bundle. This is because it is not an entry-point so it cannot be given an assigned name. When you look at the `dist` folder after a build, you will find a number of bundles there, but they are not named in a way that is immediately understandable. Enter [Magic Comments](https://webpack.js.org/api/module-methods/#magic-comments)! One of the things that Magic Comments allow you to do is name your bundles. This could prove valuable when you are debugging or if you are trying to keep track of which files generate their own bundles. In `index.js` add a `webpackChunkName` to the footer import:
+
+{% highlight javascript %}
+
+const getFooter = () => import(/* webpackChunkName: "footer" */"./footer");
+
+{% endhighlight %}
+
+To get the name to appear as part of the bundle name, update the `webpack.config.js` file like so:
+
+{% highlight javascript %}
+
+//...
+
+output: {
+        filename: "bundle.js",
+        chunkFilename: "[name].lazy-chunk.js" // you can just use [name], the instructor prefers to add the .lazy-chunk
+    },
+
+//...
+
+{% endhighlight %}
+
+This may be useful to include as part of a base configuration, depending on your requirements maybe only the dev configuration?
+
 ### Webpack Modes
 
+Also a part of Magic Comments is a feature called `webpackMode`. With this you can further control how code splitting happens, with four different settings. In the instance of the button styles, `/* webpaackMode: "lazy-once" */` would generate a single bundle, which can save build time. Pushing this further and continuing to define different build configurations, you could add this to the `index.js` file:
+
+{% highlight javascript %}
+
+if(process.env.NODE_ENV === "development") {
+    const setButtonStyle = (color) => import(/* webpackMode: "lazy-once" */ `./button-styles/${color}`);
+} else {
+    const setButtonStyle = (color) => import(`./button-styles/${color}`);
+}
+
+{% endhighlight %}
+
+Webpack, by default, injects a macro replacement to the `process.ev.NODE_ENV` variable. When you set the mode to `development`, the macro converts to development and by default, Webpack can convert the above code and evaluate the if/else statement. You probably care less about performance optimizations in your dev code, but while in dev would like faster build times, this is useful for that.
+
 ### Webpack Prefetch & Preload
+
+
 
 ### Wrapping Up Code Splitting
 
