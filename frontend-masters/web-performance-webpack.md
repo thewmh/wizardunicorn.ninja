@@ -240,10 +240,43 @@ Webpack, by default, injects a macro replacement to the `process.ev.NODE_ENV` va
 
 ### Webpack Prefetch & Preload
 
+*Insert shameless plug to subscribe to the Webpack Medium account and [this article](https://medium.com/webpack/link-rel-prefetch-preload-in-webpack-51a52358f84c)*
 
+One of the trade-offs when code splitting is either having a smaller initial download or having additional network requests, both have their performance trade-offs. Two additional Webpack Magic Comments are `/* webpackPrefetch /*` and `/* webpackPreload /*` both of which use `<link rel"pre[fetch/load]">` respectively. [More info about prefetch and preload in the Webpack documentation](https://webpack.js.org/guides/code-splitting/#prefetchingpreloading-modules) Similar to the previous Magic Comments, try adding a `/* webpackPrefetch /*` or `/* webpackPreload /*` to one of the 'lazy loaded' bundles. Run `npm run dev` again and when you look at the source code on your dev server, you should see a `<link>` with `rel="preload"` or `rel="prefetch"` depending on which one you chose. 
 
 ### Wrapping Up Code Splitting
 
+As a topic for this workshop, code splitting has been exhausted. Nothing more to see here. But... Code splitting literally exists to solve the issue of load time as it relates to how much JavaScript you ship with the initial experience.
+
 ### Webpack Config Organization
 
+The Webpack config organization has already been discussed / built in the [Webpack 4 Fundamentals workshop]({% link frontend-masters/webpack-4-fundamentals.md %}), with something like:
+
+{% highlight javascript %}
+
+- build-utils
+    - presets
+        webpack.analyze.js
+        webpack.compress.js
+    loadPresets.js
+    webpack.development.js
+    webpack.production.js
+- dist
+- node_modules
+- src
+.gitignore
+LICENSE
+package.json
+README.md
+TODO.md
+webpack.config.js
+
+{% endhighlight %}
+
+The idea with presets is not that you only test out a single piece of functionality, like analyze or compress, but that you can build out entire sets of isolated functionality that allows you to experiment, test, or any other reason that you can just add on with a flag or add on with an extra script. The above configuration is enough to get started with the most complex piece of it being the `loadPresets.js` file, which is basically just flattening presets and making sure that if there is not a preset that it doesn't fail. Best practice is, don't hide your Webpack config, keep it at the root level of your project.
+
 ### Building Your Library with Webpack
+
+Q: Should you build your library with Webpack?
+
+A: The only time you should consider it is if you were going to ship something that could be loaded with a script tag, like a UMD (Universal Module Definition) bundle. If you yourself are using Webpack don't use anything else that has been built with Webpack. You lose out on being able to tree shake, scope hoist, or any of the other optimizations.

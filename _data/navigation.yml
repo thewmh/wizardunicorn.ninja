@@ -36,6 +36,8 @@ primary:
         href: /frontend-masters/webpack-4-fundamentals
       - text: "Web Performance with Webpack"
         href: /frontend-masters/web-performance-webpack
+      - text: "Webpack Plugins System"
+        href: /frontend-masters/webpack-plugins-system
   - text: Sitecore Workshop Notes
     links:
       - text: "Sitecore JSS Fundamentals"
