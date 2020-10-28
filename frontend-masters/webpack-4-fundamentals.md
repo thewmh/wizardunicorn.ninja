@@ -36,7 +36,7 @@ There is no browser support for CommonJS, there are no live-bindings which cause
 
 The solution to this is to use bundlers / linkers. **Browserify**, **RequireJS**, **SystemJS**. The bundlers are used to write CommonJS modules and use them in your code.
 
-But there are still problems. THere is no static async or lazy loading.
+But there are still problems. There is no static async or lazy loading.
 
 ### EcmaScript Modules (ESM)
 
@@ -89,7 +89,7 @@ Then in the CLI type: `npm run webpack` and you will see the default Webpack CLI
 
 ### Adding npm Scripts for Environment Builds
 
-In the output, there should be a warning message that no 'mode' has been set. [Click the link to learn more about Webpack 'mode'(s)](https://webpack.js.org/concepts/mode) Now add 'dev' and 'prod' environment to the 'scripts' section from above:
+In the output, there should be a warning message that no `mode` has been set. [Click the link to learn more about Webpack `mode`(s)](https://webpack.js.org/concepts/mode) Now add `dev` and `prod` environments to the `scripts` section from above:
 
 {% highlight json %}
 
