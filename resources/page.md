@@ -51,7 +51,7 @@ Make your code snippet screenshots look pretty with [Carbon](https://carbon.now.
 [ES6 In Depth](https://hacks.mozilla.org/category/es6-in-depth/) - Brought to you by Mozilla
 
 [Add or Remove classes on things w/ Jquery?](http://jsfiddle.net/ak9Lnrjj/10/)  
-*could be a fix for slick carousel variable height slides. add a class that makes all the other slides have```css display: none;```* 
+*could be a fix for slick carousel variable height slides. add a class that makes all the other slides have ` display: none;`* 
 
 [Charles - Web Debugging Proxy Application](https://www.charlesproxy.com)
 
