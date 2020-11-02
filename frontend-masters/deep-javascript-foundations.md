@@ -311,9 +311,50 @@ You should not rely on code comments as a crutch for the code to explain itself.
 
 ### Implicit Coercion
 
+Most developers tend to think that implicit mechanisms are magical. That when something happens beneath the scenes and it wasn't obvious, then it's some sort of magic. And we tend to equate magic with bad. This is a predominant reason why anti-coercion perspective exists, because people feel like the implicitness of coercion is the downfall. Where they point to the explicitness of type casting in something like Java or C++. Like you would never automatically convert a number into some sort of float or something, but JavaScript does all this sort of automatic stuff and then they say that's a weakness of JavaScript because it's  magical and bad. It is actually neither bad nor magical, but abstraction.
 
+Not all abstractions are good, but some are necessary. Implicitness, in functional programming, actually makes the implicitness more explicit. Implicitness is not bad, it is the proper use of abstraction. We want to hide key unnecessary details to re-focus the reader and increase clarity. Part of the reason that JavaScript has such a low point of entry is that it does not focus the user to focus on such fine details. It would betray JavaScripts DNA to say that anything implicit should be avoided. Take the following examples:
+
+{% highlight javascript %}
+
+var numStudents = 16;
+
+console.log(
+    `There are ${String(numStudents)} students.`
+);
+// "There are 16 students."
+
+var numStudents = 16;
+
+console.log(
+    `There are ${numStudents} students.`
+);
+// "There are 16 students."
+
+{% endhighlight %}
+
+The second example is more readable and is a fine example of implicit coercion not being a bad or magical thing. And in this example:
+
+{% highlight javascript %}
+
+var workshopEnrollment1 = 16;
+var workshopEnrollment2 = workshop2Elem.value;
+
+if(Number(workshopEnrollment1) < Number(workshopEnrollment2)) {
+    //...
+}
+
+if(workshopEnrollment1 < workshopEnrollment2) {
+    //...
+}
+
+{% endhighlight %}
+
+If both of the numbers are strings, JavaScript wouldn't turn them into numbers, the less than operator will do an alphanumeric comparison. Again, if you can guarantee that each of the variables for the less than comparison would be numbers, then the second version of the if statement is just fine and we can deal with implicit coercion without fear. If you have the choice to use coercion but it's not obvious, it would be in your purview to make it obvious. If you communicate your intent, it will not trip up other readers of your code. Is showing the extra details helpful to the reader (of your code) or not? Sometimes yes, sometimes no. Be a critical and analytical thinker, be an engineer and not a code monkey!
 
 ### Understanding Features
+
+
 
 ### Coercion Exercise
 
