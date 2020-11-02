@@ -8,11 +8,11 @@ layout: page
 
 ## Introduction
 
-Why are we using Webpack and what problems does it solve? At its core, it's a very simple tool in terms of its capabilities standalone.
+Why are we using Webpack and what problems does it solve? At its core, it's a very simple tool in terms of its standalone capabilities.
 
 ### Problems with Script Loading
 
-But why? It is important to understand how we've used JavaScript on the web. There are really only 2 ways that you can use JavaScript in the browser. JavaScript is really just a script, top-down execution. The first way to load JavaScript in the browser is via a script tag. The second way is to actually write JavaScript in your HTML.
+But why? It is important to understand how we've used JavaScript on the web. There are really only 2 ways that you can use JavaScript in the browser. JavaScript is really just a script with top-down execution. The first way to load JavaScript in the browser is via a `<script>` tag. The second way is to actually write JavaScript in your HTML.
 
 But what are the problems with these things?
 
@@ -61,13 +61,13 @@ Every [JavaScript] library is different; i.e. may use different module formats. 
 
 There's 3 ways that you can use Webpack.
 
-1. The config - A Common.JS module that is an object which has a bunch of properties that define what Webpack should do with code.
+1. The config - A CommonJS module that is an object which has a bunch of properties that define what Webpack should do with code.
 
 2. Webpack CLI - Almost every single property in Webpack is bound to a CLI argument and parameter.
 
 3. Node API - Neutrino is built with this.
 
-Webpack is important for web performance, scalibility, and maintainability.
+Webpack is important for web performance, scalability, and maintainability.
 
 ## Webpack from Scratch
 
@@ -247,7 +247,7 @@ module.exports = {
 
 {% endhighlight %}
 
-The above basic configuration will run Webpack without any excapsulation.
+The above basic configuration will run Webpack without any encapsulation.
 
 ### Webpack Bundle Walkthrough
 
@@ -256,7 +256,7 @@ If you've been following along, you can check out the `dist/main.js` file and ta
 In that file, you will find a bunch of comments (to see comments, you may need to make a webpack.config.js file in the root of your project, see below for example file) that will inform you of what each piece of the function(s) is doing.
 
 {% highlight javascript %}
-// simple webpack.config.js file to remove code minification/optimization… because comments 
+// simple webpack.config.js file to remove code minification/optimization... because comments 
 
 module.exports = {
   mode: 'development',
