@@ -143,10 +143,54 @@ For more details about the available hooks see the [Webpack Plugin API Documenta
 
 ### Isolating Plugins
 
+Here is some information about how Webpack abstracts things in their source code. Because everything in Webpack is so decoupled and abstracted, you could take anything, like a MongoDB database, or some online service database and as long as you implement the right adapter, so that it works like [fs](https://nodejs.org/api/fs.html), you could hook into the compiler and set `compiler.inputFileSystem` and `compiler.outputFileSystem` to these values. Technically, because Webpack's resolver is in a separate package, if you felt the motivation to write an entirely separate resolver, you could.
+
+The most basic explanation of how to make a Webpack plugin is to hook into a bunch of [Webpack] hooks. Webpack isolates the feature sets for each plugin. If they no longer wanted to support CommonJS, they could just remove the `CommonJsPlugin.js` file from their repo and they would no longer support CommonJS. 
+
 ## Config, Loaders, & Babel
 
 ### Creating a Custom Loader
 
+To write a custom loader and develop it locally, you just need a couple of pieces. One of the pieces is a property called `resolveLoader`, the properties of which are identical to the `resolve` property. Any custom behavior that you want to apply to resolving modules, you can do the same thing for your loaders. A simple JS loader (filename: `webpack.myloader.js`) would look something like this:
+
+{% highlight javascript %}
+
+module.exports = () => ({
+    resolveLoader: {
+        alias: {
+            "my-loader": require.resolve("./build-utils/my-loader.js")
+        }
+    },
+    module: {
+        rules: [
+            {
+                test: /\.js/,
+                use: "my-loader"
+            }
+        ]
+    }
+})
+
+{% endhighlight %}
+
+Now you actually have to build the loader... make a new file, following the path above `my-loader.js`, and insert the following:
+
+{% highlight javascript %}
+
+function myLoader(source) { // this is the basic anatomy of a loader. It takes a function which requires the `source` argument, then returns the `source`
+    return source;
+}
+
+module.exports = myLoader;
+
+{% endhighlight %}
+
+There is a ton of additional information about the [loader API in the Webpack documentation](https://webpack.js.org/api/loaders).
+
 ### Configuring Babel for Webpack
 
+Since Webpack 2, Webpack has supported ES Modules out-of-the-box. A common pitfall is that people will have presets like Babel preset 2015, which by default compiles ES Modules into CommonJS syntax. This is a problem, because you are effectively opting out of every Webpack optimization. Webpack will not scope-hoist, tree-shake, or do much of anything with CommonJS Modules. In terms of supported syntax, Webpack is able to support any syntax that Acorn has adopted (generally stage 4 syntax). When in doubt, check the Acorn documentation. 
+
 ### Webpack Dev Kit & Wrap Up
+
+One additional resource that is useful is the [Webpack Developer Kit](https://github.com/TheLarkinn/webpack-developer-kit). The Webpack Developer Kit was created by the instructor (Sean Larkin) and is a tool to develop plugins and loaders. Clone it, fork it, use it!
