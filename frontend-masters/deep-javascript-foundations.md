@@ -396,6 +396,8 @@ In this exercise, you will define some validation functions that check user inpu
 
 The solution is as follows:
 
+{% capture summary %}Click to view the solution{% endcapture %}  
+{% capture details %}  
 {% highlight javascript %}
 
 function isValidName(name) {
@@ -438,6 +440,8 @@ function hoursAttended(attended, length) {
 }
 
 {% endhighlight %}
+{% endcapture %}{% include details.html %} 
+
 
 ## Equality
 
