@@ -21,7 +21,7 @@ subnav:
 
 [Link to the course document](https://static.frontendmasters.com/resources/2019-03-07-deep-javascript-v2/deep-js-foundations-v2.pdf)
 
-[Link to the course's code exerices](https://static.frontendmasters.com/resources/2019-03-07-deep-javascript-v2/deep-js-foundations-v2-exercises.zip)
+[Link to the course's code exercises](https://static.frontendmasters.com/resources/2019-03-07-deep-javascript-v2/deep-js-foundations-v2-exercises.zip)
 
 The instructor talks about the depth that this course gets into. But why dive deep into JavaScript? Consider the following code:
 
@@ -166,7 +166,7 @@ These words are not synonymous, in JavaScript they are two entirely different co
 
 ### NaN & isNaN
 
-NaN does not mean 'not a number', it means 'invalid number'. Zero is not a number to use when you would like to indicate that there is no value, because zero has value. NaN is basically a number that has no value. NaN with any other mathmatically valid number will return NaN. NaN is not equal to NaN. NaN is the only value that is not equal to itself. The `isNan` utility coerces values to numbers before checking its value. `Number.isNan` does not do any coercion. Using this utility, you can determine with certainty whether a value is actually NaN or not; returns `true` or `false`. `typeof NaN` is a number.
+NaN does not mean 'not a number', it means 'invalid number'. Zero is not a number to use when you would like to indicate that there is no value, because zero has value. NaN is basically a number that has no value. NaN with any other mathematically valid number will return NaN. NaN is not equal to NaN. NaN is the only value that is not equal to itself. The `isNan` utility coerces values to numbers before checking its value. `Number.isNan` does not do any coercion. Using this utility, you can determine with certainty whether a value is actually NaN or not; returns `true` or `false`. `typeof NaN` is a number.
 
 ### Negative Zero
 
@@ -257,7 +257,7 @@ And with these, it is not recommended to use the `new` keyword:
 
 * Boolean()
 
-They can be used with `new`, but you should not use that keyword with them. `String(), Number(), and Boolean()` automatically coerce whatever value is passed into them into that Primitive Type, and that behaviour is more useful than making an object out of them.
+They can be used with `new`, but you should not use that keyword with them. `String(), Number(), and Boolean()` automatically coerce whatever value is passed into them into that Primitive Type, and that behavior is more useful than making an object out of them.
 
 ## Coercion
 
@@ -265,11 +265,11 @@ They can be used with `new`, but you should not use that keyword with them. `Str
 
 From ECMAScript documentation:
 
-> The ECMAScript language implicitly performs automatic type conversion as needed. To clarify the semantics of certain construsts it is useful to define a set of conversion abstract operations. The conversion abstract operations are polymorphic; they can accept a value of any ECMAScript language type. But no other specification types are used with these operations.
+> The ECMAScript language implicitly performs automatic type conversion as needed. To clarify the semantics of certain constructs it is useful to define a set of conversion abstract operations. The conversion abstract operations are polymorphic; they can accept a value of any ECMAScript language type. But no other specification types are used with these operations.
 
 AKA coercion
 
-The first abstract operation we are looking at is `ToPrimitive`. This abstract operation takes an optional `type` hint. The algorithims in JavaScript are recursive, so if we pass something that cannot be coerced into a Primitive Type, `ToPrimitive()` will re-run until it either finds a type that it can set or error out. The way that `ToPrimitive` works is, by way of hint, trying either `valueOf()` or `toString()` the order of which depends on the 'hint' you have passed in (number or string).
+The first abstract operation we are looking at is `ToPrimitive`. This abstract operation takes an optional `type` hint. The algorithms in JavaScript are recursive, so if we pass something that cannot be coerced into a Primitive Type, `ToPrimitive()` will re-run until it either finds a type that it can set or error out. The way that `ToPrimitive` works is, by way of hint, trying either `valueOf()` or `toString()` the order of which depends on the 'hint' you have passed in (number or string).
 
 ### toString
 
@@ -277,15 +277,15 @@ The first abstract operation we are looking at is `ToPrimitive`. This abstract o
 
 ### toNumber
 
-`ToNumber` takes any value and gives us the representation of that value in numeric form. One strange behaviour is turning empty quotes to the number 0. It strips off leading zeros and can handle hexidecimal values. `null` is coerced to '0' and `undefined` is 'NaN'. When `ToNumber` is used on an object, the algorithm will eventually hit 'valueOf()' and then 'toString()' and return `NaN`. On an array, empty strings are coerced to 0. 
+`ToNumber` takes any value and gives us the representation of that value in numeric form. One strange behavior is turning empty quotes to the number 0. It strips off leading zeros and can handle hexadecimal values. `null` is coerced to '0' and `undefined` is 'NaN'. When `ToNumber` is used on an object, the algorithm will eventually hit 'valueOf()' and then 'toString()' and return `NaN`. On an array, empty strings are coerced to 0. 
 
 ### toBoolean
 
-Anytime you have any value that is not a boolean and you need a boolean value, `ToBoolean()` will eventually be used. Esentially, there is a lookup table that qualifies values as either Falsy or Truthy. Falsy values are: `"", 0, -0, null, NaN, false, undefined` Truthy values are basically any value not listed under 'falsy values', some examples: `"foo", 23, {a:1}, [1,3], true, function(){..}`. The list of truthy values is quite long. 
+Anytime you have any value that is not a boolean and you need a boolean value, `ToBoolean()` will eventually be used. Essentially, there is a lookup table that qualifies values as either Falsy or Truthy. Falsy values are: `"", 0, -0, null, NaN, false, undefined` Truthy values are basically any value not listed under 'falsy values', some examples: `"foo", 23, {a:1}, [1,3], true, function(){..}`. The list of truthy values is quite long. 
 
 ### Cases of Coercion
 
-Template literal strings (available since ES6) coerece values into different types. The plus operator spec states that if either side of the plus is a string, the `ToString` method will be invoked. The remainder of this section stresses the importance of understanding when and why coercion occurs and being intentional with how you are using it in your applications. For `Boolean` values specifically, the instructor recommends only coercing `undefined, null, or {}`. There are too many corner cases with numbers and strings to make using `Boolean` coercion make sense.
+Template literal strings (available since ES6) coerce values into different types. The plus operator spec states that if either side of the plus is a string, the `ToString` method will be invoked. The remainder of this section stresses the importance of understanding when and why coercion occurs and being intentional with how you are using it in your applications. For `Boolean` values specifically, the instructor recommends only coercing `undefined, null, or {}`. There are too many corner cases with numbers and strings to make using `Boolean` coercion make sense.
 
 ### Boxing
 
@@ -354,17 +354,124 @@ If both of the numbers are strings, JavaScript wouldn't turn them into numbers, 
 
 ### Understanding Features
 
+**"If a feature is sometimes useful and sometimes dangerous and if there is a better option then always use the better option". -- Doug Crawford**
 
+But what is useful and what is dangerous? Only what Doug thinks is useful or dangerous? Is there a universal definition for what is useful or dangerous? And what about 'better option'? How is that measured? This statement is not useful in its abstract sense.
+
+As defined by the instructor:
+
+Useful: When the reader is focused on what is important.
+
+Dangerous: When the reader cannot tell what will happen.
+
+Better: When the reader understands the code.
+
+The takeaway is this; It is irresponsible to knowingly avoid usage of a feature that can improve code readability.
 
 ### Coercion Exercise
 
+# Working With Coercion
+
+In this exercise, you will define some validation functions that check user inputs (such as from DOM elements). You'll need to properly handle the coercions of the various value types.
+
+## Instructions
+
+1. Define an `isValidName(..)` validator that takes one parameter, `name`. The validator returns `true` if all the following match the parameter (`false` otherwise):
+
+	- must be a string
+	- must be non-empty
+	- must contain non-whitespace of at least 3 characters
+
+2. Define an `hoursAttended(..)` validator that takes two parameters, `attended` and `length`. The validator returns `true` if all the following match the two parameters (`false` otherwise):
+
+	- either parameter may only be a string or number
+	- both parameters should be treated as numbers
+	- both numbers must be 0 or higher
+	- both numbers must be whole numbers
+	- `attended` must be less than or equal to `length`
+
 ### Coercion Exercise Solution
+
+The solution is as follows:
+
+{% highlight javascript %}
+
+function isValidName(name) {
+    if (
+        typeof name == "string" &&
+        name.trim().length >= 3
+        ) {
+            return true;
+    }
+    return false;
+}
+
+function hoursAttended(attended, length) {
+    if (
+        typeof attended == "string" &&
+        attended.trim() != "" 
+    ) {
+        attended = Number(attended);
+    }
+
+    if (
+        typeof length == "string" &&
+        length.trim() != "" 
+    ) {
+        length = Number(length);
+    }
+
+    if (
+        typeof attended == "number" &&
+        typeof length == "number" &&
+        attended >= 0 &&
+        length >= 0 &&
+        Number.isInteger(attended) &&
+        Number.isInteger(length) &&
+        attended <= length
+    ) {
+        return true;
+    }
+    return false
+}
+
+{% endhighlight %}
 
 ## Equality
 
 ### Double & Triple Equals
 
+`==` checks value (loose) and `===` checks value and type (strict)? This is a very common misconception. **If you're trying to understand your code, it's critical that you learn to think like JavaScript**  Check the JavaScript specification for [Abstract Equality Comparison](https://www.ecma-international.org/ecma-262/9.0/index.html#sec-abstract-equality-comparison) and [Strict Equality Comparison](https://www.ecma-international.org/ecma-262/9.0/index.html#sec-strict-equality-comparison) to dig deeper into the difference between `==` and `===`. When the types of the two elements you are comparing with `==` are the same, then (according to the spec) the `===` is performed. Ideally, you should try to have the value types and make that obvious as much as possible. You should not be doing equality comparisons when you have no idea what the types are.
+
+For `===` if the types are different, it returns `false`. The basic difference between `==` and `===` is whether or not we are going to allow any coercion to occur. JavaScript's equality is based on identity, not structure. Consider the following:
+
+{% highlight javascript %}
+
+let workshop1 = {
+    name: "Deep JS Foundations"
+};
+
+let workshop2 = {
+    name: "Deep JS Foundations"
+};
+
+if (workshop1 == workshop2) {
+    // never going to get here...
+}
+
+if (workshop1 === workshop2) {
+    // never going to get here...
+}
+
+{% endhighlight %}
+
+While, the above elements may be of the same type, they are effectively different from one another. However, if `workshop2 = workshop1` then we could get a true statement to return from a comparison of these two objects.
+
+In summary, `==` allows coercion (types different), `===` disallows coercion (types same).
+
 ### Coercive Equality
+
+*Like every other operation, is coercion helpful in an equality comparison or not?*
 
 ### Double Equals Algorithm
 
