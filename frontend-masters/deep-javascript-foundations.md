@@ -354,9 +354,9 @@ If both of the numbers are strings, JavaScript wouldn't turn them into numbers, 
 
 ### Understanding Features
 
-**"If a feature is sometimes useful and sometimes dangerous and if there is a better option then always use the better option".
+**"If a feature is sometimes useful and sometimes dangerous and if there is a better option then always use the better option".**
 
--- Doug Crawford**
+**--Doug Crawford**
 
 But what is useful and what is dangerous? Only what Doug thinks is useful or dangerous? Is there a universal definition for what is useful or dangerous? And what about 'better option'? How is that measured? This statement is not useful in its abstract sense.
 
@@ -372,11 +372,11 @@ The takeaway is this; It is irresponsible to knowingly avoid usage of a feature 
 
 ### Coercion Exercise
 
-#### Working With Coercion
+**Working With Coercion**
 
 In this exercise, you will define some validation functions that check user inputs (such as from DOM elements). You'll need to properly handle the coercions of the various value types.
 
-##### Instructions
+**Instructions**
 
 1. Define an `isValidName(..)` validator that takes one parameter, `name`. The validator returns `true` if all the following match the parameter (`false` otherwise):
 
