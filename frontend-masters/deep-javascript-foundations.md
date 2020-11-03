@@ -311,9 +311,9 @@ You should not rely on code comments as a crutch for the code to explain itself.
 
 ### Implicit Coercion
 
-Most developers tend to think that implicit mechanisms are magical. That when something happens beneath the scenes and it wasn't obvious, then it's some sort of magic. And we tend to equate magic with bad. This is a predominant reason why anti-coercion perspective exists, because people feel like the implicitness of coercion is the downfall. Where they point to the explicitness of type casting in something like Java or C++. Like you would never automatically convert a number into some sort of float or something, but JavaScript does all this sort of automatic stuff and then they say that's a weakness of JavaScript because it's  magical and bad. It is actually neither bad nor magical, but abstraction.
+Most developers tend to think that implicit mechanisms are magical. That when something happens behind the scenes and it wasn't obvious, then it's some sort of magic. And we tend to equate magic with bad. This is a predominant reason why anti-coercion perspective exists, because people feel like the implicitness of coercion is the downfall. Where they point to the explicitness of type casting in something like Java or C++. Like you would never automatically convert a number into some sort of float or something, but JavaScript does all this sort of automatic stuff and then they say that's a weakness of JavaScript because it's  magical and bad. It is actually neither bad nor magical, but abstraction.
 
-Not all abstractions are good, but some are necessary. Implicitness, in functional programming, actually makes the implicitness more explicit. Implicitness is not bad, it is the proper use of abstraction. We want to hide key unnecessary details to re-focus the reader and increase clarity. Part of the reason that JavaScript has such a low point of entry is that it does not focus the user to focus on such fine details. It would betray JavaScripts DNA to say that anything implicit should be avoided. Take the following examples:
+Not all abstractions are good, but some are necessary. Implicitness, in functional programming, actually makes the implicitness more explicit. Implicitness is not bad, it is the proper use of abstraction. We want to hide key unnecessary details to re-focus the reader and increase clarity. Part of the reason that JavaScript has such a low point of entry is that it does not force the user to focus on such fine details. It would betray JavaScript's DNA to say that anything implicit should be avoided. Take the following examples:
 
 {% highlight javascript %}
 
@@ -354,7 +354,9 @@ If both of the numbers are strings, JavaScript wouldn't turn them into numbers, 
 
 ### Understanding Features
 
-**"If a feature is sometimes useful and sometimes dangerous and if there is a better option then always use the better option". -- Doug Crawford**
+**"If a feature is sometimes useful and sometimes dangerous and if there is a better option then always use the better option".
+
+-- Doug Crawford**
 
 But what is useful and what is dangerous? Only what Doug thinks is useful or dangerous? Is there a universal definition for what is useful or dangerous? And what about 'better option'? How is that measured? This statement is not useful in its abstract sense.
 
@@ -441,7 +443,7 @@ function hoursAttended(attended, length) {
 
 ### Double & Triple Equals
 
-`==` checks value (loose) and `===` checks value and type (strict)? This is a very common misconception. **If you're trying to understand your code, it's critical that you learn to think like JavaScript**  Check the JavaScript specification for [Abstract Equality Comparison](https://www.ecma-international.org/ecma-262/9.0/index.html#sec-abstract-equality-comparison) and [Strict Equality Comparison](https://www.ecma-international.org/ecma-262/9.0/index.html#sec-strict-equality-comparison) to dig deeper into the difference between `==` and `===`. When the types of the two elements you are comparing with `==` are the same, then (according to the spec) the `===` is performed. Ideally, you should try to have the value types and make that obvious as much as possible. You should not be doing equality comparisons when you have no idea what the types are.
+`==` checks value (loose) and `===` checks value and type (strict)? This is a very common misconception. **If you're trying to understand your code, it's critical that you learn to think like JavaScript.**  Check the JavaScript specification for [Abstract Equality Comparison](https://www.ecma-international.org/ecma-262/9.0/index.html#sec-abstract-equality-comparison) and [Strict Equality Comparison](https://www.ecma-international.org/ecma-262/9.0/index.html#sec-strict-equality-comparison) to dig deeper into the difference between `==` and `===`. When the types of the two elements you are comparing with `==` are the same, then (according to the spec) the `===` is performed. Ideally, you should try to have the value types and make that obvious as much as possible. You should not be doing equality comparisons when you have no idea what the types are.
 
 For `===` if the types are different, it returns `false`. The basic difference between `==` and `===` is whether or not we are going to allow any coercion to occur. JavaScript's equality is based on identity, not structure. Consider the following:
 
