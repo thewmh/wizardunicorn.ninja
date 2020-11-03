@@ -394,8 +394,7 @@ In this exercise, you will define some validation functions that check user inpu
 
 ### Coercion Exercise Solution
 
-The solution is as follows:
-
+{% capture summary %}Click to view the solution{% endcapture %}
 {% capture details %}  
 {% highlight javascript %}
 
@@ -439,8 +438,7 @@ function hoursAttended(attended, length) {
 }
 
 {% endhighlight %}
-{% endcapture %}
-{% capture summary %}Click to view the solution{% endcapture %}{% include details.html %} 
+{% endcapture %}{% include details.html %} 
 
 
 ## Equality
