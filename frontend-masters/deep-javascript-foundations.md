@@ -14,6 +14,7 @@ subnav:
   - text: Functional Programming
     href: '#functional-programming'
 ---
+{% include details.html %} 
 
 ## Introduction
 
@@ -475,7 +476,35 @@ In summary, `==` allows coercion (types different), `===` disallows coercion (ty
 
 ### Coercive Equality
 
-*Like every other operation, is coercion helpful in an equality comparison or not?*
+*Like every other operation, is coercion helpful in an equality comparison or not?* You should consider that statement whenever making a decision to use coercion. Again, driving home the point to be a critical, analytical thinker vs. a code monkey. The decision between using `==` or `===` is a trailing indicator to whether you truly understand your program or not. It is perhaps better to get to the root of why you would be using `===`... do you truly not know what `types` of data your function will be working with? How can you fix that? If you can solve this issue, deciding and making obvious what your types are, you will find that you have better code with fewer bugs.
+
+Through coercive equality, you have the option to treat the `null` and `undefined` values as equal (read the spec...). Which of the following is 'better'?:
+
+{% capture summary %}Click to view the code{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+var workshop1 = { topic: null };
+var workshop2 = {};
+
+if (
+    (workshop1.topic === null || workshop1.topic === undefined) &&
+    (workshop2.topic === null || workshop2.topic === undefined)
+) {
+    // ..
+}
+
+if (
+    workshop1.topic == null &&
+    workshop2.topic == null
+) {
+    // ..
+}
+
+{% endhighlight %}
+{% endcapture %}
+
+Arguably, the second `if` statement is more concise and readable, and since we know that `null == undefined` this would work exactly the same as the first `if` statement. This is an example of using coercive equality. 
 
 ### Double Equals Algorithm
 
