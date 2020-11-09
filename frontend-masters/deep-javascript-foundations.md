@@ -501,7 +501,7 @@ if (
 }
 
 {% endhighlight %}
-{% endcapture %}
+{% endcapture %}{% include details.html %}
 
 Arguably, the second `if` statement is more concise and readable, and since we know that `null == undefined` this would work exactly the same as the first `if` statement. This is an example of using coercive equality. 
 
@@ -529,7 +529,7 @@ if (workshopEnrollment1 == workshopEnrollment2) {
 }
 
 {% endhighlight %}
-{% endcapture %}
+{% endcapture %}{% include details.html %}
 
 Arguably, the second comparison is cleaner, especially if we can guarantee that either variable will only ever be a number or a string. The coercion that would occur from using `==` would be acceptable for this use case. You can choose to structure your code in such a way that coercion is a useful and obvious system, rather than the complex magic that some people feel it to be. If you invoke `==` with something that is not already of a primitive type, it will invoke `ToPrimitive()` on that.
 
@@ -549,7 +549,7 @@ if (workshop1Count == workshop2Count) {
 }
 
 {% endhighlight %}
-{% endcapture %}
+{% endcapture %}{% include details.html %}
 
 What would happen? Would it work coercively? In the above case, yes... but should it? More importantly, why would it work? Why would a number somehow be coercively equal to an array holding that number? According to the specification, the `==` algorithm would execute in the following way:
 
@@ -568,7 +568,7 @@ if (true) {
 }
 
 {% endhighlight %}
-{% endcapture %}
+{% endcapture %}{% include details.html %}
 
 The array gets transformed into its primitive type, which is a stringified version of the array ("42"). Then, 42 is compared to the string "42". The `==` algorithm prefers numeric comparison, therefore the string "42" is now turned into the number 42. And now that both operators are the same type, `==` will do a `===` comparison and finally return true. All of this is an example of when coercion could be a bad thing for a developer. Just because this works does not mean that you should use it. You should reduce the surface area and not make a comparison between numbers and arrays of numbers. The fix for this would not be to use a `===` comparison, but to actually fix the problem, the comparison between two things that are not the same type. Fix it so that the comparisons that you are making make sense.
 
@@ -641,7 +641,7 @@ if (true) {
 
 {% endhighlight %}
 
-The comparison of [] == true || false is unnecessarily complicating the above code. It is simpler, and also more understandable, to just have JavaScript perform the `Boolean` operation on the original array instead of comparing it to true or false. In this case, implicit coercion does not have a gotcha whereas the explicit coercion does.
+The comparison of `[] == true || false` is unnecessarily complicating the above code. It is simpler, and also more understandable, to just have JavaScript perform the `Boolean` operation on the original array instead of comparing it to true or false. In this case, implicit coercion does not have a gotcha whereas the explicit coercion does.
 
 ### Corner Cases: Summary
 
@@ -716,6 +716,52 @@ In this exercise, you will define a `findAll(..)` function that searches an arra
 
 
 ### Equality Exercise Solution
+
+{% capture summary %}Click to view the solution{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+function isValidName(name) {
+    if (
+        typeof name == "string" &&
+        name.trim().length >= 3
+        ) {
+            return true;
+    }
+    return false;
+}
+
+function hoursAttended(attended, length) {
+    if (
+        typeof attended == "string" &&
+        attended.trim() != "" 
+    ) {
+        attended = Number(attended);
+    }
+
+    if (
+        typeof length == "string" &&
+        length.trim() != "" 
+    ) {
+        length = Number(length);
+    }
+
+    if (
+        typeof attended == "number" &&
+        typeof length == "number" &&
+        attended >= 0 &&
+        length >= 0 &&
+        Number.isInteger(attended) &&
+        Number.isInteger(length) &&
+        attended <= length
+    ) {
+        return true;
+    }
+    return false
+}
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %}
 
 ## Static Typing
 
