@@ -807,13 +807,75 @@ The point of this exercise was to drive home the point that coercion can be safe
 
 ### TypeScript & Flow
 
+The instructor does not use TypeScript or Flow, because he believe that they are solving problems in a way that makes his code worse. But... here are some details:
 
+Benefits:
+
+1. Catch type-related mistakes - very useful!
+
+2. Communicate type intent - makes code more obvious
+
+3. Provides IDE feedback - 🔥
+
+Caveats:
+
+1. inferencing is best-guess, not a guarantee
+
+2. Annotations are optional - need to opt-in
+
+3. Any part of the application that isn't typed introduces uncertainty
 
 ### Inferencing
 
+Consider the following:
+
+{% highlight javascript %}
+
+var teacher = "You";
+
+// ..
+
+teacher = { name: "You" };
+// Error: can't assign object to string
+
+{% endhighlight %}
+
+The above is an example of static typing that comes with the use of TypeScript or Flow. Because you initially set the value of `teacher` to a string, these statically typed systems will infer that `teacher` should always be a string... but what if you want to reassign `teacher` to hold an object? You're SOL. You can also strictly declare that `teacher` should only ever be a string:
+
+{% highlight javascript %}
+
+var teacher: string = "You";
+
+// ..
+
+teacher = { name: "You" };
+// Error: can't assign object to string
+
+{% endhighlight %}
+
+...and you would of course see the same error as before.
+
 ### Custom Types
 
+{% highlight javascript %}
+
+type student = { name: string };
+
+function getName(studentRec: student): string {
+    return studentRec.name;
+}
+
+var firstStudent: student = { name: "Frank" };
+
+var firstStudentName: string = getName(firstStudent);
+
+{% endhighlight %}
+
+With TypeScript and Flow, you can define custom types. The above defines that an object of a type that has a property called name that is of type string. You can pass values of that type as parameters and receive values back as parameters. Any of the above only works based on the 'guarantee' that things are assigned correctly.
+
 ### Validating Operand Types
+
+
 
 ### TypeScript & Flow Summary
 
