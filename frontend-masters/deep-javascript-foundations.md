@@ -14,7 +14,6 @@ subnav:
   - text: Functional Programming
     href: '#functional-programming'
 ---
-{% include details.html %} 
 
 ## Introduction
 
@@ -508,19 +507,213 @@ Arguably, the second `if` statement is more concise and readable, and since we k
 
 ### Double Equals Algorithm
 
+According to the Abstract Equality Comparison algorithm, if one of the operators is a number and the other is a string or boolean, it will convert the non-numeric operator into a number using `ToNumber()`. Whether or not you like how the algorithm functions is not relevant, understanding how it works and why you've received a certain outcome from using the algorithm is what matters.
+
+**`==` prefers numeric comparison.**
+
+Considering the above, which of the below `if` statements is more concise?
+
+{% capture summary %}Click to view the code{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+var workshopEnrollment1 = 16;
+var workshopEnrollment2 = workshop2Elem.value();
+
+if (Number(workshopEnrollment1) === Number(workshopEnrollment2)) {
+    // ..
+}
+
+if (workshopEnrollment1 == workshopEnrollment2) {
+    // ..
+}
+
+{% endhighlight %}
+{% endcapture %}
+
+Arguably, the second comparison is cleaner, especially if we can guarantee that either variable will only ever be a number or a string. The coercion that would occur from using `==` would be acceptable for this use case. You can choose to structure your code in such a way that coercion is a useful and obvious system, rather than the complex magic that some people feel it to be. If you invoke `==` with something that is not already of a primitive type, it will invoke `ToPrimitive()` on that.
+
 ### Double Equals Walkthrough
+
+If you wrote a function like this:
+
+{% capture summary %}Click to view the code{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+var workshop1Count = 42;
+var workshop2Count = [42];
+
+if (workshop1Count == workshop2Count) {
+    // ..
+}
+
+{% endhighlight %}
+{% endcapture %}
+
+What would happen? Would it work coercively? In the above case, yes... but should it? More importantly, why would it work? Why would a number somehow be coercively equal to an array holding that number? According to the specification, the `==` algorithm would execute in the following way:
+
+{% capture summary %}Click to view the code{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+var workshop1Count = 42;
+var workshop2Count = [42];
+
+// if (workshop1Count == workshop2Count) {
+// if (42 == "42") {
+// if (42 === 42) {
+if (true) {
+    // ..
+}
+
+{% endhighlight %}
+{% endcapture %}
+
+The array gets transformed into its primitive type, which is a stringified version of the array ("42"). Then, 42 is compared to the string "42". The `==` algorithm prefers numeric comparison, therefore the string "42" is now turned into the number 42. And now that both operators are the same type, `==` will do a `===` comparison and finally return true. All of this is an example of when coercion could be a bad thing for a developer. Just because this works does not mean that you should use it. You should reduce the surface area and not make a comparison between numbers and arrays of numbers. The fix for this would not be to use a `===` comparison, but to actually fix the problem, the comparison between two things that are not the same type. Fix it so that the comparisons that you are making make sense.
 
 ### Double Equals Summary
 
+If the types are the same: `===`
+If `null` or `undefined`: equal
+If non-primitives: `ToPrimitive()`
+Prefer: `ToNumber()`
+
 ### Double Equals Corner Cases
+
+{% highlight javascript %}
+
+[] == ![]; // true
+
+// Under no circumstances would you compare a value to the negation of itself. BUT... here's why it works
+
+var a = [];
+var b = [];
+
+// if(a == !b) {
+// if([] == false) { reduce a to its value, an array, and negate b, an array which is truthy
+// if("" == false) { non-primitive compared to a primitive, turn the array into a primitive, it becomes a string
+// if(0 == false) { non-same types, convert to a number
+// if(0 == 0) {
+if(true) {
+    // Works...
+}
+
+// This is the more sensible AND likely way you may use coercion in development, by comparing
+// whether two variables of the same type are equal to one another
+
+// if (a != b) {
+// if (!(a == b)) {
+// if (!(false)) {
+if(true) {
+    // Works...
+}
+
+{% endhighlight %}
 
 ### Corner Cases: Booleans
 
+Just don't do this... If you want to all the boolean conversion of an array to be true, that's fine. 
+
+{% highlight javascript %}
+
+var a = [];
+
+// if(a) {
+// if(Boolean(a)) {
+if(true) { // the if statement will invoke the toBoolean operation on the array 
+    // Works...
+}
+
+// if (a == true) { converts non-primitive [] to a primitive
+// if ("" == true) { [] becomes a string
+// if (0 === 1) { converts both to numbers
+if (false) {
+    // Nope...
+}
+
+// if (a == false) { converts non-primitive [] to a primitive
+// if ("" == false) { [] becomes a string
+// if (0 === 0) { converts both to numbers
+if (true) {
+    // Works...
+}
+
+{% endhighlight %}
+
+The comparison of [] == true || false is unnecessarily complicating the above code. It is simpler, and also more understandable, to just have JavaScript perform the `Boolean` operation on the original array instead of comparing it to true or false. In this case, implicit coercion does not have a gotcha whereas the explicit coercion does.
+
 ### Corner Cases: Summary
+
+How to avoid these corner cases with `==`.
+
+**Avoid**
+
+1. `==` with 0 or "" or " " - when either value of the comparison can one of these values
+
+2. `==` with non-primitives
+
+3. `==` true or `==` false : allow ToBoolean or use `===`
 
 ### The Case for Double Equals
 
+You should prefer `==` in all cases. Knowing `types` is always better than not knowing them. Static Types is **not** the only (or even necessarily best) way to know your types. `==` is not about comparisons with unknown types. It's best to not use `==` when you do not know the types. `==` is about comparisons with known types, optionally when conversions are helpful.
+
+If you know the types in a comparison:
+
+If both types are the same, `==` is identical to `===`
+
+Using `===` would be unnecessary so prefer the shorter `==`
+
+If the types are different, using `===` would break
+
+Prefer the more powerful `==` or don't compare at all
+
+If the types are different, the equivalent of `==` would  be  two (or more) `===` (i.e. slower)
+
+Prefer the faster `==` over multiple `===`
+
+If the types are different, two (or more) `===` comparisons may distract the reader
+
+Prefer the cleaner `==`
+
+All of the above suggestions are only applicable if you can ensure that the reader of your code can be certain of your types. When you know the types, `==` is the more sensible choice.
+
+If you do not know the types:
+
+Not knowing the types means not fully understanding the code
+
+If possible, refactor the code
+
+The uncertainty of not knowing the types should be obvious to the reader
+
+The most obvious signal about the uncertainty of types is `===`
+
+Not knowing the types is equivalent to assuming type conversion / coercion
+
+Because of corner cases, the only *safe* choice is `===`
+
+If you can't or won't use known and obvious types, `===` is the only reasonable choice. Even if `===` would always be equivalent to `==` in your code, using it *everywhere* sends a wrong semantic signal: "Protecting myself since I don't know/trust the types". Making your types known and obvious leads to better code. If types are known, `==` is best. Otherwise, fall back to `===`.
+
 ### Equality Exercise
+
+#### Wrangling Equality
+
+In this exercise, you will define a `findAll(..)` function that searches an array and returns an array with all coercive matches.
+
+##### Instructions
+
+1. The `findAll(..)` function takes a value and an array. It returns an array.
+
+2. The coercive matching that is allowed:
+
+	- exact matches (`Object.is(..)`)
+	- strings (except "" or whitespace-only) can match numbers
+	- numbers (except `NaN` and `+/- Infinity`) can match strings (hint: watch out for `-0`!)
+	- `null` can match `undefined`, and vice versa
+	- booleans can only match booleans
+	- objects only match the exact same object
+
 
 ### Equality Exercise Solution
 
