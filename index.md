@@ -13,7 +13,7 @@ intro: |
   
   Thinking it was kind of funny, while also realizing that I am some form of wizard, unicorn, and ninja (My background is in Graphic Design, Video Production, and now Frontend Development), I thought, "Hey, .ninja is a thing now, is wizardunicorn.ninja available?". And it was...
   
-  I mostly keep this site for notes, but there are some resources I gather along the way as well, and sometimes I will add a little JavaScript that seems fun when I am working on a project.
+  I mostly keep this site for notes, there are some resources I gather along the way as well, and sometimes I will add a little JavaScript or style update that seems fun when I am working on a project.
 
   The source for this site is on Github [here](https://github.com/hztl-wm/hztl-wm).
   
