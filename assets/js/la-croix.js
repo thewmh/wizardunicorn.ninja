@@ -11,10 +11,11 @@ if(la_croix_count) {
     for(let i = 0; i < la_croix_count.length; i++) {
         la_croix_count[i].append(la_croix_consumed);
     }
+}
 
-    if(la_croix_cans) {
-        for(let i = 0; i < la_croix_consumed; i++) {
-            la_croix_cans.innerHTML += '<span id="'+i+'" class="la-croix-can"></span>';
-        }
+if(la_croix_cans) {
+    
+    for(let i = 0; i < la_croix_consumed; i++) {
+        la_croix_cans.innerHTML += '<span id="'+i+'" class="la-croix-can"></span>';
     }
 }
