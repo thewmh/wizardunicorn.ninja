@@ -143,3 +143,9 @@ footer p {
     padding-top: 3rem;
     padding-bottom: 0;
 }
+
+details {
+    &:hover {
+        cursor: pointer;
+    }
+}
