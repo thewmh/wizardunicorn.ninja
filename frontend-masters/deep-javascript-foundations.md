@@ -908,9 +908,15 @@ They use "non-JS-standard" syntax (or code comments). It is not very likely that
 
 They require a build process, which raises the barrier to entry. While build processes are common these days, it is nice to be able to just write vanilla JS and load it in the browser.
 
-Their sophistication can be intimidating to those without prior formal types experience.
+Their sophistication can be intimidating to those without prior formal types experience. The barrier to entry ramps up very quickly.
+
+They focus more on "static types" (variables, parameters, returns, properties, etc.) than value types. JavaScript is a dynamically typed language, so static typing is kinda weird...
 
 ### Understanding Your Types
+
+JavaScript has a (dynamic) type system, which uses various forms of coercion for value type conversion, including equality comparisons. However, the prevailing response seems to be: avoid as much of this system as possible, and use `===` to "protect" from needing to worry about types. Part of the problem with avoidance of whole swaths of JavaScript, like pretending `===` saves you from needing to know types, is that it tends to systemically perpetuate bugs. You cannot write quality JavaScript programs without knowing the types involved in your operations. Alternatively, many choose to adopt a different "static types" system layered on top. While certainly helpful in some respects, this is  "avoidance" of a different sort. Apparently, JavaScript's type system is inferior, so it must be replaced, rather than learned and leveraged. Many claim that JavaScript's type system is too difficult for newer devs to learn, and that static types are (somehow) more learnable.
+
+Instructors claim: the better approach is to embrace and learn JavaScript's type system, and to adopt a coding style which makes types as obvious as possible. By doing so, you will make your code more readable and more robust, for experienced and new developers alike. As an option to aid in that effort, the instructor created [Typl](https://github.com/getify/TypL), which he believes embraces and unlocks the best parts of JavaScript's types and coercion. 
 
 ## Scope
 
