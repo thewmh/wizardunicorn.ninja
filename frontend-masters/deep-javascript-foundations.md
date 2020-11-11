@@ -875,13 +875,40 @@ With TypeScript and Flow, you can define custom types. The above defines that an
 
 ### Validating Operand Types
 
+Something undervalued about TypeScript is that it can tell us that certain operations would be invalid. The following would produce an error in TypeScript:
 
+{% highlight javascript %}
+
+var studentName: string = "Frank";
+
+var studentCount: number = 16 - studentName;
+// error: can't subtract string
+
+{% endhighlight %}
+
+The only issue with how TypeScript handles the above, in the instructors opinion, is the inability to change how TypeScript handles coercion on a case-by-case basis. 
 
 ### TypeScript & Flow Summary
 
+If you are interested in the differences and similarities between TypeScript and Flow, [check out this article](https://github.com/niieani/typescript-vs-flowtype). TypeScript and Flow are very useful in that a lot of people are finding them to be helpful to solve their typing issues, helpful to make their types more obvious. The only issue is that you are unable to configure these.
+
 ### Static Typing Pros
 
+They make types more obvious in code.
+
+Familiarity: they look like other language's type systems.
+
+Extremely popular nowadays. With TypeScript coming from Microsoft and Flow coming from Facebook, there is no doubt that these static typing systems are here to stay. Learning and using them is actually a pretty valuable tool to add to your toolset.
+
+They are very sophisticated and good at what they do.
+
 ### Static Typing Cons
+
+They use "non-JS-standard" syntax (or code comments). It is not very likely that these will be adopted into JavaScript spec.
+
+They require a build process, which raises the barrier to entry. While build processes are common these days, it is nice to be able to just write vanilla JS and load it in the browser.
+
+Their sophistication can be intimidating to those without prior formal types experience.
 
 ### Understanding Your Types
 
