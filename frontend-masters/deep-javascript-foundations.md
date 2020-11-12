@@ -4,15 +4,6 @@ description: These are notes from the 'Deep JavaScript Foundations, v3' course o
 permalink: /frontend-masters/deep-javascript-foundations
 
 layout: page
-subnav:
-  - text: Introduction
-    href: '#introduction'
-  - text: Something
-    links:
-      - text: Something Else
-        href: '#nope'
-  - text: Functional Programming
-    href: '#functional-programming'
 ---
 
 ## Introduction

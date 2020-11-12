@@ -4,15 +4,6 @@ description: These are notes from the 'From Fundamentals to Functional JS' cours
 permalink: /frontend-masters/fundamentals-functional-js
 
 layout: page
-subnav:
-  - text: Introduction
-    href: '#introduction'
-  - text: Something
-    links:
-      - text: Something Else
-        href: '#nope'
-  - text: Functional Programming
-    href: '#functional-programming'
 ---
 
 ## Introduction

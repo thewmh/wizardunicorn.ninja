@@ -4,15 +4,6 @@ description: These are notes from the 'Javascript':' The Hard Parts, v2' course 
 permalink: /frontend-masters/hard-parts-js
 
 layout: page
-subnav:
-  - text: Introduction
-    href: '#introduction'
-  - text: Something
-    links:
-      - text: Something Else
-        href: '#nope'
-  - text: Functional Programming
-    href: '#functional-programming'
 ---
 
 ## Introduction
