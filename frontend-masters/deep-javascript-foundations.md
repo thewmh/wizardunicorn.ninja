@@ -922,6 +922,16 @@ Instructors claim: the better approach is to embrace and learn JavaScript's type
 
 ### Scope
 
+One of the three main pillars of JavaScript is its scope system and how it deals with scope. Specifically, lexical scope. What is the lexical scope mechanism of JavaScript?
+
+Scope is where to look for things. But what are you looking for? All variables in a JavaScript application are either receiving the assignment of a value or you are retrieving the value of a variable. There is not other purpose for the existence of variables in JavaScript programs. It is extremely common for people to think about JavaScript as running top-down, line by line. But JavaScript is not an interpreted language (which would run top-down), it is a compiled language or at the very least, you could say it is parsed. There is some processing that has to happen before execution occurs.
+
+An example of JavaScript being parsed would be having an error somewhere in your code that is thrown at runtime before any JavaScript has even been executed. How did JavaScript know the error was there if it is supposed to execute top-down? There must have been a processing step. Enter compiler theory... In compiler theory, there are essentially four steps (sometimes two are combined, so sometimes there are three steps); lexing and tokenization, parsing (which turns the stream of tokens into an Abstract Syntax Tree), the last step is code generation, which takes the abstract syntax tree and produces some kind of other executable form of the program.
+
+The way that (JavaScript) processing happens before we first execute, is there is a stage where it goes through compilation and parsing, and it produces an abstract syntax tree. It also produces a plan for the lexical environment. That is, where all the lexical scopes are and what is going to be in them. It prepares this plan, and that is the executable code that is handed off to be executed by the other part of the JavaScript engine.
+
+Understanding the above, it is important to think of JavaScript as a two-pass system rather than a single-pass. JavaScript organizes scopes with functions and blocks. 
+
 ### Compilation & Scope
 
 ### Executing Code
