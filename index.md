@@ -9,11 +9,13 @@ intro: |
 
   My name is William Harrison, I am a Frontend Developer.
 
-  # Looking for Full Stack Wizard!!! 🧙‍♂️
+  Looking for Full Stack Wizard!!! 🧙‍♂️
 
-  # Seeking Frontend Unicorn 🦄🎉
+  Seeking Frontend Unicorn 🦄🎉
 
-  # 🗡 HTML Ninja Needed 🖤
+  🗡 HTML Ninja Needed 🖤
+
+  # test
   
   When looking for work, I used to see a ton of job posts with titles like the above, where companies seem to throw their "kitchen-sink-ideal-candidate-who-has-all-the-things-but-requires-little-pay" requirements into their job posts.
   

@@ -13,8 +13,11 @@ layout: page
 I recently (11/2020) was asked to join a project for a week to cover while a team member was out of office and had a ton of 'fun'. The short list is:
 
 🚩 reused components not clearly identified
+
 🚩 containers using components not uniquely named
+
 🚩 overall lack of knowledge about the components amongst the development team
+
 🚩 multiple developers asked to fix different bugs on the same components
 
 At the end of the week we had a mix of 'this is complete' and 'why is this super basic thing not complete?', which should have pointed to some of the above issues with our team / development processes, but I was off the project... We had a handoff for the returning developer who admitted that these were not new issues 🚩.
