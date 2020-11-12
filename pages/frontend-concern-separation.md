@@ -6,7 +6,7 @@ permalink: /frontend-concern-separation
 layout: page
 ---
 
-# TLDR; Uniquely, and in a sensible manner, name your components and containers, know your project well or be able to identify a person who does, avoid working on the same things another developer is working on at the same time as them. Doing these things will make your projects for great success.
+### TLDR; Uniquely, and in a sensible manner, name your components and containers, know your project well or be able to identify a person who does, avoid working on the same things another developer is working on at the same time as them. Doing these things will make your projects for great success.
 
 **Running into styling conflicts? Are your designs not using components consistently across pages? You've got problems!**
 
