@@ -15,7 +15,7 @@ intro: |
   
   I mostly keep this site for notes, there are some resources I gather along the way as well, and sometimes I will add a little JavaScript or style update that seems fun when I am working on a project.
 
-  The source for this site is on Github [here](https://github.com/hztl-wm/hztl-wm).
+  The source for this site is on Github [here](https://github.com/thewmh/wizardunicorn.ninja).
   
   Built in Jekyll with the USWDS theme and deployed with Github Pages.
 
