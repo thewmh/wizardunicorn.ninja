@@ -925,13 +925,104 @@ Understanding the above, it is important to think of JavaScript as a two-pass sy
 
 ### Compilation & Scope
 
-🎉
+{% highlight javascript %}
+
+var teacher = "Kyle";
+
+function otherClass() {
+    var teacher = "Suzy";
+    console.log("Welcome!");
+}
+
+function ask() {
+    var question = "Why?";
+    console.log(question);
+}
+
+otherClass(); // Welcome!
+ask(); // Why?
+
+{% endhighlight  %}
+
+Looking at the above code, you can likely understand everything that will happen, but is that the entire picture? But how exactly does the JavaScript engine think about / handle this code? To understand the complete picture, we need to consider that JavaScript has both a compiler and a scope manager. These two pieces of JavaScript will help us complete the picture of what *exactly* is happening with the above code. The compiler and scope manager will have some back and forth while sorting through the JavaScript code to organize the code in terms of global scope and local scope. The first `var` and the functions will be in global scope while the `var`(s) inside of the functions will be in the local scope of their function(s). This is then handed over, as part of the execution plan, to the virtual (JavaScript) machine can run this code.
+
+In a lexically scoped language, which JavaScript is, all of the scopes that we are dealing with are determined at compile time, not at run time. This allows the (JavaScript) engine to more efficiently optimize because everything is known.
 
 ### Executing Code
 
+After the compiler and scope manager have had their pass at the JavaScript code, execution can happen. Now, the 'conversation' will be between the scope manager and the virtual machine (JavaScript engine). The virtual machine will try to run the code and at each step will check with the scope manager to see whether the references exist.
+
+Key to understanding lexical scope: If JavaScript cannot find the reference to a variable that was declared within a scope, it (JavaScript) will go up a level (scope) to look for the reference and continue doing so until it finds the reference or has no additional scope to step through.
+
 ### Compilation and Scope Q&A
 
+Reread the last two sections or read this [stolen from here](https://astronautweb.co/javascript-lexical-scope/):
+
+A relatively basic concept in JavaScript is that each declared function creates its own scope. What gets a little more mind bending is the concept of a closure - a function which is able to remember and access its lexical scope even when that function is executing outside its lexical scope.
+
+Lexical scope is the scope model used by the JavaScript language, which differs to some other languages which use dynamic scope. Lexical scope is the scope defined at lexing time.
+
+#### So, what is lexing time?
+
+This digs into the mechanics of how JavaScript engine works. Despite commonly being referred to as an interpreted language, JavaScript compiles code immediately before executing it. For example the statement: `var a = 2;` is split into two separate steps at lexing time:
+
+`var a` This declares the variable in the scope, before code execution.
+`a = 2` This assigns the value 2 to the variable a, if it is found in the available scope.
+The lexing phase of compilation determines where and how all identifiers are declared, and thus how they will be looked up during execution. This is the same mechanism which results in “hoisting” variables. The variables are not actually moved within the source code, the declarations simply occur during the lexing phase and so the JavaScript engine is aware of these before execution.
+
+Consider these examples:
+
+Example 1:
+
+{% highlight javascript %}
+
+var a = 1;
+console.log('a:', a); // a: 1
+
+{% endhighlight %}
+
+Example 2:
+
+{% highlight javascript %}
+
+console.log('a:', a); // a: undefined
+var a = 1;
+
+{% endhighlight %}
+
+Example 3:
+
+{% highlight javascript %}
+
+console.log('a:', a); // Uncaught ReferenceError: a is not defined
+
+{% endhighlight %}
+
+Example 1 is straightforward and works as expected, however note the subtle difference between other two examples. Example 2 logs that the value of a is undefined, but the identifier a has itself been declared; compared with example 3 in which the identifier a has not been declared, hence resulting in a reference error.
+
+This demonstrates that during the lexing phase, the JavaScript engine declares the variables first, before the following step in which the values are assigned to the identifiers - this is hoisting. Because functions are also defined at this time (lexing phase), we can say that lexical scope is based on where variables and blocks of scope exist at author time, and thus are locked down at the end of the lexing phase. Scope is not defined at runtime, rather it can be accessed at runtime.
+
+Again, a closure is when a function is able to remember and access its lexical scope even when that function is executing outside its lexical scope.
+
+{% highlight javascript %}
+function foo() {  // 'scope of foo' aka lexical scope for bar
+   var memory = 'hello closure';
+   return function bar() {
+      console.log(memory);
+   }
+}
+ 
+// returns the bar function and assigns it to the identifier 'closure’;
+const closure = foo();
+ 
+closure(); // hello closure
+{% endhighlight %}
+
+So... lexical scope is the author-time scope created by a closure. It is the ‘outer’ scope of a function which is defined inside a closure.
+
 ### Code Execution: Finishing Up
+
+
 
 ### Lexical Scope Review
 
