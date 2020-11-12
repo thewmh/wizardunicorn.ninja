@@ -934,6 +934,8 @@ Understanding the above, it is important to think of JavaScript as a two-pass sy
 
 ### Compilation & Scope
 
+
+
 ### Executing Code
 
 ### Compilation and Scope Q&A
