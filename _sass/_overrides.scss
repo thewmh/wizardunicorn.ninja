@@ -98,10 +98,19 @@ body {
     display: none;
 }
 
-footer p {
-    margin: 0 auto;
-    max-width: 60%;
-    text-align: center;
+footer {
+    position: absolute;
+    width: 100%;
+
+    .usa-footer-secondary_section {
+        background-color: transparent;
+    }
+    
+    p {
+        margin: 0 auto;
+        max-width: 60%;
+        text-align: center;
+    }
 }
 
 
