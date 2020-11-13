@@ -1022,27 +1022,227 @@ So... lexical scope is the author-time scope created by a closure. It is the ‘
 
 ### Code Execution: Finishing Up
 
-
+Continues walking through the code in the 'Compilation & Scope' section above. Nothing that hasn't already been covered. Reread the first few sections of this unit.
 
 ### Lexical Scope Review
 
+JavaScript is not an interpreted language, in the sense that it does not execute code line-by-line. Instead, JavaScript should be thought of as a two-pass processing. The first pass is compilation / parsing, during which the main thing that happens is the scope / plan is created and the identifiers are mapped. The second pass is execution. Let's walk through some code... again.
+
+{% highlight javascript %}
+
+var teacher = "Kyle";
+
+function otherClass() {
+    var teacher = "Suzy";
+    console.log("Welcome!");
+}
+
+function ask() {
+    var question = "Why?";
+    console.log(question);
+}
+
+otherClass(); // Welcome!
+ask(); // Why?
+
+{% endhighlight  %}
+
+The (compilation) process for the above code is something like this:
+
+Compiler: Hey Scope Manager, I have a formal declaration for a variable called `teacher`, have you ever heard of that before?
+
+Scope Manager: No, but I have created it in the global scope.
+
+C: Hey Scope Manager, I have a formal declaration for `otherClass`, heard of it?
+
+SM: No, but I have created it in the global scope.
+
+C: BTW, that last thing, that was pointing at a function, so we need a new scope.
+
+SM: Yep.
+
+C: Great, inside of that function's scope I have another formal declaration for a variable called `teacher`, nahmean?
+
+SM: No, but I have created it in the function's scope.
+
+C: Fine. I have another formal declaration for `ask`, have you ever...?
+
+SM: No, but I have created it in the global scope.
+
+C: BTW, that last identifier, `ask`, that was pointing at a function, make a new scope.
+
+SM: Yeah, ok. A new scope has been made for the `ask` identifier which points at a function.
+
+C: Cool beans. Inside of *that* function scope, I have a formal declaration for a variable called `question`, have you ever?
+
+SM: Nope, but I have created it in the function's scope.
+
+With no additional declarations in the global scope, the compilation is complete. Time to process / execute the code.
+
+Execution Engine: Hey Scope Manager, I have a target reference for `teacher`, ever heard of it?
+
+Scope Manager: Yep, here it is!
+
+EE: Hey Scope Manager, now I have a source reference for `otherClass`, have you ever heard of that?
+
+SM: Yep, here it is!
+
+EE: Great. Inside of that scope I have a target reference for `teacher`, heard of it?
+
+SM: Yep, here it is!
+
+EE: Ok, now I have a source reference for `console`, have you (local scope) ever heard of it?
+
+SM: Nope, let me go up a level (to global scope) and check.
+
+EE: Alright then, global scope, have you ever heard of `console`?
+
+SM: Yeah, here it is. You have access to any methods or properties on this object.
+
+EE: 🔥❗️ Now I have another source reference, this time for something called `ask`?
+
+SM: Sure, I have heard of it, here it is.
+
+EE: Cool. Now in this functions local scope there is a target reference to `question`, have you heard of that?
+
+SM: Yep, here it is.
+
+EE: Awesome, now I have another source reference for `console`, (local scope) have you heard of it?
+
+SM: Nope, let me go up a level (to global scope) and check.
+
+EE: Have you (global scope) heard of `console`?
+
+SM: Yes! You have access to any methods or properties on this object.
+
+EE: But do you also have any knowledge of the source reference to something called `question`?
+
+SM: Yep, here it is.
+
+That completes the program. All of the above happens in a fraction of a millisecond, but it is important to understand how your JavaScript code is compiled and executed.
+
 ### Compilation Review
+
+Another review, like the last section, but this time walking through the following code:
+
+{% highlight javascript %}
+
+var teacher = "Kyle";
+
+function otherClass() {
+    teacher = "Suzy";
+    topic = "React";
+    console.log("Welcome!");
+}
+
+otherClass(); // Welcome
+
+teacher; // ??
+topic; // ??
+
+{% endhighlight %}
+
+Try to walk through the code and have the conversion(s) of the two passes (compilation and execution) that JavaScript goes through.
 
 ### Dynamic Global Variables
 
+In the last section, you can see a variable `topic` that was never (formally) declared. What happens? Is there an error or not? (un)Fortunately(?), there is no error, but a new global variable `topic` is created for you. This is maybe a 'bad' thing, but it is in fact how JavaScript handles this undeclared variable. It comes from the early days of JavaScript when it was considered that people may forget to (formally) declare a variable, and instead of erroring out, one would be created. So forgiving!
+
+But if you turn on 'strict mode', the 'auto' creation of an undeclared variable would behave differently.
+
 ### Strict Mode
+
+Turning on strict mode `"use strict"` would throw a ReferenceError for the undeclared variable in the previous section. Use strict mode! Most transpilers use strict mode for you. That's nice. Using strict mode vs. not can introduce some different behaviors for how errors are handled, for example sometimes in non-strict mode errors will be handled silently, but if you use strict mode, you will get feedback for your errors.
 
 ### Nested Scope
 
+Now let's look at some code with a nested scope:
+
+{% highlight javascript %}
+
+var teacher = "Kyle";
+
+function otherClass() {
+    var teacher = "Suzy";
+
+    function ask(question) {
+        console.log(teacher, question);
+    }
+
+    ask("Why?");
+}
+
+otherClass(); // Suzy Why?
+ask("????");
+
+{% endhighlight %}
+
+The final line of the above code would throw a ReferenceError because `ask()` does not exist in the global scope and therefore cannot be located.
+
 ### Undefined vs Undeclared
 
+What is the difference between undefined and undeclared?
+
+Undefined: A variable exists, but at the moment it has no value.
+
+Undeclared: Never formally declared in any scope that we have access to.
+
 ### Lexical Scope Elevator
+
+Imagine lexical scope as a building and current scope is the first floor of that building. If you do not find what you are looking for on the floor (scope) that you are on, keep going up until you either find it or not. Global scope is the top floor and if you do not find what you are looking for there, there is nowhere else to go.
+
+# 🏢
 
 ## Scope & Function Expressions
 
 ### Function Expressions
 
+{% highlight javascript %}
+
+function teacher() { /* .. */ }
+
+var myTeacher = function anotherTeacher() {
+    console.log(anotherTeacher);
+};
+
+console.log(teacher);
+console.log(myTeacher);
+console.log(anotherTeacher);
+
+{% endhighlight %}
+
+`myTeacher` is a function expression. Unlike a function declaration, which adds any declarations into its own scope, a function expression
+will add declarations within its own scope, which is not the same scope as its identifier. i.e. `myTeacher` is in the global scope, but `anotherTeacher` is in its own scope, as is anything declared within it.
+
+The final line `console.log(anotherTeacher);` will throw a ReferenceError because `anotherTeacher` is not declared in the global scope.
+
+What is a named function expression? It is a function expression that has a name...
+
+{% highlight javascript %}
+
+var clickHandler = function() {
+    // ..
+};
+
+var keyHandler = function keyHandler() {
+    // ..
+};
+
+{% endhighlight %}
+
+The first function above is an anonymous function expression, while the second function is an example of a named function expression. It is suggested that you should 💯% prefer the named function expression over the anonymous function expression, like always, forever, because...
+
 ### Naming Function Expressions
+
+Here's why you should always prefer named function expressions over anonymous function expressions:
+
+1. A named function expression creates a reliable self-reference to the function from inside of itself. Useful if you are going to make the function recursive, useful if the function is an event handler and needs to reference itself to unbind itself, useful if you need to access any properties on the function, such as; its length or its name. **Any time** you need to have a self-reference to a function, the only answer is that it needs to have a name.
+
+2. More debuggable stack traces. If you use a name for your function expression, it will show up in the stack trace.
+
+3. More self-documenting code. If you have an anonymous function, it is a lot harder to determine exactly where an error may be and you have to look between the code and console to make that determination. If you have a named function expression, the process is simplified simply because the name appears with your errors.
+
+The purpose of code is not to make it as convenient as possible for you to type, but to communicate clearly your intent. The argument is made that it is likely more clear and simple to instead use function declarations over function expressions. The purpose of a function name is to tell you, "why does this thing exist?". 
 
 ### Arrow Functions
 
