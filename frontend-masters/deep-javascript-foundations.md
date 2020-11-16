@@ -1242,27 +1242,280 @@ Here's why you should always prefer named function expressions over anonymous fu
 
 3. More self-documenting code. If you have an anonymous function, it is a lot harder to determine exactly where an error may be and you have to look between the code and console to make that determination. If you have a named function expression, the process is simplified simply because the name appears with your errors.
 
-The purpose of code is not to make it as convenient as possible for you to type, but to communicate clearly your intent. The argument is made that it is likely more clear and simple to instead use function declarations over function expressions. The purpose of a function name is to tell you, "why does this thing exist?". 
+The purpose of code is not to make it as convenient as possible for you to type, but to communicate clearly your intent. The argument is made that it is likely more clear and simple to instead use function declarations over function expressions. The purpose of a function name is to tell you, "why does this thing exist?".
 
 ### Arrow Functions
 
+{% highlight javascript %}
+
+var ids = people.map(person => person.id);
+
+var ids = people.map(function getId(person) {
+    return person.id;
+});
+
+{% endhighlight %}
+
+Arrow functions are anonymous. The instructor believes that you should not be using arrow functions as a replacement for all other functions. Named (arrow) function expressions? You would be saving characters (used) be just using a function declaration *and* making your code more readable. More concise code != more readable code
+
 ### Function Types Hierarchy
+
+Named Function Declaration > Named Function Expression > Anonymous Function Expression. This is not intended to be a hardline rule, you do have to look at the various use cases. But, they are organized in an order that provides a reader of you code with the most information to least.
 
 ### Function Expression Exercise
 
+#### Function Expressions
+
+In this exercise, you will be writing some functions and function expressions, to manage the student enrollment records for a workshop.
+
+**Note:** The spirit of this exercise is to use functions wherever possible and appropriate, so consider usage of array utilities `map(..)`, `filter(..)`, `find(..)`, `sort(..)`, and `forEach(..)`.
+
+#### Instructions (Part 1)
+
+**Note:** In Part 1, use only function declarations or named function expressions.
+
+You are provided three functions stubs -- `printRecords(..)`, `paidStudentsToEnroll()`, and `remindUnpaid(..)` -- which you must define.
+
+At the bottom of the file you will see these functions called, and a code comment indicating what the console output should be.
+
+1. `printRecords(..)` should:
+	- take a list of student Ids
+	- retrieve each student record by its student Id (hint: array `find(..)`)
+	- sort by student name, ascending (hint: array `sort(..)`)
+	- print each record to the console, including `name`, `id`, and `"Paid"` or `"Not Paid"` based on their paid status
+
+2. `paidStudentsToEnroll()` should:
+	- look through all the student records, checking to see which ones are paid but **not yet enrolled**
+	- collect these student Ids
+	- return a new array including the previously enrolled student Ids as well as the to-be-enrolled student Ids (hint: spread `...`)
+
+3. `remindUnpaid(..)` should:
+	- take a list of student Ids
+	- filter this list of student Ids to only those whose records are in unpaid status
+	- pass the filtered list to `printRecords(..)` to print the unpaid reminders
+
+#### Instructions (Part 2)
+
+Now that you've completed Part 1, refactor to use **only** `=>` arrow functions.
+
+For `printRecords(..)`, `paidStudentsToEnroll()`, and `remindUnpaid(..)`, assign these arrow functions to variables of such names, so that the execution still works.
+
+As the appeal of `=>` arrow functions is their conciseness, wherever possible try to use only expression bodies (`x => x.id`) instead of full function bodies (`x => { return x.id; }`).
+
+
 ### Function Expression Solution: Functions
 
+{% capture summary %}Click to view the solution{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+function getStudentById(studentId) {
+    return studentRecords.find(function matchId(record) {
+        return (record.id == studentId);
+    });
+}
+
+function printRecords(recordIds) {
+    let records = recordIds.map(getStudentById);
+
+    records.sort(function sortByNameAsc(record1, record2) {
+        record1.name < record2.name ? -1 : record1 > record2.name ? 1 : 0;
+    });
+
+    records.forEach(function printRecord(record) {
+        console.log(`${record.name} (${record.id}): ${record.paid ? "Paid" : "Not Paid"}`);
+    });
+}
+
+function paidStudentsToEnroll() {
+	var idsToEnroll = studentRecords.filter(function needsToEnroll(record) {
+        return (record.paid && !currentEnrollments.includes(record.id))
+    })
+    .map(function getStudentId(record) {
+        return record.id;
+    })
+
+    return [ ...currentEnrollment, ...idsToEnroll ];
+}
+
+function remindUnpaid(recordIds) {
+	var unpaidIds = recordIds.filter(function isUnpaid(studentId) {
+        var record = getStudentById(studentId);
+        return !record.paid;
+    });
+
+    printRecords(unpaidIds);
+}
+
+// ********************************
+
+var currentEnrollment = [ 410, 105, 664, 375 ];
+
+var studentRecords = [
+	{ id: 313, name: "Frank", paid: true, },
+	{ id: 410, name: "Suzy", paid: true, },
+	{ id: 709, name: "Brian", paid: false, },
+	{ id: 105, name: "Henry", paid: false, },
+	{ id: 502, name: "Mary", paid: true, },
+	{ id: 664, name: "Bob", paid: false, },
+	{ id: 250, name: "Peter", paid: true, },
+	{ id: 375, name: "Sarah", paid: true, },
+	{ id: 867, name: "Greg", paid: false, },
+];
+
+printRecords(currentEnrollment);
+console.log("----");
+currentEnrollment = paidStudentsToEnroll();
+printRecords(currentEnrollment);
+console.log("----");
+remindUnpaid(currentEnrollment);
+
+/*
+	Bob (664): Not Paid
+	Henry (105): Not Paid
+	Sarah (375): Paid
+	Suzy (410): Paid
+	----
+	Bob (664): Not Paid
+	Frank (313): Paid
+	Henry (105): Not Paid
+	Mary (502): Paid
+	Peter (250): Paid
+	Sarah (375): Paid
+	Suzy (410): Paid
+	----
+	Bob (664): Not Paid
+	Henry (105): Not Paid
+*/
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %} 
+
 ### Function Expression Solution: Arrow Functions
+
+{% capture summary %}Click to view the solution{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+var getStudentById = studentId =>
+    studentRecords.find(
+        record => record.id == studentId
+    );
+
+var printRecords = recordIds =>
+    recordIds.map(getStudentById)
+    .sort(
+        (record1, record2) => (record1.name < record2.name ? -1 : record1.name > record2.name ? 1 : 0)
+    )
+    .forEach(
+        record => console.log(`${record.name} (${record.id}): ${record.paid ? "Paid" : "Not Paid"}`)
+    );
+
+var paidStudentsToEnroll = () => [
+    ...currentEnrollment,
+    ...(
+        studentRecords.filter(
+            record => (record.paid && !currentEnrollment.includes(record.id))
+        )
+        .map(record => record.id)
+    )
+]
+
+var remindUnpaid = recordIds => 
+    printRecords(
+    recordIds.filter(
+        studentId => !getStudentById(studentId).paid
+    ))
+
+// ********************************
+
+var currentEnrollment = [ 410, 105, 664, 375 ];
+
+var studentRecords = [
+	{ id: 313, name: "Frank", paid: true, },
+	{ id: 410, name: "Suzy", paid: true, },
+	{ id: 709, name: "Brian", paid: false, },
+	{ id: 105, name: "Henry", paid: false, },
+	{ id: 502, name: "Mary", paid: true, },
+	{ id: 664, name: "Bob", paid: false, },
+	{ id: 250, name: "Peter", paid: true, },
+	{ id: 375, name: "Sarah", paid: true, },
+	{ id: 867, name: "Greg", paid: false, },
+];
+
+printRecords(currentEnrollment);
+console.log("----");
+currentEnrollment = paidStudentsToEnroll();
+printRecords(currentEnrollment);
+console.log("----");
+remindUnpaid(currentEnrollment);
+
+/*
+	Bob (664): Not Paid
+	Henry (105): Not Paid
+	Sarah (375): Paid
+	Suzy (410): Paid
+	----
+	Bob (664): Not Paid
+	Frank (313): Paid
+	Henry (105): Not Paid
+	Mary (502): Paid
+	Peter (250): Paid
+	Sarah (375): Paid
+	Suzy (410): Paid
+	----
+	Bob (664): Not Paid
+	Henry (105): Not Paid
+*/
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %}
 
 ## Advanced Scope
 
 ### Lexical & Dynamic Scope
 
+The idea of nested scope and that a compiler, parser, and processor is figuring out all the scope ahead of time before being executed, this is **lexical scope**. The vast majority of programming languages are lexically scoped.
+
+Another model for scoping is dynamic scoping. Bash script is an example of a dynamically scoped language.
+
+Lexical scope is fixed at author time and is not affected by run time conditions. Dynamic scoping, as the name implies, means that scope can be affected at run time.
+
 ### Lexical Scope
+
+Lexical scope is popular because it can be optimized. When you are compiling code, defining variables and functions, etc, at run time there is no additional computation required. Conceptually, you can think of your programs scope as bubbles. There is a bubble around each function, and another around any nested functions, and one globally. You may be able to find a plugin that helps visualize your scopes as well! `vscode-levels`
 
 ### Dynamic Scope
 
+In a dynamically scoped language (not JavaScript), the value assigned to a variable is dependent on where it was called from. Consider the following:
+
+{% highlight javascript %}
+
+var teacher = "Kyle";
+
+function ask(question) {
+    console.log(teacher, question);
+}
+
+function otherClass() {
+    var teacher = "Suzy";
+
+    ask("Why?");
+}
+
+otherClass():
+
+{% endhighlight %}
+
+In the above code, what is the value of `teacher` in the `ask` function? In a lexically scoped language (JavaScript), the value of teacher would come from the global scope, because the `ask` function does not have any reference to the `teacher` variable, so the value of `teacher` would be `"Kyle"`. But in a dynamically scoped language (not JavaScript), the value of `teacher` would depend on where the `ask` function was called from, in this case `otherClass`. In `otherClass`, the value of `teacher` is `"Suzy"`, so in the `ask` function, `teacher` would return `"Suzy"`.
+
+This can be quite flexible, but it is not how JavaScript works...
+
+Dynamic Scope is determined by the conditions at run time. Even though JavaScript does not have dynamic scoping, there is a feature of the language that allows us to use this type of behavior which will be discussed in a later unit.
+
 ### Function Scoping
+
+
 
 ### IIFE Pattern
 
