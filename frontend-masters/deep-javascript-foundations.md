@@ -1515,21 +1515,134 @@ Dynamic Scope is determined by the conditions at run time. Even though JavaScrip
 
 ### Function Scoping
 
+How would you fix an issue where you want/need to have two variables have the same name without them colliding? Wrap at least one of them in a function! But now you have a new scope that still has a naming collision 😞. Enter *the principle of least exposure/privilege*! The principle states that you should default to keeping everything private and only exposing the minimal necessary. This essentially sets up a defensive posture and is one of the core principles of software engineering. It solves the following problems:
 
+1. Name collisions
+2. It protects your things so that somebody else cannot accidentally or intentionally misuse that thing.
+3. Protect yourself for future refactoring.
+
+If you expose something, it's almost a guarantee that someone is going to use it. As soon as someone uses it, you are restricting your ability to refactor it. Because if you refactor it, you are going to break someones code.
 
 ### IIFE Pattern
 
+IIFE - Immediately Invoked Function Expression - Using a function expression to create a scope, immediately invoking it. If you are making an IIFE, there is likely some purpose for it and it should be named! Whether they are anonymous or not, IIFEs are just functions, which means that you can pass values into them. An interesting use case for an IIFE is a `try / catch`. If you are setting the value of a variable based on the result of a `try / catch` statement, it could be confusing to your reader... make it an IIFE!
+
+{% highlight javascript %}
+
+var teacher = (function getTeacher() {
+    try {
+        return fetchTeacher(1);
+    }
+    catch (err) {
+        return "Kyle";
+    }
+})();
+
+{% endhighlight %}
+
+IFFEs can be used any place that you need an expression, and any time you need a statement or scope in an expression.
+
 ### Block Scoping
+
+Block scoping is done with curly braces `{}`, instead of with functions. `let` and `const` exist so that you can make a declaration inside of a block and it turns that block into a scope. i.e.
+
+{% highlight javascript %}
+
+var teacher = "Kyle";
+
+{
+    let teacher = "Suzy";
+    console.log(teacher); // Suzy
+}
+
+console.log(teacher); // Kyle
+
+{% endhighlight %}
+
+Blocks are not scopes until they have a `let` or a `const` inside of them which implicitly makes them a scope. You should use `let` in places where it already makes sense for it to be used, inside of a block scope. `let` is a replacement for your already semantically signaled block scope(s).
+
+Is `let` the new `var`? Nope. `let` is a new tool that we should add on to our existing usage and there are still reasons to use the `var` keyword.
 
 ### Choosing let or var
 
+Consider the following:
+
+{% highlight javascript %}
+
+function repeat(fn, n) {
+    var result;
+
+    for (var i = 0; i < n; i++) {
+        result = fn( result, i );
+    }
+
+    return result;
+}
+
+{% endhighlight %}
+
+In the above code, you *could* replace both `var`(s) with `let`, but the instructor suggests to only replace the `var` in the `for loop` with `let`. Here's why: If you have a variable that belongs to the entire scope of the function, the correct and semantic way to signal that to your reader is not to use a `let` at the top level of your function scope, but to use a `var` because that is the thing it has always done for 24 years. Again, you could replace the initial `var` with `let`, it is recommended not to because doing so would remove a small amount of important semantic information from the reader, who may then not know your intent. `let` is supposed to signify a very localized usage of a variable, ideally within a couple lines of code.
+
+If your code has something that is *naturally* block scoped, use `let`. Here's an example of some code that would not work if you replaced `var` with `let`:
+
+{% highlight javascript %}
+
+function lookupRecord(searchStr) {
+    try {
+        var id = getRecord(searchStr);
+    }
+    catch(err) {
+        var id = -1;
+    }
+
+    return id;
+}
+
+{% endhighlight %}
+
+If the `var`(s) were replaced with `let`(s), the `let`(s) would be scoped to their blocks (`try / catch`) and would not be available for the `return` statement. 🤯
+
+`var` attaches itself to the function scope and is preferable in the above case because it is able to break out of the *unintended* block scope of the `try / catch`. 
+
 ### Explicit let Block
+
+If you are going to use `let` for only a few lines of code and not again within the same function, it is recommended to put it in its own block scope. Like so:
+
+{% highlight javascript %}
+
+function formatStr(str) {
+    { let prefix, rest;
+        prefix = str.slice( 0, 3 );
+        rest = str.slice( 3 );
+        str = prefix.toUpperCase() + rest;
+    }
+
+    if (/^FOO:/.test( str )) {
+        return str;
+    }
+
+    return str.slice( 4 );
+}
+
+{% endhighlight %}
 
 ### const
 
+`const` is even better than `let`! But `const` does not carry its own weight in JavaScript. `const` is a variable that cannot be reassigned. `const` can be mutated! `const teachers = ["Me", "You"]; teachers[1] = "Someone Else";` There is baggage that comes with `const`. What the `const` keyword is actually supposed to inform is something along the lines of: For the rest of this [code] block, I am not going to be reassigned. The instructor will only use `const` with primitive values, which are immutable; strings, booleans, and numbers.
+
 ### const Q&A
 
+Q: If you only use `const` for strings, would that be a good use case?
+
+A: Yes, I only use `const` for primitive, immutable values; strings, numbers, and booleans.
+
+Q: With arrays or objects, I usually just put `freeze` or `deepfreeze` around it?
+
+A: I do like to use `object.freeze` which is a shallow read-only lock of all the properties in an array or object.
+
 ### Hoisting
+
+
 
 ### Hoisting Example
 
