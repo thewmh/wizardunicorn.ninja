@@ -1642,29 +1642,367 @@ A: I do like to use `object.freeze` which is a shallow read-only lock of all the
 
 ### Hoisting
 
+Until a couple of years ago, the word 'hoisting' literally did not appear in the JavaScript specification. Turns out, hoisting is not a real thing. The JavaScript engine does not hoist, it does not move things around the way it is suggested with hoisting. Hoisting is a made up [English] language convention to discuss the idea of lexical scope. Consider the following code:
 
+{% highlight javascript %}
+
+student; // ??
+teacher; // ??
+
+var student = "You";
+var teacher = "Kyle";
+
+{% endhighlight %}
+
+What will happen?! JavaScript will, in its first of two passes, parse the above code and create the variables, but without any value assigned to them, so both `student` and `teacher` would return `undefined`. *But*, the concept of hoisting does not mean that any actual code has been moved around. Functions hoist, they are taken at compile time and defined in such a way so they can be used earlier in the scope than when they've been declared.
 
 ### Hoisting Example
 
+{% highlight javascript %}
+
+// var hoisting?
+// usually bad :/
+teacher = "Kyle";
+var teacher;
+
+// function hoisting?
+// Pretty useful :)
+getTeacher();
+
+function getTeacher() {
+    return teacher;
+}
+
+{% endhighlight %}
+
+Unlike `var` hoisting, function hoisting can be useful. Do you usually put all of your function calls at the end of your files? How about putting them all at the top so you can immediately see them?! You can!
+
 ### let Doesn't Hoist
+
+`let` doesn't hoist is not true... `let` and `const` hoist, but not in the same way as `var` or functions. A `var` will initialize to `undefined`, but a `let` or `const` will not be initialized. `let` or `const` will hoist, but will throw a temporal dead zone [TDZ] error. But why TDZ? TDZ exists because of `const`. Imagine `const` being attached inside of a block scope. And also imagine if `const` initialized itself to `undefined`. Then you `console.log` that `const` and it returns undefined, then later it returned the actual value that was assigned to it, now your `const` *can* have two different values assigned to it? This *academically* violates the concept of `const`. So they make the TDZ and also assign this behavior to `let`.
+
+It is advised that you declare all `let` or `const` on the very first line of your blocks to avoid TDZ errors.
+
+Q: Why do function expressions not hoist?
+
+A: When you assign a function expression to a variable, the variable's declaration itself hoisted, but the assignment only comes at run time.
 
 ### Hoisting Exercise
 
+#### Hoisting
+
+In this exercise, you will refactor some code that manages student enrollment records for a workshop, to take advantage of function hoisting.
+
+#### Instructions
+
+Refactor all inline function expressions to be function declarations. Place function declarations at the bottom (that is, below any executable code) of their respective scopes.
+
+Also, pull function declarations to outer scopes if they don't need to be nested.
+
 ### Hoisting Exercise Solution
+
+{% capture summary %}Click to view the solution{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+var currentEnrollment = [ 410, 105, 664, 375 ];
+
+var studentRecords = [
+	{ id: 313, name: "Frank", paid: true, },
+	{ id: 410, name: "Suzy", paid: true, },
+	{ id: 709, name: "Brian", paid: false, },
+	{ id: 105, name: "Henry", paid: false, },
+	{ id: 502, name: "Mary", paid: true, },
+	{ id: 664, name: "Bob", paid: false, },
+	{ id: 250, name: "Peter", paid: true, },
+	{ id: 375, name: "Sarah", paid: true, },
+	{ id: 867, name: "Greg", paid: false, },
+];
+
+printRecords(currentEnrollment);
+console.log("----");
+currentEnrollment = paidStudentsToEnroll();
+printRecords(currentEnrollment);
+console.log("----");
+remindUnpaid(currentEnrollment);
+
+/*
+	Bob (664): Not Paid
+	Henry (105): Not Paid
+	Sarah (375): Paid
+	Suzy (410): Paid
+	----
+	Bob (664): Not Paid
+	Frank (313): Paid
+	Henry (105): Not Paid
+	Mary (502): Paid
+	Peter (250): Paid
+	Sarah (375): Paid
+	Suzy (410): Paid
+	----
+	Bob (664): Not Paid
+	Henry (105): Not Paid
+*/
+
+// ********************************
+
+function getStudentFromId(studentId) {
+	return studentRecords.find(matchId);
+
+    function matchId(record){
+		return (record.id == studentId);
+	}
+}
+
+function printRecords(recordIds) {
+    var records = recordIds.map(getStudentFromId);
+    
+    record.sort(sortByNameAsc);
+    records.forEach(printRecord);
+}
+
+function sortByNameAsc(record1,record2){
+    if (record1.name < record2.name) return -1;
+    else if (record1.name > record2.name) return 1;
+    else return 0;
+}
+
+function printRecord(record){
+    console.log(`${record.name} (${record.id}): ${record.paid ? "Paid" : "Not Paid"}`);
+}
+
+function paidStudentsToEnroll() {
+	var recordsToEnroll = studentRecords.filter(needToEnroll);
+
+	var idsToEnroll = recordsToEnroll.map(getStudentId);
+
+	return [ ...currentEnrollment, ...idsToEnroll ];
+}
+
+function needToEnroll(record){
+    return (record.paid && !currentEnrollment.includes(record.id));
+}
+
+function getStudentId(record){
+    return record.id;
+}
+
+function remindUnpaid(recordIds) {
+	var unpaidIds = recordIds.filter(notYetPaid);
+
+	printRecords(unpaidIds);
+}
+
+function notYetPaid(studentId){
+    var record = getStudentFromId(studentId);
+    return !record.paid;
+}
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %}
+
+The purpose of this exercise is to flatten the scope of the program, which makes it [scope] easier to manage. Additionally, this can make your code more readable, which makes it easier for both your future self or another developer to dig in and work with your code.
 
 ## Closure
 
 ### Origin of Closure
 
+Closure, according to the instructor, is one of the most important ideas ever invented in computer science. The instructor goes on to tell the story of the developer of JavaScript and how pervasive closure is across all development languages yet most developers do not know how to define it. Closure predates computer science, coming from lambda calculus. To understand closure, you have to understand lexical scope.
+
 ### What is Closure?
+
+Closure is when a function is able to "remember" and access its lexical scope, the variables outside of itself, even when the function is executed outside of that lexical scope. The first part, a function is able to access variables outside of itself, is lexical scope; if `teacher` is not defined in *my* scope, is it in the 'next-level-up' scope? And so on, until it finds `teacher` or not. But without the second part, even when the function is executed outside of that lexical scope, is what makes closure... closure. The preservation, or linkage, back to the original scope where a function was defined, no matter where it is passed, it retains its value and retains its scope, that is closure.
+
+Here is an example of closure:
+
+{% highlight javascript %}
+
+function ask(question) {
+    setTimeout(function waitASec() {
+        console.log(question);
+    }, 100);
+}
+
+ask("What is closure?");
+
+{% endhighlight %}
 
 ### Closing Over Variables
 
+{% highlight javascript %}
+
+var teacher = "Kyle";
+
+var myTeacher = function() {
+    console.log(teacher);
+};
+
+teacher = "Suzy";
+
+myTeacher(); // ??
+
+{% endhighlight %}
+
+`myTeacher();` would return `Suzy`. Closure is not capturing values, but preserving access to variables. One cannot effectively use closure until you get away from the perception that closure captures values. Consider the following:
+
+{% highlight javascript %}
+
+for (var i = 1; i <= 3; i++) {
+    setTimeout(function() {
+        console.log(`i: ${i}`);
+    }, i * 1000);
+}
+
+// i: 4
+// i: 4
+// i: 4
+
+{% endhighlight %}
+
+`i` would only return `4` because we need another variable, or variables, to store the various 'states' that `i` would be through its iteration. One way to 'solve' this would be to declare a new variable and assign it to the value of `i`. i.e.
+
+{% highlight javascript %}
+
+for (var i = 1; i <= 3; i++) {
+
+    let j = i;
+
+    setTimeout(function() {
+        console.log(`j: ${j}`);
+    }, j * 1000);
+}
+
+// j: 1
+// j: 2
+// j: 3
+
+{% endhighlight %}
+
+For each iteration, `j` will be 'updated' with the 'new' value of `i`, so the console will log the expected values of 1,2,3. An arguably better / more concise approach would be to do the following:
+
+{% highlight javascript %}
+
+for (let i = 1; i <= 3; i++) {
+    setTimeout(function() {
+        console.log(`i: ${i}`);
+    }, i * 1000);
+}
+
+// i: 1
+// i: 2
+// i: 3
+
+{% endhighlight %}
+
+Using `let` also produces the expected result because `let` creates a new `i` for each iteration. This is new behavior as of ES6. The point is if you need to close over different variables, then you need the different variables, not try to capture different values.
+
+Q: The `i` declared in the `for loop` is interpreted as a new variable for each iteration?
+
+A: Yes, it [the `i`] is interpreted as if each iteration there is a new declaration of `i` and JavaScript takes care of assigning it the value that it at the end of the previous iteration. All  `for loop`(s) have this type of `let` variance. `for of`, `for in`, and `for` loops have this.
+
+In summary, closure is a preservation of the linkage to a variable, not the capturing of that value.
+
 ### Module Pattern
+
+Now that we understand lexical scope and closure, we can look at the module pattern. First let's look at what is not a module, like this:
+
+{% highlight javascript %}
+
+var workshop = {
+    teacher: "Kyle",
+    ask(question) {
+        console.log(this.teacher, question);
+    },
+};
+
+workshop.ask("Is this a module?");
+// Kyle Is this a module?
+
+{% endhighlight %}
+
+The above code is not a module, it *is* what could be called a 'namespace'. Not really a syntactic feature of the [JavaScript] language, but it's an idiom that we make namespaces with objects. While there is nothing wrong with writing your code in this way, it is definitely not a module. The reason being is that the module pattern requires the concept of encapsulation. Encapsulation is to hide data and behavior. The idea of a module is that there are things that are 'public', that's your public API, and there are things that are private, things that nobody on the outside can touch. If you want to have a module, you need to have encapsulation (data hiding).
+
+The 'classic' module pattern, sometimes referred to as the revealing module pattern, encapsulates data and it does so with closure. You can't have a module if you don't have closure. Here is an example of what a module *does* look like:
+
+{% highlight javascript %}
+
+var workshop = (function Module(teacher) {
+    var publicAPI = {ask, };
+    return publicAPI;
+    
+    function ask(question) {
+        console.log(this.teacher, question);
+    }
+})("Kyle");
+
+workshop.ask("It's a module, right?");
+// Kyle It's a module, right?
+
+{% endhighlight %}
+
+The above module has two components to it.
+
+1. An outer enclosing function. In this case, the outer enclosing function is an IIFE. When you run a module as an IIFE, it is kind of similar to a Singleton. Because IIFEs run once and then they are done. But it's not really *done* because the closure prevents its scope from going away.
+
+2. The second component of the module is the inner function, which is closed over two variables `teacher` and `question`. Since it is closed over the `teacher` variable, the `workshop` object on the outside, which has reference to the `ask` function, preserves the inner scope through closure. 
+
+The module pattern keeps private state private and exposes things on an object, as you can see in the `publicAPI` object, where `ask` is exposed. This usage of closure is actually closing over variables that are designed to change state over time. That's the whole purpose of a module, to track state over time. You could go so far as to say that if you have something that you are calling a module but it does not track state in any way, it is not really a module.
+
+Here is an example of a module in a factory function style:
+
+{% highlight javascript %}
+
+function WorkshopModule(teacher) {
+    var publicAPI = { ask, };
+    return publicAPI;
+
+    function ask(question) {
+        console.log(teacher, question);
+    }
+};
+
+var workshop = WorkshopModule("Kyle");
+
+workshop.ask("It's a module, right?");
+// Kyle It's a module, right?
+
+{% endhighlight %}
+
+With the Module Factory pattern, you can create as many instances of the module and they will all have their own state. The module pattern is arguable the most prevalent and important of all code organization patterns. ~80-90% of all JavaScript that's ever been written has used some mechanism like the module pattern as it's code organization pattern. But, the module pattern in JavaScript is more of a syntactic hack in that it is not exactly a language feature or first-class citizen, but rather a methodology of using the tools in a way that accomplishes some end goal.
 
 ### ES6 Modules & Node.js
 
+Because the module pattern is actually not a part of JavaScript, and many wanted them to be, modules eventually found their way to the language in ES6. In the current implementation, they are still very much a WIP. The issue being that TC39 and Node.js did not communicate about how modules would be implemented at first. There have been some conversations about how to fix this, but where its landed is that to use modules in Node, you have to use a new file extension name; `.mjs`. There is a working group within Node that is trying to get full support for modules, which they will implement in phases. And at the time of writing this, Node should have pushed phase 1 of 4 of module support in Node. The ES6 module pattern looks like this:
+
+{% highlight javascript %}
+
+var teacher = "Kyle";
+
+export default function ask(question) {
+    console.log(teacher, question);
+};
+
+{% endhighlight %}
+
+Because the above is a module, it is assumed that everything is private. The way you make something public is by using the `export` keyword, everything you do not export will be private. In ES6, modules are file-based. Which means it is impossible to have more than one ES6 module in the same file. Which means that for each module your application needs, you need to have a separate file for it. This can grow quickly. And since you have to compile everything back to the module format we've previously covered anyway, wouldn't it make sense to just write your modules in that format and skip the compilation step?
+
 ### ES6 Module Syntax
+
+To import modules into your files, there are two major styles used:
+
+{% highlight javascript %}
+
+import ask from "workshop.mjs";
+
+ask("It's a default import, right?");
+// Kyle It's a default import, right?
+
+import * as workshop from "workshop.mjs";
+
+workshop.ask("It's a namespace import, right?");
+// Kyle It's a namespace import, right?
+
+{% endhighlight %}
 
 ### Module Exercise
 
