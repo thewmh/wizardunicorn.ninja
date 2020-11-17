@@ -2004,15 +2004,319 @@ workshop.ask("It's a namespace import, right?");
 
 {% endhighlight %}
 
+The first import is known as a `named import`, the second style is known as a `namespace import` which is effectively collecting all (*) of the exports and placing them in the namespace of `workshop`. The `namespace import` is more similar to how modules have been done in JavaScript over the last 20 years, whereas the `named import` style is more of a new school thinking. Neither is right or wrong, but comes down to how you prefer to work with your modules.
+
+Whichever way you choose to implement your modules, the same underlying structure / purpose applies. You are organizing a set of behavior into a cohesive unit, hiding data in it and exposing a minimal necessary API. The module pattern is one of the three core pillars of JavaScript and touches everything else in a foundational way.
+
 ### Module Exercise
 
+#### Modules
+
+In this exercise, you will refactor some code that manages student enrollment records for a workshop, to use the module pattern.
+
+#### Instructions
+
+1. Wrap all of the functions in a module factory (ie, function named `defineWorkshop()`). This function should make a return a public API object.
+
+2. The returned public API object should include the following methods:
+
+	- `addStudent(id,name,paid)`
+	- `enrollStudent(id)`
+	- `printCurrentEnrollment()`
+	- `enrollPaidStudents()`
+	- `remindUnpaidStudents()`,
+
+3. Move the `currentEnrollment` and `studentRecords` arrays inside the module definition, but as empty arrays.
+
+4. Create an instance of this module by calling `defineWorkshop()`, and name it `deepJS`.
+
+5. Define all the student records by calling `deepJS.addStudent(..)` for each.
+
+6. Define the student enrollments by calling `deepJS.enrollStudent(..)` for each.
+
+7. Change the execution code (the console output steps) to references to `deepJS.*` public API methods.
+
+{% capture summary %}Work from this code{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+var currentEnrollment = [ 410, 105, 664, 375 ];
+
+var studentRecords = [
+	{ id: 313, name: "Frank", paid: true, },
+	{ id: 410, name: "Suzy", paid: true, },
+	{ id: 709, name: "Brian", paid: false, },
+	{ id: 105, name: "Henry", paid: false, },
+	{ id: 502, name: "Mary", paid: true, },
+	{ id: 664, name: "Bob", paid: false, },
+	{ id: 250, name: "Peter", paid: true, },
+	{ id: 375, name: "Sarah", paid: true, },
+	{ id: 867, name: "Greg", paid: false, },
+];
+
+printRecords(currentEnrollment);
+console.log("----");
+currentEnrollment = paidStudentsToEnroll();
+printRecords(currentEnrollment);
+console.log("----");
+remindUnpaid(currentEnrollment);
+
+/*
+	Bob (664): Not Paid
+	Henry (105): Not Paid
+	Sarah (375): Paid
+	Suzy (410): Paid
+	----
+	Bob (664): Not Paid
+	Frank (313): Paid
+	Henry (105): Not Paid
+	Mary (502): Paid
+	Peter (250): Paid
+	Sarah (375): Paid
+	Suzy (410): Paid
+	----
+	Bob (664): Not Paid
+	Henry (105): Not Paid
+*/
+
+
+// ********************************
+
+function getStudentFromId(studentId) {
+	return studentRecords.find(matchId);
+
+	// *************************
+
+	function matchId(record) {
+		return (record.id == studentId);
+	}
+}
+
+function printRecords(recordIds) {
+	var records = recordIds.map(getStudentFromId);
+
+	records.sort(sortByNameAsc);
+
+	records.forEach(printRecord);
+}
+
+function sortByNameAsc(record1,record2){
+	if (record1.name < record2.name) return -1;
+	else if (record1.name > record2.name) return 1;
+	else return 0;
+}
+
+function printRecord(record) {
+	console.log(`${record.name} (${record.id}): ${record.paid ? "Paid" : "Not Paid"}`);
+}
+
+function paidStudentsToEnroll() {
+	var recordsToEnroll = studentRecords.filter(needToEnroll);
+
+	var idsToEnroll = recordsToEnroll.map(getStudentId);
+
+	return [ ...currentEnrollment, ...idsToEnroll ];
+}
+
+function needToEnroll(record) {
+	return (record.paid && !currentEnrollment.includes(record.id));
+}
+
+function getStudentId(record) {
+	return record.id;
+}
+
+function remindUnpaid(recordIds) {
+	var unpaidIds = recordIds.filter(notYetPaid);
+
+	printRecords(unpaidIds);
+}
+
+function notYetPaid(studentId) {
+	var record = getStudentFromId(studentId);
+	return !record.paid;
+}
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %}
+
 ### Module Exercise Solution
+
+{% capture summary %}Click to view the solution{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+var deepJS = defineWorkshop();
+deepJS.addStudent(313, "Frank", true);
+deepJS.addStudent(410, "Suzy", true);
+deepJS.addStudent(709, "Brian", false);
+deepJS.addStudent(105, "Henry", false);
+deepJS.addStudent(502, "Mary", true);
+deepJS.addStudent(664, "Bob", false);
+deepJS.addStudent(250, "Peter", true);
+deepJS.addStudent(375, "Sarah", true);
+deepJS.addStudent(867, "Greg", false);
+deepJS.enrollStudent(410);
+deepJS.enrollStudent(105);
+deepJS.enrollStudent(664);
+deepJS.enrollStudent(375);
+deepJS.printCurrentEnrollment;
+console.log("----");
+deepJS.enrollPaidStudents();
+console.log("----");
+deepJS.remindUnpaidStudents();
+
+/*
+	Bob (664): Not Paid
+	Henry (105): Not Paid
+	Sarah (375): Paid
+	Suzy (410): Paid
+	----
+	Bob (664): Not Paid
+	Frank (313): Paid
+	Henry (105): Not Paid
+	Mary (502): Paid
+	Peter (250): Paid
+	Sarah (375): Paid
+	Suzy (410): Paid
+	----
+	Bob (664): Not Paid
+	Henry (105): Not Paid
+*/
+
+
+// ********************************
+
+function defineWorkshop() {
+    var currentEnrollment = [];
+    var studentRecords = [];
+    var publicAPI = { 
+        addStudent,
+        enrollStudent,
+        printCurrentEnrollment,
+        enrollPaidStudents,
+        remindUnpaidStudents
+    };
+    return publicAPI;
+
+    function addStudent(id, name, paid) {
+        studentRecords.push({id, name, paid});
+    }
+
+    function enrollStudent(id) {
+        if( !currentEnrollment.includes(id)) {
+            currentEnrollment.push(id);
+        }
+    }
+
+    function printCurrentEnrollment() {
+        printRecords(currentEnrollment);
+    }
+
+    function enrollPaidStudents() {
+        currentEnrollment = paidStudentsToEnroll();
+        printRecords(currentEnrollment);
+    }
+
+    function remindUnpaidStudents() {
+        remindUnpaid(currentEnrollment);
+    }
+    
+    // *************************
+
+    function getStudentFromId(studentId) {
+	    return studentRecords.find(matchId);
+
+	    // *************************
+
+        function matchId(record) {
+            return (record.id == studentId);
+        }
+    }
+
+    function printRecords(recordIds) {
+        var records = recordIds.map(getStudentFromId);
+
+        records.sort(sortByNameAsc);
+
+        records.forEach(printRecord);
+    }
+
+    function sortByNameAsc(record1,record2){
+        if (record1.name < record2.name) return -1;
+        else if (record1.name > record2.name) return 1;
+        else return 0;
+    }
+
+    function printRecord(record) {
+        console.log(`${record.name} (${record.id}): ${record.paid ? "Paid" : "Not Paid"}`);
+    }
+
+    function paidStudentsToEnroll() {
+        var recordsToEnroll = studentRecords.filter(needToEnroll);
+
+        var idsToEnroll = recordsToEnroll.map(getStudentId);
+
+        return [ ...currentEnrollment, ...idsToEnroll ];
+    }
+
+    function needToEnroll(record) {
+        return (record.paid && !currentEnrollment.includes(record.id));
+    }
+
+    function getStudentId(record) {
+        return record.id;
+    }
+
+    function remindUnpaid(recordIds) {
+        var unpaidIds = recordIds.filter(notYetPaid);
+
+        printRecords(unpaidIds);
+    }
+
+    function notYetPaid(studentId) {
+        var record = getStudentFromId(studentId);
+        return !record.paid;
+    }
+}
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %}
+
+Modules are pretty important in JavaScript, maybe even in all of software development. You will get a lot of mileage out of thinking in this pattern, practicing it, trying to implement it more. Try to find opportunities to implement the module pattern!
 
 ## Objects
 
 ### Objects Overview
 
+Another of the 'three core pillars' of JavaScript that is important to understand is the 'Objects' Oriented system. Objects, `this`, and Prototypes make up the objects oriented system. Objects oriented instead of object oriented because JavaScript is not strictly a class system, there are classes that have been layered on top of it.
+
 ### The this Keyword
+
+Arguably the most confused of all the JavaScript features, the `this` keyword. If you are coming to JavaScript from another language that uses the `this` keyword, you may have had some difficulty understanding how `this` was implemented in JavaScript.
+
+A function's `this` references the execution context for that call, determined entirely by how the function was called. In other words, if you look at a function that has the `this` keyword in it, it is defined by how the function was called. This is counterintuitive because most people think you could look at a function and figure out what its `this` keyword is going to point out. But the definition of the function does not  matter at all, to determining the `this` keyword. The only thing that matters is how the function was invoked.
+
+A `this`-aware function can have a different context each time it is called, which makes it more flexible and reusable. Here is an example of the dynamic flexibility of the `this` keyword in action:
+
+{% highlight javascript %}
+
+function ask(question) {
+    console.log(this.teacher, question);
+}
+
+function otherClass() {
+    var myContext = {
+        teacher: "Suzy"
+    };
+    ask.call(myContext, "Why?");
+}
+
+otherClass();
+
+{% endhighlight %}
+
+The `this` keyword exists so we can invoke functions in different contexts. There are four different ways to invoke a function. Each of the four ways to call a function in JavaScript will define what is the `this` keyword differently. 
 
 ### Implicit & Explicit Binding
 
