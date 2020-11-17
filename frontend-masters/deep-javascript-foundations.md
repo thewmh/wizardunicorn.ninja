@@ -2320,7 +2320,100 @@ The `this` keyword exists so we can invoke functions in different contexts. Ther
 
 ### Implicit & Explicit Binding
 
+The first of the four methods to invoke a function we'll cover is implicit binding.
+
+{% highlight javascript %}
+
+var workshop = {
+    teacher: "Kyle",
+    ask(question) {
+        console.log(this.teacher, question);
+    },
+};
+
+workshop.ask("What is implicit binding?");
+// Kyle What is implicit binding?
+
+{% endhighlight %}
+
+Revisiting the namespace pattern, how does the `this` keyword behave inside of this pattern? When `ask` function is invoked, how do you know what the `this` keyword will point at? Because of the 'call site' (workshop), the `this` keyword will point at the `workshop` object. This is exactly how the `this` binding works in other languages. This is the most intuitive form of the `this` keyword because it decides the method based upon what object you call it from. The idea of having implicit binding is useful because this is how we share behavior among different contexts. Here is another example of implicit binding where the `ask` function is being used more than once and has two different `this` contexts:
+
+{% highlight javascript %}
+
+function ask(question) {
+    console.log(this.teacher, question);
+}
+
+var workshop1 = {
+    teacher: "Kyle",
+    ask: ask,
+};
+
+var workshop2 = {
+    teacher: "Suzy",
+    ask: ask,
+};
+
+workshop1.ask("How do I share a method?");
+// Kyle How do I share a method?
+
+workshop2.ask("How do I share a method?");
+// Suzy How do I share a method?
+
+{% endhighlight %}
+
+In the above code, you can see that the `ask` function is being assigned to different contexts (`workshop1` `workshop2`) and because of this, the `this` keyword will point at the respective objects that it was called from. Another method to invoke functions which we've seen before is the `.call` method. Along with the `.apply` method, the `.call` method takes, as their first argument, a `this` keyword.
+
+{% highlight javascript %}
+
+function ask(question) {
+    console.log(this.teacher, question);
+}
+
+var workshop1 = {
+    teacher: "Kyle";
+}
+
+var workshop2 = {
+    teacher: "Suzy";
+}
+
+ask.call(workshop1, "Can I explicitly set context?");
+// Kyle Can I explicitly set context?
+
+ask.call(workshop2, "Can I explicitly set context?");
+// Suzy Can I explicitly set context?
+
+{% endhighlight %}
+
+Above, on the first `ask.call`, when you pass in `workshop1`, it is saying invoke the `ask` function with the `this` context of `workshop1`. It is similar to the implicit binding example at the beginning of this section, the function is still being shared, but it is now being done explicitly rather than implicitly. We are saying, wherever this function comes from, invoke it in this particular context, which I am going to specify. `.call` and `.apply` can be used to explicitly tell JavaScript what context to invoke a function in.
+
+A variation of explicit binding is called hard binding, which looks like this:
+
+{% highlight javascript %}
+
+var workshop = {
+    teacher: "Kyle",
+    ask(question) {
+        console.log(this.teacher, question);
+    },
+};
+
+setTimeout(workshop.ask, 10, "Lost this?");
+// undefined Lost this?
+
+setTimeout(workshop.ask.bind(workshop), 10, "Hard bound this?");
+// Kyle Hard bound this?
+
+{% endhighlight %}
+
+The first `setTimeout` above is not the call site for `workshop.ask`, so the binding is lost and bound to the global object in this case. A common solution to this can be seen on the second `setTimeout` which hard binds the `workshop.ask` function to the `workshop` object. *If* you use `.bind` to hard bind the `this` to a particular scope, you are effectively removing the flexibility of the `this` keyword, which is not the intended purpose of the `this` keyword. If you do not need the flexibility, you may be better off refactoring your code to a module pattern which provides a fixed, predictable behavior.
+
+If you are only occasionally using hard binding when setting up a `this` aware function, you are probably getting enough benefit out of your code as it is written and do not need to refactor it. If you are frequently using hard binding when setting up a `this` aware function, you should probably refactor your code. If you want flexible dynamism, use a `this` keyword, if you want predictability, use closures, use lexical scope.
+
 ### The new Keyword
+
+
 
 ### Default Binding
 
