@@ -2446,7 +2446,9 @@ new (workshop.ask.bind(workshop))("What does this do?");
 
 {% endhighlight %}
 
-In the above code, the function `ask` ii being called 
+In the above code, the function `ask` is being called with `new`, a context object, `.bind`, that's three of the ways to invoke a function being used at once. This is not a useful thing to do, but let's look at how it works and which of the function invoke(rs?) takes precedence. The order of binding precedence is as follows:
+
+1. Is the function called by `new`? If so, the `this` 
 
 ### Arrow Functions & Lexical this
 
