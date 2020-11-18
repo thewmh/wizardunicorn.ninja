@@ -28,7 +28,7 @@ jobs:
       - run: npm install
       # Build site
       - name: Install dependencies & Build Site
-        - uses:  lemonarc/jekyll-action@1.0.0
+        uses:  lemonarc/jekyll-action@1.0.0
       # Push the compiled _site-folder as branch into your GitHub repository
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
