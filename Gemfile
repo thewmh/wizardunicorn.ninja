@@ -1,4 +1,5 @@
 source "https://rubygems.org"
+gem 'github-pages'
 gemspec :name => 'uswds-jekyll'
 
 group :jekyll_plugins do
