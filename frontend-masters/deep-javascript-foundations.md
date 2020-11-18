@@ -2458,7 +2458,7 @@ In the above code, the function `ask` is being called with `new`, a context obje
 
 ### Arrow Functions & Lexical this
 
-
+But what about arrow functions and the `this` keyword?! Lexical `this` occurs. But what is lexical `this`? An arrow functions `this` is not hardbound to its parents `this`, the correct way to think about what an arrow function does is; An arrow function does not define a `this` keyword at all. So if you put a `this` keyword inside of an arrow function, it will behave just like every other variable, which in this case means that it will resolve itself 
 
 ### Resolving this in Arrow Functions
 
