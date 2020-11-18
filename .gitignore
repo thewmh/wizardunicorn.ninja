@@ -9,4 +9,4 @@ worknotes
 .vscode
 _site
 node_modules
-.github
+# .github

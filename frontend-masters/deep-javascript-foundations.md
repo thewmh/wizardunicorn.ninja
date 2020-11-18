@@ -2413,8 +2413,21 @@ If you are only occasionally using hard binding when setting up a `this` aware f
 
 ### The new Keyword
 
+The third way to invoke a function is the `new` keyword, which may seem like we are invoking a 'class constructor', but it is really just an unfortunate syntactic trick to make it look like it is dealing with classes when it really isn't. The `new` keyword does four very specific things when invoking a function and the purpose of the `new` keyword is to invoke a function with a `this` keyword that points to a whole new empty object. You could get the same behavior if you used `.call()`, which would also invoke a function with a `this` keyword that points to a whole new empty object, the only difference is the 'syntactic sugar' that the `new` keyword provides. Here are the four things that the `new` keyword does when it is used to invoke a function:
+
+1. Create a brand new empty object.
+
+2. * Link that object to another object.
+
+3. Calls the function with `this` pointing to the new object.
+
+4. If the function does not return an object, the `new` keyword assumes that `this` should be returned. 
+
+If you put `new` in front of any function, even an empty one, all four of the things will happen.
 
 ### Default Binding
+
+The final way of invoking a function is with default binding, which looks like this `functionName(argument);`. If your program is in 'strict mode', and `this` has no explicit binding, `this` will be undefined and calling a function that refers to `this` will throw a TypeError, because in 'strict mode' `this` needs to be explicitly defined. The reason being, that if you have created a `this` aware function, there is no reason that `this` should not be defined. Define `this` in strict mode!
 
 ### Binding Precedence
 
