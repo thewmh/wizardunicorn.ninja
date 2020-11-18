@@ -54,4 +54,4 @@ kramdown:
 plugins:
   - jekyll-purgecss
 
-css_dir: "<css_dir>"
+css_dir: "<css_dir>" # defaults to "css"
