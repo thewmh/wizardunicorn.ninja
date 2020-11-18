@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 gemspec :name => 'uswds-jekyll'
 
-gem 'jekyll', '~> 2.6.3'
+gem 'jekyll'
 
 group :jekyll_plugins do
   gem 'github-pages'

@@ -270,6 +270,7 @@ PLATFORMS
 DEPENDENCIES
   bundler
   github-pages
+  jekyll
   jekyll-last-modified-at
   jekyll-purgecss
   json (= 2.3.0)
@@ -277,4 +278,4 @@ DEPENDENCIES
   uswds-jekyll!
 
 BUNDLED WITH
-   1.17.3
+   2.1.4
