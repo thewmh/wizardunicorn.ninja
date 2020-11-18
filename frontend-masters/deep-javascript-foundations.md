@@ -2427,9 +2427,26 @@ If you put `new` in front of any function, even an empty one, all four of the th
 
 ### Default Binding
 
-The final way of invoking a function is with default binding, which looks like this `functionName(argument);`. If your program is in 'strict mode', and `this` has no explicit binding, `this` will be undefined and calling a function that refers to `this` will throw a TypeError, because in 'strict mode' `this` needs to be explicitly defined. The reason being, that if you have created a `this` aware function, there is no reason that `this` should not be defined. Define `this` in strict mode! Use one of the other three methods to invoke a function; `new` keyword, `.call`, `.apply`, or `.bind`.
+The final way of invoking a function is with default binding, which looks like this `functionName(argument);`. If your program is in 'strict mode', and `this` has no explicit binding, `this` will be undefined and calling a function that refers to `this` will throw a TypeError, because in 'strict mode' `this` needs to be explicitly defined. The reason being, that if you have created a `this` aware function, there is no reason that `this` should not be defined. Define `this` in strict mode! Use one of the other three methods to invoke a function; `new` keyword, `.call`, `.apply`, or `.bind`, or a context object, i.e. `workshop.ask()`
 
 ### Binding Precedence
+
+What if you had a [function] call site like this:
+
+{% highlight javascript %}
+
+var workshop = {
+    teacher: "Kyle";
+    ask: function ask(question) {
+        console.log(this.teacher, question);
+    },
+};
+
+new (workshop.ask.bind(workshop))("What does this do?");
+
+{% endhighlight %}
+
+In the above code, the function `ask` ii being called 
 
 ### Arrow Functions & Lexical this
 
