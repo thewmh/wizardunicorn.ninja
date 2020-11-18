@@ -2414,7 +2414,6 @@ If you are only occasionally using hard binding when setting up a `this` aware f
 ### The new Keyword
 
 
-
 ### Default Binding
 
 ### Binding Precedence
