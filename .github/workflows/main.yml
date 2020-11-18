@@ -16,7 +16,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7
+          ruby-version: 2.6.3
       # Install Node as this is needed for PurgeCSS
       - name: Setup Node
         uses: actions/setup-node@v1
