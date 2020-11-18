@@ -2427,7 +2427,7 @@ If you put `new` in front of any function, even an empty one, all four of the th
 
 ### Default Binding
 
-The final way of invoking a function is with default binding, which looks like this `functionName(argument);`. If your program is in 'strict mode', and `this` has no explicit binding, `this` will be undefined and calling a function that refers to `this` will throw a TypeError, because in 'strict mode' `this` needs to be explicitly defined. The reason being, that if you have created a `this` aware function, there is no reason that `this` should not be defined. Define `this` in strict mode!
+The final way of invoking a function is with default binding, which looks like this `functionName(argument);`. If your program is in 'strict mode', and `this` has no explicit binding, `this` will be undefined and calling a function that refers to `this` will throw a TypeError, because in 'strict mode' `this` needs to be explicitly defined. The reason being, that if you have created a `this` aware function, there is no reason that `this` should not be defined. Define `this` in strict mode! Use one of the other three methods to invoke a function; `new` keyword, `.call`, `.apply`, or `.bind`.
 
 ### Binding Precedence
 
