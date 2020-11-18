@@ -2458,7 +2458,9 @@ In the above code, the function `ask` is being called with `new`, a context obje
 
 ### Arrow Functions & Lexical this
 
-But what about arrow functions and the `this` keyword?! Lexical `this` occurs. But what is lexical `this`? An arrow functions `this` is not hardbound to its parents `this`, the correct way to think about what an arrow function does is; An arrow function does not define a `this` keyword at all. So if you put a `this` keyword inside of an arrow function, it will behave just like every other variable, which in this case means that it will resolve itself to a scope that does define a `this` keyword. 
+But what about arrow functions and the `this` keyword?! Lexical `this` occurs. But what is lexical `this`? An arrow functions `this` is not hardbound to its parents `this`, the correct way to think about what an arrow function does is; An arrow function does not define a `this` keyword at all. So if you put a `this` keyword inside of an arrow function, it will behave just like every other variable, which in this case means that it will resolve itself to a scope that does define a `this` keyword. The [JavaScript] spec states: An arrow function does not define local bindings for arguments, super, this, or new.target. Any reference to arguments, super, this, or new.target within an arrow function must resolve to a binding in a lexically enclosing environment.
+
+
 
 ### Resolving this in Arrow Functions
 
