@@ -4,7 +4,8 @@
   "license": "CC0-1.0",
   "scripts": {
     "postinstall": "bundle",
-    "postbuild": "purgecss --css /home/runner/work/wizardunicorn.ninja/wizardunicorn.ninja/assets/css/*.css --content /home/runner/work/wizardunicorn.ninja/wizardunicorn.ninja/*.html --output /home/runner/work/wizardunicorn.ninja/wizardunicorn.ninja/assets/css/new",
+    "build": "jekyll build",
+    "postbuild": "purgecss --css _site/assets/css/*.css --content _site/**/*.html --output _site/assets/css",
     "start": "bundle exec jekyll serve",
     "update-uswds": "npm run update-assets && npm run update-sass",
     "update-assets": "rsync -avr --delete node_modules/uswds/dist/ assets/uswds/ --exclude=/*.md --exclude=/*.zip --exclude=/css --exclude=/scss",
@@ -12,6 +13,7 @@
   },
   "dependencies": {
     "acorn": "^7.4.0",
+    "jekyll": "^3.0.0-beta1",
     "purgecss": "^3.0.0",
     "uswds": "^1.6.13"
   },
