@@ -2697,6 +2697,26 @@ will add declarations within its own scope, which is not the same scope as its i
 <span class="nx">workshop</span><span class="p">.</span><span class="nx">ask</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">workshop</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Still no 'this'?:</span><span class="dl">"</span><span class="p">);</span>
 <span class="c1">// undefined Still no 'this'?</span></code></pre></figure>
 
+<p>Ummm… why is <code class="language-plaintext highlighter-rouge">this</code> returning undefined? Well, what is the parent scope for the <code class="language-plaintext highlighter-rouge">ask</code> function in the above code? Did you guess global? If you did, that is correct; the <code class="language-plaintext highlighter-rouge">workshop</code> object is not a scope, it is an object, so the <code class="language-plaintext highlighter-rouge">ask</code> function would look in the global scope for <code class="language-plaintext highlighter-rouge">this</code>, which in this case is in fact undefined. 😞</p>
+
+<p>It is recommended that the <em>only</em> time you should use an arrow function is when you will benefit from the lexical <code class="language-plaintext highlighter-rouge">this</code> behavior. The only alternative is a <em>hack</em> such as <code class="language-plaintext highlighter-rouge">var self = this;</code>. Which is not a good alternative because the <code class="language-plaintext highlighter-rouge">this</code> keyword never points at a function but at a context, so if you absolutely must do the <code class="language-plaintext highlighter-rouge">var self = this;</code> hack, it is probably better to write it as <code class="language-plaintext highlighter-rouge">var context = this;</code>. (Preference of the instructor, may help readability) But really, the purpose, or function, of the arrow function should be to adopt the <code class="language-plaintext highlighter-rouge">this</code> of a parent scope.</p>
+
+<p><strong>Only use =&gt; arrow functions when you need lexical this.</strong></p>
+
+<p>If you are going to use an arrow function to have access to lexical <code class="language-plaintext highlighter-rouge">this</code>, you need to combat the following three issues with using an anonymous function:</p>
+
+<ol>
+  <li>
+    <p>Anonymous functions don’t have a self-reference - In case you need to do recursion or binding.</p>
+  </li>
+  <li>
+    <p>Anonymous functions don’t have a name - Assign it to a variable or a property so that it gets a name inference.</p>
+  </li>
+  <li>
+    <p>Anonymous functions don’t have readily obvious reasons for their existence - Somehow, make it clear to the reader what your function’s purpose is.</p>
+  </li>
+</ol>
+
 <h3 id="this-exercise">this Exercise</h3>
 
 <h3 id="this-exercise-solution">this Exercise Solution</h3>
