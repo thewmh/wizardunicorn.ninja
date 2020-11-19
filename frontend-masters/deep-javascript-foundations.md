@@ -2479,6 +2479,20 @@ workshop.ask.call(workshop, "Still no 'this'?:");
 
 {% endhighlight %}
 
+Ummm... why is `this` returning undefined? Well, what is the parent scope for the `ask` function in the above code? Did you guess global? If you did, that is correct; the `workshop` object is not a scope, it is an object, so the `ask` function would look in the global scope for `this`, which in this case is in fact undefined. 😞
+
+It is recommended that the *only* time you should use an arrow function is when you will benefit from the lexical `this` behavior. The only alternative is a *hack* such as `var self = this;`. Which is not a good alternative because the `this` keyword never points at a function but at a context, so if you absolutely must do the `var self = this;` hack, it is probably better to write it as `var context = this;`. (Preference of the instructor, may help readability) But really, the purpose, or function, of the arrow function should be to adopt the `this` of a parent scope.
+
+**Only use => arrow functions when you need lexical this.**
+
+If you are going to use an arrow function to have access to lexical `this`, you need to combat the following three issues with using an anonymous function:
+
+1. Anonymous functions don't have a self-reference - In case you need to do recursion or binding.
+
+2. Anonymous functions don't have a name - Assign it to a variable or a property so that it gets a name inference.
+
+3. Anonymous functions don't have readily obvious reasons for their existence - Somehow, make it clear to the reader what your function's purpose is.
+
 ### this Exercise
 
 ### this Exercise Solution
