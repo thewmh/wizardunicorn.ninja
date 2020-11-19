@@ -5,4 +5,3 @@ bundle list | grep "jekyll ("
 echo '👍 BUNDLE INSTALLED—BUILDING THE SITE'
 npm run build
 echo '👍 THE SITE IS BUILT'
-npm run postbuild
