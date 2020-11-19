@@ -2924,9 +2924,9 @@ will add declarations within its own scope, which is not the same scope as its i
 	<span class="nx">printRecords</span><span class="p">(</span><span class="nx">recordIds</span><span class="p">)</span> <span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">records</span> <span class="o">=</span> <span class="nx">recordIds</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getStudentFromId</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
 
-		<span class="nx">records</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sortByNameAsc</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+		<span class="nx">records</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sortByNameAsc</span><span class="p">);</span>
 
-		<span class="nx">records</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">printRecord</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+		<span class="nx">records</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">printRecord</span><span class="p">);</span>
 	<span class="p">},</span>
 	<span class="nx">sortByNameAsc</span><span class="p">(</span><span class="nx">record1</span><span class="p">,</span><span class="nx">record2</span><span class="p">){</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">record1</span><span class="p">.</span><span class="nx">name</span> <span class="o">&lt;</span> <span class="nx">record2</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
@@ -3006,17 +3006,339 @@ will add declarations within its own scope, which is not the same scope as its i
 
 <p>A: If I am going to create a namespace(d) object, the only reason I am going to use this approach (instead of the module approach) is when I know that I have two or three objects that I want to link through a prototype chain and have them work with each other.</p>
 
+<p>Q: What is the rule for binding <code class="language-plaintext highlighter-rouge">this</code>?</p>
+
+<p>A: You only need to bind <code class="language-plaintext highlighter-rouge">this</code> if the method is a this-aware function.</p>
+
 <h3 id="es6-class-keyword">ES6 class Keyword</h3>
+
+<p>The class pattern is by far the most prevalent used in JavaScript. The class system is syntactic sugar layered on top of the prototype system. The class pattern looks like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">class</span> <span class="nx">Workshop</span> <span class="p">{</span>
+    <span class="kd">constructor</span><span class="p">(</span><span class="nx">teacher</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">teacher</span> <span class="o">=</span> <span class="nx">teacher</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">ask</span><span class="p">(</span><span class="nx">question</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">teacher</span><span class="p">,</span> <span class="nx">question</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">deepJS</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Workshop</span><span class="p">(</span><span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">reactJS</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Workshop</span><span class="p">(</span><span class="dl">"</span><span class="s2">Suzy</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">deepJs</span><span class="p">.</span><span class="nx">ask</span><span class="p">(</span><span class="dl">"</span><span class="s2">Is 'class' a class?</span><span class="dl">"</span><span class="p">);</span>
+<span class="c1">// Kyle is 'class' a class?</span>
+
+<span class="nx">reactJS</span><span class="p">.</span><span class="nx">ask</span><span class="p">(</span><span class="dl">"</span><span class="s2">Is this class OK?</span><span class="dl">"</span><span class="p">);</span>
+<span class="c1">// Suzy Is this class OK?</span></code></pre></figure>
+
+<p>Classes don’t have to be statements, they can be expressions and they can be anonymous. Classes can be defined with or without an extends clause. In the above code a class is being defined, nothing is being extended. You can choose to define a <code class="language-plaintext highlighter-rouge">constructor</code> and you can add methods (no comma needed). If you want to extend a class, it could look something like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">class</span> <span class="nx">Workshop</span> <span class="p">{</span>
+    <span class="kd">constructor</span><span class="p">(</span><span class="nx">teacher</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">teacher</span> <span class="o">=</span> <span class="nx">teacher</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">ask</span><span class="p">(</span><span class="nx">question</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">teacher</span><span class="p">,</span> <span class="nx">question</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nx">AnotherWorkshop</span> <span class="kd">extends</span> <span class="nx">Workshop</span> <span class="p">{</span>
+    <span class="nx">speakUp</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">ask</span><span class="p">(</span><span class="nx">msg</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">JSRecentParts</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AnotherWorkshop</span><span class="p">(</span><span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">JSRecentParts</span><span class="p">.</span><span class="nx">speakUp</span><span class="p">(</span><span class="dl">"</span><span class="s2">Are classes getting any better?</span><span class="dl">"</span><span class="p">);</span>
+<span class="c1">// Kyle Are classes getting any better?</span></code></pre></figure>
+
+<p>If you have a child class that extends the a method of the same name in its parent class, you can refer to the parent from the child by using <code class="language-plaintext highlighter-rouge">super.</code>; i.e. <code class="language-plaintext highlighter-rouge">super.ask...</code>. If you pay attention to the [JavaScript] spec, classes have a lot of features coming down the pipeline, almost making them a language inside of a language, not just syntactic sugar. Class methods are not auto-bound to the <code class="language-plaintext highlighter-rouge">this</code> keyword. The entire class system is built on the idea that your methods do not exist on their instances, but on your prototypes.</p>
 
 <h3 id="fixing-this-in-classes">Fixing this in Classes</h3>
 
+<p>There is a proposal for <code class="language-plaintext highlighter-rouge">@bound</code> which would auto-bind <code class="language-plaintext highlighter-rouge">this</code> in classes, but here’s why that is considered to be aa <em>bad</em> idea. Any ‘solution’ to ‘auto-bind’ <code class="language-plaintext highlighter-rouge">this</code> to a class is not what the intended behavior of classes in JavaScript is. <a href="https://gist.github.com/getify/86bed0bb78ccb517c84a6e61ec16adca">Check out this gist to see how it could be done - see 2.js</a> The whole purpose of <code class="language-plaintext highlighter-rouge">this</code> aware functions is so that they can be dynamic. Forcing them into another mode of working, which is like classes in other languages, is how you end up with ‘hacky’ solutions like the Gist.</p>
+
 <h3 id="class-exercise">class Exercise</h3>
 
+<h4 id="class"><code class="language-plaintext highlighter-rouge">class</code></h4>
+
+<p>In this exercise, you will refactor some code that manages student enrollment records for a workshop, from the namespace pattern to the <code class="language-plaintext highlighter-rouge">class</code> pattern.</p>
+
+<h4 id="instructions-4">Instructions</h4>
+
+<ol>
+  <li>
+    <p>Define a class called <code class="language-plaintext highlighter-rouge">Helpers</code> that includes the functions that are not <code class="language-plaintext highlighter-rouge">this</code>-aware.</p>
+  </li>
+  <li>
+    <p>Define a class called <code class="language-plaintext highlighter-rouge">Workshop</code> that extends <code class="language-plaintext highlighter-rouge">Helpers</code>, which includes all the other functions. Hint: <code class="language-plaintext highlighter-rouge">constructor()</code> and <code class="language-plaintext highlighter-rouge">super()</code>.</p>
+  </li>
+  <li>
+    <p>Instantiate the <code class="language-plaintext highlighter-rouge">Workshop</code> class as <code class="language-plaintext highlighter-rouge">deepJS</code>.</p>
+  </li>
+</ol>
+
+<details>
+    <summary>Work from this code
+</summary>
+    
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">deepJS</span> <span class="o">=</span> <span class="p">{</span>
+	<span class="na">currentEnrollment</span><span class="p">:</span> <span class="p">[],</span>
+	<span class="na">studentRecords</span><span class="p">:</span> <span class="p">[],</span>
+	<span class="nx">addStudent</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span><span class="nx">name</span><span class="p">,</span><span class="nx">paid</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">studentRecords</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">paid</span><span class="p">,</span> <span class="p">});</span>
+	<span class="p">},</span>
+	<span class="nx">enrollStudent</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">currentEnrollment</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="nx">id</span><span class="p">))</span> <span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">currentEnrollment</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+	<span class="nx">printCurrentEnrollment</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">printRecords</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">currentEnrollment</span><span class="p">);</span>
+	<span class="p">},</span>
+	<span class="nx">enrollPaidStudents</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">currentEnrollment</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">paidStudentsToEnroll</span><span class="p">();</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">printCurrentEnrollment</span><span class="p">();</span>
+	<span class="p">},</span>
+	<span class="nx">remindUnpaidStudents</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">remindUnpaid</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">currentEnrollment</span><span class="p">);</span>
+	<span class="p">},</span>
+	<span class="nx">getStudentFromId</span><span class="p">(</span><span class="nx">studentId</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">studentRecords</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">matchId</span><span class="p">);</span>
+
+		<span class="c1">// *************************</span>
+
+		<span class="kd">function</span> <span class="nx">matchId</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="p">(</span><span class="nx">record</span><span class="p">.</span><span class="nx">id</span> <span class="o">==</span> <span class="nx">studentId</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+	<span class="nx">printRecords</span><span class="p">(</span><span class="nx">recordIds</span><span class="p">)</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">records</span> <span class="o">=</span> <span class="nx">recordIds</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getStudentFromId</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+
+		<span class="nx">records</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sortByNameAsc</span><span class="p">);</span>
+
+		<span class="nx">records</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">printRecord</span><span class="p">);</span>
+	<span class="p">},</span>
+	<span class="nx">sortByNameAsc</span><span class="p">(</span><span class="nx">record1</span><span class="p">,</span><span class="nx">record2</span><span class="p">){</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">record1</span><span class="p">.</span><span class="nx">name</span> <span class="o">&lt;</span> <span class="nx">record2</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">record1</span><span class="p">.</span><span class="nx">name</span> <span class="o">&gt;</span> <span class="nx">record2</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+		<span class="k">else</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="p">},</span>
+	<span class="nx">printRecord</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">record</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="s2"> (</span><span class="p">${</span><span class="nx">record</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="s2">): </span><span class="p">${</span><span class="nx">record</span><span class="p">.</span><span class="nx">paid</span> <span class="p">?</span> <span class="dl">"</span><span class="s2">Paid</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">Not Paid</span><span class="dl">"</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+	<span class="p">},</span>
+	<span class="nx">paidStudentsToEnroll</span><span class="p">()</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">recordsToEnroll</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">studentRecords</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">needToEnroll</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+
+		<span class="kd">var</span> <span class="nx">idsToEnroll</span> <span class="o">=</span> <span class="nx">recordsToEnroll</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getStudentId</span><span class="p">);</span>
+
+		<span class="k">return</span> <span class="p">[</span> <span class="p">...</span><span class="k">this</span><span class="p">.</span><span class="nx">currentEnrollment</span><span class="p">,</span> <span class="p">...</span><span class="nx">idsToEnroll</span> <span class="p">];</span>
+	<span class="p">},</span>
+	<span class="nx">needToEnroll</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="p">(</span><span class="nx">record</span><span class="p">.</span><span class="nx">paid</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">currentEnrollment</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="nx">record</span><span class="p">.</span><span class="nx">id</span><span class="p">));</span>
+	<span class="p">},</span>
+	<span class="nx">getStudentId</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">record</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+	<span class="p">},</span>
+	<span class="nx">remindUnpaid</span><span class="p">(</span><span class="nx">recordIds</span><span class="p">)</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">unpaidIds</span> <span class="o">=</span> <span class="nx">recordIds</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">notYetPaid</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">printRecords</span><span class="p">(</span><span class="nx">unpaidIds</span><span class="p">);</span>
+	<span class="p">},</span>
+	<span class="nx">notYetPaid</span><span class="p">(</span><span class="nx">studentId</span><span class="p">)</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">record</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getStudentFromId</span><span class="p">(</span><span class="nx">studentId</span><span class="p">);</span>
+		<span class="k">return</span> <span class="o">!</span><span class="nx">record</span><span class="p">.</span><span class="nx">paid</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+
+<span class="c1">// ********************************</span>
+
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">311</span><span class="p">,</span><span class="dl">"</span><span class="s2">Frank</span><span class="dl">"</span><span class="p">,</span><span class="cm">/*paid=*/</span><span class="kc">true</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">410</span><span class="p">,</span><span class="dl">"</span><span class="s2">Suzy</span><span class="dl">"</span><span class="p">,</span><span class="cm">/*paid=*/</span><span class="kc">true</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">709</span><span class="p">,</span><span class="dl">"</span><span class="s2">Brian</span><span class="dl">"</span><span class="p">,</span><span class="cm">/*paid=*/</span><span class="kc">false</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">105</span><span class="p">,</span><span class="dl">"</span><span class="s2">Henry</span><span class="dl">"</span><span class="p">,</span><span class="cm">/*paid=*/</span><span class="kc">false</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">502</span><span class="p">,</span><span class="dl">"</span><span class="s2">Mary</span><span class="dl">"</span><span class="p">,</span><span class="cm">/*paid=*/</span><span class="kc">true</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">664</span><span class="p">,</span><span class="dl">"</span><span class="s2">Bob</span><span class="dl">"</span><span class="p">,</span><span class="cm">/*paid=*/</span><span class="kc">false</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span><span class="dl">"</span><span class="s2">Peter</span><span class="dl">"</span><span class="p">,</span><span class="cm">/*paid=*/</span><span class="kc">true</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">375</span><span class="p">,</span><span class="dl">"</span><span class="s2">Sarah</span><span class="dl">"</span><span class="p">,</span><span class="cm">/*paid=*/</span><span class="kc">true</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">867</span><span class="p">,</span><span class="dl">"</span><span class="s2">Greg</span><span class="dl">"</span><span class="p">,</span><span class="cm">/*paid=*/</span><span class="kc">false</span><span class="p">);</span>
+
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">enrollStudent</span><span class="p">(</span><span class="mi">410</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">enrollStudent</span><span class="p">(</span><span class="mi">105</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">enrollStudent</span><span class="p">(</span><span class="mi">664</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">enrollStudent</span><span class="p">(</span><span class="mi">375</span><span class="p">);</span>
+
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">printCurrentEnrollment</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">----</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">enrollPaidStudents</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">----</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">remindUnpaidStudents</span><span class="p">();</span>
+
+<span class="cm">/*
+	Bob (664): Not Paid
+	Henry (105): Not Paid
+	Sarah (375): Paid
+	Suzy (410): Paid
+	----
+	Bob (664): Not Paid
+	Frank (313): Paid
+	Henry (105): Not Paid
+	Mary (502): Paid
+	Peter (250): Paid
+	Sarah (375): Paid
+	Suzy (410): Paid
+	----
+	Bob (664): Not Paid
+	Henry (105): Not Paid
+*/</span></code></pre></figure>
+
+
+</details>
+
 <h3 id="class-exercise-solution">class Exercise Solution</h3>
+
+<details>
+    <summary>Click to view the solution
+</summary>
+    
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">class</span> <span class="nx">Helpers</span> <span class="p">{</span>
+
+    <span class="nx">sortByNameAsc</span><span class="p">(</span><span class="nx">record1</span><span class="p">,</span><span class="nx">record2</span><span class="p">){</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">record1</span><span class="p">.</span><span class="nx">name</span> <span class="o">&lt;</span> <span class="nx">record2</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">record1</span><span class="p">.</span><span class="nx">name</span> <span class="o">&gt;</span> <span class="nx">record2</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+		<span class="k">else</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="nx">printRecord</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">record</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="s2"> (</span><span class="p">${</span><span class="nx">record</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="s2">): </span><span class="p">${</span><span class="nx">record</span><span class="p">.</span><span class="nx">paid</span> <span class="p">?</span> <span class="dl">"</span><span class="s2">Paid</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">Not Paid</span><span class="dl">"</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nx">Workshop</span> <span class="kd">extends</span> <span class="nx">Helpers</span> <span class="p">{</span>
+    <span class="kd">constructor</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">currentEnrollment</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">studentRecords</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="p">}</span>
+    <span class="nx">addStudent</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span><span class="nx">name</span><span class="p">,</span><span class="nx">paid</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">studentRecords</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">paid</span><span class="p">,</span> <span class="p">});</span>
+	<span class="p">}</span>
+	<span class="nx">enrollStudent</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">currentEnrollment</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="nx">id</span><span class="p">))</span> <span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">currentEnrollment</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="nx">printCurrentEnrollment</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">printRecords</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">currentEnrollment</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="nx">enrollPaidStudents</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">currentEnrollment</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">paidStudentsToEnroll</span><span class="p">();</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">printCurrentEnrollment</span><span class="p">();</span>
+	<span class="p">}</span>
+	<span class="nx">remindUnpaidStudents</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">remindUnpaid</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">currentEnrollment</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="nx">getStudentFromId</span><span class="p">(</span><span class="nx">studentId</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">studentRecords</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">matchId</span><span class="p">);</span>
+
+		<span class="c1">// *************************</span>
+
+		<span class="kd">function</span> <span class="nx">matchId</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="p">(</span><span class="nx">record</span><span class="p">.</span><span class="nx">id</span> <span class="o">==</span> <span class="nx">studentId</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="nx">printRecords</span><span class="p">(</span><span class="nx">recordIds</span><span class="p">)</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">records</span> <span class="o">=</span> <span class="nx">recordIds</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getStudentFromId</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+
+		<span class="nx">records</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sortByNameAsc</span><span class="p">);</span>
+
+		<span class="nx">records</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">printRecord</span><span class="p">);</span>
+	<span class="p">}</span>
+	
+	<span class="nx">paidStudentsToEnroll</span><span class="p">()</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">recordsToEnroll</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">studentRecords</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">needToEnroll</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+
+		<span class="kd">var</span> <span class="nx">idsToEnroll</span> <span class="o">=</span> <span class="nx">recordsToEnroll</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getStudentId</span><span class="p">);</span>
+
+		<span class="k">return</span> <span class="p">[</span> <span class="p">...</span><span class="k">this</span><span class="p">.</span><span class="nx">currentEnrollment</span><span class="p">,</span> <span class="p">...</span><span class="nx">idsToEnroll</span> <span class="p">];</span>
+	<span class="p">}</span>
+	<span class="nx">needToEnroll</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="p">(</span><span class="nx">record</span><span class="p">.</span><span class="nx">paid</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">currentEnrollment</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="nx">record</span><span class="p">.</span><span class="nx">id</span><span class="p">));</span>
+	<span class="p">}</span>
+	<span class="nx">getStudentId</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">record</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="nx">remindUnpaid</span><span class="p">(</span><span class="nx">recordIds</span><span class="p">)</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">unpaidIds</span> <span class="o">=</span> <span class="nx">recordIds</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">notYetPaid</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">printRecords</span><span class="p">(</span><span class="nx">unpaidIds</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="nx">notYetPaid</span><span class="p">(</span><span class="nx">studentId</span><span class="p">)</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">record</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getStudentFromId</span><span class="p">(</span><span class="nx">studentId</span><span class="p">);</span>
+		<span class="k">return</span> <span class="o">!</span><span class="nx">record</span><span class="p">.</span><span class="nx">paid</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">deepJS</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Workshop</span><span class="p">();</span>
+
+<span class="c1">// ********************************</span>
+
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">311</span><span class="p">,</span><span class="dl">"</span><span class="s2">Frank</span><span class="dl">"</span><span class="p">,</span><span class="cm">/*paid=*/</span><span class="kc">true</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">410</span><span class="p">,</span><span class="dl">"</span><span class="s2">Suzy</span><span class="dl">"</span><span class="p">,</span><span class="cm">/*paid=*/</span><span class="kc">true</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">709</span><span class="p">,</span><span class="dl">"</span><span class="s2">Brian</span><span class="dl">"</span><span class="p">,</span><span class="cm">/*paid=*/</span><span class="kc">false</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">105</span><span class="p">,</span><span class="dl">"</span><span class="s2">Henry</span><span class="dl">"</span><span class="p">,</span><span class="cm">/*paid=*/</span><span class="kc">false</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">502</span><span class="p">,</span><span class="dl">"</span><span class="s2">Mary</span><span class="dl">"</span><span class="p">,</span><span class="cm">/*paid=*/</span><span class="kc">true</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">664</span><span class="p">,</span><span class="dl">"</span><span class="s2">Bob</span><span class="dl">"</span><span class="p">,</span><span class="cm">/*paid=*/</span><span class="kc">false</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span><span class="dl">"</span><span class="s2">Peter</span><span class="dl">"</span><span class="p">,</span><span class="cm">/*paid=*/</span><span class="kc">true</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">375</span><span class="p">,</span><span class="dl">"</span><span class="s2">Sarah</span><span class="dl">"</span><span class="p">,</span><span class="cm">/*paid=*/</span><span class="kc">true</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">867</span><span class="p">,</span><span class="dl">"</span><span class="s2">Greg</span><span class="dl">"</span><span class="p">,</span><span class="cm">/*paid=*/</span><span class="kc">false</span><span class="p">);</span>
+
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">enrollStudent</span><span class="p">(</span><span class="mi">410</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">enrollStudent</span><span class="p">(</span><span class="mi">105</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">enrollStudent</span><span class="p">(</span><span class="mi">664</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">enrollStudent</span><span class="p">(</span><span class="mi">375</span><span class="p">);</span>
+
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">printCurrentEnrollment</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">----</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">enrollPaidStudents</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">----</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">remindUnpaidStudents</span><span class="p">();</span>
+
+<span class="cm">/*
+	Bob (664): Not Paid
+	Henry (105): Not Paid
+	Sarah (375): Paid
+	Suzy (410): Paid
+	----
+	Bob (664): Not Paid
+	Frank (313): Paid
+	Henry (105): Not Paid
+	Mary (502): Paid
+	Peter (250): Paid
+	Sarah (375): Paid
+	Suzy (410): Paid
+	----
+	Bob (664): Not Paid
+	Henry (105): Not Paid
+*/</span></code></pre></figure>
+
+
+</details>
 
 <h2 id="prototypes">Prototypes</h2>
 
 <h3 id="prototypes-1">Prototypes</h3>
+
+<p>Now that we have learned what the syntactic sugar layer looks like, lets look under the hood and find out how the prototype system that classes are layered on top of actually works. First observation: Objects that exist in our programs that we can see, have created, or that we interact with are always created by ‘constructor calls’ (via <code class="language-plaintext highlighter-rouge">new</code>). When you use <code class="language-plaintext highlighter-rouge">new</code> in front of a function call, JavaScript is constructing an object to be used for <code class="language-plaintext highlighter-rouge">this</code> binding of that function call. The following statement is not <em>entirely</em> correct:</p>
+
+<p><em>A constructor call makes an object based-on its own prototype</em></p>
+
+<p>Let’s learn more about classes from a Computer Science[CS] perspective to understand why ‘based-on’ in the above statement is incorrect. The most common way in CS to describe the difference between a class and an instance is that a class is the abstract pattern for a thing, like a blueprint. The instance is similar to when an architect takes the blueprint and builds the thing. Class-oriented development is fundamentally a copy operation. Continuing on the blueprint / thing being built analogy, what would happen if after you’ve completed the blueprint and built the thing, you went back to the blueprint and added something, would it then be reflected in the thing that was built? Or how about the other way around? If you added something to the thing, would it be reflected in the blueprint? The answer to both is <strong>no</strong>. The moment the thing is instantiated from the blueprint, the relationship between the two ceases to exist. The instantiation creates a ‘copy’ and everything is inherited.</p>
+
+<p>Speaking of inheritance, a parent / child relationship between classes is also fundamentally a copy operation as previously described. One small caveat to the idea of creating a copy… JavaScript doesn’t do any copying… To properly describe what is happening when a constructor call makes an object, it doesn’t make it ‘based-on’ the prototype, it makes it <strong>linked to</strong> the prototype. Some would argue that copy vs link is just two sides of the same coin, but copying and linking are fundamentally opposite to one another. The difference between them can completely change based on whether your mental model is all about copying vs linking. The difference matters because when your program breaks, why did it break? It broke because you had a divergence from what you thought your program was doing, your mental model, and what the system was actually doing. If you are thinking copying and it is doing linking, what do you think is going to happen? BUGS!</p>
 
 <h3 id="prototypal-class">Prototypal Class</h3>
 
