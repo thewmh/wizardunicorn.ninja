@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      Install Ruby to be able to build the site using Jekyll
+      # Install Ruby to be able to build the site using Jekyll
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
