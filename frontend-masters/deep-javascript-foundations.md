@@ -2694,9 +2694,9 @@ var deepJS =  {
 	printRecords(recordIds) {
 		var records = recordIds.map(this.getStudentFromId.bind(this));
 
-		records.sort(this.sortByNameAsc.bind(this);
+		records.sort(this.sortByNameAsc);
 
-		records.forEach(this.printRecord.bind(this);
+		records.forEach(this.printRecord);
 	},
 	sortByNameAsc(record1,record2){
 		if (record1.name < record2.name) return -1;
@@ -2776,21 +2776,345 @@ Q: Would you [instructor] use this type of namespace object with so many functio
 
 A: If I am going to create a namespace(d) object, the only reason I am going to use this approach (instead of the module approach) is when I know that I have two or three objects that I want to link through a prototype chain and have them work with each other.
 
+Q: What is the rule for binding `this`?
+
+A: You only need to bind `this` if the method is a this-aware function.
+
 ### ES6 class Keyword
 
+The class pattern is by far the most prevalent used in JavaScript. The class system is syntactic sugar layered on top of the prototype system. The class pattern looks like this:
 
+{% highlight javascript %}
+
+class Workshop {
+    constructor(teacher) {
+        this.teacher = teacher;
+    }
+    ask(question) {
+        console.log(this.teacher, question);
+    }
+}
+
+var deepJS = new Workshop("Kyle");
+var reactJS = new Workshop("Suzy");
+
+deepJs.ask("Is 'class' a class?");
+// Kyle is 'class' a class?
+
+reactJS.ask("Is this class OK?");
+// Suzy Is this class OK?
+
+{% endhighlight %}
+
+Classes don't have to be statements, they can be expressions and they can be anonymous. Classes can be defined with or without an extends clause. In the above code a class is being defined, nothing is being extended. You can choose to define a `constructor` and you can add methods (no comma needed). If you want to extend a class, it could look something like this:
+
+{% highlight javascript %}
+
+class Workshop {
+    constructor(teacher) {
+        this.teacher = teacher;
+    }
+    ask(question) {
+        console.log(this.teacher, question);
+    }
+}
+
+class AnotherWorkshop extends Workshop {
+    speakUp(msg) {
+        this.ask(msg);
+    }
+}
+
+var JSRecentParts = new AnotherWorkshop("Kyle");
+
+JSRecentParts.speakUp("Are classes getting any better?");
+// Kyle Are classes getting any better?
+
+{% endhighlight %}
+
+If you have a child class that extends the a method of the same name in its parent class, you can refer to the parent from the child by using `super.`; i.e. `super.ask...`. If you pay attention to the [JavaScript] spec, classes have a lot of features coming down the pipeline, almost making them a language inside of a language, not just syntactic sugar. Class methods are not auto-bound to the `this` keyword. The entire class system is built on the idea that your methods do not exist on their instances, but on your prototypes. 
 
 ### Fixing this in Classes
 
+There is a proposal for `@bound` which would auto-bind `this` in classes, but here's why that is considered to be aa *bad* idea. Any 'solution' to 'auto-bind' `this` to a class is not what the intended behavior of classes in JavaScript is. [Check out this gist to see how it could be done - see 2.js](https://gist.github.com/getify/86bed0bb78ccb517c84a6e61ec16adca) The whole purpose of `this` aware functions is so that they can be dynamic. Forcing them into another mode of working, which is like classes in other languages, is how you end up with 'hacky' solutions like the Gist.
+
 ### class Exercise
 
+#### `class`
+
+In this exercise, you will refactor some code that manages student enrollment records for a workshop, from the namespace pattern to the `class` pattern.
+
+#### Instructions
+
+1. Define a class called `Helpers` that includes the functions that are not `this`-aware.
+
+2. Define a class called `Workshop` that extends `Helpers`, which includes all the other functions. Hint: `constructor()` and `super()`.
+
+3. Instantiate the `Workshop` class as `deepJS`.
+
+{% capture summary %}Work from this code{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+var deepJS = {
+	currentEnrollment: [],
+	studentRecords: [],
+	addStudent(id,name,paid) {
+		this.studentRecords.push({ id, name, paid, });
+	},
+	enrollStudent(id) {
+		if (!this.currentEnrollment.includes(id)) {
+			this.currentEnrollment.push(id);
+		}
+	},
+	printCurrentEnrollment() {
+		this.printRecords(this.currentEnrollment);
+	},
+	enrollPaidStudents() {
+		this.currentEnrollment = this.paidStudentsToEnroll();
+		this.printCurrentEnrollment();
+	},
+	remindUnpaidStudents() {
+		this.remindUnpaid(this.currentEnrollment);
+	},
+	getStudentFromId(studentId) {
+		return this.studentRecords.find(matchId);
+
+		// *************************
+
+		function matchId(record) {
+			return (record.id == studentId);
+		}
+	},
+	printRecords(recordIds) {
+		var records = recordIds.map(this.getStudentFromId.bind(this));
+
+		records.sort(this.sortByNameAsc);
+
+		records.forEach(this.printRecord);
+	},
+	sortByNameAsc(record1,record2){
+		if (record1.name < record2.name) return -1;
+		else if (record1.name > record2.name) return 1;
+		else return 0;
+	},
+	printRecord(record) {
+		console.log(`${record.name} (${record.id}): ${record.paid ? "Paid" : "Not Paid"}`);
+	},
+	paidStudentsToEnroll() {
+		var recordsToEnroll = this.studentRecords.filter(this.needToEnroll.bind(this));
+
+		var idsToEnroll = recordsToEnroll.map(this.getStudentId);
+
+		return [ ...this.currentEnrollment, ...idsToEnroll ];
+	},
+	needToEnroll(record) {
+		return (record.paid && !this.currentEnrollment.includes(record.id));
+	},
+	getStudentId(record) {
+		return record.id;
+	},
+	remindUnpaid(recordIds) {
+		var unpaidIds = recordIds.filter(this.notYetPaid.bind(this));
+
+		this.printRecords(unpaidIds);
+	},
+	notYetPaid(studentId) {
+		var record = this.getStudentFromId(studentId);
+		return !record.paid;
+	}
+};
+
+
+// ********************************
+
+deepJS.addStudent(311,"Frank",/*paid=*/true);
+deepJS.addStudent(410,"Suzy",/*paid=*/true);
+deepJS.addStudent(709,"Brian",/*paid=*/false);
+deepJS.addStudent(105,"Henry",/*paid=*/false);
+deepJS.addStudent(502,"Mary",/*paid=*/true);
+deepJS.addStudent(664,"Bob",/*paid=*/false);
+deepJS.addStudent(250,"Peter",/*paid=*/true);
+deepJS.addStudent(375,"Sarah",/*paid=*/true);
+deepJS.addStudent(867,"Greg",/*paid=*/false);
+
+deepJS.enrollStudent(410);
+deepJS.enrollStudent(105);
+deepJS.enrollStudent(664);
+deepJS.enrollStudent(375);
+
+deepJS.printCurrentEnrollment();
+console.log("----");
+deepJS.enrollPaidStudents();
+console.log("----");
+deepJS.remindUnpaidStudents();
+
+/*
+	Bob (664): Not Paid
+	Henry (105): Not Paid
+	Sarah (375): Paid
+	Suzy (410): Paid
+	----
+	Bob (664): Not Paid
+	Frank (313): Paid
+	Henry (105): Not Paid
+	Mary (502): Paid
+	Peter (250): Paid
+	Sarah (375): Paid
+	Suzy (410): Paid
+	----
+	Bob (664): Not Paid
+	Henry (105): Not Paid
+*/
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %}
+
 ### class Exercise Solution
+
+{% capture summary %}Click to view the solution{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+class Helpers {
+
+    sortByNameAsc(record1,record2){
+		if (record1.name < record2.name) return -1;
+		else if (record1.name > record2.name) return 1;
+		else return 0;
+	}
+
+	printRecord(record) {
+		console.log(`${record.name} (${record.id}): ${record.paid ? "Paid" : "Not Paid"}`);
+	}
+}
+
+class Workshop extends Helpers {
+    constructor() {
+        super();
+        this.currentEnrollment = [];
+        this.studentRecords = [];
+    }
+    addStudent(id,name,paid) {
+		this.studentRecords.push({ id, name, paid, });
+	}
+	enrollStudent(id) {
+		if (!this.currentEnrollment.includes(id)) {
+			this.currentEnrollment.push(id);
+		}
+	}
+	printCurrentEnrollment() {
+		this.printRecords(this.currentEnrollment);
+	}
+	enrollPaidStudents() {
+		this.currentEnrollment = this.paidStudentsToEnroll();
+		this.printCurrentEnrollment();
+	}
+	remindUnpaidStudents() {
+		this.remindUnpaid(this.currentEnrollment);
+	}
+	getStudentFromId(studentId) {
+		return this.studentRecords.find(matchId);
+
+		// *************************
+
+		function matchId(record) {
+			return (record.id == studentId);
+		}
+	}
+	printRecords(recordIds) {
+		var records = recordIds.map(this.getStudentFromId.bind(this));
+
+		records.sort(this.sortByNameAsc);
+
+		records.forEach(this.printRecord);
+	}
+	
+	paidStudentsToEnroll() {
+		var recordsToEnroll = this.studentRecords.filter(this.needToEnroll.bind(this));
+
+		var idsToEnroll = recordsToEnroll.map(this.getStudentId);
+
+		return [ ...this.currentEnrollment, ...idsToEnroll ];
+	}
+	needToEnroll(record) {
+		return (record.paid && !this.currentEnrollment.includes(record.id));
+	}
+	getStudentId(record) {
+		return record.id;
+	}
+	remindUnpaid(recordIds) {
+		var unpaidIds = recordIds.filter(this.notYetPaid.bind(this));
+
+		this.printRecords(unpaidIds);
+	}
+	notYetPaid(studentId) {
+		var record = this.getStudentFromId(studentId);
+		return !record.paid;
+	}
+}
+
+var deepJS = new Workshop();
+
+// ********************************
+
+deepJS.addStudent(311,"Frank",/*paid=*/true);
+deepJS.addStudent(410,"Suzy",/*paid=*/true);
+deepJS.addStudent(709,"Brian",/*paid=*/false);
+deepJS.addStudent(105,"Henry",/*paid=*/false);
+deepJS.addStudent(502,"Mary",/*paid=*/true);
+deepJS.addStudent(664,"Bob",/*paid=*/false);
+deepJS.addStudent(250,"Peter",/*paid=*/true);
+deepJS.addStudent(375,"Sarah",/*paid=*/true);
+deepJS.addStudent(867,"Greg",/*paid=*/false);
+
+deepJS.enrollStudent(410);
+deepJS.enrollStudent(105);
+deepJS.enrollStudent(664);
+deepJS.enrollStudent(375);
+
+deepJS.printCurrentEnrollment();
+console.log("----");
+deepJS.enrollPaidStudents();
+console.log("----");
+deepJS.remindUnpaidStudents();
+
+/*
+	Bob (664): Not Paid
+	Henry (105): Not Paid
+	Sarah (375): Paid
+	Suzy (410): Paid
+	----
+	Bob (664): Not Paid
+	Frank (313): Paid
+	Henry (105): Not Paid
+	Mary (502): Paid
+	Peter (250): Paid
+	Sarah (375): Paid
+	Suzy (410): Paid
+	----
+	Bob (664): Not Paid
+	Henry (105): Not Paid
+*/
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %}
 
 ## Prototypes
 
 ### Prototypes
 
+Now that we have learned what the syntactic sugar layer looks like, lets look under the hood and find out how the prototype system that classes are layered on top of actually works. First observation: Objects that exist in our programs that we can see, have created, or that we interact with are always created by 'constructor calls' (via `new`). When you use `new` in front of a function call, JavaScript is constructing an object to be used for `this` binding of that function call. The following statement is not *entirely* correct:
+
+*A constructor call makes an object based-on its own prototype*
+
+Let's learn more about classes from a Computer Science[CS] perspective to understand why 'based-on' in the above statement is incorrect. The most common way in CS to describe the difference between a class and an instance is that a class is the abstract pattern for a thing, like a blueprint. The instance is similar to when an architect takes the blueprint and builds the thing. Class-oriented development is fundamentally a copy operation. Continuing on the blueprint / thing being built analogy, what would happen if after you've completed the blueprint and built the thing, you went back to the blueprint and added something, would it then be reflected in the thing that was built? Or how about the other way around? If you added something to the thing, would it be reflected in the blueprint? The answer to both is **no**. The moment the thing is instantiated from the blueprint, the relationship between the two ceases to exist. The instantiation creates a 'copy' and everything is inherited.
+
+Speaking of inheritance, a parent / child relationship between classes is also fundamentally a copy operation as previously described. One small caveat to the idea of creating a copy... JavaScript doesn't do any copying... To properly describe what is happening when a constructor call makes an object, it doesn't make it 'based-on' the prototype, it makes it **linked to** the prototype. Some would argue that copy vs link is just two sides of the same coin, but copying and linking are fundamentally opposite to one another. The difference between them can completely change based on whether your mental model is all about copying vs linking. The difference matters because when your program breaks, why did it break? It broke because you had a divergence from what you thought your program was doing, your mental model, and what the system was actually doing. If you are thinking copying and it is doing linking, what do you think is going to happen? BUGS!
+
 ### Prototypal Class
+
+
 
 ### The Prototype Chain
 
