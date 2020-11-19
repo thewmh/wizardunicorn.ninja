@@ -35,9 +35,9 @@ jobs:
       # - run: npm run postbuild
       - name: Make File
         uses: finnp/create-file-action@master
-          with:
-            FILE_NAME: "CNAME"
-            FILE_DATA: "wizardunicorn.ninja"
+        env:
+          FILE_NAME: "CNAME"
+          FILE_DATA: "wizardunicorn.ninja"
       # Push the compiled _site-folder as branch into your GitHub repository
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
