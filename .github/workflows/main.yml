@@ -12,12 +12,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      # Install Ruby to be able to build the site using Jekyll
-      # - name: Setup Ruby
-      #   uses: ruby/setup-ruby@v1
-      #   with:
-      #     ruby-version: 2.6.3
-      #     bundler-cache: true
+      Install Ruby to be able to build the site using Jekyll
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6.3
+          bundler-cache: true
       # Install Node as this is needed for PurgeCSS
       - name: Setup Node
         uses: actions/setup-node@v1
