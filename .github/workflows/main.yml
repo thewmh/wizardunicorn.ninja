@@ -10,36 +10,33 @@ jobs:
     runs-on: ubuntu-16.04
 
     steps:
-      - name: Checkout
+      - name: Checkout main branch ✅
         uses: actions/checkout@v2
       # Install Ruby to be able to build the site using Jekyll
-      - name: Setup Ruby
+      - name: Setup Ruby 💎
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 2.6.3
-          # bundler-cache: true
-      # Install Node as this is needed for PurgeCSS
-      - name: Setup Node
+          bundler-cache: true
+      # Install Node
+      - name: Setup Node 🖥
         uses: actions/setup-node@v1
         with:
           node-version: 'v12.12.0'
-      # Install PurgeCSS (needs to be in your package.json)
-      - run: npm install
-      # Build site
-      # - run: bundle install
-      # - run: jekyll build
-      - name: Build Jekyll
+      # Run npm install
+      - name: Run npm Install 
+        run: npm install
+      # Build site & Run PurgeCSS
+      - name: Build Jekyll & Run PurgeCSS
         run: test/build.sh
-      # - name: Install dependencies & Build Site
-      #   uses:  lemonarc/jekyll-action@1.0.0
-      # - run: npm run postbuild
-      - name: Make File
+      # Make CNAME record for Github Deployment to custom domain
+      - name: Make CNAME File 📄
         uses: finnp/create-file-action@master
         env:
           FILE_NAME: "./_site/CNAME"
           FILE_DATA: "wizardunicorn.ninja"
-      # Push the compiled _site-folder as branch into your GitHub repository
-      - name: Deploy to GitHub Pages
+      # Push the compiled _site-folder as (dev) branch into your GitHub repository
+      - name: Deploy to GitHub Pages 🐣
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
