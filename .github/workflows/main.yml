@@ -29,8 +29,7 @@ jobs:
       # - run: bundle install
       # - run: jekyll build
       - name: Build
-        uses: ./
-        run: test/build.sh
+        uses: test/build.sh
       # - name: Install dependencies & Build Site
       #   uses:  lemonarc/jekyll-action@1.0.0
       - run: npm run postbuild
