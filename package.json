@@ -4,7 +4,7 @@
   "license": "CC0-1.0",
   "scripts": {
     "postinstall": "bundle",
-    "build": "jekyll build",
+    "build": "bundle exec jekyll build",
     "postbuild": "purgecss --css _site/assets/css/*.css --content _site/**/*.html --output _site/assets/css",
     "start": "bundle exec jekyll serve",
     "update-uswds": "npm run update-assets && npm run update-sass",
