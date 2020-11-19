@@ -3114,7 +3114,28 @@ Speaking of inheritance, a parent / child relationship between classes is also f
 
 ### Prototypal Class
 
+{% highlight javascript %}
 
+function Workshop(teacher) {
+    this.teacher = teacher;
+}
+
+Workshop.prototype.ask = function(question) {
+    console.log(this.teacher, question);
+};
+
+var deepJS = new Workshop("Kyle");
+var reactJS = new Workshop("Suzy");
+
+deepJS.ask("Is 'prototype' a class?");
+// Kyle Is 'prototype' a class?
+
+reactJS.ask("Isn't 'prototype' ugly?");
+// Suzy Isn't 'prototype' ugly?
+
+{% endhighlight %}
+
+Underneath the syntactic sugar of `class` is the `prototype`, which looks quite similar. This is useful for our understanding of how classes work.
 
 ### The Prototype Chain
 
