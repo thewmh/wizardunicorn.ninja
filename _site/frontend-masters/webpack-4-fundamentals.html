@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>Webpack 4 Fundamentals | Wizard Unicorn Ninja</title>
+
+
+
+<meta name="description" content="These are notes from the 'Webpack 4 Fundamentals' course on Frontend Masters.">
+
+
+
+<link rel="shortcut icon" type="image/ico"
+  href="">
+
+<link rel="icon" type="image/png"
+  href="/assets/uswds/img/favicons/favicon.png">
+
+<link rel="icon" type="image/png"
+  sizes="192x192"
+  href="/assets/uswds/img/favicons/favicon-192.png">
+
+<link rel="apple-touch-icon-precomposed" type=""
+  href="/assets/uswds/img/favicons/favicon-57.png">
+
+<link rel="apple-touch-icon-precomposed" type=""
+  sizes="72x72"
+  href="/assets/uswds/img/favicons/favicon-72.png">
+
+<link rel="apple-touch-icon-precomposed" type=""
+  sizes="114x114"
+  href="/assets/uswds/img/favicons/favicon-114.png">
+
+<link rel="apple-touch-icon-precomposed" type=""
+  sizes="144x144"
+  href="/assets/uswds/img/favicons/favicon-144.png">
+
+
+
+    
+
+
+
+<link rel="stylesheet"
+  href="/assets/css/main.css"
+  media="screen">
+
+
+    
+  </head>
+  <body class="  ">
+
+    <a class="usa-skipnav" href="#main-content">Skip to main content</a>
+
+    
+
+
+  <section class="usa-banner">
+  <div class="usa-accordion">
+    <!-- <header class="usa-banner-header">
+      <div class="usa-grid usa-banner-inner"> <img src="/assets/uswds/img/favicons/favicon-57.png" alt="U.S. flag">
+        <p>An official website of the United States government</p> <button class="usa-accordion-button usa-banner-button" aria-expanded="false" aria-controls="gov-banner"> <span class="usa-banner-button-text">Here's how you know</span> </button> </div>
+    </header> -->
+    <div class="usa-banner-content usa-grid usa-accordion-content" id="gov-banner">
+      <div class="usa-banner-guidance-gov usa-width-one-half"> <img class="usa-banner-icon usa-media_block-img" src="/assets/uswds/img/icon-dot-gov.svg" alt="Dot gov">
+        <div class="usa-media_block-body">
+          <p> <strong>The .gov means it’s official.</strong> <br> Federal government websites often end in .gov or .mil. Before sharing sensitive information, make sure you’re on a federal government site. </p>
+        </div>
+      </div>
+      <div class="usa-banner-guidance-ssl usa-width-one-half"> <img class="usa-banner-icon usa-media_block-img" src="/assets/uswds/img/icon-https.svg" alt="Https">
+        <div class="usa-media_block-body">
+          <p> <strong>The site is secure.</strong> <br> The <strong>https://</strong> ensures that you are connecting to the official website and that any information you provide is encrypted and transmitted securely. </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+  <header class="usa-header usa-header-extended" role="banner" id="usa-header">
+
+
+  
+    <div class="usa-navbar">
+      <button class="usa-menu-btn">Menu</button>
+      <div class="usa-logo" id="extended-mega-logo">
+        <a href="/" title="Home">
+          
+            <img class="usa-logo-img" src="/assets/img/hztl-wm.svg" alt="HZTL-WM">
+          
+          <em class="usa-logo-text">
+            Wizard Unicorn Ninja
+          </em>
+        </a>
+      </div>
+    </div>
+
+    <nav role="navigation" class="usa-nav">
+      <div class="usa-nav-inner">
+        <button class="usa-nav-close">
+          <img src="/assets/uswds/img/close.svg" alt="close">
+        </button>
+
+        
+        
+        
+        <ul class="usa-nav-primary usa-accordion">
+          
+          <li>
+            
+              <a class=" usa-nav-link  " href="/resources/">
+                <span>Resources</span>
+              </a>
+            
+          </li>
+          
+          <li>
+            
+              
+              
+              
+            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-2">
+              <span>Frontend Masters Workshop Notes</span>
+            </button>
+            
+            <ul id="nav-2" class="usa-nav-submenu" aria-hidden="true">
+            
+            
+              
+                
+                <li>
+                  <a href="/frontend-masters/fundamentals-functional-js">Javascript: From Fundamentals to Functional JS</a>
+                </li>
+                
+              
+                
+                <li>
+                  <a href="/frontend-masters/hard-parts-js">Javascript: The Hard Parts, v2</a>
+                </li>
+                
+              
+                
+                <li>
+                  <a href="/frontend-masters/deep-javascript-foundations">Deep Javascript Foundations, v3</a>
+                </li>
+                
+              
+                
+                <li>
+                  <a href="/frontend-masters/webpack-4-fundamentals">Webpack 4 Fundamentals</a>
+                </li>
+                
+              
+                
+                <li>
+                  <a href="/frontend-masters/web-performance-webpack">Web Performance with Webpack</a>
+                </li>
+                
+              
+                
+                <li>
+                  <a href="/frontend-masters/webpack-plugins-system">Webpack Plugins System</a>
+                </li>
+                
+              
+            
+            </ul>
+            
+            
+            
+          </li>
+          
+          <li>
+            
+              
+              
+              
+            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-3">
+              <span>Sitecore Workshop Notes</span>
+            </button>
+            
+            <ul id="nav-3" class="usa-nav-submenu" aria-hidden="true">
+            
+            
+              
+                
+                <li>
+                  <a href="/sitecore/jss">Sitecore JSS Fundamentals</a>
+                </li>
+                
+              
+            
+            </ul>
+            
+            
+            
+          </li>
+          
+        </ul>
+        
+
+        
+
+          
+          
+          <div class="usa-nav-secondary">
+            
+            <ul class="usa-unstyled-list usa-nav-secondary-links">
+              
+              
+              
+                <li>
+                  <a href=""
+                  >
+                    
+                  </a>
+                </li>
+              
+            </ul>
+          </div>
+          
+
+
+        </div>
+      </div>
+    </nav>
+  
+  <div class="main-top">
+      <div class="progress-container">
+        <div class="progress-bar" id="progress"></div>
+      </div>
+    </div>
+  </header>
+  <div class="usa-overlay"></div>
+
+
+
+
+    
+    
+
+
+    
+
+    
+
+    
+      
+      
+
+
+
+
+    
+    
+
+    <main id="main-content" class="usa-grid usa-section usa-content usa-layout-docs">
+          
+
+
+<div class="usa-layout-docs-main_content">
+  
+    <h1>Webpack 4 Fundamentals</h1>
+  
+  <h2 id="introduction">Introduction</h2>
+
+<p>Why are we using Webpack and what problems does it solve? At its core, it’s a very simple tool in terms of its standalone capabilities.</p>
+
+<h3 id="problems-with-script-loading">Problems with Script Loading</h3>
+
+<p>But why? It is important to understand how we’ve used JavaScript on the web. There are really only 2 ways that you can use JavaScript in the browser. JavaScript is really just a script with top-down execution. The first way to load JavaScript in the browser is via a <code class="language-plaintext highlighter-rouge">&lt;script&gt;</code> tag. The second way is to actually write JavaScript in your HTML.</p>
+
+<p>But what are the problems with these things?</p>
+
+<p>They don’t scale, you might have too many scripts, and each browser has bottlenecks. You could end up with unmaintainable scripts; scope, size, readability, fragility, monolithic files.</p>
+
+<p>Potential solutions?</p>
+
+<p>Immediately Invoked Function Expressions! Treat each file as an IIFE (Revealing Module Pattern). Using this pattern, you can now concatenate files without any concern of scope collision! This idea lead to the explosion of tools such as; <strong>Make</strong>, <strong>Grunt</strong>, <strong>Gulp</strong>, <strong>Broccoli</strong>, <strong>Brunch</strong>, <strong>StealJS</strong>. All of which are used to concatenate JS files.</p>
+
+<p>But there are still problems… Full rebuilds every time. Dead code (code you are not using). Lots of IIFEs are slow. No way to lazy load.</p>
+
+<h3 id="history-of-modules">History of Modules</h3>
+
+<p>How do you load JavaScript if there is no DOM?</p>
+
+<p>NPM + Node + Modules</p>
+
+<p>NPM was created as a package registry to share JS modules across the registry.</p>
+
+<p>There is no browser support for CommonJS, there are no live-bindings which causes problems with circular references, it’s slow…</p>
+
+<p>The solution to this is to use bundlers / linkers. <strong>Browserify</strong>, <strong>RequireJS</strong>, <strong>SystemJS</strong>. The bundlers are used to write CommonJS modules and use them in your code.</p>
+
+<p>But there are still problems. There is no static async or lazy loading.</p>
+
+<h3 id="ecmascript-modules-esm">EcmaScript Modules (ESM)</h3>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="p">{</span><span class="nx">uniq</span><span class="p">,</span> <span class="nx">forOf</span><span class="p">,</span> <span class="nx">bar</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">lodash-es</span><span class="dl">'</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">utils</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">utils</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">uniqConst</span> <span class="o">=</span> <span class="nx">uniq</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]);</span></code></pre></figure>
+
+<p>ES Modules is completely separate from ES 2015. ESM has named and default exports.</p>
+
+<p>ESM brought reusable, encapsulated, organized, and convenient modules. The issues… ESM for Node.js? Incredibly slow in the browser.</p>
+
+<h3 id="introducing-webpack">Introducing Webpack</h3>
+
+<p>Every [JavaScript] library is different; i.e. may use different module formats. Enter Webpack. Webpack is a module bundler which lets you write in any module format (including mixed formats) and compiles them for the browser. Webpack supports static async bundling which allows you to create separate lazy load bundles at build time. Webpack is the most performant way to ship JavaScript.</p>
+
+<h3 id="configuring-webpack">Configuring Webpack</h3>
+
+<p>There’s 3 ways that you can use Webpack.</p>
+
+<ol>
+  <li>
+    <p>The config - A CommonJS module that is an object which has a bunch of properties that define what Webpack should do with code.</p>
+  </li>
+  <li>
+    <p>Webpack CLI - Almost every single property in Webpack is bound to a CLI argument and parameter.</p>
+  </li>
+  <li>
+    <p>Node API - Neutrino is built with this.</p>
+  </li>
+</ol>
+
+<p>Webpack is important for web performance, scalability, and maintainability.</p>
+
+<h2 id="webpack-from-scratch">Webpack from Scratch</h2>
+
+<h3 id="using-webpack-for-the-first-time">Using Webpack for the First Time</h3>
+
+<p><a href="https://github.com/thelarkinn/webpack-workshop-2018">Repo to play along</a></p>
+
+<p>Start in branch <code class="language-plaintext highlighter-rouge">feature/01-fem-first-script</code>. Looking at the package.json file, you will find a lot of dependencies. Run <code class="language-plaintext highlighter-rouge">npm install</code>. Still in the package.json file, add the following:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"scripts"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"webpack"</span><span class="p">:</span><span class="w"> </span><span class="s2">"webpack"</span><span class="w">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>Then in the CLI type: <code class="language-plaintext highlighter-rouge">npm run webpack</code> and you will see the default Webpack CLI output and there isn’t even a config file yet!</p>
+
+<h3 id="adding-npm-scripts-for-environment-builds">Adding npm Scripts for Environment Builds</h3>
+
+<p>In the output, there should be a warning message that no <code class="language-plaintext highlighter-rouge">mode</code> has been set. <a href="https://webpack.js.org/concepts/mode">Click the link to learn more about Webpack <code class="language-plaintext highlighter-rouge">mode</code>(s)</a> Now add <code class="language-plaintext highlighter-rouge">dev</code> and <code class="language-plaintext highlighter-rouge">prod</code> environments to the <code class="language-plaintext highlighter-rouge">scripts</code> section from above:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"scripts"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"webpack"</span><span class="p">:</span><span class="w"> </span><span class="s2">"webpack"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"dev"</span><span class="p">:</span><span class="w"> </span><span class="s2">"npm run webpack -- --mode development"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"prod"</span><span class="p">:</span><span class="w"> </span><span class="s2">"npm run webpack -- --mode production"</span><span class="w">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>Now in the CLI you can type <code class="language-plaintext highlighter-rouge">npm run dev</code> or <code class="language-plaintext highlighter-rouge">npm run prod</code> to trigger the Webpack build mode as needed. Webpack defaults to production. Development is a faster build, production is an optimized build. Time to debug.</p>
+
+<p>Switch to:</p>
+
+<p><code class="language-plaintext highlighter-rouge">git checkout feature/03-fem-debug-script</code></p>
+
+<h3 id="setting-up-debugging">Setting Up Debugging</h3>
+
+<p>If you want to debug a node application, you can simply run node and pass in a couple of arguments; i.e.</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"debugthis"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node --inspect --inspect-brk ./src/index.js"</span></code></pre></figure>
+
+<p>When you run the above with <code class="language-plaintext highlighter-rouge">npm run debugthis</code>, you will see a url in terminal that will link you to a debugger in your browser. If we want to be able to debug Webpack, the debug command in the project is:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"debug"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node --inspect --debug-brk ./node_modules/webpack/bin/webpack.js"</span></code></pre></figure>
+
+<p>Run the debug command and you can debug Webpack!</p>
+
+<p>Get comfortable with adding to your config file, because the Webpack methodology is based on ‘separation of concerns’. Most people have trouble with Webpack because they shove everything into one file, into one build file, so it becomes fragile.</p>
+
+<h3 id="coding-your-first-module">Coding Your First Module</h3>
+
+<p>In <code class="language-plaintext highlighter-rouge">src/</code> add a new file; i.e. <code class="language-plaintext highlighter-rouge">nav.js</code>. If you want to share some variables or a function, using the <code class="language-plaintext highlighter-rouge">export {a, v, r}</code> syntax will allow you to do so. Otherwise, use <code class="language-plaintext highlighter-rouge">export default "nav"</code>. In your entry-point; i.e. <code class="language-plaintext highlighter-rouge">index.js</code> add an import statement, <code class="language-plaintext highlighter-rouge">import nav from "./nav";</code>.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">nav</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./nav</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">nav</span><span class="p">)</span></code></pre></figure>
+
+<p>Then build the project with the <code class="language-plaintext highlighter-rouge">npm run prod</code> command.</p>
+
+<h3 id="adding-watch-mode">Adding Watch Mode</h3>
+
+<p>To avoid having to continuously run a build command, you can just add a ‘watch’ flag to your <code class="language-plaintext highlighter-rouge">dev</code> command in the config file; i.e.</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"dev"</span><span class="p">:</span><span class="w"> </span><span class="s2">"npm run webpack -- --mode development --watch"</span></code></pre></figure>
+
+<p>Now when you type <code class="language-plaintext highlighter-rouge">npm run dev</code> in terminal, Webpack will ‘watch’ for changes. Update <code class="language-plaintext highlighter-rouge">nav.js</code> to the following:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">export</span> <span class="k">default</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="dl">"</span><span class="s2">nav</span><span class="dl">"</span><span class="p">;</span></code></pre></figure>
+
+<p>Then you have to update the index.js file to:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">nav</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./nav</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">nav</span><span class="p">())</span> <span class="c">&lt;!--</span> <span class="nx">call</span> <span class="nx">the</span> <span class="nx">nav</span> <span class="kd">function</span> <span class="o">--&gt;</span></code></pre></figure>
+
+<p>You will see in your terminal the changes to the files being ‘watched’ and Webpack will incrementally compile the changes.</p>
+
+<h3 id="es-module-syntax">ES Module Syntax</h3>
+
+<p>Add a new file <code class="language-plaintext highlighter-rouge">footer.js</code> with the following:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">export</span> <span class="kd">const</span> <span class="nx">top</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">top</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">bottom</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">bottom</span><span class="dl">"</span><span class="p">;</span></code></pre></figure>
+
+<p>And in the <code class="language-plaintext highlighter-rouge">index.js</code> file add the following import statement:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="p">{</span> <span class="nx">top</span><span class="p">,</span> <span class="nx">bottom</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./footer</span><span class="dl">"</span><span class="p">;</span></code></pre></figure>
+
+<p>Now you have access to the variables from footer.</p>
+
+<h3 id="commonjs-export">CommonJS Export</h3>
+
+<p>If you want / need to use a CommonJS module, the format is kind of similar to what we’ve already seen. There are two options, a default or a named export. The syntax is as follows (in a file <code class="language-plaintext highlighter-rouge">button.js</code>):</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// take a str, the button label and return an element</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">(</span><span class="nx">buttonName</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s2">`Button: </span><span class="p">${</span><span class="nx">buttonName</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>In Webpack, you cannot use CommonJS and ES6 in the same file, it would throw an error.</p>
+
+<p>Webpack supports using require, but you can import a CommonJS module as any other.</p>
+
+<h3 id="commonjs-named-exports">CommonJS Named Exports</h3>
+
+<p>If you want to do a named export, maybe adding button styles?, make a new file <code class="language-plaintext highlighter-rouge">button-styles.js</code> and add the following:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">red</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">color: red;</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">blue</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">color:  blue;</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">makeColorStyle</span> <span class="o">=</span> <span class="nx">color</span> <span class="o">=&gt;</span> <span class="s2">`color: </span><span class="p">${</span><span class="nx">color</span><span class="p">}</span><span class="s2">;`</span><span class="p">;</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">red</span> <span class="o">=</span> <span class="nx">red</span><span class="p">;</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">blue</span> <span class="o">=</span> <span class="nx">blue</span><span class="p">;</span>
+<span class="k">export</span><span class="p">.</span><span class="nx">makeColorStyle</span> <span class="o">=</span> <span class="nx">makeColorStyle</span><span class="p">;</span></code></pre></figure>
+
+<p>You can name the exports anything you want, but it might make sense to name them same or similar to the variable that they represent. If you would like to destructure your exports, you could (in footer.js) do the following:</p>
+
+<p><code class="language-plaintext highlighter-rouge">export { top, bottom };</code></p>
+
+<p>It is recommended to put your exoprts at the bottom  of your files. You <em>can</em> put your exports anywhere in the file, but it might make sense to choose and stick to a convention. Webpack only bundles whatever imports you are using, so if you only use the function from the <code class="language-plaintext highlighter-rouge">button-styles.js</code> file, only that function will be bundled, not the color variables.</p>
+
+<h3 id="tree-shaking">Tree Shaking</h3>
+
+<p>If you run <code class="language-plaintext highlighter-rouge">npm prod</code> and  check your <code class="language-plaintext highlighter-rouge">main.js</code> file, you would not see the color variables if you did not import them. This is an example of Webpack’s tree shaking. Webpack will exclude any unused code. At the top level of your code directory, make a new file: <code class="language-plaintext highlighter-rouge">webpack.config.js</code>and add to it the following:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">mode</span><span class="p">:</span> <span class="dl">"</span><span class="s2">none</span><span class="dl">"</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>The above basic configuration will run Webpack without any encapsulation.</p>
+
+<h3 id="webpack-bundle-walkthrough">Webpack Bundle Walkthrough</h3>
+
+<p>If you’ve been following along, you can check out the <code class="language-plaintext highlighter-rouge">dist/main.js</code> file and take a look at how Webpack handles the code we’ve been working with.</p>
+
+<p>In that file, you will find a bunch of comments (to see comments, you may need to make a webpack.config.js file in the root of your project, see below for example file) that will inform you of what each piece of the function(s) is doing.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// simple webpack.config.js file to remove code minification/optimization... because comments </span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">mode</span><span class="p">:</span> <span class="dl">'</span><span class="s1">development</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">optimization</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">minimize</span><span class="p">:</span> <span class="kc">false</span>
+  <span class="p">}</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>Take a look through the file and try to follow each line of comments to figure out what Webpack has produced.</p>
+
+<h2 id="webpack-core-concepts">Webpack Core Concepts</h2>
+
+<h3 id="weback-entry">Weback Entry</h3>
+
+<p>Now we will begin to <em>actually</em> build out the config file, add loaders, support for other things, and talk about some why(s).</p>
+
+<p>Webpack Entry - It’s not the entry property on the config file, but speaking of the ‘entry’ of the various files required for your project; i.e.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>bootstrap.js</th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td>app.component.ts</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>external.lib.js</td>
+      <td> </td>
+      <td>some.component.ts</td>
+    </tr>
+    <tr>
+      <td>external.lib.dep.js</td>
+      <td> </td>
+      <td>some.component.sass</td>
+    </tr>
+    <tr>
+      <td>external.lib.dep.css</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The first file <code class="language-plaintext highlighter-rouge">bootstrap.js</code> is your entry point, Webpack uss this as the starting point. This is defined by using an <code class="language-plaintext highlighter-rouge">entry</code> property in the config file:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// webpack.config.js</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">mode</span><span class="p">:</span> <span class="dl">'</span><span class="s1">development</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">entry</span><span class="p">:</span> <span class="dl">'</span><span class="s1">./my-entry-file.main.js</span><span class="dl">'</span><span class="p">,</span>
+  <span class="c1">//...</span>
+  <span class="p">}</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>There are a couple of different data types that you can enter into the <code class="language-plaintext highlighter-rouge">entry</code> point of your config file, but the simplest of them is just a string which is  just a relative path. Webpack will trace through each of your imports and then recurisively look for other dependencies in those files until it creates a graph.</p>
+
+<p>The entry point tells Webpack <strong>what</strong> (files) to load for the browser; it compliments the <strong>output</strong> property.</p>
+
+<h3 id="output--loaders">Output &amp; Loaders</h3>
+
+<p>The next concept important to understanding Webpack is the <strong>outuput</strong> property.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// webpack.config.js</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="c1">//...</span>
+  <span class="na">output</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">./my-output-path</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">filename</span><span class="p">:</span> <span class="dl">'</span><span class="s1">./my-output-filename.js</span><span class="dl">'</span><span class="p">,</span>
+  <span class="p">},</span>
+  <span class="c1">//...</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>The above talks about where and how we are going to name the file. We’ve previously explored what the output looks like.</p>
+
+<p>Fromo a high level: The output property tells Webpack <strong>where</strong> and <strong>how</strong> to distribute bundles (compilations). It works with entry.</p>
+
+<p>The next concept is Loaders and Rules. Loaders and Rules go ‘hand in hand’, they tell Webpack how to modify files before they are aded to the dependency graph. Loadrs are also JavaScript modules (functions) that take source files, and return them in their modified state. A Loader / Module set up could look like the following:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">:</span> <span class="p">{</span>
+  <span class="nl">rules</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+          <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.</span><span class="sr">ts$/</span><span class="p">,</span>
+          <span class="na">use</span><span class="p">:</span> <span class="dl">'</span><span class="s1">ts-loader</span><span class="dl">'</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+          <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.</span><span class="sr">js$/</span><span class="p">,</span>
+          <span class="na">use</span><span class="p">:</span> <span class="dl">'</span><span class="s1">babel-loader</span><span class="dl">'</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+          <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.</span><span class="sr">css$/</span><span class="p">,</span>
+          <span class="na">use</span><span class="p">:</span> <span class="dl">'</span><span class="s1">css-loader</span><span class="dl">'</span>
+      <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>In the above codeblock are a few (what Webpack calls) ‘rule sets’. A rule set at its minimum takes two parameters. The first is, as Webpack is creating the dependency graph, to look for one of the test cases. The second parameter ‘use’ tells Webapck what Node module to use when it finds a ‘test’ case. When you are adding different rule sets to your configuration, you are basically defining a pattern to match and what loader to use. You are pattern matching the file extension and telling Webpack how to ingest that file. This happens per file, not in bulk.</p>
+
+<p>Rule sets can have the following parameters:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">:</span> <span class="p">{</span>
+  <span class="nl">rules</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+          <span class="na">test</span><span class="p">:</span> <span class="nx">regex</span><span class="p">,</span>
+          <span class="na">use</span><span class="p">:</span> <span class="p">(</span><span class="nb">Array</span><span class="o">|</span><span class="nb">String</span><span class="o">|</span><span class="nb">Function</span><span class="p">),</span>
+          <span class="na">include</span><span class="p">:</span> <span class="nb">RegExp</span><span class="p">[],</span>
+          <span class="na">exclude</span><span class="p">:</span> <span class="nb">RegExp</span><span class="p">[],</span>
+          <span class="na">issuer</span><span class="p">:</span> <span class="p">(</span><span class="nb">RegExp</span><span class="o">|</span><span class="nb">String</span><span class="p">)[],</span>
+          <span class="na">enforce</span><span class="p">:</span> <span class="dl">"</span><span class="s2">pre</span><span class="dl">"</span><span class="o">|</span><span class="dl">"</span><span class="s2">post</span><span class="dl">"</span>
+      <span class="p">},</span>
+  <span class="p">],</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>‘test’ accepts a regular expression that instructs the compiler which files to run the loader against.</p>
+
+<p>‘use’ accepts an array/string/function that returns loader objects.</p>
+
+<p>‘enforce’ can be either “pre” or “post” which tells Webpack to run this rule either before or after all other rules.</p>
+
+<p>‘include’ accepts an array of regular expressions that instructs the compiler which folders/files to include. Will only search paths provided with the include.</p>
+
+<p>‘exclude’ accepts an array of regular expressions that instructs the compiler which folders/files to ignore.</p>
+
+<p>Whether or not you use any or all of the available parameters in the rule set will be based on your specific use case.</p>
+
+<h3 id="chaining-loaders">Chaining Loaders</h3>
+
+<p>The anatomy of a loader is such that it just takes a source and returns a new source. ‘use’ can accept an array, and execute from right to left. Technically, under the hood they go right left right, but the first pass going from right to left is just to collect metadata. Just before Webpack is going to process any file, it checks to see if any rule sets match against the file.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">:</span> <span class="p">{</span>
+  <span class="nl">rules</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+          <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.</span><span class="sr">less$/</span><span class="p">,</span>
+          <span class="na">use</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">style</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">css</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">less</span><span class="dl">'</span><span class="p">]</span>
+      <span class="p">}</span>
+  <span class="p">],</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>The above example, when finding a file with the <code class="language-plaintext highlighter-rouge">.less</code> extension, would start with the <code class="language-plaintext highlighter-rouge">less</code> loader, then pass the result to the <code class="language-plaintext highlighter-rouge">css</code> loader, andd finally to the <code class="language-plaintext highlighter-rouge">style</code> loader which results in the styles being placed in a script tag at the head of your HTML file. Not a very performant way to handle your styles, but an example of chaining loaders.</p>
+
+<p><a href="https://www.npmjs.com/search?q=webpack%20loader">There are tons of loaders available in the NPM registry</a>… responsive image handling, babel, php to JS.</p>
+
+<p>Loaders tell Webpack <strong>how</strong> to interpret and translate files. Transformed on a per-file basis before adding to the dependency graph.</p>
+
+<h3 id="weback-plugins">Weback Plugins</h3>
+
+<p>The last core concept of Webpack is plugins. The anatomy of a Webpack plugin is at its core a JavaScript object that has an <code class="language-plaintext highlighter-rouge">apply</code> property in the prototype chain. A plugin allows you to hook into the entire Webpack lifecycle of events. There are a bunch of plugins built out of the box to make things easier. An example of plugin:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">BellOnBundlerErrorPlugin</span> <span class="p">()</span> <span class="p">{</span> <span class="p">}</span>
+
+<span class="nx">BellOnBundlerErrorPlugin</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">apply</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">compiler</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="nx">process</span><span class="p">)</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">undefined</span><span class="dl">'</span><span class="p">){</span>
+
+    <span class="c1">// Complier events that are emitted and handled</span>
+    <span class="nx">compiler</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="dl">'</span><span class="s1">done</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">stats</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">stats</span><span class="p">.</span><span class="nx">hasErrors</span><span class="p">())</span> <span class="p">{</span>
+            <span class="nx">process</span><span class="p">.</span><span class="nx">stderr</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="dl">'</span><span class="se">\</span><span class="s1">x07</span><span class="dl">'</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+
+    <span class="nx">compiler</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="dl">'</span><span class="s1">failed</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">process</span><span class="p">.</span><span class="nx">stderr</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="dl">'</span><span class="se">\</span><span class="s1">x07</span><span class="dl">'</span><span class="p">);</span>
+    <span class="p">});</span>
+
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">BellOnBundlerErrorPlugin</span></code></pre></figure>
+
+<p>The above plugin is instantiable, so we can <code class="language-plaintext highlighter-rouge">require()</code> it from the <code class="language-plaintext highlighter-rouge">node_modules</code> into the config file. In the <code class="language-plaintext highlighter-rouge">webpack.config.js</code> file, you can add this plugin as so:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// require() from node_modules or webpack or local file</span>
+<span class="kd">var</span> <span class="nx">BellOnBundleErrorPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">bell-on-error</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">webpack</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1">//...</span>
+    <span class="na">plugins</span><span class="p">:</span> <span class="p">[</span>
+        <span class="k">new</span> <span class="nx">BellOnBundlerErrorPlugin</span><span class="p">(),</span>
+
+        <span class="c1">// And some more of the built-in plugins</span>
+        <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">optimize</span><span class="p">.</span><span class="nx">CommonsChunckPlugin</span><span class="p">(</span><span class="dl">'</span><span class="s1">vendors</span><span class="dl">'</span><span class="p">),</span>
+        <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">optimize</span><span class="p">.</span><span class="nx">UglifyJSPlugin</span><span class="p">()</span>
+    <span class="p">]</span>
+    <span class="c1">//...</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The above passes a new instance of the plugin(s) into the configuration. Within the <code class="language-plaintext highlighter-rouge">()</code> of each plugin you can pass in additional arguments.</p>
+
+<p>80% of Webpack is made up of its own plugin system. Webpack itself is a completely event drive architecture. Having this sort of architecture allows Webpack to pivot very quickly. It allows Webpack to instantly adopt a new feature without breaking anything. Alternatively, Webpack could drop a feature without breaking changes.</p>
+
+<p>Plugins add additional functionality to <em>Compliations(optimized bundled modules)</em>. They are more powerful with more access to the <a href="https://webpack.js.org/api/compiler-hooks/">CompilerAPI</a>. They do everything else you’d ever want to do in Webpack. Plugins let you do anything that you can’t do with a loader. Loaders are only applied on a profile basis, but plugins can access theh whole bundle.</p>
+
+<p>Plugins are useful when you want to interact with the compiler runtime, the event lifecycle, or even when you want to just apply functionality at the bundle level.</p>
+
+<h3 id="weback-config">Weback Config</h3>
+
+<p>Time to start for real build out a <code class="language-plaintext highlighter-rouge">webpack.config.js</code> file!</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">({</span>
+    <span class="na">output</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">filename</span><span class="p">:</span> <span class="dl">"</span><span class="s2">bundle.js</span><span class="dl">"</span>
+    <span class="p">}</span>
+<span class="p">});</span></code></pre></figure>
+
+<p>The above will change the defalut Webpack output filename to <code class="language-plaintext highlighter-rouge">bundle.js</code></p>
+
+<h3 id="passing-variables-to-webpack-config">Passing Variables to Webpack Config</h3>
+
+<p>Now we look at how too access environment variables. In the <code class="language-plaintext highlighter-rouge">package.json</code> file, update the <code class="language-plaintext highlighter-rouge">--mode</code> flag in the “prod” “dev” “prod:debug” “dev:debug” definitions to <code class="language-plaintext highlighter-rouge">--env.mode</code>. When you are using the <code class="language-plaintext highlighter-rouge">--env.mode</code> flag, it takes whatever value that is, in this case it’s like an object with a <code class="language-plaintext highlighter-rouge">mode</code> property and it will provide that to the config for you. Update the <code class="language-plaintext highlighter-rouge">webpack.config.js</code> file as below:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">env</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">env</span><span class="p">);</span> <span class="c1">// this way you can see what env is</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="na">output</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">filename</span><span class="p">:</span> <span class="dl">"</span><span class="s2">bundle.js</span><span class="dl">"</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>type <code class="language-plaintext highlighter-rouge">npm run prod</code> in the console and you can see the value of <code class="language-plaintext highlighter-rouge">env</code>. It should log the whole object, in this case <code class="language-plaintext highlighter-rouge">{mode: production}</code>. You’ll also see a warning that the mode has not been set, so set one in your <code class="language-plaintext highlighter-rouge">webpack.config.js</code> file.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">env</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">env</span><span class="p">);</span> <span class="c1">// this way you can see what env is</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="na">mode</span><span class="p">:</span> <span class="nx">env</span><span class="p">.</span><span class="nx">mode</span><span class="p">,</span>
+        <span class="na">output</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">filename</span><span class="p">:</span> <span class="dl">"</span><span class="s2">bundle.js</span><span class="dl">"</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>Now that you know how to get different things into your config file, you can start to change the behavior of your returned object conditionally. First update the <code class="language-plaintext highlighter-rouge">webpack.config.js</code> file to:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">mode</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">mode</span><span class="p">);</span> <span class="c1">// this way you can see what mode is</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="nx">mode</span><span class="p">,</span>
+        <span class="na">output</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">filename</span><span class="p">:</span> <span class="dl">"</span><span class="s2">bundle.js</span><span class="dl">"</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>Moving forward, the next step is to configure the different build environments. One will be to define a set of plugins that you want to use across your whole build system, another is what you want for your development mode, and then what you need for your production mode. There can be more than these, but for the purposes of this workshop, this is the baseline.</p>
+
+<h3 id="adding-weback-plugins">Adding Weback Plugins</h3>
+
+<p><a href="https://webpack.js.org/plugins/">🔥 OOTB Webpack plugins</a></p>
+
+<p>The first <em>essential</em> Webpack plugin is the <code class="language-plaintext highlighter-rouge">html-webpack-plugin</code>. If you don’t already have it installed, type <code class="language-plaintext highlighter-rouge">npm install html-webpack-plugin --save-dev</code> in your terminal. To get this to exist across all environments of your project, create a new folder for your config files, called <code class="language-plaintext highlighter-rouge">built-utils</code> or <code class="language-plaintext highlighter-rouge">webpack-thangs</code> or whatever makes sense. Then update your <code class="language-plaintext highlighter-rouge">webpack.config.js</code> file as below:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">webpack</span><span class="dl">"</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">HtmlWebpackPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">html-webpack-plugin</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">mode</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">mode</span><span class="p">);</span> <span class="c1">// this way you can see what mode is</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="nx">mode</span><span class="p">,</span>
+        <span class="na">output</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">filename</span><span class="p">:</span> <span class="dl">"</span><span class="s2">bundle.js</span><span class="dl">"</span>
+        <span class="p">},</span>
+        <span class="na">plugins</span><span class="p">:</span> <span class="p">[</span>
+            <span class="k">new</span> <span class="nx">HtmlWebpackPlugin</span><span class="p">(),</span>
+            <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">ProgressPlugin</span><span class="p">()</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>Anytime you pass a plugin to your config file, you need to add <code class="language-plaintext highlighter-rouge">new</code> before declaring it (see above code block).</p>
+
+<h3 id="setting-up-a-local-development-server">Setting Up a Local Development Server</h3>
+
+<p>Before you start to separate out the config file into different builds and conditionals, let’s set up a development server. Run <code class="language-plaintext highlighter-rouge">npm install webpack-dev-server --dev</code>. Then update the <code class="language-plaintext highlighter-rouge">package.json</code> file with:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+<span class="dl">"</span><span class="s2">webpack-dev-server</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">webpack-dev-server</span><span class="dl">"</span><span class="p">,</span>
+<span class="c1">//...</span>
+<span class="dl">"</span><span class="s2">dev</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">npm run webpack-dev-server...</span><span class="dl">"</span>
+<span class="c1">//...</span></code></pre></figure>
+
+<p>Type <code class="language-plaintext highlighter-rouge">npm run dev</code> into your terminal and you should see that your code is available to view somewhere on a localhost address. Now you have a dev server to check on your changes as they are compiled, the browser will automatically refresh when changes are compiled. Webpack Dev Server is a web server based on <a href="https://expressjs.com/">Express</a>. All it’s doing is instead of making a bundle, is it is making a bundle in memory and serving that up to Express, which then does a web socket connection which displays the updates as they arrive.</p>
+
+<h3 id="starting-to-code-with-webpack">Starting to Code with Webpack</h3>
+
+<p>With the development server set up, making changes to files will cause a compile to occur and you can see the changes reflected in your browser. The workshop example shows the <code class="language-plaintext highlighter-rouge">footer.js</code> file being updated to create some markup with JavaScript.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span><span class="p">{</span> <span class="nx">red</span><span class="p">,</span> <span class="nx">blue</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./button-styles</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">top</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">div</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">top</span><span class="p">.</span><span class="nx">innerText</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Top of Footer</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">top</span><span class="p">.</span><span class="nx">style</span> <span class="o">=</span> <span class="nx">red</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">bottom</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">div</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">bottom</span><span class="p">.</span><span class="nx">innerText</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Bottom of Footer</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">bottom</span><span class="p">.</span><span class="nx">style</span> <span class="o">=</span> <span class="nx">blue</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">footer</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">footer</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">footer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">top</span><span class="p">);</span>
+<span class="nx">footer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">bottom</span><span class="p">);</span>
+
+<span class="k">export</span> <span class="p">{</span> <span class="nx">top</span><span class="p">,</span> <span class="nx">bottom</span><span class="p">,</span> <span class="nx">footer</span> <span class="p">};</span></code></pre></figure>
+
+<p>This is a very basic example, but it does allow you to immediately see the benefit of using the Webpack development server.</p>
+
+<h3 id="splitting-environment-config-files">Splitting Environment Config Files</h3>
+
+<p>Time to split the environment config files! In <code class="language-plaintext highlighter-rouge">webpack.config.js</code>, update it to:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">webpack</span><span class="dl">"</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">HtmlWebpackPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">html-webpack-plugin</span><span class="dl">"</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">modeConfig</span> <span class="o">=</span> <span class="nx">env</span> <span class="o">=&gt;</span> <span class="nx">require</span><span class="p">(</span><span class="s2">`./build-utils/webpack.</span><span class="p">${</span><span class="nx">env</span><span class="p">}</span><span class="s2">`</span><span class="p">)(</span><span class="nx">env</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">mode</span><span class="p">,</span> <span class="nx">presets</span> <span class="p">}</span> <span class="o">=</span> <span class="p">{</span> <span class="na">mode</span><span class="p">:</span> <span class="dl">"</span><span class="s2">production</span><span class="dl">"</span><span class="p">,</span> <span class="na">presets</span><span class="p">:</span> <span class="p">[]</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">mode</span><span class="p">);</span> <span class="c1">// this way you can see what mode is</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="nx">mode</span><span class="p">,</span>
+        <span class="na">output</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">filename</span><span class="p">:</span> <span class="dl">"</span><span class="s2">bundle.js</span><span class="dl">"</span>
+        <span class="p">},</span>
+        <span class="na">plugins</span><span class="p">:</span> <span class="p">[</span>
+            <span class="k">new</span> <span class="nx">HtmlWebpackPlugin</span><span class="p">(),</span>
+            <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">ProgressPlugin</span><span class="p">()</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>The new const <code class="language-plaintext highlighter-rouge">modeConfig</code> is calling require and based on what is passed in to the function (env), it will either look for <code class="language-plaintext highlighter-rouge">webpack.production</code> or <code class="language-plaintext highlighter-rouge">webpack.developemnt</code>. This is leveraging the <code class="language-plaintext highlighter-rouge">env.mode</code> and passing it in. Also on the <code class="language-plaintext highlighter-rouge">module.exports...</code> line are some additional defaults added as a ‘safety net’ so that if no object is passed in, there is in fact now a default that would run the base configuration of Webpack.</p>
+
+<p>To get your config split into different files, run <code class="language-plaintext highlighter-rouge">npm install webapck-merge --dev</code>, then add <code class="language-plaintext highlighter-rouge">const webpackMerge = require("webpack-merge");</code> to the webpack.config.js file. By deafult, Webpack Merge is just using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign">Object Assign</a>. Again update the webpack.config.js file to:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">webpack</span><span class="dl">"</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">HtmlWebpackPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">html-webpack-plugin</span><span class="dl">"</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">modeConfig</span> <span class="o">=</span> <span class="nx">env</span> <span class="o">=&gt;</span> <span class="nx">require</span><span class="p">(</span><span class="s2">`./build-utils/webpack.</span><span class="p">${</span><span class="nx">env</span><span class="p">}</span><span class="s2">`</span><span class="p">)(</span><span class="nx">env</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">webpackMerge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">webpack-merge</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">mode</span><span class="p">,</span> <span class="nx">presets</span> <span class="p">}</span> <span class="o">=</span> <span class="p">{</span> <span class="na">mode</span><span class="p">:</span> <span class="dl">"</span><span class="s2">production</span><span class="dl">"</span><span class="p">,</span> <span class="na">presets</span><span class="p">:</span> <span class="p">[]</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">webpackMerge</span> <span class="p">(</span>
+        <span class="p">{</span>
+            <span class="nx">mode</span><span class="p">,</span>
+            <span class="na">plugins</span><span class="p">:</span> <span class="p">[</span>
+                <span class="k">new</span> <span class="nx">HtmlWebpackPlugin</span><span class="p">(),</span>
+                <span class="k">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">ProgressPlugin</span><span class="p">()</span>
+            <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="nx">modeConfig</span><span class="p">(</span><span class="nx">mode</span><span class="p">),</span>
+        <span class="nx">loadPresets</span><span class="p">({</span> <span class="nx">mode</span><span class="p">,</span> <span class="nx">presets</span> <span class="p">})</span>
+    <span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<p><code class="language-plaintext highlighter-rouge">modeConfig</code> will set the mode. With the webpack.config.js file set up, you can now start to separate <em>production</em>, <em>development</em>, and whatever other build environment settings you would like to have.</p>
+
+<h3 id="webpack-qa">Webpack Q&amp;A</h3>
+
+<p><strong>Can Webpack be used server side?</strong></p>
+
+<p>Yes, with <code class="language-plaintext highlighter-rouge">webpack-dev-middleware</code></p>
+
+<p><strong>Can you use the HTML Webpack plugin to process all HTML files without having to declare the plugin across multiple build environments?</strong></p>
+
+<p>For a multi-page app architecture, you do actually have to have a new instance of this plugin. Check out the <a href="https://github.com/zorigitano/multipage-webpack-plugin">Multipage Webpack Plugin</a> for some insight on how that has been handled by the instructor in a previous role for Multual of Omaha. Basically, it accesses your entries and for each entry creates a new instance of the plugin.</p>
+
+<p><strong>Are there situations where Webpack runs into an out of memory error andn where would you capture that exception?</strong></p>
+
+<p>Yes? Your Webpack space complexity will be linear in terms of how many modules you have in your app. You will end up consuming more and more memory because it needs more and more memory. Increasing the memory limit for Node can help (AirBNB has gone up to 32GB). It’s also possible that you could have a memory leak i.e. you are using hashing while using the dev server and a new hash is created each time you make a file change which is then stored in memory. Don’t do that. BUT… that specific issue has been addressed in Webpack 5.</p>
+
+<h2 id="using-plugins">Using Plugins</h2>
+
+<h3 id="using-css-with-webpack">Using CSS with Webpack</h3>
+
+<p>It would be more manageable if styles were out of the JavaScript right?! Like maybe in their own CSS/SCSS file? Yep. Go ahead and make a new stylesheet for your <code class="language-plaintext highlighter-rouge">footer.js</code> file. Call it <code class="language-plaintext highlighter-rouge">footer.css</code> or something clever like that (I
+‘m actually using SASS, so if you’d like to do that as well, run <code class="language-plaintext highlighter-rouge">npm install sass sass-loader</code> to get support for that filetype). I added classes and an import for the SCSS file to my <code class="language-plaintext highlighter-rouge">footer.js</code> file like so:</p>
+
+<figure class="highlight"><pre><code class="language-javasript" data-lang="javasript">import "./footer.scss";
+import { red, blue } from "./button-styles";
+
+const top = document.createElement("div");
+top.className = "footer--top";
+top.innerText = "Top of Footer";
+const bottom = document.createElement("div");
+bottom.innerText = "Bottom of Footer";
+bottom.className = "footer--bottom";
+const footer = document.createElement("footer");
+footer.appendChild(top);
+footer.appendChild(bottom);
+
+export { top, bottom, footer };</code></pre></figure>
+
+<p>In your new <code class="language-plaintext highlighter-rouge">footer.css</code> (or <code class="language-plaintext highlighter-rouge">footer.scss</code>) file, add some styling like so:</p>
+
+<figure class="highlight"><pre><code class="language-sass" data-lang="sass"><span class="nt">footer</span> <span class="err">{</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">100px</span><span class="err">;</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="err">;</span>
+    <span class="nl">text-align</span><span class="p">:</span> <span class="nb">center</span><span class="err">;</span>
+
+    <span class="nc">.footer--top</span> <span class="err">{</span>
+        <span class="nl">padding</span><span class="p">:</span> <span class="m">10px</span> <span class="m">0</span><span class="err">;</span>
+        <span class="nl">font-family</span><span class="p">:</span> <span class="s1">'Segoe UI'</span><span class="o">,</span> <span class="n">Tahoma</span><span class="o">,</span> <span class="n">Geneva</span><span class="o">,</span> <span class="n">Verdana</span><span class="o">,</span> <span class="nb">sans-serif</span><span class="err">;</span>
+        <span class="nl">background-color</span><span class="p">:</span> <span class="no">lawngreen</span><span class="err">;</span>
+    <span class="err">}</span>
+
+    <span class="nc">.footer--bottom</span> <span class="err">{</span>
+        <span class="nl">padding</span><span class="p">:</span> <span class="m">10px</span> <span class="m">0</span><span class="err">;</span>
+        <span class="nl">font-family</span><span class="p">:</span> <span class="s1">'Segoe UI'</span><span class="o">,</span> <span class="n">Tahoma</span><span class="o">,</span> <span class="n">Geneva</span><span class="o">,</span> <span class="n">Verdana</span><span class="o">,</span> <span class="nb">sans-serif</span><span class="err">;</span>
+        <span class="nl">background-color</span><span class="p">:</span> <span class="no">aqua</span><span class="err">;</span>
+    <span class="err">}</span>
+<span class="err">}</span></code></pre></figure>
+
+<p>Do whatever you like for styling, the important thing is to see the things! But before we get to see all the awesome we’ve made, we have to update the config file to provide the appropriate loaders for the stylesheet(s). Update the <code class="language-plaintext highlighter-rouge">webpack.development.js</code> file with this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">({</span>
+    <span class="na">module</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">rules</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.</span><span class="sr">s</span><span class="se">[</span><span class="sr">ac</span><span class="se">]</span><span class="sr">ss$/i</span><span class="p">,</span>
+                <span class="na">use</span><span class="p">:</span> <span class="p">[</span><span class="dl">"</span><span class="s2">style-loader</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">css-loader</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">sass-loader</span><span class="dl">"</span><span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">})</span></code></pre></figure>
+
+<p>I believe the instructor skipped over the breaking up of the configs into separate files, so here’s that. Make (at the root of your project) a folder for your configuration files, <code class="language-plaintext highlighter-rouge">build-utils</code> is a fine name. Add <code class="language-plaintext highlighter-rouge">webpack.development.js</code> and <code class="language-plaintext highlighter-rouge">webpack.production.js</code> in that folder and add the following base for each:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">({});</span></code></pre></figure>
+
+<p>And if you are using straight up CSS, your config should look like this remember that <code class="language-plaintext highlighter-rouge">test</code> is a regular expession to find the specific filetype and <code class="language-plaintext highlighter-rouge">use</code> is what loader we will use to process the file:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">({</span>
+    <span class="na">module</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">rules</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.</span><span class="sr">css$/</span><span class="p">,</span>
+                <span class="na">use</span><span class="p">:</span> <span class="p">[</span><span class="dl">"</span><span class="s2">style-loader</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">css-loader</span><span class="dl">"</span><span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">})</span></code></pre></figure>
+
+<p>Initially, the instructor only includes the <code class="language-plaintext highlighter-rouge">css-loader</code> and nothing happens. To check out what’s going on (if you want to try this progressively), <code class="language-plaintext highlighter-rouge">console.log</code> the import from <code class="language-plaintext highlighter-rouge">footer.js</code> and you can then see what is actually being imported. <code class="language-plaintext highlighter-rouge">style-loader</code> actually consumes the CSS and applies it for you.
+<em>note: if you are modifying your config, you will have to restart your dev environment</em>.</p>
+
+<h3 id="hot-module-replacement-with-css">Hot Module Replacement with CSS</h3>
+
+<p>If you look at the generated code, there are special annotations wrapped around your CSS (now JavaScript code). Loaders are really useful for helping support a unique Webpack feature called <a href="https://webpack.js.org/concepts/hot-module-replacement/">Hot Module Replacement</a>. So… we’re going to try it. In the <code class="language-plaintext highlighter-rouge">package.json</code> file, add another flag to the end of your <code class="language-plaintext highlighter-rouge">dev</code> setup, <code class="language-plaintext highlighter-rouge">--hot</code>. To see Hot Module Replacement in action, restart your dev environment <code class="language-plaintext highlighter-rouge">npm run dev</code>, remove the <code class="language-plaintext highlighter-rouge">import ".footer.(s)css";</code> statement from <code class="language-plaintext highlighter-rouge">footer.js</code> and place that same line into your entry point, <code class="language-plaintext highlighter-rouge">index.js</code>. Then, make some arbitrary change to your stylesheet and you should see the browser instantly reload itself. Currently your <code class="language-plaintext highlighter-rouge">package.json</code> file should look something like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+<span class="dl">"</span><span class="s2">scripts</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">webpack</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">webpack</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">webpack-dev-server</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">webpack-dev-server</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">debug</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">node --inspect --inspect-brk ./node_modules/webpack/bin/webpack.js</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">prod</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">npm run webpack -- --env.mode production</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">dev</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">npm run webpack-dev-server -- --env.mode development --hot</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">prod:debug</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">npm run debug -- --env.mode production</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">dev:debug</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">npm run debug -- --env.mode development</span><span class="dl">"</span>
+<span class="p">},</span>
+<span class="c1">//...</span></code></pre></figure>
+
+<p>Webpack has the ability to ‘patch’ files with changes incrementally and apply them without you ever having to reload the browser. Currently, the setup is relying on JavaScript to insert a style tag to implement the CSS, but that is not an ideal way to apply styling, so let’s update the production config to use the <code class="language-plaintext highlighter-rouge">mini-css-extract-plugin</code>. In <code class="language-plaintext highlighter-rouge">webpack.production.js</code>, make your file look like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">MiniCssExtractPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">mini-css-extract-plugin</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">({</span>
+    <span class="na">output</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">filename</span><span class="p">:</span> <span class="dl">"</span><span class="s2">bundle.js</span><span class="dl">"</span>
+    <span class="p">},</span>
+    <span class="na">module</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">rules</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.</span><span class="sr">s</span><span class="se">[</span><span class="sr">ac</span><span class="se">]</span><span class="sr">ss$/i</span><span class="p">,</span>
+                <span class="na">use</span><span class="p">:</span> <span class="p">[</span><span class="nx">MiniCssExtractPlugin</span><span class="p">.</span><span class="nx">loader</span><span class="p">,</span> <span class="dl">"</span><span class="s2">css-loader</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">sass-loader</span><span class="dl">"</span><span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="na">plugins</span><span class="p">:</span> <span class="p">[</span>
+        <span class="k">new</span> <span class="nx">MiniCssExtractPlugin</span><span class="p">()</span>
+    <span class="p">]</span>
+<span class="p">})</span></code></pre></figure>
+
+<p>Next run your production environment, <code class="language-plaintext highlighter-rouge">npm run prod</code>, and check out the magic. There should now be a seperate CSS file in your <code class="language-plaintext highlighter-rouge">dist</code> folder AND you will see in the <code class="language-plaintext highlighter-rouge">index.html</code> file that there is a <code class="language-plaintext highlighter-rouge">&lt;link&gt;</code> without stylesheet in the appropriate place. The <code class="language-plaintext highlighter-rouge">mini-css-extract-plugin</code> has support for lazy loading CSS, a pretty huge performance win espcially when it comes to CSS. With the <code class="language-plaintext highlighter-rouge">css-loader</code> you can <a href="https://webpack.js.org/loaders/css-loader/">minify your CSS amongst other things</a>. Whatever CSS you have, say multiple files for each component, they will be concatenated into one file.</p>
+
+<h3 id="file-loader--url-loader">File Loader &amp; URL Loader</h3>
+
+<p>Now we will add File and URL Loaders to the base configuration <code class="language-plaintext highlighter-rouge">webpack.config.js</code>. <code class="language-plaintext highlighter-rouge">npm install file-loader url-loader</code> These new loaders are an all around fallback to things that may not be mappable to a browser API or a source image/video/audio file, the most basic example being something like a <code class="language-plaintext highlighter-rouge">.jpeg</code>. You may want to Base64 inline an image or just optput it to your <code class="language-plaintext highlighter-rouge">dist</code> directory. This is what the URL Loader does for you. Grab any image and put it into your <code class="language-plaintext highlighter-rouge">src</code> folder. Set up the URL loader in the <code class="language-plaintext highlighter-rouge">webpac.config.js</code> file like so:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+<span class="nx">mode</span><span class="p">,</span>
+<span class="nx">module</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nl">rules</span><span class="p">:</span> <span class="p">[</span>
+        <span class="nx">test</span><span class="p">:</span> <span class="o">/</span><span class="err">\</span><span class="p">.</span><span class="nx">jpe</span><span class="p">?</span><span class="nx">g</span><span class="o">/</span><span class="p">,</span>
+        <span class="nx">use</span><span class="p">:</span> <span class="p">[</span><span class="dl">"</span><span class="s2">url-loader</span><span class="dl">"</span><span class="p">]</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+<span class="nl">output</span><span class="p">:</span> <span class="p">{</span>
+<span class="c1">//...</span></code></pre></figure>
+
+<h3 id="loading-images-with-javascript">Loading Images with JavaScript</h3>
+
+<p>When it comes to Laoders (or pretty much anything) Webpack treats everything like JavaScript, so you can use it like JavaScript. In the <code class="language-plaintext highlighter-rouge">index.js</code> file, you can now import your image, something like <code class="language-plaintext highlighter-rouge">import image from "./name-of-your-image.jpg"</code> and if you log that to the console, you would see the base64 encoded version of your image file. Go ahead and make a new file in your <code class="language-plaintext highlighter-rouge">src</code> folder called <code class="language-plaintext highlighter-rouge">image.js</code> and add the following:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">makeImage</span> <span class="o">=</span> <span class="nx">url</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">image</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">img</span><span class="dl">"</span><span class="p">);</span>
+
+    <span class="nx">image</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">url</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">image</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">makeImage</span></code></pre></figure>
+
+<p>And back in the entry point <code class="language-plaintext highlighter-rouge">index.js</code> import the new script <code class="language-plaintext highlighter-rouge">import makeImage from "./image";</code></p>
+
+<p>Still in <code class="language-plaintext highlighter-rouge">index.js</code> add the following:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">imageURL</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">./path-to-my-image.jpg</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">image</span> <span class="o">=</span> <span class="nx">makeImage</span><span class="p">(</span><span class="nx">imageURL</span><span class="p">);</span>
+
+<span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">image</span><span class="p">);</span></code></pre></figure>
+
+<p>If you are running the dev environment, you should see the image appear.</p>
+
+<h3 id="limit-filesize-option-in-url-loader">Limit Filesize Option in URL Loader</h3>
+
+<p>Now you should have an image loading, but it is not optimized yet, because it is a giant URI… Let’s fix that. The URL Loader has an option called <code class="language-plaintext highlighter-rouge">limit</code>. Update the <code class="language-plaintext highlighter-rouge">webpack.config.js</code> <code class="language-plaintext highlighter-rouge">url-loader</code> to:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">use</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="na">loader</span><span class="p">:</span> <span class="dl">"</span><span class="s2">url-loader</span><span class="dl">"</span><span class="p">,</span>
+            <span class="na">options</span><span class="p">:</span> <span class="p">{</span>
+                <span class="na">limit</span><span class="p">:</span> <span class="mi">5000</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">]</span></code></pre></figure>
+
+<p>Notice the modified syntax for the loader, it is now an object. Both the shorthand <code class="language-plaintext highlighter-rouge">["url-loader"]</code> or its object counterpart work, but if you want to be able to pass options to the loader, you need to use its object form. Above, the <code class="language-plaintext highlighter-rouge">limit</code> option is set which for the URL loader will cause it to base64 encode any images that are below the specified size or if they are above the specified size, it will just include a hashed image in your output file (stored in memory). To do this, the url-loader is actually calling the file-loader behind the scenes.</p>
+
+<h3 id="implementing-presets">Implementing Presets</h3>
+
+<p>The idea of presets is that you might want more than dev or prod configurations. For this section, check out this <a href="https://github.com/TheLarkInn/webpack-workshop-2018/blob/feature/build-utils/build-utils/loadPresets.js">loadPresets.js</a> file in the workshop repo on github. The code is:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">webpackMerge</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">webpack-merge</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">env</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">{</span> <span class="nx">presets</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">env</span><span class="p">;</span>
+  <span class="kd">const</span> <span class="nx">mergedPresets</span> <span class="o">=</span> <span class="p">[].</span><span class="nx">concat</span><span class="p">(...[</span><span class="nx">presets</span><span class="p">]);</span>
+  <span class="kd">const</span> <span class="nx">mergedConfigs</span> <span class="o">=</span> <span class="nx">mergedPresets</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span>
+    <span class="nx">presetName</span> <span class="o">=&gt;</span> <span class="nx">require</span><span class="p">(</span><span class="s2">`./presets/webpack.</span><span class="p">${</span><span class="nx">presetName</span><span class="p">}</span><span class="s2">`</span><span class="p">)(</span><span class="nx">env</span><span class="p">)</span> <span class="c1">// call the preset and pass env also</span>
+  <span class="p">);</span>
+
+  <span class="k">return</span> <span class="nx">webpackMerge</span><span class="p">({},</span> <span class="p">...</span><span class="nx">mergedConfigs</span><span class="p">);</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>You might have some different scenarios where you want to try out one feature, analyze your build, or have something that only your CI runs. You don’t want it shipped in your prod configuration, so presets. The above code block is taking in the <code class="language-plaintext highlighter-rouge">env</code> settings then flattening all of the presets into a list of strings. Then it maps them into a require function that takes the <code class="language-plaintext highlighter-rouge">presetName</code> and calls them. They are then merged and returned.</p>
+
+<p>Next, type that code out into your own <code class="language-plaintext highlighter-rouge">loadPresets.js</code> file and jump to your <code class="language-plaintext highlighter-rouge">webpack.config.js</code> to implement <code class="language-plaintext highlighter-rouge">loadPresets</code>. Something like:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+<span class="kd">const</span> <span class="nx">presetConfig</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">./build-utils/presets/loadPresets</span><span class="dl">"</span><span class="p">);</span>
+<span class="c1">//...</span>
+
+<span class="c1">//...</span>
+<span class="nx">presetConfig</span><span class="p">({</span> <span class="nx">mode</span><span class="p">,</span> <span class="nx">presets</span> <span class="p">})</span>
+<span class="c1">//...</span></code></pre></figure>
+
+<p>With the above code, you could now start to build out a variety of presets for different scenarios; <code class="language-plaintext highlighter-rouge">webpack.typescript.js</code>?</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">({</span>
+    <span class="na">module</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">rules</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.</span><span class="sr">ts$/</span><span class="p">,</span>
+                <span class="na">use</span><span class="p">:</span> <span class="dl">"</span><span class="s2">ts-loader
+            }
+        ]
+    }
+});</span></code></pre></figure>
+
+<p>You then need to add the typescript loader to your project <code class="language-plaintext highlighter-rouge">npm install ts-loader typescript@next</code>. Now in the package.json file, you can add another build environment for typescript:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+<span class="dl">"</span><span class="s2">prod:typescript</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">npm run prod -- --env.presets typescript</span><span class="dl">"</span><span class="p">,</span>
+<span class="c1">//...</span></code></pre></figure>
+
+<p>If you run <code class="language-plaintext highlighter-rouge">npm run prod:typescript</code>, you should be able to include a file ending in <code class="language-plaintext highlighter-rouge">.ts</code> and your new environment and loader should be able to handle the new file. And it does.</p>
+
+<h3 id="bundle-analyzer-preset">Bundle Analyzer Preset</h3>
+
+<p>Webpack, by default, when it builds, it emits a <code class="language-plaintext highlighter-rouge">stats</code> object. The <code class="language-plaintext highlighter-rouge">stats</code> object either gets converted to a string or JSON (which is printed in the terminal), which is like the information that you see anytime a build happens. You can print it or you can consume it and do some interesting stuff with it. Possibly analyzing why a certain dependency got pulled into your appliaction as an example, or why is a particular file so large?</p>
+
+<p>Time to add the Webpack Bundle Analyzer plugin! <code class="language-plaintext highlighter-rouge">npm install webpack-bundle-analyzer --dev</code> Then add to the <code class="language-plaintext highlighter-rouge">package.json</code>:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+<span class="dl">"</span><span class="s2">prod:analyze</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">npm run prod -- --env.presets analyze</span><span class="dl">"</span><span class="p">,</span>
+<span class="c1">//...</span></code></pre></figure>
+
+<p>Now make a new script / preset that calls the Webpack Bundle Analyzer, <code class="language-plaintext highlighter-rouge">webpack.analyze.js</code> (analyze matches the name in package.json file). <code class="language-plaintext highlighter-rouge">webpack.analyze.js</code>:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">WebpackBundleAnalyzer</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">webpack-bundle-analyzer</span><span class="dl">"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">BundleAnalyzerPlugin</span><span class="p">;</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">({</span>
+    <span class="na">plugins</span><span class="p">:</span> <span class="p">[</span>
+        <span class="k">new</span> <span class="nx">WebpackBundleAnlyzer</span>
+    <span class="p">]</span>
+<span class="p">});</span></code></pre></figure>
+
+<p>Run <code class="language-plaintext highlighter-rouge">npm run prod:analyze</code> and you will see a page loaded in your web browser showing the result. Out of the box, it creates a separate web server which gives you a tree map visualization of what’s in your bundle. This is a valuable tool to determine why you may have file duplication or why a file may not be separated out</p>
+
+<h3 id="compression-plugin">Compression Plugin</h3>
+
+<p>Another example in adding a specific plugin for a specific purpose, the Compression Plugin! <code class="language-plaintext highlighter-rouge">npm install compression-webpack-plugin --save-dev</code> Make a new preset file <code class="language-plaintext highlighter-rouge">webpack.compress.js</code> in the <code class="language-plaintext highlighter-rouge">presets</code> folder. Make it look like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">CompressionWebpackPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">compression-webpack-plugin</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">({</span>
+    <span class="na">plugins</span><span class="p">:</span> <span class="p">[</span>
+        <span class="k">new</span> <span class="nx">ComressionWebpackPlugin</span><span class="p">()</span>
+    <span class="p">]</span>
+<span class="p">});</span></code></pre></figure>
+
+<p>Oh and of course… Add to your <code class="language-plaintext highlighter-rouge">package.json</code> file:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+<span class="dl">"</span><span class="s2">prod:compress</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">npm run prod -- --env.presets compress</span><span class="dl">"</span><span class="p">,</span>
+<span class="c1">//...</span></code></pre></figure>
+
+<p>Then run <code class="language-plaintext highlighter-rouge">npm run prod:compress</code> and watch the magic unfold! If you want to take it a step further, try running <code class="language-plaintext highlighter-rouge">npm run prod:compress -- --env.presets analyze</code> and see how you can now get both the compression and the analyze preset to run together. This is possible with any of your configs… if you’ve been following how to set up Webpack with this tutorial.</p>
+
+<p>Each of the plugins we’ve seen do have individual options, it just depends on what your environment is.</p>
+
+<h3 id="source-maps">Source Maps</h3>
+
+<p>The last piece that is useful to discuss is, Source Maps. There are a variety of different fomats that you can generate source maps and they all have different trade-offs, like everything in programming. Go check out the <a href="https://webpack.js.org/configuration">Webpack Config Documentation</a> the specific section of the docs is <a href="https://webpack.js.org/configuration/devtool">devtool</a>. Devtool is the property responsible for creating source maps. You’ll notice a table that talks about all of the diferent qualities of what the source maps produce. You can see in the table the various trade-offs that can be made depending on the quality of source map you are after.</p>
+
+<h2 id="wrapping-up">Wrapping Up</h2>
+
+<h3 id="qa-and-closing-remarks">Q&amp;A and Closing Remarks</h3>
+
+<p>Q: If you split your JavaScript files into <code class="language-plaintext highlighter-rouge">main.js</code>, <code class="language-plaintext highlighter-rouge">vendor.js</code>, and <code class="language-plaintext highlighter-rouge">manifest.js</code> as per the docs on caching, and your vendor file is getting too big, what are some of the steps you would take to reduce the filesize?</p>
+
+<p>A: Focus more on actually splitting your code with the dynamic import statement instead of trying to force or synthetically create the spender bundle. At the end of the day, caching really only solves the time it takes for the network to retrieve an asset, but the number one cost of a page loading slowly is the amount of JavaScript you parse, evaulate, and execute. So you don’t get any wins there by creating these vendor bundles. Short answer, turn the caching features off. And focus on trying to asychronously load code that you don’t need up front.</p>
+
+<p>Q: Is there a lazy load plugin recommendation?!</p>
+
+<p>A: Lazy loading is code splitting in Webpack. The example given, changes an import statement into a function that loads the import statement when called; i.e. when a button is clicked, load the code.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// from index.js in the workshop repo</span>
+<span class="c1">//..</span>
+<span class="kd">const</span> <span class="nx">loadFooter</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="dl">'</span><span class="s1">./footer</span><span class="dl">'</span><span class="p">);</span>
+<span class="c1">//..</span>
+
+<span class="nx">button</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">click</span><span class="dl">"</span><span class="p">,</span> <span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">loadFooter</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">m</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">footer</span><span class="p">)</span> <span class="c1">// moved from below</span>
+    <span class="p">});</span>
+<span class="p">});</span></code></pre></figure>
+
+<p>The above (contrived) scenario assumes that we only want to load the footer when someone clicks on a button. Lazy loading / code splitting is the main reason Webpack was created. Webpack supports dynamic import statements by default. If you are using Babel, you have to add another plugin to support the syntax… <a href="https://github.com/airbnb/babel-plugin-dynamic-import-node">like this plugin that does exactly that</a>. Standalone without Babel or Typescript, Webpack can read and understand the dynamic import statement. The above would actually create a separate bundle file that will only be loaded when the event occurs.</p>
+
+<p>Q: Is there any tree shaking benefit over exporting individual functions instead of a class?</p>
+
+<p>A: Short answer is yes. Methods on classes cannot be tree-shaken if they are not used. The instructor tends to favor a Functional over Object Oriented approach.</p>
+
+<p>Q: How do you go about finding good [Webpack] plugins versus bad plugins?</p>
+
+<p>A: <a href="https://github.com/webpack-contrib/">Webpack Contrib</a> - contains 90 repos; mostly loaders.</p>
+
+</div>
+    </main>
+
+    
+    
+    
+
+
+  
+<footer class="usa-footer usa-footer-medium" role="contentinfo">
+
+  
+
+  
+    <div class="usa-grid usa-footer-return-to-top">
+      <a href="#">Return to top</a>
+    </div>
+  
+
+
+
+  
+
+  
+  <div class="usa-footer-secondary_section">
+    <div class="usa-grid">
+      <div class="usa-footer-logo">
+        
+          
+            <img class="usa-footer-logo-img" src="/assets/img/hztl-wm.svg" alt="HZTL-WM">
+            
+          
+        
+
+        
+        <p>William has consumed <span class="la-croix"></span> cans of <a href="/la-croix.html"><span class="la-croix-logo"></span></a> since Sept. 3rd, 2019.<br/><em class="lighten-up"> * cans of delicious, bubbly, essenced water consumed accurate by ±50%</em></p>
+        
+        
+      </div>
+
+      
+      <div class="usa-footer-contact-links usa-width-one-half">
+        
+        
+        
+          
+      
+      
+      </div>
+    </div>
+  </div>
+  
+
+</footer>
+
+
+
+
+    
+    
+
+
+
+
+
+  
+<script src="/assets/uswds/js/uswds.min.js" async></script>
+
+
+
+
+
+    <script src="/assets/js/la-croix.js"></script>
+    
+    <script src="/assets/js/scroll-watch.js"></script>
+    
+
+  </body>
+</html>
