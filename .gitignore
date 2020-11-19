@@ -1,0 +1,12 @@
+# Demo Content #
+################
+
+demo/page.md
+demo/theme.md
+README.md
+.jekyll-cache
+worknotes
+.vscode
+_site
+node_modules
+# .github
