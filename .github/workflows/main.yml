@@ -19,12 +19,12 @@ jobs:
           ruby-version: 2.6.3
           bundler-cache: true
       # Install Node as this is needed for PurgeCSS
-      # - name: Setup Node
-      #   uses: actions/setup-node@v1
-      #   with:
-      #     node-version: 'v12.12.0'
-      # # Install PurgeCSS (needs to be in your package.json)
-      # - run: npm install
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 'v12.12.0'
+      # Install PurgeCSS (needs to be in your package.json)
+      - run: npm install
       # Build site
       # - run: bundle install
       # - run: jekyll build
