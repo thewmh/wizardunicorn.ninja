@@ -34,7 +34,7 @@ jobs:
       #   uses:  lemonarc/jekyll-action@1.0.0
       # - run: npm run postbuild
       - name: Make File
-        uses: "finnp/create-file-action@master"
+        uses: finnp/create-file-action@master
           env:
             FILE_NAME: "CNAME"
             FILE_DATA: "wizardunicorn.ninja"
