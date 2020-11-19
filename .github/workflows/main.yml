@@ -36,12 +36,12 @@ jobs:
       - name: Make File
         uses: finnp/create-file-action@master
         env:
-          FILE_NAME: "CNAME"
+          FILE_NAME: "./_site/CNAME"
           FILE_DATA: "wizardunicorn.ninja"
       # Push the compiled _site-folder as branch into your GitHub repository
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./
+          publish_dir: ./_site
           publish_branch: dev
