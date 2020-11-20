@@ -1,5 +1,5 @@
 // Header navigation ------------- //
-
+/*! purgecss start ignore */
 @mixin nav-border {
   border-bottom: 0.4rem solid $color-primary;
   padding-bottom: 0.6rem;
@@ -83,12 +83,11 @@
     transform: translateX(0);
     width: auto;
   }
-/*! purgecss start ignore */
+
   &.is-visible {
     animation: slidein-left 0.3s ease-in-out;
     display: flex;
   }
-/*! purgecss end ignore */
 
   nav {
     margin-top: 6rem; // XXX magic number
@@ -560,3 +559,4 @@
     @include unstyled-list;
   }
 }
+/*! purgecss end ignore */
