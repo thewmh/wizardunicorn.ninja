@@ -1895,13 +1895,13 @@ will add declarations within its own scope, which is not the same scope as its i
 
 <h3 id="const-qa">const Q&amp;A</h3>
 
-<p>Q: If you only use <code class="language-plaintext highlighter-rouge">const</code> for strings, would that be a good use case?</p>
+<p><strong>Q:</strong> If you only use <code class="language-plaintext highlighter-rouge">const</code> for strings, would that be a good use case?</p>
 
-<p>A: Yes, I only use <code class="language-plaintext highlighter-rouge">const</code> for primitive, immutable values; strings, numbers, and booleans.</p>
+<p><strong>A:</strong> Yes, I only use <code class="language-plaintext highlighter-rouge">const</code> for primitive, immutable values; strings, numbers, and booleans.</p>
 
-<p>Q: With arrays or objects, I usually just put <code class="language-plaintext highlighter-rouge">freeze</code> or <code class="language-plaintext highlighter-rouge">deepfreeze</code> around it?</p>
+<p><strong>Q:</strong> With arrays or objects, I usually just put <code class="language-plaintext highlighter-rouge">freeze</code> or <code class="language-plaintext highlighter-rouge">deepfreeze</code> around it?</p>
 
-<p>A: I do like to use <code class="language-plaintext highlighter-rouge">object.freeze</code> which is a shallow read-only lock of all the properties in an array or object.</p>
+<p><strong>A:</strong> I do like to use <code class="language-plaintext highlighter-rouge">object.freeze</code> which is a shallow read-only lock of all the properties in an array or object.</p>
 
 <h3 id="hoisting">Hoisting</h3>
 
@@ -3363,33 +3363,221 @@ will add declarations within its own scope, which is not the same scope as its i
 
 <h3 id="the-prototype-chain">The Prototype Chain</h3>
 
-<p>Above our code is an <code class="language-plaintext highlighter-rouge">Object</code> (with a capital ‘O’) which is a function that is built-in to JavaScript. This function has several methods on it; <code class="language-plaintext highlighter-rouge">.keys</code>, <code class="language-plaintext highlighter-rouge">.values</code>, and various other utilities. Another thing that exists in JavaScript above our code is an object (that doesn’t actually have a name) called <code class="language-plaintext highlighter-rouge">prototype</code>. Prototype gets its name from the method on <code class="language-plaintext highlighter-rouge">Object</code> of the same name. <code class="language-plaintext highlighter-rouge">object.prototype</code> also has a lot of important things on it like <code class="language-plaintext highlighter-rouge">toString</code> <code class="language-plaintext highlighter-rouge">valueOf</code> and a ton of other fundamental utilities that exist in JavaScript. All non-primitives directly descend from <code class="language-plaintext highlighter-rouge">object.prototype</code>, so its a really important object. The final thing that exists ‘above our code’ in JavaScript is the <code class="language-plaintext highlighter-rouge">construstor</code>, which is coming from the <code class="language-plaintext highlighter-rouge">prototype</code> object and points back to the <code class="language-plaintext highlighter-rouge">Object</code> function. All of this stuff is referred to as the line zero environment in this workshop.</p>
+<p>Above our code is an <code class="language-plaintext highlighter-rouge">Object</code> (with a capital ‘O’) which is a function that is built-in to JavaScript. This function has several methods on it; <code class="language-plaintext highlighter-rouge">.keys</code>, <code class="language-plaintext highlighter-rouge">.values</code>, and various other utilities. Another thing that exists in JavaScript above our code is an object (that doesn’t actually have a name) called <code class="language-plaintext highlighter-rouge">prototype</code>. Prototype gets its name from the method on <code class="language-plaintext highlighter-rouge">Object</code> of the same name. <code class="language-plaintext highlighter-rouge">object.prototype</code> also has a lot of important things on it like <code class="language-plaintext highlighter-rouge">toString</code> <code class="language-plaintext highlighter-rouge">valueOf</code> and a ton of other fundamental utilities that exist in JavaScript. All non-primitives directly descend from <code class="language-plaintext highlighter-rouge">object.prototype</code>, so its a really important object. The final thing that exists ‘above our code’ in JavaScript is the <code class="language-plaintext highlighter-rouge">constructor</code>, which is coming from the <code class="language-plaintext highlighter-rouge">prototype</code> object and points back to the <code class="language-plaintext highlighter-rouge">Object</code> function. All of this stuff is referred to as the line zero environment in this workshop.</p>
 
 <p>Now if you look at the code from the section just before this, when the first function <code class="language-plaintext highlighter-rouge">Workshop</code> is parsed, there is a similar set of relationships created as described above. <code class="language-plaintext highlighter-rouge">Workshop</code> is a function which gets a link to a <code class="language-plaintext highlighter-rouge">prototype</code> which links back to the function with a <code class="language-plaintext highlighter-rouge">constructor</code>, but in this case, the <code class="language-plaintext highlighter-rouge">prototype</code> object of the <code class="language-plaintext highlighter-rouge">Workshop</code> function points back to the <code class="language-plaintext highlighter-rouge">prototype</code> of the ‘line zero environment’. Still looking at the code from the last section, when <code class="language-plaintext highlighter-rouge">deepJS</code> and  <code class="language-plaintext highlighter-rouge">reactJS</code> are created with <code class="language-plaintext highlighter-rouge">new Workshop...</code>, a new object is created for them, with a single property <code class="language-plaintext highlighter-rouge">teacher</code> and the object has a link to the original <code class="language-plaintext highlighter-rouge">Workshop</code> function prototype object. So when you call <code class="language-plaintext highlighter-rouge">...ask</code>, the <code class="language-plaintext highlighter-rouge">deepJS</code> and <code class="language-plaintext highlighter-rouge">reactJS</code> objects do not have this function, but because of their link to the <code class="language-plaintext highlighter-rouge">Workshop</code> functions prototype object, they are able to retrieve the <code class="language-plaintext highlighter-rouge">ask</code> function from there.</p>
+
+<p>If reading all that is too confusing, here’s a diagram:</p>
 
 <p><img src="../../assets/img/frontend-masters/prototype-chain.png" alt="alt text" title="Prototype Chain Diagram" /></p>
 
 <h3 id="dunder-prototypes">Dunder Prototypes</h3>
 
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">Workshop</span><span class="p">(</span><span class="nx">teacher</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">teacher</span> <span class="o">=</span> <span class="nx">teacher</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">Workshop</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">ask</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">question</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">teacher</span><span class="p">,</span> <span class="nx">question</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">deepJS</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Workshop</span><span class="p">(</span><span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">deepJS</span><span class="p">.</span><span class="kd">constructor</span> <span class="o">===</span> <span class="nx">Workshop</span><span class="p">;</span>
+
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">__proto__</span> <span class="o">===</span> <span class="nx">Workshop</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span> <span class="c1">// true</span>
+<span class="nb">Object</span><span class="p">.</span><span class="nx">getPrototypeOf</span><span class="p">(</span><span class="nx">deepJS</span><span class="p">)</span> <span class="o">===</span> <span class="nx">Workshop</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span> <span class="c1">// true</span></code></pre></figure>
+
+<p>How is it possible to set the <code class="language-plaintext highlighter-rouge">constructor</code> property of <code class="language-plaintext highlighter-rouge">deepJS</code> when that property does not exist? Because while the object <code class="language-plaintext highlighter-rouge">deepJS</code> does not have the constructor, the prototype chain points to the original object which does have a <code class="language-plaintext highlighter-rouge">constructor</code> property that <code class="language-plaintext highlighter-rouge">deepJS</code> can use. The <code class="language-plaintext highlighter-rouge">.__proto__</code> on <code class="language-plaintext highlighter-rouge">deepJS</code> is what is referred to as a ‘Dunder Prototype’, <strong>underscore underscore proto underscore underscore = double underscore proto = dunder proto</strong>. <code class="language-plaintext highlighter-rouge">deepJS</code> does not have a dunder prototype on it, nor does what it is  directly linked to <code class="language-plaintext highlighter-rouge">Workshop.prototype</code>, and what <code class="language-plaintext highlighter-rouge">Workshop.prototype</code> is linked to <code class="language-plaintext highlighter-rouge">object.prototype</code> also does not have a dunder prototype, but it does have a getter that is dunder prototype.</p>
+
 <h3 id="this--prototypes-qa">this &amp; prototypes Q&amp;A</h3>
+
+<p><strong>Q:</strong> If a function is already bound using <code class="language-plaintext highlighter-rouge">.bind</code> can it later be re-bound to another object?</p>
+
+<p><strong>A:</strong> There is only one possible way to override the binding, you cannot call <code class="language-plaintext highlighter-rouge">.bind</code> on it again, but you could invoke it [the function] again with the <code class="language-plaintext highlighter-rouge">new</code> keyword, which would have the effect of overriding its existing behavior to that of the newly constructed object.</p>
+
+<p><strong>Q:</strong> If you define a variable inside of an arrow function, is that variable scoped to the arrow function or to the parent scope [of the arrow function]?</p>
+
+<p><strong>A:</strong> Arrow functions do have lexical scope, they just don’t have a <code class="language-plaintext highlighter-rouge">this</code> keyword.</p>
+
+<p><strong>Q:</strong> In the case of a <code class="language-plaintext highlighter-rouge">this</code>-aware callback, does the value of <code class="language-plaintext highlighter-rouge">this</code> depend on how the higher order function calls the callback?</p>
+
+<p><strong>A:</strong> Yes, the call site is the only thing that matters. If you pass a function into <code class="language-plaintext highlighter-rouge">.map</code>, how <code class="language-plaintext highlighter-rouge">.map</code> invokes your callback is the only thing that determines its <code class="language-plaintext highlighter-rouge">this</code> binding. Unless you have passed in a hardbound function, in which case, your hardbinding will take precedence.</p>
+
+<p><strong>Q:</strong> What happens when you set dunder proto?</p>
+
+<p><strong>A:</strong> It is not very common to use dunder proto as a setter. It is technically both a getter and a setter. It is almost always used only to reference it. It could be considered an anti-pattern to rewire the prototype chain of an object. But as of ES6, the dunder proto is officially something that can set the proto linkage from one object to a different object.</p>
+
+<p><strong>Q:</strong> Do the prototype objects come with every function?</p>
+
+<p><strong>A:</strong> Regular functions have prototypes, arrow functions do not.</p>
 
 <h3 id="shadowing-prototypes">Shadowing Prototypes</h3>
 
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">Workshop</span><span class="p">(</span><span class="nx">teacher</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">teacher</span> <span class="o">=</span> <span class="nx">teacher</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">Workshop</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">ask</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">question</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">teacher</span><span class="p">,</span> <span class="nx">question</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">deepJS</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Workshop</span><span class="p">(</span><span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">ask</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">question</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">ask</span><span class="p">(</span><span class="nx">question</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">());</span>
+<span class="p">};</span>
+
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">ask</span><span class="p">(</span><span class="dl">"</span><span class="s2">Oops, is this infinite recursion?</span><span class="dl">"</span><span class="p">);</span></code></pre></figure>
+
+<p>If you were to do the above, add a <code class="language-plaintext highlighter-rouge">ask</code> to <code class="language-plaintext highlighter-rouge">deepJS</code>, what would happen? This would be considered ‘shadowing’, two different levels of the prototype chain with the exact same property. When in <code class="language-plaintext highlighter-rouge">deepJS.ask</code>, what would the <code class="language-plaintext highlighter-rouge">this</code> point to? The answer of course depends on where the call site is, and in this case, when you call <code class="language-plaintext highlighter-rouge">deepJS.ask</code>, the implicit binding will bind the <code class="language-plaintext highlighter-rouge">this</code> to deepJS. So, the code is effectively recalling <code class="language-plaintext highlighter-rouge">deepJS.ask</code> again, which results in infinite recursion and stack overflow. The <code class="language-plaintext highlighter-rouge">this.</code> does not work in place of a <code class="language-plaintext highlighter-rouge">super()</code>. If you intended to go up one level in the prototype chain to <code class="language-plaintext highlighter-rouge">Workshop</code>, how would you do that? <code class="language-plaintext highlighter-rouge">__proto__</code> (dunder proto)!</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">Workshop</span><span class="p">(</span><span class="nx">teacher</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">teacher</span> <span class="o">=</span> <span class="nx">teacher</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">Workshop</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">ask</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">question</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">teacher</span><span class="p">,</span> <span class="nx">question</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">deepJS</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Workshop</span><span class="p">(</span><span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">ask</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">question</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">__proto__</span><span class="p">.</span><span class="nx">ask</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">question</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">());</span>
+<span class="p">};</span>
+
+<span class="nx">deepJS</span><span class="p">.</span><span class="nx">ask</span><span class="p">(</span><span class="dl">"</span><span class="s2">Is this fake polymorphism?</span><span class="dl">"</span><span class="p">);</span>
+<span class="c1">// Kyle Is THIS FAKE POLYMORPHISM?</span></code></pre></figure>
+
+<p>If you left out the <code class="language-plaintext highlighter-rouge">.call</code>, the above code would point to <code class="language-plaintext highlighter-rouge">Workshop</code>. So doing the above would allow you to go one level up the prototype chain and then invoke it in our <code class="language-plaintext highlighter-rouge">this</code> context. When you try to shadow without using the class system, when you are in prototypes and you try to shadow, you end up creating this complete breakage. So why would you shadow in the first place? Because shadowing is how you do polymorphism. In class design theory, the whole point of having a child class is so you can inherit something from the parent, override it and then call <code class="language-plaintext highlighter-rouge">super</code> to access the parent version of it, to extend it.</p>
+
 <h3 id="prototypal-inheritance">Prototypal Inheritance</h3>
+
+<p>If you wanted to do a true sort of child class in the prototypal style, you’d do something like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">Workshop</span><span class="p">(</span><span class="nx">teacher</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">teacher</span> <span class="o">=</span> <span class="nx">teacher</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">Workshop</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">ask</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">question</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">teacher</span><span class="p">,</span> <span class="nx">question</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kd">function</span> <span class="nx">AnotherWorkshop</span><span class="p">(</span><span class="nx">teacher</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">Workshop</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">teacher</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">AnotherWorkshop</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Workshop</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+<span class="nx">AnotherWorkshop</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">speakUp</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">ask</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">());</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">JSRecentParts</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AnotherWorkshop</span><span class="p">(</span><span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">JSRecentParts</span><span class="p">.</span><span class="nx">speakUp</span><span class="p">(</span><span class="dl">"</span><span class="s2">Is this actually inheritance?</span><span class="dl">"</span><span class="p">)</span>
+<span class="c1">// Kyle IS THIS ACTUALLY INHERITANCE?</span></code></pre></figure>
+
+<p>In the above code, the way you make <code class="language-plaintext highlighter-rouge">AnotherWorkshop</code> extend or inherit from <code class="language-plaintext highlighter-rouge">Workshop</code> is seen on the line where <code class="language-plaintext highlighter-rouge">Object.create</code> is called. This is changing the initial [prototype] link of <code class="language-plaintext highlighter-rouge">AnotherWorkshop</code> to that of <code class="language-plaintext highlighter-rouge">Workshop</code>. <code class="language-plaintext highlighter-rouge">Object.create</code> does two things:</p>
+
+<ol>
+  <li>
+    <p>Creates a brand new empty object.</p>
+  </li>
+  <li>
+    <p>Links the new object to another object.</p>
+  </li>
+</ol>
+
+<p>This is the same as the first two steps of the <code class="language-plaintext highlighter-rouge">new</code> algorithm but as a specific API method called <code class="language-plaintext highlighter-rouge">Object.create</code>.</p>
 
 <h3 id="classical-vs-prototypal-inheritance">Classical vs Prototypal Inheritance</h3>
 
+<p>In classical oriented languages; C++, Java, etc… When you make a class called <code class="language-plaintext highlighter-rouge">Workshop</code> and you instantiate it, you are conceptually, and in some cases physically, copying down into those instances. And when you make a child class called <code class="language-plaintext highlighter-rouge">AnotherWorkshop</code> that extends <code class="language-plaintext highlighter-rouge">Workshop</code>, you are copying down into <code class="language-plaintext highlighter-rouge">AnotherWorkshop</code>, and when you instantiate that child class, you are doing more copies.</p>
+
+<p>When you try to do prototypal inheritance, you have a <code class="language-plaintext highlighter-rouge">Workshop.prototype</code> object, and then you make other objects, they are then linked to the <code class="language-plaintext highlighter-rouge">Workshop.prototype</code> object. And all the other operations you do are always just linked to the original <code class="language-plaintext highlighter-rouge">Workshop.prototype</code>, no copying.</p>
+
+<p>Prototypal inheritance is not a useful term to describe what is actually happening. It is what it is and it is definitely not a class based language.</p>
+
 <h3 id="inheritance-is-delegation">Inheritance is Delegation</h3>
+
+<p>There is nothing wrong with JavaScripts inheritance system, but it is important to understand that it is a different pattern than classes. JavaScripts design pattern is called delegation. JavaScripts prototype system is a delegation system, not a class system. Neither prototype nor class system is ‘wrong’ or ‘bad’, they are just different. The prototype system is actually more powerful than a class system because the prototype system can be seen as a ‘super set’ and a class system can be seen as a ‘sub set’. Why? Because you can implement a class system inside of a prototypal language, but you cannot do the reverse.</p>
+
+<p><strong>What can we do with delegation if we set aside our preconceptions that classes are the only design pattern that matters?</strong></p>
 
 <h3 id="oloo-pattern">OLOO Pattern</h3>
 
+<p>OLOO - Objects Linked to Other Objects</p>
+
+<p>Here is an OLOO style block of code:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">Workshop</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">setTeacher</span><span class="p">(</span><span class="nx">teacher</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">teacher</span> <span class="o">=</span> <span class="nx">teacher</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="nx">ask</span><span class="p">(</span><span class="nx">question</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">teacher</span><span class="p">,</span> <span class="nx">question</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+<span class="kd">var</span> <span class="nx">AnotherWorkshop</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span>
+    <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Workshop</span><span class="p">),</span>
+    <span class="p">{</span>
+        <span class="nx">speakUp</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">ask</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">());</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">JSRecentParts</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">AnotherWorkshop</span><span class="p">);</span>
+<span class="nx">JSRecentParts</span><span class="p">.</span><span class="nx">setTeacher</span><span class="p">(</span><span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">JSRecentParts</span><span class="p">.</span><span class="nx">speakUp</span><span class="p">(</span><span class="dl">"</span><span class="s2">But isn't this cleaner?</span><span class="dl">"</span><span class="p">);</span>
+<span class="c1">// Kyle But isn't this cleaner?</span></code></pre></figure>
+
+<p>Everything is an object! And all of the linking between the objects is happening thanks to <code class="language-plaintext highlighter-rouge">Object.create</code>. But how does <code class="language-plaintext highlighter-rouge">Object.create</code> make the magic? Take a look at this <code class="language-plaintext highlighter-rouge">Object.create</code> polyfill for some insight.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">function</span> <span class="nx">F</span><span class="p">()</span> <span class="p">{}</span>
+        <span class="nx">F</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">o</span><span class="p">;</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">F</span><span class="p">();</span>
+    <span class="p">};</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The polyfill makes an empty function, sets its prototype to ‘o’ and calls new on whatever function to give us the newly created object. Essentially, <code class="language-plaintext highlighter-rouge">Object.create</code> takes all of the constructor functions, <code class="language-plaintext highlighter-rouge">.prototype</code>(s), and <code class="language-plaintext highlighter-rouge">new</code> keywords and hides them inside of <code class="language-plaintext highlighter-rouge">Object.create</code>, which leaves just a clean, simple linkage between objects.</p>
+
 <h3 id="delegation-oriented-design">Delegation-Oriented Design</h3>
+
+<p>The Delegation design pattern does not consider parent / child relationships, but peer-to-peer. If you were working on a Login Page that required a couple of objects, one for authentication and another for the UI, a delegation design pattern would handle this in the following way:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">AuthController</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">authenticate</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">server</span><span class="p">.</span><span class="nx">authenticate</span><span class="p">(</span>
+            <span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">password</span> <span class="p">],</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">handleResponse</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+        <span class="p">);</span>
+    <span class="p">},</span>
+    <span class="nx">handleResponse</span><span class="p">(</span><span class="nx">resp</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">resp</span><span class="p">.</span><span class="nx">ok</span><span class="p">)</span> <span class="k">this</span><span class="p">.</span><span class="nx">displayError</span><span class="p">(</span><span class="nx">resp</span><span class="p">.</span><span class="nx">msg</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">LoginFormController</span> <span class="o">=</span> 
+    <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">AuthController</span><span class="p">),</span> <span class="p">{</span>
+        <span class="nx">onSubmit</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">username</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">$username</span><span class="p">.</span><span class="nx">val</span><span class="p">();</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">password</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">$password</span><span class="p">.</span><span class="nx">val</span><span class="p">();</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">authenticate</span><span class="p">();</span>
+        <span class="p">},</span>
+        <span class="nx">displayError</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">alert</span><span class="p">(</span><span class="nx">msg</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">});</span></code></pre></figure>
+
+<p>The above two objects <code class="language-plaintext highlighter-rouge">AuthController</code> and <code class="language-plaintext highlighter-rouge">LoginFormController</code> are linked through the prototype chain, so when one needs something from the other, it can find it and they can work together. One of the many benefits of this linking is that your code is more testable.</p>
 
 <h2 id="wrapping-up">Wrapping Up</h2>
 
 <h3 id="wrapping-up-1">Wrapping Up</h3>
 
+<p>Know your JavaScript, ask more questions, be more curious, know why the code works. In doing this, you will have a better chance of fixing things when they break. Take it seriously, read the spec every once in a while to develop your mental model. Through the understanding of that tool communicate your ideas and intent more effectively.</p>
+
 <h3 id="bonus-typl">Bonus: Typl</h3>
+
+<p><a href="https://typl.dev/">Typl</a></p>
 
 </div>
     </main>
