@@ -10,3 +10,4 @@ worknotes
 _site
 node_modules
 # .github
+vendor
