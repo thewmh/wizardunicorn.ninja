@@ -1632,13 +1632,13 @@ function formatStr(str) {
 
 ### const Q&A
 
-Q: If you only use `const` for strings, would that be a good use case?
+**Q:** If you only use `const` for strings, would that be a good use case?
 
-A: Yes, I only use `const` for primitive, immutable values; strings, numbers, and booleans.
+**A:** Yes, I only use `const` for primitive, immutable values; strings, numbers, and booleans.
 
-Q: With arrays or objects, I usually just put `freeze` or `deepfreeze` around it?
+**Q:** With arrays or objects, I usually just put `freeze` or `deepfreeze` around it?
 
-A: I do like to use `object.freeze` which is a shallow read-only lock of all the properties in an array or object.
+**A:** I do like to use `object.freeze` which is a shallow read-only lock of all the properties in an array or object.
 
 ### Hoisting
 
@@ -3139,30 +3139,241 @@ Underneath the syntactic sugar of `class` is the `prototype`, which looks quite 
 
 ### The Prototype Chain
 
-Above our code is an `Object` (with a capital 'O') which is a function that is built-in to JavaScript. This function has several methods on it; `.keys`, `.values`, and various other utilities. Another thing that exists in JavaScript above our code is an object (that doesn't actually have a name) called `prototype`. Prototype gets its name from the method on `Object` of the same name. `object.prototype` also has a lot of important things on it like `toString` `valueOf` and a ton of other fundamental utilities that exist in JavaScript. All non-primitives directly descend from `object.prototype`, so its a really important object. The final thing that exists 'above our code' in JavaScript is the `construstor`, which is coming from the `prototype` object and points back to the `Object` function. All of this stuff is referred to as the line zero environment in this workshop.
+Above our code is an `Object` (with a capital 'O') which is a function that is built-in to JavaScript. This function has several methods on it; `.keys`, `.values`, and various other utilities. Another thing that exists in JavaScript above our code is an object (that doesn't actually have a name) called `prototype`. Prototype gets its name from the method on `Object` of the same name. `object.prototype` also has a lot of important things on it like `toString` `valueOf` and a ton of other fundamental utilities that exist in JavaScript. All non-primitives directly descend from `object.prototype`, so its a really important object. The final thing that exists 'above our code' in JavaScript is the `constructor`, which is coming from the `prototype` object and points back to the `Object` function. All of this stuff is referred to as the line zero environment in this workshop.
 
 Now if you look at the code from the section just before this, when the first function `Workshop` is parsed, there is a similar set of relationships created as described above. `Workshop` is a function which gets a link to a `prototype` which links back to the function with a `constructor`, but in this case, the `prototype` object of the `Workshop` function points back to the `prototype` of the 'line zero environment'. Still looking at the code from the last section, when `deepJS` and  `reactJS` are created with `new Workshop...`, a new object is created for them, with a single property `teacher` and the object has a link to the original `Workshop` function prototype object. So when you call `...ask`, the `deepJS` and `reactJS` objects do not have this function, but because of their link to the `Workshop` functions prototype object, they are able to retrieve the `ask` function from there.
+
+If reading all that is too confusing, here's a diagram:
 
 ![alt text](../../assets/img/frontend-masters/prototype-chain.png "Prototype Chain Diagram")
 
 ### Dunder Prototypes
 
+{% highlight javascript %}
+
+function Workshop(teacher) {
+    this.teacher = teacher;
+}
+Workshop.prototype.ask = function(question) {
+    console.log(this.teacher, question);
+};
+
+var deepJS = new Workshop("Kyle");
+
+deepJS.constructor === Workshop;
+
+deepJS.__proto__ === Workshop.prototype; // true
+Object.getPrototypeOf(deepJS) === Workshop.prototype; // true
+
+{% endhighlight %}
+
+How is it possible to set the `constructor` property of `deepJS` when that property does not exist? Because while the object `deepJS` does not have the constructor, the prototype chain points to the original object which does have a `constructor` property that `deepJS` can use. The `.__proto__` on `deepJS` is what is referred to as a 'Dunder Prototype', **underscore underscore proto underscore underscore = double underscore proto = dunder proto**. `deepJS` does not have a dunder prototype on it, nor does what it is  directly linked to `Workshop.prototype`, and what `Workshop.prototype` is linked to `object.prototype` also does not have a dunder prototype, but it does have a getter that is dunder prototype.
+
 ### this & prototypes Q&A
+
+**Q:** If a function is already bound using `.bind` can it later be re-bound to another object?
+
+**A:** There is only one possible way to override the binding, you cannot call `.bind` on it again, but you could invoke it [the function] again with the `new` keyword, which would have the effect of overriding its existing behavior to that of the newly constructed object.
+
+**Q:** If you define a variable inside of an arrow function, is that variable scoped to the arrow function or to the parent scope [of the arrow function]?
+
+**A:** Arrow functions do have lexical scope, they just don't have a `this` keyword.
+
+**Q:** In the case of a `this`-aware callback, does the value of `this` depend on how the higher order function calls the callback?
+
+**A:** Yes, the call site is the only thing that matters. If you pass a function into `.map`, how `.map` invokes your callback is the only thing that determines its `this` binding. Unless you have passed in a hardbound function, in which case, your hardbinding will take precedence.
+
+**Q:** What happens when you set dunder proto?
+
+**A:** It is not very common to use dunder proto as a setter. It is technically both a getter and a setter. It is almost always used only to reference it. It could be considered an anti-pattern to rewire the prototype chain of an object. But as of ES6, the dunder proto is officially something that can set the proto linkage from one object to a different object.
+
+**Q:** Do the prototype objects come with every function?
+
+**A:** Regular functions have prototypes, arrow functions do not.
 
 ### Shadowing Prototypes
 
+{% highlight javascript %}
+
+function Workshop(teacher) {
+    this.teacher = teacher;
+}
+Workshop.prototype.ask = function(question) {
+    console.log(this.teacher, question);
+};
+
+var deepJS = new Workshop("Kyle");
+
+deepJS.ask = function(question) {
+    this.ask(question.toUpperCase());
+};
+
+deepJS.ask("Oops, is this infinite recursion?");
+
+{% endhighlight %}
+
+If you were to do the above, add a `ask` to `deepJS`, what would happen? This would be considered 'shadowing', two different levels of the prototype chain with the exact same property. When in `deepJS.ask`, what would the `this` point to? The answer of course depends on where the call site is, and in this case, when you call `deepJS.ask`, the implicit binding will bind the `this` to deepJS. So, the code is effectively recalling `deepJS.ask` again, which results in infinite recursion and stack overflow. The `this.` does not work in place of a `super()`. If you intended to go up one level in the prototype chain to `Workshop`, how would you do that? `__proto__` (dunder proto)!
+
+{% highlight javascript %}
+
+function Workshop(teacher) {
+    this.teacher = teacher;
+}
+Workshop.prototype.ask = function(question) {
+    console.log(this.teacher, question);
+};
+
+var deepJS = new Workshop("Kyle");
+
+deepJS.ask = function(question) {
+    this.__proto__.ask.call(this, question.toUpperCase());
+};
+
+deepJS.ask("Is this fake polymorphism?");
+// Kyle Is THIS FAKE POLYMORPHISM?
+
+{% endhighlight %}
+
+If you left out the `.call`, the above code would point to `Workshop`. So doing the above would allow you to go one level up the prototype chain and then invoke it in our `this` context. When you try to shadow without using the class system, when you are in prototypes and you try to shadow, you end up creating this complete breakage. So why would you shadow in the first place? Because shadowing is how you do polymorphism. In class design theory, the whole point of having a child class is so you can inherit something from the parent, override it and then call `super` to access the parent version of it, to extend it. 
+
 ### Prototypal Inheritance
+
+If you wanted to do a true sort of child class in the prototypal style, you'd do something like this:
+
+{% highlight javascript %}
+
+function Workshop(teacher) {
+    this.teacher = teacher;
+}
+Workshop.prototype.ask = function(question) {
+    console.log(this.teacher, question);
+};
+
+function AnotherWorkshop(teacher) {
+    Workshop.call(this, teacher);
+}
+AnotherWorkshop.prototype = Object.create(Workshop.prototype);
+AnotherWorkshop.prototype.speakUp = function(msg) {
+    this.ask(msg.toUpperCase());
+};
+
+var JSRecentParts = new AnotherWorkshop("Kyle");
+
+JSRecentParts.speakUp("Is this actually inheritance?")
+// Kyle IS THIS ACTUALLY INHERITANCE?
+
+{% endhighlight %}
+
+In the above code, the way you make `AnotherWorkshop` extend or inherit from `Workshop` is seen on the line where `Object.create` is called. This is changing the initial [prototype] link of `AnotherWorkshop` to that of `Workshop`. `Object.create` does two things:
+
+1. Creates a brand new empty object.
+
+2. Links the new object to another object.
+
+This is the same as the first two steps of the `new` algorithm but as a specific API method called `Object.create`. 
 
 ### Classical vs Prototypal Inheritance
 
+In classical oriented languages; C++, Java, etc... When you make a class called `Workshop` and you instantiate it, you are conceptually, and in some cases physically, copying down into those instances. And when you make a child class called `AnotherWorkshop` that extends `Workshop`, you are copying down into `AnotherWorkshop`, and when you instantiate that child class, you are doing more copies.
+
+When you try to do prototypal inheritance, you have a `Workshop.prototype` object, and then you make other objects, they are then linked to the `Workshop.prototype` object. And all the other operations you do are always just linked to the original `Workshop.prototype`, no copying.
+
+Prototypal inheritance is not a useful term to describe what is actually happening. It is what it is and it is definitely not a class based language.
+
 ### Inheritance is Delegation
+
+There is nothing wrong with JavaScripts inheritance system, but it is important to understand that it is a different pattern than classes. JavaScripts design pattern is called delegation. JavaScripts prototype system is a delegation system, not a class system. Neither prototype nor class system is 'wrong' or 'bad', they are just different. The prototype system is actually more powerful than a class system because the prototype system can be seen as a 'super set' and a class system can be seen as a 'sub set'. Why? Because you can implement a class system inside of a prototypal language, but you cannot do the reverse.
+
+**What can we do with delegation if we set aside our preconceptions that classes are the only design pattern that matters?**
 
 ### OLOO Pattern
 
+OLOO - Objects Linked to Other Objects
+
+Here is an OLOO style block of code:
+
+{% highlight javascript %}
+
+var Workshop = {
+    setTeacher(teacher) {
+        this.teacher = teacher;
+    },
+    ask(question) {
+        console.log(this.teacher, question);
+    }
+};
+var AnotherWorkshop = Object.assign(
+    Object.create(Workshop),
+    {
+        speakUp(msg) {
+            this.ask(msg.toUpperCase());
+        }
+    }
+);
+
+var JSRecentParts = Object.create(AnotherWorkshop);
+JSRecentParts.setTeacher("Kyle");
+JSRecentParts.speakUp("But isn't this cleaner?");
+// Kyle But isn't this cleaner?
+
+{% endhighlight %}
+
+Everything is an object! And all of the linking between the objects is happening thanks to `Object.create`. But how does `Object.create` make the magic? Take a look at this `Object.create` polyfill for some insight.
+
+{% highlight javascript %}
+
+if(!Object.create) {
+    Object.create = function (o) {
+        function F() {}
+        F.prototype = o;
+        return new F();
+    };
+}
+
+{% endhighlight %}
+
+The polyfill makes an empty function, sets its prototype to 'o' and calls new on whatever function to give us the newly created object. Essentially, `Object.create` takes all of the constructor functions, `.prototype`(s), and `new` keywords and hides them inside of `Object.create`, which leaves just a clean, simple linkage between objects.
+
 ### Delegation-Oriented Design
+
+The Delegation design pattern does not consider parent / child relationships, but peer-to-peer. If you were working on a Login Page that required a couple of objects, one for authentication and another for the UI, a delegation design pattern would handle this in the following way:
+
+{% highlight javascript %}
+
+var AuthController = {
+    authenticate() {
+        server.authenticate(
+            [ this.username, this.password ],
+            this.handleResponse.bind(this)
+        );
+    },
+    handleResponse(resp) {
+        if (!resp.ok) this.displayError(resp.msg);
+    }
+};
+
+var LoginFormController = 
+    Object.assign(Object.create(AuthController), {
+        onSubmit() {
+            this.username = this.$username.val();
+            this.password = this.$password.val();
+            this.authenticate();
+        },
+        displayError(msg) {
+            alert(msg);
+        }
+    });
+
+{% endhighlight %}
+
+The above two objects `AuthController` and `LoginFormController` are linked through the prototype chain, so when one needs something from the other, it can find it and they can work together. One of the many benefits of this linking is that your code is more testable.
 
 ## Wrapping Up
 
 ### Wrapping Up
 
+Know your JavaScript, ask more questions, be more curious, know why the code works. In doing this, you will have a better chance of fixing things when they break. Take it seriously, read the spec every once in a while to develop your mental model. Through the understanding of that tool communicate your ideas and intent more effectively.
+
 ### Bonus: Typl
+
+[Typl](https://typl.dev/)
