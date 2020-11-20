@@ -3139,7 +3139,11 @@ Underneath the syntactic sugar of `class` is the `prototype`, which looks quite 
 
 ### The Prototype Chain
 
+Above our code is an `Object` (with a capital 'O') which is a function that is built-in to JavaScript. This function has several methods on it; `.keys`, `.values`, and various other utilities. Another thing that exists in JavaScript above our code is an object (that doesn't actually have a name) called `prototype`. Prototype gets its name from the method on `Object` of the same name. `object.prototype` also has a lot of important things on it like `toString` `valueOf` and a ton of other fundamental utilities that exist in JavaScript. All non-primitives directly descend from `object.prototype`, so its a really important object. The final thing that exists 'above our code' in JavaScript is the `construstor`, which is coming from the `prototype` object and points back to the `Object` function. All of this stuff is referred to as the line zero environment in this workshop.
 
+Now if you look at the code from the section just before this, when the first function `Workshop` is parsed, there is a similar set of relationships created as described above. `Workshop` is a function which gets a link to a `prototype` which links back to the function with a `constructor`, but in this case, the `prototype` object of the `Workshop` function points back to the `prototype` of the 'line zero environment'. Still looking at the code from the last section, when `deepJS` and  `reactJS` are created with `new Workshop...`, a new object is created for them, with a single property `teacher` and the object has a link to the original `Workshop` function prototype object. So when you call `...ask`, the `deepJS` and `reactJS` objects do not have this function, but because of their link to the `Workshop` functions prototype object, they are able to retrieve the `ask` function from there.
+
+![alt text](../../assets/img/frontend-masters/prototype-chain.png "Prototype Chain Diagram")
 
 ### Dunder Prototypes
 
