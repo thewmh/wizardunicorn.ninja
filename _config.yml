@@ -57,4 +57,4 @@ plugins:
 
 css_dir: "<css_dir>" # defaults to "css"
 
-exclude: ['worknotes', 'vendor', 'js30']
+exclude: [worknotes, vendor, js30]
