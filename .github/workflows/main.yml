@@ -33,7 +33,7 @@ jobs:
       - name: Make CNAME File 📄
         uses: finnp/create-file-action@master
         env:
-          FILE_NAME: "./_site/CNAME"
+          FILE_NAME: "./CNAME"
           FILE_DATA: "wizardunicorn.ninja"
       # Push the compiled _site-folder as (dev) branch into your GitHub repository
       - name: Deploy to GitHub Pages 🐣
