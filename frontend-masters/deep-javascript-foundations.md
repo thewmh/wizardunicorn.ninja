@@ -3139,6 +3139,8 @@ Underneath the syntactic sugar of `class` is the `prototype`, which looks quite 
 
 ### The Prototype Chain
 
+
+
 ### Dunder Prototypes
 
 ### this & prototypes Q&A

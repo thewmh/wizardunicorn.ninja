@@ -105,11 +105,12 @@ $z-index-nav:     9000;
   transition: opacity 0.2s ease-in-out;
   visibility: hidden;
   z-index: $z-index-overlay;
-
+/*! purgecss start ignore */
   &.is-visible {
     opacity: 0.1;
     visibility: visible;
   }
+/*! purgecss end ignore */
 }
 
 // Basic header ----------- //
