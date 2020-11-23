@@ -6,9 +6,15 @@ permalink: /frontend-masters/complete-intro-react
 layout: page
 ---
 
+[Link to Course Github Repository](https://github.com/btholt/complete-intro-to-react-v5)
+
+[Link to Course Notes](https://bit.ly/react-v5)
+
 ## Introduction
 
 ### Introduction
+
+This course covers the entirety of how to write (with?) React. Going over all of React's features, hooks, context, and portals. This course also covers some of the other (React) APIs such as classes and life cycles. It is not required that you've taken previous versions of this course, it is V5 as in this is its fifth iteration. But JK... V3 is useful if you need to look at Webpack or React Router. This course is meant to be mostly modular, you can skip from lesson to lesson if you want, but the way that you have to do that is moving between git commits, because each section of this course is equal to a commit in the course repo. 
 
 ### Project Setup
 
