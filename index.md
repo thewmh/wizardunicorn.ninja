@@ -16,7 +16,7 @@ My name is William Harrison, I am a Frontend Developer.
 
 <h3>🗡 HTML Ninja Needed 🖤</h3>
 
-When looking for work, I --used to-- see a ton of job posts with titles like the above, where companies seem to throw their "kitchen-sink-ideal-candidate-who-has-all-the-things-but-requires-little-pay" requirements into their job posts.
+When looking for work, I ~~used to~~ see a ton of job posts with titles like the above, where companies seem to throw their "kitchen-sink-ideal-candidate-who-has-all-the-things-but-requires-little-pay" requirements into their job posts.
 
 Thinking it was kind of funny, while also realizing that I am some form of wizard, unicorn, and ninja (My background is in Graphic Design, Video Production, and now Frontend Development), I thought, "Hey, .ninja is a thing now, is wizardunicorn.ninja available?". And it was...
 
