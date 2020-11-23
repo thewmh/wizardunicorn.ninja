@@ -1,5 +1,5 @@
 <div class="card-deck">
-  {% for item in site.team %}
+  {%- for item in site.team -%}
     <div class="card">
       <a href="{{ site.baseurl }}{{ item.url }}">
         <img class="card-img-top" src="{{ site.baseurl }}{{ item.image }}" alt="photo of {{ item.name }} ">
@@ -9,5 +9,5 @@
         </div>
       </a>
     </div>
-  {% endfor %}
+  {%- endfor -%}
 </div>

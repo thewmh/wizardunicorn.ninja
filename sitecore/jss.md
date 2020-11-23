@@ -406,7 +406,7 @@ In this new route file, use the `addRouteType` function as seen in the example c
 
 * It can add inherited data. However, by default, we inherit the addRoute function, which adds an app route data definition. Therefore, the addRoute function does not need to be called out explicitly.
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 import { CommonFieldTypes, Manifest } from '@sitecore-jss/sitecore-jss-manifest”;
 
@@ -426,7 +426,7 @@ export default function (manifest) {
   });
 }
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 2. Add a Template Property
 
@@ -436,7 +436,7 @@ Use the example code below, which matches the route name, to tell JSS that a pag
 
 **Tip:** If you are pulling route data from files, you may want to apply this dynamically, especially if all your routes utilize the same type.
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 {
     "name": "route",
@@ -447,7 +447,7 @@ Use the example code below, which matches the route name, to tell JSS that a pag
     }
 }
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 ### Inspect JSS App Templates
 
@@ -503,7 +503,7 @@ There are many items that may represent page content but are not necessarily a p
 
 Next, you will look at an example of a JSON file's output data to see how content items might be represented.
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 {
     "context": {
@@ -522,7 +522,7 @@ Next, you will look at an example of a JSON file's output data to see how conten
     }
 }
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 The above includes context data that is common for each of the following:
 
@@ -534,7 +534,7 @@ The above includes context data that is common for each of the following:
 
 Here's another section of a JSON file's output data:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 "placeholders": [
     {
@@ -564,7 +564,7 @@ Here's another section of a JSON file's output data:
     }
 ]
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 The above rendering takes place inside the **elements** property. Rendering includes:
 

@@ -16,7 +16,7 @@ layout: page
 
 The instructor talks about the depth that this course gets into. But why dive deep into JavaScript? Consider the following code:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var x = 40;
 
@@ -26,7 +26,7 @@ x; // 41 - this will log the current value of the variable
 ++x; // 42 - placing the plus symbols before the variable will increment the value and then return the result
 x; // 42 - this will log the current value of the variable
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 We as developers tend to assume mental models about code and when something goes wrong instead of having a better understanding about the code. The unintuitive-ness of JavaScript does not mean that it was poorly defined. **Read the spec docs!**
 
@@ -47,7 +47,7 @@ The purpose of this course is to help you understand the DNA of JavaScript to be
 
 To translate the above **++** spec into a function, it may look something like this:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 function plusPlus(orig_val) {
     var orig_val_coerced = Number(orig_val);
@@ -59,7 +59,7 @@ var x = "5";
 plusPlus(x); // 5
 x; // 6
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Whenever there is a divergence between what your brain thinks is happening and what the computer does, that's where bugs enter the code.
 
@@ -139,13 +139,13 @@ When we assign a value to a variable, we can use the `typeof` operator to determ
 
 ### BigInt
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var v = 42n;
 
 typeof v; // "bigint"
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Coming soon functionality, does not behave like a standard number primitive type. It will be important to know the difference between a 'number' and a 'bigint'.
 
@@ -185,19 +185,19 @@ Make a Polyfill for `Object.is(..)`
 
 To define a polyfill, it looks like this:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 if (!Object.is) {
     Object.is = function ObjectIs(..) {..};
 }
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 In the (Code Exercises)[https://static.frontendmasters.com/resources/2019-03-07-deep-javascript-v2/deep-js-foundations-v2-exercises.zip], the file `types-exercises > object-is > ex.js` you will find the file that has all of the `Object.is(..)` tests.
 
 ### Type Check Exercise Solution
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 if (!Object.is || true) {
     Object.is = function ObjectIs(x, y) {
@@ -222,7 +222,7 @@ if (!Object.is || true) {
     };
 }
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 ### Fundamental Objects
 
@@ -306,7 +306,7 @@ Most developers tend to think that implicit mechanisms are magical. That when so
 
 Not all abstractions are good, but some are necessary. Implicitness, in functional programming, actually makes the implicitness more explicit. Implicitness is not bad, it is the proper use of abstraction. We want to hide key unnecessary details to re-focus the reader and increase clarity. Part of the reason that JavaScript has such a low point of entry is that it does not force the user to focus on such fine details. It would betray JavaScript's DNA to say that anything implicit should be avoided. Take the following examples:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var numStudents = 16;
 
@@ -322,11 +322,11 @@ console.log(
 );
 // "There are 16 students."
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 The second example is more readable and is a fine example of implicit coercion not being a bad or magical thing. And in this example:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var workshopEnrollment1 = 16;
 var workshopEnrollment2 = workshop2Elem.value;
@@ -339,7 +339,7 @@ if(workshopEnrollment1 < workshopEnrollment2) {
     //...
 }
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 If both of the numbers are strings, JavaScript wouldn't turn them into numbers, the less than operator will do an alphanumeric comparison. Again, if you can guarantee that each of the variables for the less than comparison would be numbers, then the second version of the if statement is just fine and we can deal with implicit coercion without fear. If you have the choice to use coercion but it's not obvious, it would be in your purview to make it obvious. If you communicate your intent, it will not trip up other readers of your code. Is showing the extra details helpful to the reader (of your code) or not? Sometimes yes, sometimes no. Be a critical and analytical thinker, be an engineer and not a code monkey!
 
@@ -385,9 +385,9 @@ In this exercise, you will define some validation functions that check user inpu
 
 ### Coercion Exercise Solution
 
-{% capture summary %}Click to view the solution{% endcapture %}
-{% capture details %}  
-{% highlight javascript %}
+{%- capture summary -%}Click to view the solution{%- endcapture -%}
+{%- capture details -%}  
+{%- highlight javascript -%}
 
 function isValidName(name) {
     if (
@@ -428,8 +428,8 @@ function hoursAttended(attended, length) {
     return false
 }
 
-{% endhighlight %}
-{% endcapture %}{% include details.html %} 
+{%- endhighlight -%}
+{%- endcapture -%}{%- include details.html -%} 
 
 
 ## Equality
@@ -440,7 +440,7 @@ function hoursAttended(attended, length) {
 
 For `===` if the types are different, it returns `false`. The basic difference between `==` and `===` is whether or not we are going to allow any coercion to occur. JavaScript's equality is based on identity, not structure. Consider the following:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 let workshop1 = {
     name: "Deep JS Foundations"
@@ -458,7 +458,7 @@ if (workshop1 === workshop2) {
     // never going to get here...
 }
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 While, the above elements may be of the same type, they are effectively different from one another. However, if `workshop2 = workshop1` then we could get a true statement to return from a comparison of these two objects.
 
@@ -470,9 +470,9 @@ In summary, `==` allows coercion (types different), `===` disallows coercion (ty
 
 Through coercive equality, you have the option to treat the `null` and `undefined` values as equal (read the spec...). Which of the following is 'better'?:
 
-{% capture summary %}Click to view the code{% endcapture %}
-{% capture details %}  
-{% highlight javascript %}
+{%- capture summary -%}Click to view the code{%- endcapture -%}
+{%- capture details -%}  
+{%- highlight javascript -%}
 
 var workshop1 = { topic: null };
 var workshop2 = {};
@@ -491,8 +491,8 @@ if (
     // ..
 }
 
-{% endhighlight %}
-{% endcapture %}{% include details.html %}
+{%- endhighlight -%}
+{%- endcapture -%}{%- include details.html -%}
 
 Arguably, the second `if` statement is more concise and readable, and since we know that `null == undefined` this would work exactly the same as the first `if` statement. This is an example of using coercive equality. 
 
@@ -504,9 +504,9 @@ According to the Abstract Equality Comparison algorithm, if one of the operators
 
 Considering the above, which of the below `if` statements is more concise?
 
-{% capture summary %}Click to view the code{% endcapture %}
-{% capture details %}  
-{% highlight javascript %}
+{%- capture summary -%}Click to view the code{%- endcapture -%}
+{%- capture details -%}  
+{%- highlight javascript -%}
 
 var workshopEnrollment1 = 16;
 var workshopEnrollment2 = workshop2Elem.value();
@@ -519,8 +519,8 @@ if (workshopEnrollment1 == workshopEnrollment2) {
     // ..
 }
 
-{% endhighlight %}
-{% endcapture %}{% include details.html %}
+{%- endhighlight -%}
+{%- endcapture -%}{%- include details.html -%}
 
 Arguably, the second comparison is cleaner, especially if we can guarantee that either variable will only ever be a number or a string. The coercion that would occur from using `==` would be acceptable for this use case. You can choose to structure your code in such a way that coercion is a useful and obvious system, rather than the complex magic that some people feel it to be. If you invoke `==` with something that is not already of a primitive type, it will invoke `ToPrimitive()` on that.
 
@@ -528,9 +528,9 @@ Arguably, the second comparison is cleaner, especially if we can guarantee that 
 
 If you wrote a function like this:
 
-{% capture summary %}Click to view the code{% endcapture %}
-{% capture details %}  
-{% highlight javascript %}
+{%- capture summary -%}Click to view the code{%- endcapture -%}
+{%- capture details -%}  
+{%- highlight javascript -%}
 
 var workshop1Count = 42;
 var workshop2Count = [42];
@@ -539,14 +539,14 @@ if (workshop1Count == workshop2Count) {
     // ..
 }
 
-{% endhighlight %}
-{% endcapture %}{% include details.html %}
+{%- endhighlight -%}
+{%- endcapture -%}{%- include details.html -%}
 
 What would happen? Would it work coercively? In the above case, yes... but should it? More importantly, why would it work? Why would a number somehow be coercively equal to an array holding that number? According to the specification, the `==` algorithm would execute in the following way:
 
-{% capture summary %}Click to view the code{% endcapture %}
-{% capture details %}  
-{% highlight javascript %}
+{%- capture summary -%}Click to view the code{%- endcapture -%}
+{%- capture details -%}  
+{%- highlight javascript -%}
 
 var workshop1Count = 42;
 var workshop2Count = [42];
@@ -558,8 +558,8 @@ if (true) {
     // ..
 }
 
-{% endhighlight %}
-{% endcapture %}{% include details.html %}
+{%- endhighlight -%}
+{%- endcapture -%}{%- include details.html -%}
 
 The array gets transformed into its primitive type, which is a stringified version of the array ("42"). Then, 42 is compared to the string "42". The `==` algorithm prefers numeric comparison, therefore the string "42" is now turned into the number 42. And now that both operators are the same type, `==` will do a `===` comparison and finally return true. All of this is an example of when coercion could be a bad thing for a developer. Just because this works does not mean that you should use it. You should reduce the surface area and not make a comparison between numbers and arrays of numbers. The fix for this would not be to use a `===` comparison, but to actually fix the problem, the comparison between two things that are not the same type. Fix it so that the comparisons that you are making make sense.
 
@@ -572,7 +572,7 @@ Prefer: `ToNumber()`
 
 ### Double Equals Corner Cases
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 [] == ![]; // true
 
@@ -600,13 +600,13 @@ if(true) {
     // Works...
 }
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 ### Corner Cases: Booleans
 
 Just don't do this... If you want to all the boolean conversion of an array to be true, that's fine. 
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var a = [];
 
@@ -630,7 +630,7 @@ if (true) {
     // Works...
 }
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 The comparison of `[] == true || false` is unnecessarily complicating the above code. It is simpler, and also more understandable, to just have JavaScript perform the `Boolean` operation on the original array instead of comparing it to true or false. In this case, implicit coercion does not have a gotcha whereas the explicit coercion does.
 
@@ -708,9 +708,9 @@ In this exercise, you will define a `findAll(..)` function that searches an arra
 
 ### Equality Exercise Solution
 
-{% capture summary %}Click to view the solution{% endcapture %}
-{% capture details %}  
-{% highlight javascript %}
+{%- capture summary -%}Click to view the solution{%- endcapture -%}
+{%- capture details -%}  
+{%- highlight javascript -%}
 
 function findAll(match, arr) {
     var ret = [];
@@ -789,8 +789,8 @@ console.log(setsMatch(findAll(true,values),[true,"true"]) === false);
 console.log(setsMatch(findAll(true,values),[true,1]) === false);
 console.log(setsMatch(findAll(false,values),[false,0]) === false);
 
-{% endhighlight %}
-{% endcapture %}{% include details.html %}
+{%- endhighlight -%}
+{%- endcapture -%}{%- include details.html -%}
 
 The point of this exercise was to drive home the point that coercion can be safe when you have eliminated the corner cases and made it obvious that you have done so.
 
@@ -820,7 +820,7 @@ Caveats:
 
 Consider the following:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var teacher = "You";
 
@@ -829,11 +829,11 @@ var teacher = "You";
 teacher = { name: "You" };
 // Error: can't assign object to string
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 The above is an example of static typing that comes with the use of TypeScript or Flow. Because you initially set the value of `teacher` to a string, these statically typed systems will infer that `teacher` should always be a string... but what if you want to reassign `teacher` to hold an object? You're SOL. You can also strictly declare that `teacher` should only ever be a string:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var teacher: string = "You";
 
@@ -842,13 +842,13 @@ var teacher: string = "You";
 teacher = { name: "You" };
 // Error: can't assign object to string
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 ...and you would of course see the same error as before.
 
 ### Custom Types
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 type student = { name: string };
 
@@ -860,7 +860,7 @@ var firstStudent: student = { name: "Frank" };
 
 var firstStudentName: string = getName(firstStudent);
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 With TypeScript and Flow, you can define custom types. The above defines that an object of a type that has a property called name that is of type string. You can pass values of that type as parameters and receive values back as parameters. Any of the above only works based on the 'guarantee' that things are assigned correctly.
 
@@ -868,14 +868,14 @@ With TypeScript and Flow, you can define custom types. The above defines that an
 
 Something undervalued about TypeScript is that it can tell us that certain operations would be invalid. The following would produce an error in TypeScript:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var studentName: string = "Frank";
 
 var studentCount: number = 16 - studentName;
 // error: can't subtract string
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 The only issue with how TypeScript handles the above, in the instructors opinion, is the inability to change how TypeScript handles coercion on a case-by-case basis. 
 
@@ -925,7 +925,7 @@ Understanding the above, it is important to think of JavaScript as a two-pass sy
 
 ### Compilation & Scope
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var teacher = "Kyle";
 
@@ -942,7 +942,7 @@ function ask() {
 otherClass(); // Welcome!
 ask(); // Why?
 
-{% endhighlight  %}
+{%- endhighlight  -%}
 
 Looking at the above code, you can likely understand everything that will happen, but is that the entire picture? But how exactly does the JavaScript engine think about / handle this code? To understand the complete picture, we need to consider that JavaScript has both a compiler and a scope manager. These two pieces of JavaScript will help us complete the picture of what *exactly* is happening with the above code. The compiler and scope manager will have some back and forth while sorting through the JavaScript code to organize the code in terms of global scope and local scope. The first `var` and the functions will be in global scope while the `var`(s) inside of the functions will be in the local scope of their function(s). This is then handed over, as part of the execution plan, to the virtual (JavaScript) machine can run this code.
 
@@ -974,29 +974,29 @@ Consider these examples:
 
 Example 1:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var a = 1;
 console.log('a:', a); // a: 1
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Example 2:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 console.log('a:', a); // a: undefined
 var a = 1;
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Example 3:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 console.log('a:', a); // Uncaught ReferenceError: a is not defined
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Example 1 is straightforward and works as expected, however note the subtle difference between other two examples. Example 2 logs that the value of a is undefined, but the identifier a has itself been declared; compared with example 3 in which the identifier a has not been declared, hence resulting in a reference error.
 
@@ -1004,7 +1004,7 @@ This demonstrates that during the lexing phase, the JavaScript engine declares t
 
 Again, a closure is when a function is able to remember and access its lexical scope even when that function is executing outside its lexical scope.
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 function foo() {  // 'scope of foo' aka lexical scope for bar
    var memory = 'hello closure';
    return function bar() {
@@ -1016,7 +1016,7 @@ function foo() {  // 'scope of foo' aka lexical scope for bar
 const closure = foo();
  
 closure(); // hello closure
-{% endhighlight %}
+{%- endhighlight -%}
 
 So... lexical scope is the author-time scope created by a closure. It is the ‘outer’ scope of a function which is defined inside a closure.
 
@@ -1028,7 +1028,7 @@ Continues walking through the code in the 'Compilation & Scope' section above. N
 
 JavaScript is not an interpreted language, in the sense that it does not execute code line-by-line. Instead, JavaScript should be thought of as a two-pass processing. The first pass is compilation / parsing, during which the main thing that happens is the scope / plan is created and the identifiers are mapped. The second pass is execution. Let's walk through some code... again.
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var teacher = "Kyle";
 
@@ -1045,7 +1045,7 @@ function ask() {
 otherClass(); // Welcome!
 ask(); // Why?
 
-{% endhighlight  %}
+{%- endhighlight  -%}
 
 The (compilation) process for the above code is something like this:
 
@@ -1125,7 +1125,7 @@ That completes the program. All of the above happens in a fraction of a millisec
 
 Another review, like the last section, but this time walking through the following code:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var teacher = "Kyle";
 
@@ -1140,7 +1140,7 @@ otherClass(); // Welcome
 teacher; // ??
 topic; // ??
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Try to walk through the code and have the conversion(s) of the two passes (compilation and execution) that JavaScript goes through.
 
@@ -1158,7 +1158,7 @@ Turning on strict mode `"use strict"` would throw a ReferenceError for the undec
 
 Now let's look at some code with a nested scope:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var teacher = "Kyle";
 
@@ -1175,7 +1175,7 @@ function otherClass() {
 otherClass(); // Suzy Why?
 ask("????");
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 The final line of the above code would throw a ReferenceError because `ask()` does not exist in the global scope and therefore cannot be located.
 
@@ -1197,7 +1197,7 @@ Imagine lexical scope as a building and current scope is the first floor of that
 
 ### Function Expressions
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 function teacher() { /* .. */ }
 
@@ -1209,7 +1209,7 @@ console.log(teacher);
 console.log(myTeacher);
 console.log(anotherTeacher);
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 `myTeacher` is a function expression. Unlike a function declaration, which adds any declarations into its own scope, a function expression
 will add declarations within its own scope, which is not the same scope as its identifier. i.e. `myTeacher` is in the global scope, but `anotherTeacher` is in its own scope, as is anything declared within it.
@@ -1218,7 +1218,7 @@ The final line `console.log(anotherTeacher);` will throw a ReferenceError becaus
 
 What is a named function expression? It is a function expression that has a name...
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var clickHandler = function() {
     // ..
@@ -1228,7 +1228,7 @@ var keyHandler = function keyHandler() {
     // ..
 };
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 The first function above is an anonymous function expression, while the second function is an example of a named function expression. It is suggested that you should 💯% prefer the named function expression over the anonymous function expression, like always, forever, because...
 
@@ -1246,7 +1246,7 @@ The purpose of code is not to make it as convenient as possible for you to type,
 
 ### Arrow Functions
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var ids = people.map(person => person.id);
 
@@ -1254,7 +1254,7 @@ var ids = people.map(function getId(person) {
     return person.id;
 });
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Arrow functions are anonymous. The instructor believes that you should not be using arrow functions as a replacement for all other functions. Named (arrow) function expressions? You would be saving characters (used) be just using a function declaration *and* making your code more readable. More concise code != more readable code
 
@@ -1305,9 +1305,9 @@ As the appeal of `=>` arrow functions is their conciseness, wherever possible tr
 
 ### Function Expression Solution: Functions
 
-{% capture summary %}Click to view the solution{% endcapture %}
-{% capture details %}  
-{% highlight javascript %}
+{%- capture summary -%}Click to view the solution{%- endcapture -%}
+{%- capture details -%}  
+{%- highlight javascript -%}
 
 function getStudentById(studentId) {
     return studentRecords.find(function matchId(record) {
@@ -1388,14 +1388,14 @@ remindUnpaid(currentEnrollment);
 	Henry (105): Not Paid
 */
 
-{% endhighlight %}
-{% endcapture %}{% include details.html %} 
+{%- endhighlight -%}
+{%- endcapture -%}{%- include details.html -%} 
 
 ### Function Expression Solution: Arrow Functions
 
-{% capture summary %}Click to view the solution{% endcapture %}
-{% capture details %}  
-{% highlight javascript %}
+{%- capture summary -%}Click to view the solution{%- endcapture -%}
+{%- capture details -%}  
+{%- highlight javascript -%}
 
 var getStudentById = studentId =>
     studentRecords.find(
@@ -1468,8 +1468,8 @@ remindUnpaid(currentEnrollment);
 	Henry (105): Not Paid
 */
 
-{% endhighlight %}
-{% endcapture %}{% include details.html %}
+{%- endhighlight -%}
+{%- endcapture -%}{%- include details.html -%}
 
 ## Advanced Scope
 
@@ -1489,7 +1489,7 @@ Lexical scope is popular because it can be optimized. When you are compiling cod
 
 In a dynamically scoped language (not JavaScript), the value assigned to a variable is dependent on where it was called from. Consider the following:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var teacher = "Kyle";
 
@@ -1505,7 +1505,7 @@ function otherClass() {
 
 otherClass():
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 In the above code, what is the value of `teacher` in the `ask` function? In a lexically scoped language (JavaScript), the value of teacher would come from the global scope, because the `ask` function does not have any reference to the `teacher` variable, so the value of `teacher` would be `"Kyle"`. But in a dynamically scoped language (not JavaScript), the value of `teacher` would depend on where the `ask` function was called from, in this case `otherClass`. In `otherClass`, the value of `teacher` is `"Suzy"`, so in the `ask` function, `teacher` would return `"Suzy"`.
 
@@ -1527,7 +1527,7 @@ If you expose something, it's almost a guarantee that someone is going to use it
 
 IIFE - Immediately Invoked Function Expression - Using a function expression to create a scope, immediately invoking it. If you are making an IIFE, there is likely some purpose for it and it should be named! Whether they are anonymous or not, IIFEs are just functions, which means that you can pass values into them. An interesting use case for an IIFE is a `try / catch`. If you are setting the value of a variable based on the result of a `try / catch` statement, it could be confusing to your reader... make it an IIFE!
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var teacher = (function getTeacher() {
     try {
@@ -1538,7 +1538,7 @@ var teacher = (function getTeacher() {
     }
 })();
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 IFFEs can be used any place that you need an expression, and any time you need a statement or scope in an expression.
 
@@ -1546,7 +1546,7 @@ IFFEs can be used any place that you need an expression, and any time you need a
 
 Block scoping is done with curly braces `{}`, instead of with functions. `let` and `const` exist so that you can make a declaration inside of a block and it turns that block into a scope. i.e.
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var teacher = "Kyle";
 
@@ -1557,7 +1557,7 @@ var teacher = "Kyle";
 
 console.log(teacher); // Kyle
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Blocks are not scopes until they have a `let` or a `const` inside of them which implicitly makes them a scope. You should use `let` in places where it already makes sense for it to be used, inside of a block scope. `let` is a replacement for your already semantically signaled block scope(s).
 
@@ -1567,7 +1567,7 @@ Is `let` the new `var`? Nope. `let` is a new tool that we should add on to our e
 
 Consider the following:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 function repeat(fn, n) {
     var result;
@@ -1579,13 +1579,13 @@ function repeat(fn, n) {
     return result;
 }
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 In the above code, you *could* replace both `var`(s) with `let`, but the instructor suggests to only replace the `var` in the `for loop` with `let`. Here's why: If you have a variable that belongs to the entire scope of the function, the correct and semantic way to signal that to your reader is not to use a `let` at the top level of your function scope, but to use a `var` because that is the thing it has always done for 24 years. Again, you could replace the initial `var` with `let`, it is recommended not to because doing so would remove a small amount of important semantic information from the reader, who may then not know your intent. `let` is supposed to signify a very localized usage of a variable, ideally within a couple lines of code.
 
 If your code has something that is *naturally* block scoped, use `let`. Here's an example of some code that would not work if you replaced `var` with `let`:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 function lookupRecord(searchStr) {
     try {
@@ -1598,7 +1598,7 @@ function lookupRecord(searchStr) {
     return id;
 }
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 If the `var`(s) were replaced with `let`(s), the `let`(s) would be scoped to their blocks (`try / catch`) and would not be available for the `return` statement. 🤯
 
@@ -1608,7 +1608,7 @@ If the `var`(s) were replaced with `let`(s), the `let`(s) would be scoped to the
 
 If you are going to use `let` for only a few lines of code and not again within the same function, it is recommended to put it in its own block scope. Like so:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 function formatStr(str) {
     { let prefix, rest;
@@ -1624,7 +1624,7 @@ function formatStr(str) {
     return str.slice( 4 );
 }
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 ### const
 
@@ -1644,7 +1644,7 @@ function formatStr(str) {
 
 Until a couple of years ago, the word 'hoisting' literally did not appear in the JavaScript specification. Turns out, hoisting is not a real thing. The JavaScript engine does not hoist, it does not move things around the way it is suggested with hoisting. Hoisting is a made up [English] language convention to discuss the idea of lexical scope. Consider the following code:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 student; // ??
 teacher; // ??
@@ -1652,13 +1652,13 @@ teacher; // ??
 var student = "You";
 var teacher = "Kyle";
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 What will happen?! JavaScript will, in its first of two passes, parse the above code and create the variables, but without any value assigned to them, so both `student` and `teacher` would return `undefined`. *But*, the concept of hoisting does not mean that any actual code has been moved around. Functions hoist, they are taken at compile time and defined in such a way so they can be used earlier in the scope than when they've been declared.
 
 ### Hoisting Example
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 // var hoisting?
 // usually bad :/
@@ -1673,7 +1673,7 @@ function getTeacher() {
     return teacher;
 }
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Unlike `var` hoisting, function hoisting can be useful. Do you usually put all of your function calls at the end of your files? How about putting them all at the top so you can immediately see them?! You can!
 
@@ -1701,9 +1701,9 @@ Also, pull function declarations to outer scopes if they don't need to be nested
 
 ### Hoisting Exercise Solution
 
-{% capture summary %}Click to view the solution{% endcapture %}
-{% capture details %}  
-{% highlight javascript %}
+{%- capture summary -%}Click to view the solution{%- endcapture -%}
+{%- capture details -%}  
+{%- highlight javascript -%}
 
 var currentEnrollment = [ 410, 105, 664, 375 ];
 
@@ -1798,8 +1798,8 @@ function notYetPaid(studentId){
     return !record.paid;
 }
 
-{% endhighlight %}
-{% endcapture %}{% include details.html %}
+{%- endhighlight -%}
+{%- endcapture -%}{%- include details.html -%}
 
 The purpose of this exercise is to flatten the scope of the program, which makes it [scope] easier to manage. Additionally, this can make your code more readable, which makes it easier for both your future self or another developer to dig in and work with your code.
 
@@ -1815,7 +1815,7 @@ Closure is when a function is able to "remember" and access its lexical scope, t
 
 Here is an example of closure:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 function ask(question) {
     setTimeout(function waitASec() {
@@ -1825,11 +1825,11 @@ function ask(question) {
 
 ask("What is closure?");
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 ### Closing Over Variables
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var teacher = "Kyle";
 
@@ -1841,11 +1841,11 @@ teacher = "Suzy";
 
 myTeacher(); // ??
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 `myTeacher();` would return `Suzy`. Closure is not capturing values, but preserving access to variables. One cannot effectively use closure until you get away from the perception that closure captures values. Consider the following:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 for (var i = 1; i <= 3; i++) {
     setTimeout(function() {
@@ -1857,11 +1857,11 @@ for (var i = 1; i <= 3; i++) {
 // i: 4
 // i: 4
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 `i` would only return `4` because we need another variable, or variables, to store the various 'states' that `i` would be through its iteration. One way to 'solve' this would be to declare a new variable and assign it to the value of `i`. i.e.
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 for (var i = 1; i <= 3; i++) {
 
@@ -1876,11 +1876,11 @@ for (var i = 1; i <= 3; i++) {
 // j: 2
 // j: 3
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 For each iteration, `j` will be 'updated' with the 'new' value of `i`, so the console will log the expected values of 1,2,3. An arguably better / more concise approach would be to do the following:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 for (let i = 1; i <= 3; i++) {
     setTimeout(function() {
@@ -1892,7 +1892,7 @@ for (let i = 1; i <= 3; i++) {
 // i: 2
 // i: 3
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Using `let` also produces the expected result because `let` creates a new `i` for each iteration. This is new behavior as of ES6. The point is if you need to close over different variables, then you need the different variables, not try to capture different values.
 
@@ -1906,7 +1906,7 @@ In summary, closure is a preservation of the linkage to a variable, not the capt
 
 Now that we understand lexical scope and closure, we can look at the module pattern. First let's look at what is not a module, like this:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var workshop = {
     teacher: "Kyle",
@@ -1918,13 +1918,13 @@ var workshop = {
 workshop.ask("Is this a module?");
 // Kyle Is this a module?
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 The above code is not a module, it *is* what could be called a 'namespace'. Not really a syntactic feature of the [JavaScript] language, but it's an idiom that we make namespaces with objects. While there is nothing wrong with writing your code in this way, it is definitely not a module. The reason being is that the module pattern requires the concept of encapsulation. Encapsulation is to hide data and behavior. The idea of a module is that there are things that are 'public', that's your public API, and there are things that are private, things that nobody on the outside can touch. If you want to have a module, you need to have encapsulation (data hiding).
 
 The 'classic' module pattern, sometimes referred to as the revealing module pattern, encapsulates data and it does so with closure. You can't have a module if you don't have closure. Here is an example of what a module *does* look like:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var workshop = (function Module(teacher) {
     var publicAPI = {ask, };
@@ -1938,7 +1938,7 @@ var workshop = (function Module(teacher) {
 workshop.ask("It's a module, right?");
 // Kyle It's a module, right?
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 The above module has two components to it.
 
@@ -1950,7 +1950,7 @@ The module pattern keeps private state private and exposes things on an object, 
 
 Here is an example of a module in a factory function style:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 function WorkshopModule(teacher) {
     var publicAPI = { ask, };
@@ -1966,7 +1966,7 @@ var workshop = WorkshopModule("Kyle");
 workshop.ask("It's a module, right?");
 // Kyle It's a module, right?
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 With the Module Factory pattern, you can create as many instances of the module and they will all have their own state. The module pattern is arguable the most prevalent and important of all code organization patterns. ~80-90% of all JavaScript that's ever been written has used some mechanism like the module pattern as it's code organization pattern. But, the module pattern in JavaScript is more of a syntactic hack in that it is not exactly a language feature or first-class citizen, but rather a methodology of using the tools in a way that accomplishes some end goal.
 
@@ -1974,7 +1974,7 @@ With the Module Factory pattern, you can create as many instances of the module 
 
 Because the module pattern is actually not a part of JavaScript, and many wanted them to be, modules eventually found their way to the language in ES6. In the current implementation, they are still very much a WIP. The issue being that TC39 and Node.js did not communicate about how modules would be implemented at first. There have been some conversations about how to fix this, but where its landed is that to use modules in Node, you have to use a new file extension name; `.mjs`. There is a working group within Node that is trying to get full support for modules, which they will implement in phases. And at the time of writing this, Node should have pushed phase 1 of 4 of module support in Node. The ES6 module pattern looks like this:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var teacher = "Kyle";
 
@@ -1982,7 +1982,7 @@ export default function ask(question) {
     console.log(teacher, question);
 };
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Because the above is a module, it is assumed that everything is private. The way you make something public is by using the `export` keyword, everything you do not export will be private. In ES6, modules are file-based. Which means it is impossible to have more than one ES6 module in the same file. Which means that for each module your application needs, you need to have a separate file for it. This can grow quickly. And since you have to compile everything back to the module format we've previously covered anyway, wouldn't it make sense to just write your modules in that format and skip the compilation step?
 
@@ -1990,7 +1990,7 @@ Because the above is a module, it is assumed that everything is private. The way
 
 To import modules into your files, there are two major styles used:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 import ask from "workshop.mjs";
 
@@ -2002,7 +2002,7 @@ import * as workshop from "workshop.mjs";
 workshop.ask("It's a namespace import, right?");
 // Kyle It's a namespace import, right?
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 The first import is known as a `named import`, the second style is known as a `namespace import` which is effectively collecting all (*) of the exports and placing them in the namespace of `workshop`. The `namespace import` is more similar to how modules have been done in JavaScript over the last 20 years, whereas the `named import` style is more of a new school thinking. Neither is right or wrong, but comes down to how you prefer to work with your modules.
 
@@ -2036,9 +2036,9 @@ In this exercise, you will refactor some code that manages student enrollment re
 
 7. Change the execution code (the console output steps) to references to `deepJS.*` public API methods.
 
-{% capture summary %}Work from this code{% endcapture %}
-{% capture details %}  
-{% highlight javascript %}
+{%- capture summary -%}Work from this code{%- endcapture -%}
+{%- capture details -%}  
+{%- highlight javascript -%}
 
 var currentEnrollment = [ 410, 105, 664, 375 ];
 
@@ -2137,14 +2137,14 @@ function notYetPaid(studentId) {
 	return !record.paid;
 }
 
-{% endhighlight %}
-{% endcapture %}{% include details.html %}
+{%- endhighlight -%}
+{%- endcapture -%}{%- include details.html -%}
 
 ### Module Exercise Solution
 
-{% capture summary %}Click to view the solution{% endcapture %}
-{% capture details %}  
-{% highlight javascript %}
+{%- capture summary -%}Click to view the solution{%- endcapture -%}
+{%- capture details -%}  
+{%- highlight javascript -%}
 
 var deepJS = defineWorkshop();
 deepJS.addStudent(313, "Frank", true);
@@ -2280,8 +2280,8 @@ function defineWorkshop() {
     }
 }
 
-{% endhighlight %}
-{% endcapture %}{% include details.html %}
+{%- endhighlight -%}
+{%- endcapture -%}{%- include details.html -%}
 
 Modules are pretty important in JavaScript, maybe even in all of software development. You will get a lot of mileage out of thinking in this pattern, practicing it, trying to implement it more. Try to find opportunities to implement the module pattern!
 
@@ -2299,7 +2299,7 @@ A function's `this` references the execution context for that call, determined e
 
 A `this`-aware function can have a different context each time it is called, which makes it more flexible and reusable. Here is an example of the dynamic flexibility of the `this` keyword in action:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 function ask(question) {
     console.log(this.teacher, question);
@@ -2314,7 +2314,7 @@ function otherClass() {
 
 otherClass();
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 The `this` keyword exists so we can invoke functions in different contexts. There are four different ways to invoke a function. Each of the four ways to call a function in JavaScript will define what is the `this` keyword differently. 
 
@@ -2322,7 +2322,7 @@ The `this` keyword exists so we can invoke functions in different contexts. Ther
 
 The first of the four methods to invoke a function we'll cover is implicit binding.
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var workshop = {
     teacher: "Kyle",
@@ -2334,11 +2334,11 @@ var workshop = {
 workshop.ask("What is implicit binding?");
 // Kyle What is implicit binding?
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Revisiting the namespace pattern, how does the `this` keyword behave inside of this pattern? When `ask` function is invoked, how do you know what the `this` keyword will point at? Because of the 'call site' (workshop), the `this` keyword will point at the `workshop` object. This is exactly how the `this` binding works in other languages. This is the most intuitive form of the `this` keyword because it decides the method based upon what object you call it from. The idea of having implicit binding is useful because this is how we share behavior among different contexts. Here is another example of implicit binding where the `ask` function is being used more than once and has two different `this` contexts:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 function ask(question) {
     console.log(this.teacher, question);
@@ -2360,11 +2360,11 @@ workshop1.ask("How do I share a method?");
 workshop2.ask("How do I share a method?");
 // Suzy How do I share a method?
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 In the above code, you can see that the `ask` function is being assigned to different contexts (`workshop1` `workshop2`) and because of this, the `this` keyword will point at the respective objects that it was called from. Another method to invoke functions which we've seen before is the `.call` method. Along with the `.apply` method, the `.call` method takes, as their first argument, a `this` keyword.
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 function ask(question) {
     console.log(this.teacher, question);
@@ -2384,13 +2384,13 @@ ask.call(workshop1, "Can I explicitly set context?");
 ask.call(workshop2, "Can I explicitly set context?");
 // Suzy Can I explicitly set context?
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Above, on the first `ask.call`, when you pass in `workshop1`, it is saying invoke the `ask` function with the `this` context of `workshop1`. It is similar to the implicit binding example at the beginning of this section, the function is still being shared, but it is now being done explicitly rather than implicitly. We are saying, wherever this function comes from, invoke it in this particular context, which I am going to specify. `.call` and `.apply` can be used to explicitly tell JavaScript what context to invoke a function in.
 
 A variation of explicit binding is called hard binding, which looks like this:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var workshop = {
     teacher: "Kyle",
@@ -2405,7 +2405,7 @@ setTimeout(workshop.ask, 10, "Lost this?");
 setTimeout(workshop.ask.bind(workshop), 10, "Hard bound this?");
 // Kyle Hard bound this?
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 The first `setTimeout` above is not the call site for `workshop.ask`, so the binding is lost and bound to the global object in this case. A common solution to this can be seen on the second `setTimeout` which hard binds the `workshop.ask` function to the `workshop` object. *If* you use `.bind` to hard bind the `this` to a particular scope, you are effectively removing the flexibility of the `this` keyword, which is not the intended purpose of the `this` keyword. If you do not need the flexibility, you may be better off refactoring your code to a module pattern which provides a fixed, predictable behavior.
 
@@ -2433,7 +2433,7 @@ The final way of invoking a function is with default binding, which looks like t
 
 What if you had a [function] call site like this:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var workshop = {
     teacher: "Kyle";
@@ -2444,7 +2444,7 @@ var workshop = {
 
 new (workshop.ask.bind(workshop))("What does this do?");
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 In the above code, the function `ask` is being called with `new`, a context object, `.bind`, that's three of the ways to invoke a function being used at once. This is not a useful thing to do, but let's look at how it works and which of the function invoke(rs?) takes precedence. The order of binding precedence is as follows:
 
@@ -2462,7 +2462,7 @@ But what about arrow functions and the `this` keyword?! Lexical `this` occurs. B
 
 ### Resolving this in Arrow Functions
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var workshop = {
     teacher: "Kyle",
@@ -2477,7 +2477,7 @@ workshop.ask("What happened to 'this'?");
 workshop.ask.call(workshop, "Still no 'this'?:");
 // undefined Still no 'this'?
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Ummm... why is `this` returning undefined? Well, what is the parent scope for the `ask` function in the above code? Did you guess global? If you did, that is correct; the `workshop` object is not a scope, it is an object, so the `ask` function would look in the global scope for `this`, which in this case is in fact undefined. 😞
 
@@ -2507,9 +2507,9 @@ In this exercise, you will refactor some code that manages student enrollment re
 
 3. Make sure any place where a `this`-aware callback is passed is hard-bound with `bind(..)`. Don't `bind(..)` a function reference if it's not `this`-aware.
 
-{% capture summary %}Work from this code{% endcapture %}
-{% capture details %}  
-{% highlight javascript %}
+{%- capture summary -%}Work from this code{%- endcapture -%}
+{%- capture details -%}  
+{%- highlight javascript -%}
 
 var deepJS = defineWorkshop();
 
@@ -2650,14 +2650,14 @@ function defineWorkshop() {
 	}
 }
 
-{% endhighlight %}
-{% endcapture %}{% include details.html %}
+{%- endhighlight -%}
+{%- endcapture -%}{%- include details.html -%}
 
 ### this Exercise Solution
 
-{% capture summary %}Click to view the solution{% endcapture %}
-{% capture details %}  
-{% highlight javascript %}
+{%- capture summary -%}Click to view the solution{%- endcapture -%}
+{%- capture details -%}  
+{%- highlight javascript -%}
 
 // ********************************
 
@@ -2769,8 +2769,8 @@ deepJS.remindUnpaidStudents();
 	Henry (105): Not Paid
 */
 
-{% endhighlight %}
-{% endcapture %}{% include details.html %}
+{%- endhighlight -%}
+{%- endcapture -%}{%- include details.html -%}
 
 Q: Would you [instructor] use this type of namespace object with so many functions in practice?
 
@@ -2784,7 +2784,7 @@ A: You only need to bind `this` if the method is a this-aware function.
 
 The class pattern is by far the most prevalent used in JavaScript. The class system is syntactic sugar layered on top of the prototype system. The class pattern looks like this:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 class Workshop {
     constructor(teacher) {
@@ -2804,11 +2804,11 @@ deepJs.ask("Is 'class' a class?");
 reactJS.ask("Is this class OK?");
 // Suzy Is this class OK?
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Classes don't have to be statements, they can be expressions and they can be anonymous. Classes can be defined with or without an extends clause. In the above code a class is being defined, nothing is being extended. You can choose to define a `constructor` and you can add methods (no comma needed). If you want to extend a class, it could look something like this:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 class Workshop {
     constructor(teacher) {
@@ -2830,7 +2830,7 @@ var JSRecentParts = new AnotherWorkshop("Kyle");
 JSRecentParts.speakUp("Are classes getting any better?");
 // Kyle Are classes getting any better?
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 If you have a child class that extends the a method of the same name in its parent class, you can refer to the parent from the child by using `super.`; i.e. `super.ask...`. If you pay attention to the [JavaScript] spec, classes have a lot of features coming down the pipeline, almost making them a language inside of a language, not just syntactic sugar. Class methods are not auto-bound to the `this` keyword. The entire class system is built on the idea that your methods do not exist on their instances, but on your prototypes. 
 
@@ -2852,9 +2852,9 @@ In this exercise, you will refactor some code that manages student enrollment re
 
 3. Instantiate the `Workshop` class as `deepJS`.
 
-{% capture summary %}Work from this code{% endcapture %}
-{% capture details %}  
-{% highlight javascript %}
+{%- capture summary -%}Work from this code{%- endcapture -%}
+{%- capture details -%}  
+{%- highlight javascript -%}
 
 var deepJS = {
 	currentEnrollment: [],
@@ -2967,14 +2967,14 @@ deepJS.remindUnpaidStudents();
 	Henry (105): Not Paid
 */
 
-{% endhighlight %}
-{% endcapture %}{% include details.html %}
+{%- endhighlight -%}
+{%- endcapture -%}{%- include details.html -%}
 
 ### class Exercise Solution
 
-{% capture summary %}Click to view the solution{% endcapture %}
-{% capture details %}  
-{% highlight javascript %}
+{%- capture summary -%}Click to view the solution{%- endcapture -%}
+{%- capture details -%}  
+{%- highlight javascript -%}
 
 class Helpers {
 
@@ -3097,8 +3097,8 @@ deepJS.remindUnpaidStudents();
 	Henry (105): Not Paid
 */
 
-{% endhighlight %}
-{% endcapture %}{% include details.html %}
+{%- endhighlight -%}
+{%- endcapture -%}{%- include details.html -%}
 
 ## Prototypes
 
@@ -3114,7 +3114,7 @@ Speaking of inheritance, a parent / child relationship between classes is also f
 
 ### Prototypal Class
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 function Workshop(teacher) {
     this.teacher = teacher;
@@ -3133,7 +3133,7 @@ deepJS.ask("Is 'prototype' a class?");
 reactJS.ask("Isn't 'prototype' ugly?");
 // Suzy Isn't 'prototype' ugly?
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Underneath the syntactic sugar of `class` is the `prototype`, which looks quite similar. This is useful for our understanding of how classes work.
 
@@ -3149,7 +3149,7 @@ If reading all that is too confusing, here's a diagram:
 
 ### Dunder Prototypes
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 function Workshop(teacher) {
     this.teacher = teacher;
@@ -3165,7 +3165,7 @@ deepJS.constructor === Workshop;
 deepJS.__proto__ === Workshop.prototype; // true
 Object.getPrototypeOf(deepJS) === Workshop.prototype; // true
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 How is it possible to set the `constructor` property of `deepJS` when that property does not exist? Because while the object `deepJS` does not have the constructor, the prototype chain points to the original object which does have a `constructor` property that `deepJS` can use. The `.__proto__` on `deepJS` is what is referred to as a 'Dunder Prototype', **underscore underscore proto underscore underscore = double underscore proto = dunder proto**. `deepJS` does not have a dunder prototype on it, nor does what it is  directly linked to `Workshop.prototype`, and what `Workshop.prototype` is linked to `object.prototype` also does not have a dunder prototype, but it does have a getter that is dunder prototype.
 
@@ -3193,7 +3193,7 @@ How is it possible to set the `constructor` property of `deepJS` when that prope
 
 ### Shadowing Prototypes
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 function Workshop(teacher) {
     this.teacher = teacher;
@@ -3210,11 +3210,11 @@ deepJS.ask = function(question) {
 
 deepJS.ask("Oops, is this infinite recursion?");
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 If you were to do the above, add a `ask` to `deepJS`, what would happen? This would be considered 'shadowing', two different levels of the prototype chain with the exact same property. When in `deepJS.ask`, what would the `this` point to? The answer of course depends on where the call site is, and in this case, when you call `deepJS.ask`, the implicit binding will bind the `this` to deepJS. So, the code is effectively recalling `deepJS.ask` again, which results in infinite recursion and stack overflow. The `this.` does not work in place of a `super()`. If you intended to go up one level in the prototype chain to `Workshop`, how would you do that? `__proto__` (dunder proto)!
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 function Workshop(teacher) {
     this.teacher = teacher;
@@ -3232,7 +3232,7 @@ deepJS.ask = function(question) {
 deepJS.ask("Is this fake polymorphism?");
 // Kyle Is THIS FAKE POLYMORPHISM?
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 If you left out the `.call`, the above code would point to `Workshop`. So doing the above would allow you to go one level up the prototype chain and then invoke it in our `this` context. When you try to shadow without using the class system, when you are in prototypes and you try to shadow, you end up creating this complete breakage. So why would you shadow in the first place? Because shadowing is how you do polymorphism. In class design theory, the whole point of having a child class is so you can inherit something from the parent, override it and then call `super` to access the parent version of it, to extend it. 
 
@@ -3240,7 +3240,7 @@ If you left out the `.call`, the above code would point to `Workshop`. So doing 
 
 If you wanted to do a true sort of child class in the prototypal style, you'd do something like this:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 function Workshop(teacher) {
     this.teacher = teacher;
@@ -3262,7 +3262,7 @@ var JSRecentParts = new AnotherWorkshop("Kyle");
 JSRecentParts.speakUp("Is this actually inheritance?")
 // Kyle IS THIS ACTUALLY INHERITANCE?
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 In the above code, the way you make `AnotherWorkshop` extend or inherit from `Workshop` is seen on the line where `Object.create` is called. This is changing the initial [prototype] link of `AnotherWorkshop` to that of `Workshop`. `Object.create` does two things:
 
@@ -3292,7 +3292,7 @@ OLOO - Objects Linked to Other Objects
 
 Here is an OLOO style block of code:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var Workshop = {
     setTeacher(teacher) {
@@ -3316,11 +3316,11 @@ JSRecentParts.setTeacher("Kyle");
 JSRecentParts.speakUp("But isn't this cleaner?");
 // Kyle But isn't this cleaner?
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Everything is an object! And all of the linking between the objects is happening thanks to `Object.create`. But how does `Object.create` make the magic? Take a look at this `Object.create` polyfill for some insight.
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 if(!Object.create) {
     Object.create = function (o) {
@@ -3330,7 +3330,7 @@ if(!Object.create) {
     };
 }
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 The polyfill makes an empty function, sets its prototype to 'o' and calls new on whatever function to give us the newly created object. Essentially, `Object.create` takes all of the constructor functions, `.prototype`(s), and `new` keywords and hides them inside of `Object.create`, which leaves just a clean, simple linkage between objects.
 
@@ -3338,7 +3338,7 @@ The polyfill makes an empty function, sets its prototype to 'o' and calls new on
 
 The Delegation design pattern does not consider parent / child relationships, but peer-to-peer. If you were working on a Login Page that required a couple of objects, one for authentication and another for the UI, a delegation design pattern would handle this in the following way:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 var AuthController = {
     authenticate() {
@@ -3364,7 +3364,7 @@ var LoginFormController =
         }
     });
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 The above two objects `AuthController` and `LoginFormController` are linked through the prototype chain, so when one needs something from the other, it can find it and they can work together. One of the many benefits of this linking is that your code is more testable.
 

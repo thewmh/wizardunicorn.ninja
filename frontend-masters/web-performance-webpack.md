@@ -50,7 +50,7 @@ The two types of code splitting are static and "dynamic". Static code splitting 
 
 Take a look at the following pseudo code for an example of code splitting:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 import Listener from './listeners.js';
 
@@ -64,11 +64,11 @@ Listener.on('didSomethingToWarrantModalBeingLoaded', () => {
     });
 });
 
-{% endhighlight %}
+{%- endhighlight -%}
 
-Walking through the above code, we are first importing `Listener`, then assigning a function that returns a dynamic import statement and a path to a module. Finally, when an event occurs, the above code is returning a promise that will, on promise fulfillment, perform the functionality. In the [Webpack 4 Fundamentals workshop]({% link frontend-masters/webpack-4-fundamentals.md %}) [see the bottom of the page, "Q&A Section"], this was shown when clicking on a button and then loading the footer code. If you are lazy... here's the code example:
+Walking through the above code, we are first importing `Listener`, then assigning a function that returns a dynamic import statement and a path to a module. Finally, when an event occurs, the above code is returning a promise that will, on promise fulfillment, perform the functionality. In the [Webpack 4 Fundamentals workshop]({%- link frontend-masters/webpack-4-fundamentals.md -%}) [see the bottom of the page, "Q&A Section"], this was shown when clicking on a button and then loading the footer code. If you are lazy... here's the code example:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 // from index.js in the workshop repo
 //..
@@ -81,7 +81,7 @@ button.addEventListener("click", e => {
     });
 });
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 The above is code splitting. Nothing else is code splitting. If the event that triggers the asynchronous dynamic loading of JavaScript is re-triggered, it will not re-fetch the asset, but look into the cache for the code.
 
@@ -105,11 +105,11 @@ There are some frameworks and libraries that disregarded Webpack as an important
 
 As of Webpack 4, code splitting named exports was not supported, there are some ideas around how they could approach it, but the example used was to import a single feature of a utility library i.e. lodash-es
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 const getLodashUniq = () => import("lodash-es/uniq");
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 ### Vendor Bundles are an Anti Pattern
 
@@ -119,7 +119,7 @@ Optimizing for caching is not the preferred method for saving load time. Pay att
 
 Anytime you use an import statement i.e. `import('./thing.js')`, it's always returning a promise and its creating and putting the modules that you dynamically imported into a separate file. "Dynamic" code splitting in Webpack is not truly dynamic. Consider the following code example:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 const getTheme = (themeName) => import(`./src/themes/${themeName}`);
 
@@ -134,7 +134,7 @@ if (window.feeling.stylish) {
     });
 }
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 The above import statement should be familiar, assigning a variable to a function that returns a dynamic import, but in this case the path is not fully static. If you were actually using the above code, you can see that you can actually access global conditions at runtime to choose when to dynamically load something. You can use runtime conditions to choose when to load something lazily. In Webpack terms, this is considered to be a `Context Module`. The above code would tell Webpack to find all of the modules that are in the partial path `./src/themes/` and create a bundle for each of them. Ultimately, there is no real dynamic code splitting happening because all of the assets will be produced as static assets at build time, but you can dynamically serve them. Potential use cases include; A/B Testing, Theming, and Convenience.
 
@@ -142,7 +142,7 @@ The above import statement should be familiar, assigning a variable to a functio
 
 For this example, first make sure your `index.js` file looks like this:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 const getFooter = () => import("./footer");
 import makeButton from "./button";
@@ -164,11 +164,11 @@ button.addEventListener("click", e => {
     });
 });
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 And your `button.js` file looks like this:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 const makeButton = buttonName => {
   const buttonLabel =  `Button: ${buttonName}`;
@@ -181,15 +181,15 @@ const makeButton = buttonName => {
 
 module.exports = makeButton;
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Once your files match the above, make a new folder in your `src` directory named `button-styles`. In the `button-styles` folder add `red.js blue.js green.js yellow.js` files. Each of those files should look like this:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 export default "color: colorFromFileName;" // i.e. blue.js would be "color: blue;"
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 If you now run `npm run dev`, you should find new bundle files, 1 for each file in the `button-styles` folder, output in the `dist` folder. Following the button example, try to think of some other examples where you might want to structure your components so that the code for them is only downloaded when needed, perhaps based on an event trigger? If you had additional files in the `button-styles` folder, that maybe you did not want to include, you can specify in the `index.js` file (or wherever you have defined the import) that you only want that specific file type by adding the extension i.e. `...import(`./button-styles/${color}.js`)`.
 
@@ -199,15 +199,15 @@ If you now run `npm run dev`, you should find new bundle files, 1 for each file 
 
 When you are using code splitting as a technique, there is no name that is created when you add the bundle. This is because it is not an entry-point so it cannot be given an assigned name. When you look at the `dist` folder after a build, you will find a number of bundles there, but they are not named in a way that is immediately understandable. Enter [Magic Comments](https://webpack.js.org/api/module-methods/#magic-comments)! One of the things that Magic Comments allow you to do is name your bundles. This could prove valuable when you are debugging or if you are trying to keep track of which files generate their own bundles. In `index.js` add a `webpackChunkName` to the footer import:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 const getFooter = () => import(/* webpackChunkName: "footer" */"./footer");
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 To get the name to appear as part of the bundle name, update the `webpack.config.js` file like so:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 //...
 
@@ -218,7 +218,7 @@ output: {
 
 //...
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 This may be useful to include as part of a base configuration, depending on your requirements maybe only the dev configuration?
 
@@ -226,7 +226,7 @@ This may be useful to include as part of a base configuration, depending on your
 
 Also a part of Magic Comments is a feature called `webpackMode`. With this you can further control how code splitting happens, with four different settings. In the instance of the button styles, `/* webpaackMode: "lazy-once" */` would generate a single bundle, which can save build time. Pushing this further and continuing to define different build configurations, you could add this to the `index.js` file:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 if(process.env.NODE_ENV === "development") {
     const setButtonStyle = (color) => import(/* webpackMode: "lazy-once" */ `./button-styles/${color}`);
@@ -234,7 +234,7 @@ if(process.env.NODE_ENV === "development") {
     const setButtonStyle = (color) => import(`./button-styles/${color}`);
 }
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Webpack, by default, injects a macro replacement to the `process.ev.NODE_ENV` variable. When you set the mode to `development`, the macro converts to development and by default, Webpack can convert the above code and evaluate the if/else statement. You probably care less about performance optimizations in your dev code, but while in dev would like faster build times, this is useful for that.
 
@@ -250,9 +250,9 @@ As a topic for this workshop, code splitting has been exhausted. Nothing more to
 
 ### Webpack Config Organization
 
-The Webpack config organization has already been discussed / built in the [Webpack 4 Fundamentals workshop]({% link frontend-masters/webpack-4-fundamentals.md %}), with something like:
+The Webpack config organization has already been discussed / built in the [Webpack 4 Fundamentals workshop]({%- link frontend-masters/webpack-4-fundamentals.md -%}), with something like:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 - build-utils
     - presets
@@ -271,7 +271,7 @@ README.md
 TODO.md
 webpack.config.js
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 The idea with presets is not that you only test out a single piece of functionality, like analyze or compress, but that you can build out entire sets of isolated functionality that allows you to experiment, test, or any other reason that you can just add on with a flag or add on with an extra script. The above configuration is enough to get started with the most complex piece of it being the `loadPresets.js` file, which is basically just flattening presets and making sure that if there is not a preset that it doesn't fail. Best practice is, don't hide your Webpack config, keep it at the root level of your project.
 

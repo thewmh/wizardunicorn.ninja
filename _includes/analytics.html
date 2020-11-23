@@ -1,4 +1,4 @@
-{% if site.google_analytics_ua %}
+{%- if site.google_analytics_ua -%}
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics_ua }}"></script>
 <script>
@@ -7,9 +7,9 @@
   gtag('js', new Date());
   gtag('config', '{{ site.google_analytics_ua }}', { 'anonymize_ip': true, 'forceSSL': true });
 </script>
-{% endif %}
+{%- endif -%}
 
-{% if site.dap_agency %}
+{%- if site.dap_agency -%}
 <!-- Digital Analytics Program roll-up, see https://analytics.usa.gov for data -->
 <script id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency={{ site.dap_agency }}"></script>
-{% endif %}
+{%- endif -%}

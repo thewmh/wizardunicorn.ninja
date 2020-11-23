@@ -68,9 +68,9 @@ The best way of learning how to write Webpack plugins is to look at their source
 
 ### Creating a Webpack Plugin
 
-In its most basic form, a plugin is just a class that has an apply method. Continuing in the repo from the [Webpack 4 Fundamentals workshop]({% link frontend-masters/webpack-4-fundamentals.md %}) or if you are only reading this document, [grab the repo here](https://github.com/TheLarkInn/webpack-workshop-2018/tree/feature/0504-webpack-prefetch-preload), create a new file in the `build-utils` folder called `MyFirstWebpackPlugin.js` (`...WebpackPlugin...` is a naming convention that Webpack follows). In that `MyFirstWebpackPlugin.js` file, add the following: 
+In its most basic form, a plugin is just a class that has an apply method. Continuing in the repo from the [Webpack 4 Fundamentals workshop]({%- link frontend-masters/webpack-4-fundamentals.md -%}) or if you are only reading this document, [grab the repo here](https://github.com/TheLarkInn/webpack-workshop-2018/tree/feature/0504-webpack-prefetch-preload), create a new file in the `build-utils` folder called `MyFirstWebpackPlugin.js` (`...WebpackPlugin...` is a naming convention that Webpack follows). In that `MyFirstWebpackPlugin.js` file, add the following: 
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 class MyFirstWebpackPlugin {
     apply(compiler) { 
@@ -89,11 +89,11 @@ class MyFirstWebpackPlugin {
 
 module.exports = MyFirstWebpackPlugin;
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 And in your `webpack.config.js` file add:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 //..
 const MyFirstWebpackPlugin = require('./build-utils/MyFirstWebpackPlugin');
@@ -103,7 +103,7 @@ plugins: [
 ]
 //...
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Now when you run `npm run prod`, in addition to the standard Webpack terminal logs, you should see the names of your assets output (somewhere) in the terminal. Try just logging stats and check out the object it returns, it contains all of the information about your build.
 
@@ -111,7 +111,7 @@ Now when you run `npm run prod`, in addition to the standard Webpack terminal lo
 
 Let's look at how to plug in to something that is not the compiler! If you want to plug in to a different instance, you still have to go through the compiler. In `MyFirstWebpackPlugin.js` update your code like so:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 class MyFirstWebpackPlugin {
     apply(compiler) { 
@@ -137,7 +137,7 @@ class MyFirstWebpackPlugin {
 
 module.exports = MyFirstWebpackPlugin;
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 For more details about the available hooks see the [Webpack Plugin API Documentation](https://webpack.js.org/api/plugins/). Loaders are also applied with a plugin... `LoaderPlugin.js`
 
@@ -153,7 +153,7 @@ The most basic explanation of how to make a Webpack plugin is to hook into a bun
 
 To write a custom loader and develop it locally, you just need a couple of pieces. One of the pieces is a property called `resolveLoader`, the properties of which are identical to the `resolve` property. Any custom behavior that you want to apply to resolving modules, you can do the same thing for your loaders. A simple JS loader (filename: `webpack.myloader.js`) would look something like this:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 module.exports = () => ({
     resolveLoader: {
@@ -171,11 +171,11 @@ module.exports = () => ({
     }
 })
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 Now you actually have to build the loader... make a new file, following the path above `my-loader.js`, and insert the following:
 
-{% highlight javascript %}
+{%- highlight javascript -%}
 
 function myLoader(source) { // this is the basic anatomy of a loader. It takes a function which requires the `source` argument, then returns the `source`
     return source;
@@ -183,7 +183,7 @@ function myLoader(source) { // this is the basic anatomy of a loader. It takes a
 
 module.exports = myLoader;
 
-{% endhighlight %}
+{%- endhighlight -%}
 
 There is a ton of additional information about the [loader API in the Webpack documentation](https://webpack.js.org/api/loaders).
 
