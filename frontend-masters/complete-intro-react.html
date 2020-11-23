@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>Complete Intro to React, v5 |Wizard Unicorn Ninja</title><meta name="description" content="These are notes from the 'Complete Intro to React, v5' course on Frontend Masters."><link rel="shortcut icon" type="image/ico"href=""><link rel="icon" type="image/png"href="/assets/uswds/img/favicons/favicon.png"><link rel="icon" type="image/png"sizes="192x192"href="/assets/uswds/img/favicons/favicon-192.png"><link rel="apple-touch-icon-precomposed" type=""href="/assets/uswds/img/favicons/favicon-57.png"><link rel="apple-touch-icon-precomposed" type=""sizes="72x72"href="/assets/uswds/img/favicons/favicon-72.png"><link rel="apple-touch-icon-precomposed" type=""sizes="114x114"href="/assets/uswds/img/favicons/favicon-114.png"><link rel="apple-touch-icon-precomposed" type=""sizes="144x144"href="/assets/uswds/img/favicons/favicon-144.png"><link rel="stylesheet"
+  href="/assets/css/main.css"
+  media="screen"><!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-183755378-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'UA-183755378-1', { 'anonymize_ip': true, 'forceSSL': true });
+</script></head>
+  <body class=" "><a class="usa-skipnav" href="#main-content">Skip to main content</a>
+<header class="usa-header usa-header-extended" role="banner" id="usa-header"><div class="usa-navbar">
+      <button class="usa-menu-btn">Menu</button>
+      <div class="usa-logo" id="extended-mega-logo">
+        <a href="/" title="Home"><img class="usa-logo-img" src="/assets/img/hztl-wm.svg" alt="HZTL-WM"><em class="usa-logo-text">
+            Wizard Unicorn Ninja
+          </em>
+        </a>
+      </div>
+    </div>
+
+    <nav role="navigation" class="usa-nav">
+      <div class="usa-nav-inner">
+        <button class="usa-nav-close">
+          <img src="/assets/uswds/img/close.svg" alt="close">
+        </button><ul class="usa-nav-primary usa-accordion"><li><a class="usa-nav-link" href="/resources/">
+                <span>Resources</span>
+              </a></li><li><button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-2">
+              <span>Frontend Masters Workshop Notes</span>
+            </button><ul id="nav-2" class="usa-nav-submenu" aria-hidden="true"><li>
+                  <a href="/frontend-masters/fundamentals-functional-js">Javascript: From Fundamentals to Functional JS</a>
+                </li><li>
+                  <a href="/frontend-masters/hard-parts-js">Javascript: The Hard Parts, v2</a>
+                </li><li>
+                  <a href="/frontend-masters/deep-javascript-foundations">Deep Javascript Foundations, v3</a>
+                </li><li>
+                  <a href="/frontend-masters/webpack-4-fundamentals">Webpack 4 Fundamentals</a>
+                </li><li>
+                  <a href="/frontend-masters/web-performance-webpack">Web Performance with Webpack</a>
+                </li><li>
+                  <a href="/frontend-masters/webpack-plugins-system">Webpack Plugins System</a>
+                </li></ul></li><li><button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-3">
+              <span>Sitecore Workshop Notes</span>
+            </button><ul id="nav-3" class="usa-nav-submenu" aria-hidden="true"><li>
+                  <a href="/sitecore/jss">Sitecore JSS Fundamentals</a>
+                </li></ul></li></ul><div class="usa-nav-secondary"><ul class="usa-unstyled-list usa-nav-secondary-links"><li>
+                  <a href="">
+                    
+                  </a>
+                </li></ul>
+          </div></div>
+      </div>
+    </nav><div class="main-top">
+      <div class="progress-container">
+        <div class="progress-bar" id="progress"></div>
+      </div>
+    </div>
+  </header>
+  <div class="usa-overlay"></div><main id="main-content"class="usa-grid usa-section usa-content usa-layout-docs">
+          <div class="usa-layout-docs-main_content"><h1>Complete Intro to React, v5</h1><p><a href="https://github.com/btholt/complete-intro-to-react-v5">Link to Course Github Repository</a></p>
+
+<p><a href="https://bit.ly/react-v5">Link to Course Notes</a></p>
+
+<h2 id="introduction">Introduction</h2>
+
+<h3 id="introduction-1">Introduction</h3>
+
+<p>This course covers the entirety of how to write (with?) React. Going over all of React’s features, hooks, context, and portals. This course also covers some of the other (React) APIs such as classes and life cycles. It is not required that you’ve taken previous versions of this course, it is V5 as in this is its fifth iteration. But JK… V3 is useful if you need to look at Webpack or React Router. This course is meant to be mostly modular, you can skip from lesson to lesson if you want, but the way that you have to do that is moving between git commits, because each section of this course is equal to a commit in the course repo.</p>
+
+<p>It is recommended to get Sourcetree, which I already use for work, because it provides you with a visual commit history that you can right click on to check out a specific commit 🔥. In the same repo for this course are the branches for the intermediate course, which is also available on Frontend Masters. If you prefer to use the command line for git, you can do that as well. If you find any issues with any of the course materials, you are invited to open a pull request (PR) <a href="https://github.com/btholt/complete-intro-to-react-v5/tree/gh-pages-src">on this branch</a> or <a href="https://github.com/btholt/complete-intro-to-react-v5/issues">file an issue</a> in the repo.</p>
+
+<p>Blah blah blah, background information about how awesome the instructor Brian Holt is.</p>
+
+<p>This course is open source, so share the links above to everyone in existence. Also, don’t just take, share your ❤️ by giving the repo for this course a ⭐️. Doing so will help further the course’s reach and Brian will feel even more awesome.</p>
+
+<h3 id="project-setup">Project Setup</h3>
+
+<h3 id="a-note-on-the-course-font">A Note on the Course Font</h3>
+
+<h2 id="pure-react">Pure React</h2>
+
+<h3 id="getting-started-with-pure-react">Getting Started with Pure React</h3>
+
+<h3 id="createelement-arguments">createElement Arguments</h3>
+
+<h3 id="reusable-components">Reusable Components</h3>
+
+<h3 id="passing-in-component-props">Passing in Component Props</h3>
+
+<h3 id="destructuring-props">Destructuring Props</h3>
+
+<h2 id="tools">Tools</h2>
+
+<h3 id="npm--generating-a-packagejson-file">npm &amp; Generating a package.json File</h3>
+
+<h3 id="prettier">Prettier</h3>
+
+<h3 id="npm-scripts">npm Scripts</h3>
+
+<h3 id="prettier-setup">Prettier Setup</h3>
+
+<h3 id="eslint-setup">ESLint Setup</h3>
+
+<h3 id="eslint-configuration">ESLint Configuration</h3>
+
+<h3 id="gitignore">gitignore</h3>
+
+<h3 id="parcel">Parcel</h3>
+
+<h3 id="installing-react--reactdom">Installing React &amp; ReactDom</h3>
+
+<h3 id="separate-app-into-modules">Separate App into Modules</h3>
+
+<h2 id="jsx">JSX</h2>
+
+<h3 id="converting-to-jsx">Converting to JSX</h3>
+
+<h3 id="configuring-eslint-for-react">Configuring ESLint for React</h3>
+
+<h3 id="jsx-composite-components--expressions">JSX Composite Components &amp; Expressions</h3>
+
+<h2 id="hooks">Hooks</h2>
+
+<h3 id="creating-a-search-component">Creating a Search Component</h3>
+
+<h3 id="setting-state-with-hooks">Setting State with Hooks</h3>
+
+<h3 id="best-practices-for-hooks">Best Practices for Hooks</h3>
+
+<h3 id="configuring-eslint-for-hooks">Configuring ESLint for Hooks</h3>
+
+<h3 id="calling-the-pet-api">Calling the Pet API</h3>
+
+<h3 id="unique-list-item-keys">Unique List Item Keys</h3>
+
+<h3 id="breed-dropdown">Breed Dropdown</h3>
+
+<h3 id="custom-hooks">Custom Hooks</h3>
+
+<h2 id="effects">Effects</h2>
+
+<h3 id="effects-1">Effects</h3>
+
+<h3 id="declaring-effect-dependencies">Declaring Effect Dependencies</h3>
+
+<h3 id="effect-lifecycle-walkthrough">Effect Lifecycle Walkthrough</h3>
+
+<h3 id="run-only-once">Run Only Once</h3>
+
+<h3 id="hooks-review-and-qa">Hooks Review and Q&amp;A</h3>
+
+<h2 id="dev-tools">Dev Tools</h2>
+
+<h3 id="environment-variables--strict-mode">Environment Variables &amp; Strict Mode</h3>
+
+<h3 id="react-browser-dev-tools">React Browser Dev Tools</h3>
+
+<h2 id="async--routing">Async &amp; Routing</h2>
+
+<h3 id="asynchronous-api-requests">Asynchronous API Requests</h3>
+
+<h3 id="using-the-fallback-mock-api">Using the Fallback Mock API</h3>
+
+<h3 id="one-way-data-flow">One-Way Data Flow</h3>
+
+<h3 id="reformatting-the-pet-component">Reformatting the Pet Component</h3>
+
+<h3 id="reach-router">Reach Router</h3>
+
+<h3 id="debugging--reach-router-link">Debugging &amp; Reach Router Link</h3>
+
+<h2 id="class-components">Class Components</h2>
+
+<h3 id="class-components-1">Class Components</h3>
+
+<h3 id="rendering-the-component">Rendering the Component</h3>
+
+<h3 id="configuring-babel-for-parcel">Configuring Babel for Parcel</h3>
+
+<h3 id="creating-an-image-carousel">Creating an Image Carousel</h3>
+
+<h3 id="context">Context</h3>
+
+<h3 id="index-click-qa">Index Click Q&amp;A</h3>
+
+<h3 id="carousel-implementation">Carousel Implementation</h3>
+
+<h2 id="error-boundaries">Error Boundaries</h2>
+
+<h3 id="error-boundaries-1">Error Boundaries</h3>
+
+<h3 id="error-boundary-middleware">Error Boundary Middleware</h3>
+
+<h3 id="404-page-redirect">404 Page Redirect</h3>
+
+<h3 id="lifecycle-methods--error-boundary-qa">Lifecycle Methods &amp; Error Boundary Q&amp;A</h3>
+
+<h2 id="context-1">Context</h2>
+
+<h3 id="react-context">React Context</h3>
+
+<h3 id="context-with-hooks">Context with Hooks</h3>
+
+<h3 id="context-with-classes">Context with Classes</h3>
+
+<h3 id="persisting-state-with-context-hooks">Persisting State with Context Hooks</h3>
+
+<h2 id="portals">Portals</h2>
+
+<h3 id="modal-dialog-with-portals">Modal Dialog with Portals</h3>
+
+<h3 id="displaying-the-modal">Displaying the Modal</h3>
+
+<h2 id="wrapping-up">Wrapping Up</h2>
+
+<h3 id="wrapping-up-1">Wrapping Up</h3>
+
+</div>
+    </main><footer class="usa-footer usa-footer-medium" role="contentinfo"><div class="usa-grid usa-footer-return-to-top">
+      <a href="#">Return to top</a>
+    </div><div class="usa-footer-secondary_section">
+    <div class="usa-grid">
+      <div class="usa-footer-logo"><img class="usa-footer-logo-img" src="/assets/img/hztl-wm.svg" alt="HZTL-WM"><p>William has consumed <span class="la-croix"></span> cans of <a href="/la-croix"><span class="la-croix-logo"></span></a> since Sept. 3rd, 2019.<br/><em class="lighten-up"> * cans of delicious, bubbly, essenced water consumed accurate by ±50%</em></p></div><div class="usa-footer-contact-links usa-width-one-half"></div>
+    </div>
+  </div></footer><script src="/assets/uswds/js/uswds.min.js"async></script><script src="/assets/js/la-croix.js"></script><script src="/assets/js/scroll-watch.js"></script></body>
+</html>
