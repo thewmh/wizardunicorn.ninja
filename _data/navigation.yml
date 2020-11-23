@@ -38,8 +38,8 @@ primary:
         href: /frontend-masters/web-performance-webpack
       - text: "Webpack Plugins System"
         href: /frontend-masters/webpack-plugins-system
-      - text: "Complete Intro to React, v5"
-        href: /frontend-masters/complete-intro-react
+      # - text: "Complete Intro to React, v5"
+      #   href: /frontend-masters/complete-intro-react
   - text: Sitecore Workshop Notes
     links:
       - text: "Sitecore JSS Fundamentals"
