@@ -265,7 +265,7 @@
 
 <p><a href="https://static.frontendmasters.com/resources/2019-09-18-javascript-hard-parts-v2/javascript-hard-parts-v2.pdf">The link to the course document is here</a></p>
 
-<p>The instructor breaks down the difference between Junior, Mid and Senior-Level developers, and the purpose of the course for the differenc levels of developers.</p>
+<p>The instructor breaks down the difference between Junior, Mid and Senior-Level developers, and the purpose of the course for the different levels of developers.</p>
 
 <h2 id="javascript-principles">JavaScript Principles</h2>
 
@@ -390,7 +390,7 @@
 
 <h3 id="higher-order-functions-example">Higher Order Functions Example</h3>
 
-<p>The example used in the section is the above codeblock. Just walking through each step of the execution context from global through the call stack as it is updated by calling functions.</p>
+<p>The example used in the section is the above code block. Just walking through each step of the execution context from global through the call stack as it is updated by calling functions.</p>
 
 <h3 id="higher-order-functions-qa">Higher Order Functions Q&amp;A</h3>
 
@@ -446,7 +446,7 @@
     <p>Improve the immediate legibility of code</p>
   </li>
   <li>
-    <p>…but they are merely ‘syntatic sugar’</p>
+    <p>…but they are merely ‘syntactic sugar’</p>
   </li>
   <li>
     <p>Understanding how they work ‘under the hood’ is vital to avoid confusion</p>
@@ -491,7 +491,7 @@
   </li>
 </ul>
 
-<p>Everytime a function gets invoked, it creates a new store of memory (in its execution context)…but</p>
+<p>Every time a function gets invoked, it creates a new store of memory (in its execution context)…but</p>
 
 <p>Functions with memories!</p>
 
@@ -506,7 +506,7 @@
     <p>But what if the function could hold on to live data between executions?</p>
   </li>
   <li>
-    <p>This would let function definitions hace an associated cache/persistent memory</p>
+    <p>This would let function definitions have an associated cache/persistent memory</p>
   </li>
   <li>
     <p>But it all starts with returning a function from another function</p>
@@ -559,7 +559,7 @@
 
 <h3 id="closure-technical-definition--review">Closure Technical Definition &amp; Review</h3>
 
-<p>Recommended reading: ‘If Hemmingway Wrote JavaScript’</p>
+<p>Recommended reading: ‘If Hemingway Wrote JavaScript’</p>
 
 <p>Where you save your function determines what data it will have access to when it is run.</p>
 
@@ -778,7 +778,7 @@
 
 <p>In ES6, <code class="language-plaintext highlighter-rouge">fetch</code> is the replacement for <code class="language-plaintext highlighter-rouge">xhr</code>, but unlike <code class="language-plaintext highlighter-rouge">xhr</code>, <code class="language-plaintext highlighter-rouge">fetch</code> (referred to above as a ‘two-pronged’ facade function) will both initiate a Web Browser function and in the JavaScript environment create a placeholder object called a <code class="language-plaintext highlighter-rouge">promise object</code>. When the network request completes, the object will be filled in with the result. The Web Browser function and the placeholder object are intrinsically linked.</p>
 
-<p>ES6+ Prmoises</p>
+<p>ES6+ Promises</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">display</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
@@ -798,7 +798,7 @@
     <p>Declare a function <code class="language-plaintext highlighter-rouge">display</code></p>
   </li>
   <li>
-    <p>Declare a constant <code class="language-plaintext highlighter-rouge">futureData</code> and store the result of <code class="language-plaintext highlighter-rouge">fetch(...)</code>. This will immediately return a ‘Promise Object’ with two properties; {value: undefined, onFufilled: []} and store it in the <code class="language-plaintext highlighter-rouge">futureData</code> constant. The other consequence of <code class="language-plaintext highlighter-rouge">fetch(...)</code> will be in the Web Browser in the form of a Network Request. The Network Request requires the URL and path, which is defined. The Network Request defaults to a <code class="language-plaintext highlighter-rouge">GET</code> request, but you can pass in (as an argument) another type of request, i.e. <code class="language-plaintext highlighter-rouge">POST</code>. The response from the Network Request gets stored in the <code class="language-plaintext highlighter-rouge">futureData</code> object that was created, specifically in the <code class="language-plaintext highlighter-rouge">value</code> property of that object.</p>
+    <p>Declare a constant <code class="language-plaintext highlighter-rouge">futureData</code> and store the result of <code class="language-plaintext highlighter-rouge">fetch(...)</code>. This will immediately return a ‘Promise Object’ with two properties; {value: undefined, onFulfilled: []} and store it in the <code class="language-plaintext highlighter-rouge">futureData</code> constant. The other consequence of <code class="language-plaintext highlighter-rouge">fetch(...)</code> will be in the Web Browser in the form of a Network Request. The Network Request requires the URL and path, which is defined. The Network Request defaults to a <code class="language-plaintext highlighter-rouge">GET</code> request, but you can pass in (as an argument) another type of request, i.e. <code class="language-plaintext highlighter-rouge">POST</code>. The response from the Network Request gets stored in the <code class="language-plaintext highlighter-rouge">futureData</code> object that was created, specifically in the <code class="language-plaintext highlighter-rouge">value</code> property of that object.</p>
   </li>
 </ol>
 
@@ -812,7 +812,7 @@
     <p>The <code class="language-plaintext highlighter-rouge">console.log('Me first!')</code> will finally run and print <code class="language-plaintext highlighter-rouge">Me first!</code> in the console.</p>
   </li>
   <li>
-    <p>The Network Request has sucessfully completed and the response is stored in <code class="language-plaintext highlighter-rouge">futureData.value</code>. This will trigger the <code class="language-plaintext highlighter-rouge">...then(display)</code> and pass in <code class="language-plaintext highlighter-rouge">futureData.value</code> as the argument for the <code class="language-plaintext highlighter-rouge">display</code> function. A new execution context is created for the <code class="language-plaintext highlighter-rouge">display</code> function. <code class="language-plaintext highlighter-rouge">futureData.value</code> will be stored as <code class="language-plaintext highlighter-rouge">data</code> in the <code class="language-plaintext highlighter-rouge">display</code> function.</p>
+    <p>The Network Request has successfully completed and the response is stored in <code class="language-plaintext highlighter-rouge">futureData.value</code>. This will trigger the <code class="language-plaintext highlighter-rouge">...then(display)</code> and pass in <code class="language-plaintext highlighter-rouge">futureData.value</code> as the argument for the <code class="language-plaintext highlighter-rouge">display</code> function. A new execution context is created for the <code class="language-plaintext highlighter-rouge">display</code> function. <code class="language-plaintext highlighter-rouge">futureData.value</code> will be stored as <code class="language-plaintext highlighter-rouge">data</code> in the <code class="language-plaintext highlighter-rouge">display</code> function.</p>
   </li>
 </ol>
 
@@ -854,7 +854,7 @@
 
 <h3 id="web-apis--promises-example-microtask-queue">Web APIs &amp; Promises Example: Microtask Queue</h3>
 
-<p>When finally, all of the code in the global scope has executed, the Event Loop checks the Callback and Microtask Queue(s) for additional tasks waiting to be run. <code class="language-plaintext highlighter-rouge">fetch</code> placed the Network Reques into the Microtask Queue, which is where the Event Loop first checks for tasks, which then triggers the <code class="language-plaintext highlighter-rouge">.then</code>. Finally, the Event Loop is able to reach the Callback Queue which contains the <code class="language-plaintext highlighter-rouge">setTimeout</code>. So while the <code class="language-plaintext highlighter-rouge">setTimeout</code> function was called first, it in fact gets run last because of the order of the Call Stack, Event Loop, Microtask Queue, and Callback Queue(s). Any function that is attached to a promise object gets stored in the Microtask Queue, which is the first Queue that the JavaScript Event Loop checks, before the Callback Queue.</p>
+<p>When finally, all of the code in the global scope has executed, the Event Loop checks the Callback and Microtask Queue(s) for additional tasks waiting to be run. <code class="language-plaintext highlighter-rouge">fetch</code> placed the Network Request into the Microtask Queue, which is where the Event Loop first checks for tasks, which then triggers the <code class="language-plaintext highlighter-rouge">.then</code>. Finally, the Event Loop is able to reach the Callback Queue which contains the <code class="language-plaintext highlighter-rouge">setTimeout</code>. So while the <code class="language-plaintext highlighter-rouge">setTimeout</code> function was called first, it in fact gets run last because of the order of the Call Stack, Event Loop, Microtask Queue, and Callback Queue(s). Any function that is attached to a promise object gets stored in the Microtask Queue, which is the first Queue that the JavaScript Event Loop checks, before the Callback Queue.</p>
 
 <h3 id="promises-and-asynchronous-qa">Promises and Asynchronous Q&amp;A</h3>
 
@@ -1017,7 +1017,7 @@
 
 <h3 id="factory-functions">Factory Functions</h3>
 
-<p>What is a built-in function of JavaScript whos output will be an empty object?</p>
+<p>What is a built-in function of JavaScript who’s output will be an empty object?</p>
 
 <p><code class="language-plaintext highlighter-rouge">Object.create</code> which will provide fine-grained control over the object later on.</p>
 
