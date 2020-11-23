@@ -10,7 +10,7 @@ layout: page
 
 [The link to the course document is here](https://static.frontendmasters.com/resources/2019-09-18-javascript-hard-parts-v2/javascript-hard-parts-v2.pdf)
 
-The instructor breaks down the difference between Junior, Mid and Senior-Level developers, and the purpose of the course for the differenc levels of developers.
+The instructor breaks down the difference between Junior, Mid and Senior-Level developers, and the purpose of the course for the different levels of developers.
 
 ## JavaScript Principles
 
@@ -129,7 +129,7 @@ const result = copyArrayAndManipulate([1, 2, 3], multiplyBy2);
 
 ### Higher Order Functions Example
 
-The example used in the section is the above codeblock. Just walking through each step of the execution context from global through the call stack as it is updated by calling functions.
+The example used in the section is the above code block. Just walking through each step of the execution context from global through the call stack as it is updated by calling functions.
 
 ### Higher Order Functions Q&A
 
@@ -175,7 +175,7 @@ Anonymous and arrow functions
 
 * Improve the immediate legibility of code
 
-* ...but they are merely 'syntatic sugar'
+* ...but they are merely 'syntactic sugar'
 
 * Understanding how they work 'under the hood' is vital to avoid confusion
 
@@ -203,7 +203,7 @@ Pair programming is the most effective way to grow as an engineer, because:
 
 * Build iterators, handle partial application, and maintain state in an asynchronous world
 
-Everytime a function gets invoked, it creates a new store of memory (in its execution context)...but
+Every time a function gets invoked, it creates a new store of memory (in its execution context)...but
 
 Functions with memories!
 
@@ -213,7 +213,7 @@ Functions with memories!
 
 * But what if the function could hold on to live data between executions?
 
-* This would let function definitions hace an associated cache/persistent memory
+* This would let function definitions have an associated cache/persistent memory
 
 * But it all starts with returning a function from another function
 
@@ -271,7 +271,7 @@ If you define variables within the parent function and they are not referenced i
 
 ### Closure Technical Definition & Review
 
-Recommended reading: 'If Hemmingway Wrote JavaScript'
+Recommended reading: 'If Hemingway Wrote JavaScript'
 
 Where you save your function determines what data it will have access to when it is run.
 
@@ -446,7 +446,7 @@ Using two-pronged 'facade' functions that both:
 
 In ES6, `fetch` is the replacement for `xhr`, but unlike `xhr`, `fetch` (referred to above as a 'two-pronged' facade function) will both initiate a Web Browser function and in the JavaScript environment create a placeholder object called a `promise object`. When the network request completes, the object will be filled in with the result. The Web Browser function and the placeholder object are intrinsically linked.
 
-ES6+ Prmoises
+ES6+ Promises
 
 {% highlight javascript %}
 
@@ -467,7 +467,7 @@ In the example above, the following is happening:
 
 1. Declare a function `display`
 
-2. Declare a constant `futureData` and store the result of `fetch(...)`. This will immediately return a 'Promise Object' with two properties; {value: undefined, onFufilled: []} and store it in the `futureData` constant. The other consequence of `fetch(...)` will be in the Web Browser in the form of a Network Request. The Network Request requires the URL and path, which is defined. The Network Request defaults to a `GET` request, but you can pass in (as an argument) another type of request, i.e. `POST`. The response from the Network Request gets stored in the `futureData` object that was created, specifically in the `value` property of that object.
+2. Declare a constant `futureData` and store the result of `fetch(...)`. This will immediately return a 'Promise Object' with two properties; {value: undefined, onFulfilled: []} and store it in the `futureData` constant. The other consequence of `fetch(...)` will be in the Web Browser in the form of a Network Request. The Network Request requires the URL and path, which is defined. The Network Request defaults to a `GET` request, but you can pass in (as an argument) another type of request, i.e. `POST`. The response from the Network Request gets stored in the `futureData` object that was created, specifically in the `value` property of that object.
 
 ### Promises Example: then
 
@@ -475,7 +475,7 @@ In the example above, the following is happening:
 
 4. The `console.log('Me first!')` will finally run and print `Me first!` in the console.
 
-5. The Network Request has sucessfully completed and the response is stored in `futureData.value`. This will trigger the `...then(display)` and pass in `futureData.value` as the argument for the `display` function. A new execution context is created for the `display` function. `futureData.value` will be stored as `data` in the `display` function.
+5. The Network Request has successfully completed and the response is stored in `futureData.value`. This will trigger the `...then(display)` and pass in `futureData.value` as the argument for the `display` function. A new execution context is created for the `display` function. `futureData.value` will be stored as `data` in the `display` function.
 
 ### Web APIs & Promises Example: fetch
 
@@ -513,7 +513,7 @@ Walking through the above JavaScript block, the `.then` eventually 'GET(s)' data
 
 ### Web APIs & Promises Example: Microtask Queue
 
-When finally, all of the code in the global scope has executed, the Event Loop checks the Callback and Microtask Queue(s) for additional tasks waiting to be run. `fetch` placed the Network Reques into the Microtask Queue, which is where the Event Loop first checks for tasks, which then triggers the `.then`. Finally, the Event Loop is able to reach the Callback Queue which contains the `setTimeout`. So while the `setTimeout` function was called first, it in fact gets run last because of the order of the Call Stack, Event Loop, Microtask Queue, and Callback Queue(s). Any function that is attached to a promise object gets stored in the Microtask Queue, which is the first Queue that the JavaScript Event Loop checks, before the Callback Queue.
+When finally, all of the code in the global scope has executed, the Event Loop checks the Callback and Microtask Queue(s) for additional tasks waiting to be run. `fetch` placed the Network Request into the Microtask Queue, which is where the Event Loop first checks for tasks, which then triggers the `.then`. Finally, the Event Loop is able to reach the Callback Queue which contains the `setTimeout`. So while the `setTimeout` function was called first, it in fact gets run last because of the order of the Call Stack, Event Loop, Microtask Queue, and Callback Queue(s). Any function that is attached to a promise object gets stored in the Microtask Queue, which is the first Queue that the JavaScript Event Loop checks, before the Callback Queue.
 
 ### Promises and Asynchronous Q&A
 
@@ -633,7 +633,7 @@ user1.increment(); // user1.score -> 8
 
 ### Factory Functions
 
-What is a built-in function of JavaScript whos output will be an empty object?
+What is a built-in function of JavaScript who's output will be an empty object?
 
 `Object.create` which will provide fine-grained control over the object later on.
 
