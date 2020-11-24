@@ -836,4 +836,4 @@ Problems with using `class`? 99% of developers have no idea how it works...
 
 ## Wrapping Up
 
-Click `Return to top` and re-read these notes.
+Click [`Return to top`](#) and re-read these notes.
