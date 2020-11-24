@@ -3,15 +3,15 @@ title: Frontend Masters Workshop Notes
 description: These are the links to notes from the Frontend Masters workshops I have taken.
 permalink: /frontend-masters/
 
-layout: post
-sidenav: frontend-masters-workshop-notes
-subnav:
-  - text: JavaScript
-    href: '#javascript'
-  - text: Webpack
-    href: '#webpack'
-  - text: React
-    href: '#react'
+layout: page
+# sidenav: frontend-masters-workshop-notes
+# subnav:
+#   - text: JavaScript
+#     href: '#javascript'
+#   - text: Webpack
+#     href: '#webpack'
+#   - text: React
+#     href: '#react'
 ---
 
 These are notes from all of the Frontend Masters workshops that I've taken.

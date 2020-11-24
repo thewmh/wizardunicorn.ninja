@@ -90,9 +90,9 @@ resources:
   #   href: https://18f.gsa.gov
   #   external: true
 
-frontend-masters-workshop-notes:
-  - text: Frontend Masters Workshop Notes
-    href: /frontend-masters/
+# frontend-masters-workshop-notes:
+#   - text: Frontend Masters Workshop Notes
+#     href: /frontend-masters/
 
 footer:
   # - text: Documentation
