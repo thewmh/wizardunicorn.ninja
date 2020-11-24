@@ -34,7 +34,7 @@ Functional programming has become popular to the point that functional programmi
 
 Assignments with Dots
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 var person = {}; // declare a person object
 
 person.name = "Mrs. White"; // assign a vaule to a property
@@ -42,7 +42,7 @@ person.name = "Mrs. White"; // assign a vaule to a property
 var person = { // object literal notation
     "name" : "Mrs. White" // the quotation marks are not needed for a one-word property declaration, JavaScript will assume it is a string
 };
-{%- endhighlight -%}
+{% endhighlight %}
 
 Anything that ever uses a dot in JavaScript is an object.
 
@@ -50,7 +50,7 @@ A primitive value is a string, number, boolean, null, or undefined. A non-primit
 
 ### Arrays
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 var person = []; // declare a person array
 
 person.name = "Mrs. White"; // assign a vaule to a property
@@ -58,38 +58,38 @@ person.name = "Mrs. White"; // assign a vaule to a property
 var who = person.name;
 
 who; //??
-{%- endhighlight -%}
+{% endhighlight %}
 
 Arrays are objects, and because of that, the rules are exactly the same. The major difference between an array and an object are the available methods for either, an example of which is ```.length``` being an available method for arrays, but not objects. If you check the ```typeof``` for the ```person``` variable in the code block above, the console should return ```object```.
 
 ### Bracket Notation
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 var person = []; // declare a person array
 var plea = "wouldShe"
 
 person.name = "Mrs. White"; // assign a vaule to a property
 
 person[plea] = "I would never!"
-{%- endhighlight -%}
+{% endhighlight %}
 
 The ```person[plea] = "I would never!"``` will create a new property in the person object based on the original value of the plea variable ```"wouldShe"```, which will make the person object look like this:
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 person = {
   name: "Mrs. White"
   wouldShe: "I would never!"
 }
-{%- endhighlight -%}
+{% endhighlight %}
 
 If the intention was to create a ```plea``` key for the person object, then you need to surround the ```plea``` with quotes. i.e. ```person["plea"] = "I would never!"```. The person object would then look like this:
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 person = {
   name: "Mrs. White"
   plea: "I would never!"
 }
-{%- endhighlight -%}
+{% endhighlight %}
 
 Reviewing what we've learned about objects and arrays:
 
@@ -123,17 +123,17 @@ Characters
 Weapons
 Rooms
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 var clue = {
   characters: ['Professor Plum', 'Miss Scarlet', 'Mrs. Peacock', 'Mr. Boddy', 'Mrs. White', 'Colonel Mustard', 'The Singing Telegram Girl', 'The Motorist', 'Mr. Green],
   weapons: ['candlestick', 'dagger', 'lead pipe', 'revolver', 'rope', 'spanner'],
   rooms: ['dining room', 'kitchen', 'study', 'billiard room', 'sunroom', 'ballroom']
 }
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### Game Characters Solution
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 var game = {}; // initialize an object literal
 
 game.murderer = "??"; // initialize a property
@@ -152,7 +152,7 @@ game.name = []; initialize an array literal
 
 game.name[0] = 'Miss Scarlet';
 game.name.push('Mr. Green')
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### Object Review
 
@@ -174,7 +174,7 @@ Destructuring is a simplified way of defining variables and taking them outside 
 
 i.e. Destructuring an Array
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 // create a new array and declare it's values. could use let, var, etc…
 
 const [thing1, thing2] = [true, false];
@@ -182,7 +182,7 @@ const [thing1, thing2] = [true, false];
 // reassigning values to existing array
 
 [thing1, thing2] = [true, false];
-{%- endhighlight -%}
+{% endhighlight %}
 
 ```const``` and ```let``` are features of ES6
 
@@ -194,7 +194,7 @@ const will not apply to the properties of the object unless you explicitly 'free
 
 i.e. Destructuring an Object
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 // create a new object and declare it's values. could use let, var, etc…
 
 const {thing1, thing2} = {thing1: true, thing2: false};
@@ -202,7 +202,7 @@ const {thing1, thing2} = {thing1: true, thing2: false};
 // reassigning values to existing object
 
 {thing1, thing2} = {thing1: true, thing2: false};
-{%- endhighlight -%}
+{% endhighlight %}
 
 Objects do not have an order, but the names do have to match. If you think or expect that an object needs an order, you should be using an array.
 
@@ -222,7 +222,7 @@ let {name, room, weapon} = {"name": "Rusty", "room": "kitchen", "weapon": "candl
 
 On extracting data and working with nested data structures
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 // Destructuring === arrays
 
 var [a, b] = [1, 2];
@@ -254,7 +254,7 @@ console.log("a:", a, "b:", b, "c:", c, "d:", d);
 // => a: 1 b: 2 c: [ [ 3, 4 ], 5 ] d: 6
 // ^ None of the 'Advance deep arrays' example above is useful
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 There are many more notes in the course itself covering destructuring but the instructor does not cover them and suggests to look for a course on ES6
 
@@ -266,7 +266,7 @@ Nesting
 
 Nesting had been talked about earlier, below is an example.
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 // nesting
 
@@ -298,7 +298,7 @@ const game = {
     ]
 }
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 Considering the above, what would ```game[suspects]``` return?
 
@@ -312,7 +312,7 @@ Using the nested structure from the previous section, loop through it using any 
 
 Here is a solution by a participant of the in-person class
 
-{%- highlight javascript -%}
+{% highlight javascript %}
  
 function foo() {
     for (let i = 0; i < game.suspects.length; i++) {
@@ -322,7 +322,7 @@ function foo() {
 
 foo()
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### Looping Exercise, Part 2
 
@@ -332,7 +332,7 @@ Loop through all of the properties of the suspect objects in the suspects array,
 
 Here is a solution by a participant of the in-person class
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 var gameLoop = function() {
     for (var i = 0; i < game.suspects.length; i++) {
@@ -361,7 +361,7 @@ the above would log:
 'inner loop'
 'next time!'
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### Looping Exercise, Part 3
 
@@ -371,7 +371,7 @@ Destructure the nested data structure into two variables with the strings 'red' 
 
 Here is a solution by a participant of the in-person class
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const firstColor = game.suspects[0].color;
 const secondColor = game.suspects[1].color;
@@ -380,7 +380,7 @@ var [color, color2] = [suspects[0].color, suspects[1].color];
 
 var [{color: firstColor}, {color: secondColor}] = suspects; // specifies a specific property of the targeted object and returns an array
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ## .forEach() Function
 
@@ -388,7 +388,7 @@ var [{color: firstColor}, {color: secondColor}] = suspects; // specifies a speci
 
 This section covers list transformations with functions and shows how to convert data into a class
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 function CreateSuspectObjects(name) {
     return {
@@ -404,7 +404,7 @@ var suspects = ['Miss Scarlet', 'Colonel Mustard', 'Mr. White', ....];
 
 var suspectsList = [];
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 In JavaScript classes are just functions that return objects.
 
@@ -412,20 +412,20 @@ Using the above code, how would you create a suspect object from each suspect in
 
 One way would be to loop through the list like this:
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 for(var i = 0; i < suspects.length; i++) {
     let suspect = CreateSuspectObjects(suspects[i])
     suspectsList.push(suspect); || suspectsList.push(CreateSuspectObjects(suspects[i]));
 }
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### forEach Function
 
 _.each takes 2 arguments, the first thing is a list and the second thing is a callback function, also known as an iterator function because it is used on things that can be looped through (arrays). Using _.each, the callback function will be called on each item in the first argument; the list. i.e.
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 function CreateSuspectObjects(name) {
     return {
@@ -446,7 +446,7 @@ _.each(suspects, function(name) { // suspects is the array that will be used. ea
     suspectsList.push(suspectObj); || suspectsList.push(CreateSuspectObjects(name))
 }
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 _.each / forEach defined
 
@@ -460,7 +460,7 @@ The difference between _.each and .forEach is: .forEach is a method on the array
 
 What would the following log?
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 var rooms = ['observatory', 'ballroom', 'library'];
 var logger = function(val) {
@@ -469,7 +469,7 @@ var logger = function(val) {
 
 _.each(rooms, logger);
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ```observatory
 ballroom
@@ -479,15 +479,15 @@ library```
 
 Complete the rest of this function so that it works as described in the previous sections:
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 _.each = function(list, callback) {
     //... TODO
 }
 
-{%- endhighlight -%}
+{% endhighlight %}
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 _.each = function(list, callback) {
     for(i = 0; i < list.length; i++) {
@@ -495,11 +495,11 @@ _.each = function(list, callback) {
     }
 }
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### forEach and _.each Solution
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const _ = {};
 
@@ -519,7 +519,7 @@ _.each = function(list, callback) {
         // call the callback with a list item
 }
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ## .map() Function
 
@@ -535,7 +535,7 @@ map is used to take lists and transform them into a new array - manipulate, chan
 
 ### _.map() Exercise
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const weapons = ['candlestick', 'lead pipe', 'revolver'];
 
@@ -543,13 +543,13 @@ const makeBroken = function(item) {
     return `broken ${item}`;
 };
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 Unrelated Note: If you want to quickly test out a function in a library, you can usually visit the library's site and open the console. i.e. visit underscorejs.org, open the console and type `_.map()`
 
 ### _.map() Solution
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const weapons = ['candlestick', 'lead pipe', 'revolver'];
 
@@ -559,7 +559,7 @@ const makeBroken = function(item) {
 
 _.map(weapons, makeBroken)
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### _.map() vs _.each()
 
@@ -571,7 +571,7 @@ Map returns an array
 
 Like each, map iterates through a list
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 _.map = function(list, callback) {
 
@@ -588,11 +588,11 @@ _.map = function(list, callback) {
     }
 }
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### _.map() Solution, Part 2
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 _.map = function(list, callback) {
     // create an empty array to store
@@ -614,7 +614,7 @@ _.map = function(list, callback) {
     return a;
 }
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 Pro tip: Seek to understand the internals of the code you are implementing. Don't rely on; change, save, check, change, save, check. Understand and clearly model what you are doing. It may (seem to) take more time up-front, but the payoff is greater in the long-run. If your code is getting too difficult to hold in your mind, that could be a sign that your code is too complex and may be an opportune time to revisit and simplify your code.
 
@@ -628,7 +628,7 @@ The exercise was not detailed. So it is in the solution
 
 ### .filter() Solution
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const _ = {}
 
@@ -647,13 +647,13 @@ _.filter = function(array, callback) {
     return a;
 }
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### .filter() Application Exercise
 
 Using the below object `videoData` and _.filter, return an array of objects containing only the people that were present
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const videoData = [
     {
@@ -730,17 +730,17 @@ const videoData = [
     }
 ];
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### .filter() Application Solution
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 _.filter(videoData, function(suspectObject) {
     return suspectObject.present;
 })
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ## Functions In-Depth
 
@@ -750,7 +750,7 @@ How exactly does our code execute.
 
 [Check out the anatomy of a function](http://slides.com/bgando/f2f-final-day-1#/7/1)
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 var add // function name
 = function(a, b) // parameters
@@ -760,7 +760,7 @@ var add // function name
 
 add(3, 4, 5); // invocation / call-time (3, 4, 5) are the arguments
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 A function definition does not invoke the function, the invocation happens after the function has been declared, usually by functionName(arguments).
 
@@ -806,7 +806,7 @@ Filter and then map [this data structure](http://jsbin.com/duvafoc/edit) to get 
 
 ### Projecting Solution
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 // store the return value from the filter function
 
@@ -818,13 +818,13 @@ const suspectsName = _.map(suspects, suspect => {
     return suspect.name;
 })
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### Spread Operator
 
 Quick Review; what will this return?
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const createTuple = (a, b, c, d) => {
     return [[a, c], [b, d]];
@@ -832,13 +832,13 @@ const createTuple = (a, b, c, d) => {
 
 createTuple('It', 'be', 'could', 'anyone', 'no one');
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 `[['It', 'could'], ['be', 'anyone']]`
 
 With the addition of the [...] spread operator, what will this return?
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const createTuple = (a, b, c, ...d) => {
     return [[a, c], [b, d]];
@@ -846,7 +846,7 @@ const createTuple = (a, b, c, ...d) => {
 
 createTuple('It', 'be', 'could', 'anyone', 'no one');
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 `[['It', 'could'], ['be', ['anyone', 'no one']]]`
 
@@ -858,7 +858,7 @@ The arguments keyword references all of the arguments as a pseudo-array. A pseud
 
 The arguments keyword is useful when a variable has been passed in, but it was not accounted for with a parameter.
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const createTuple = (a, b, c, d) => {
     console.log(arguments);
@@ -867,7 +867,7 @@ const createTuple = (a, b, c, d) => {
 
 createTuple('It', 'be', 'could', 'anyone', 'no one');
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 The above would log: `'[It', 'be', 'could', 'anyone', 'no one']`
 
@@ -875,7 +875,7 @@ The above would log: `'[It', 'be', 'could', 'anyone', 'no one']`
 
 A default parameter is the value that your parameter defaults to when it is not passed an argument.
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const add = function(a, b = 2) {
     console.log(arguments); // logs [3]
@@ -884,7 +884,7 @@ const add = function(a, b = 2) {
 
 add(3); // logs [5]
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 The default value of `b` is 2, so if an argument is not passed, it will default to that value.
 
@@ -892,7 +892,7 @@ The default value of `b` is 2, so if an argument is not passed, it will default 
 
 Using ES5, how would you set a default parameter for:
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const add = function(a, b = 2) {
     console.log(arguments); // logs [3]
@@ -901,11 +901,11 @@ const add = function(a, b = 2) {
 
 add(3); // logs [5]
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 Solution:
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const add = function(a, b) {
     b = b || 2;
@@ -915,7 +915,7 @@ const add = function(a, b) {
 
 add(3); // logs [5]
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### ES5 Rewrite Solution
 
@@ -923,7 +923,7 @@ The above exercise has the solution.
 
 ### Array-Like Object
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const constructArr = function() { // create function definition
     const arr = Array.prototype.slice.call(arguments); // declare a new variable, assign it to the values that were passed in. An array-like object (arguments) will be turned into an actual array ['was', 'it', 'in']
@@ -933,7 +933,7 @@ const constructArr = function() { // create function definition
 
 constructArr('was', 'it', 'in'); // call the function
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### Array.from
 
@@ -943,7 +943,7 @@ Array.from can turn the arguments pseudo-array into an actual array... replaces 
 
 Implement _.from() to mimick Array.prototype.slice.call in a function
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const _ = {};
 
@@ -951,11 +951,11 @@ _.from  = function(array) {
     return Array.prototype.slice.call(arguments)
 }
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### _.from() Solution
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const _ = {};
 
@@ -963,7 +963,7 @@ _.from  = function(array) {
     return Array.prototype.slice.call(arguments)
 }
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ## Scope
 
@@ -981,7 +981,7 @@ Continue walking through the testing suite
 
 Variables declared within a function are scoped to that function. If you declare a variable and then redeclare that variable within a function, the value of that variable will be as it has been set inside of the function.
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 var ACTUAL;
 var sameName = 'outer';
@@ -993,7 +993,7 @@ fn();
 
 // ACTUAL = 'inner'
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 Whenever you call a function, you create a brand new function scope (execution context) each time.
 
@@ -1017,7 +1017,7 @@ A Higher-Order Function can take a function as an input i.e. `addEventListener`.
 
 Callbacks are functions that are passed to functions.
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const ifElse = (condition, isTrue, isFalse) => {
     return condition ? isTrue() : isFalse();
@@ -1028,13 +1028,13 @@ ifElse(true,
 () => {console.log(false);}
 );
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 The above is a very basic example of a callback function. ifElse is being passed: true and 2 anonymous functions. The `condition` is true, so the `true` will be printed in the console.
 
 ### Passing Arguments
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 var increment = function(n){ return n + 1; };
 
@@ -1046,11 +1046,11 @@ doMathSoIDontHaveTo(5, square); // 25
 
 doMathSoIDontHaveTo(4, increment); // 5
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### Translate into ES6 Exercise
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 var increment = n => { return n + 1; };
 
@@ -1062,7 +1062,7 @@ doMathSoIDontHaveTo(5, square); // 25
 
 doMathSoIDontHaveTo(4, increment); // 5
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### Translate into ES6 Solution
 
@@ -1076,7 +1076,7 @@ You can pass an argument to a callback function by passing in an additional para
 
 Implement _.reduce()
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const _ = {};
 
@@ -1094,7 +1094,7 @@ const _.reduce = function(list, callback, initial) {
 
 _.reduce([1, 2, 3], (v, sum) => v + sum, 0)
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### _.reduce() Solution
 
@@ -1104,7 +1104,7 @@ The above exercise has the solution.
 
 [Link to dataset for this exercise](http://jsbin.com/pazixim/edit?js)
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const newDevelopment = [
     {
@@ -1157,11 +1157,11 @@ const newDevelopment = [
     }
 ];
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### Empty Room Solution
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const notInRoom = suspect => {
     // return an array of all of the false values
@@ -1178,7 +1178,7 @@ const notInRooms = _.map(newDevelopment, notInRoom);
 
 _.intersection(...notInRooms)
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ## Functional Utilities
 
@@ -1188,7 +1188,7 @@ Currying is when you create a function that can then later be called multiple ti
 
 For example:
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 var abc = function(a, b, c) {
     return [a, b, c];
@@ -1202,7 +1202,7 @@ curried(1)(2)(3);
 curried(1, 2)(3);
 // => [1, 2, 3]
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 Currying allows you to break up arguments passed by the number of arguments.
 
@@ -1212,7 +1212,7 @@ Composing is when you take two functions and combine them.
 
 For example:
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const consider = (name) => {
     return `I think it could be... ${name}`;
@@ -1228,7 +1228,7 @@ blame('you);
 
 // => 'I think it could be... YOU!'
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 [_.compose documentation](https://underscorejs.org/#compose)
 
@@ -1236,7 +1236,7 @@ blame('you);
 
 ### Closure
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const myAlert = () => { // declare a function
     const x = 'Help! I think I found a clue!'; // save a string to the constant x
@@ -1248,11 +1248,11 @@ const myAlert = () => { // declare a function
 
 myAlert(); // invoke the function
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### Closure, Part 2
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const myAlert = () => {
     const x = 'Help! I think I found a clue!';
@@ -1266,11 +1266,11 @@ const myAlert = () => {
 
 myAlert(); // invoke the function
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### Creating Closure
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const myAlert = () => {
     const x = 'Help! I think I found a clue!';
@@ -1286,13 +1286,13 @@ const funcAlert = myAlert(); // creates a new execution context of the myAlert f
 const funcAlert2 = myAlert(); // creates a new execution context of the myAlert function
 funcAlert(); // since myAlert ultimately returns the alerter function, this will run the alerter function again from within the new execution context that has been created by funcAlert
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 If you continue to call `funcAlert();`, the `count` value would continue to increase by 1 each time the function is called and it would be independent of the execution contect of `funcAlert2();`; which would still be at 0 until called.
 
 ### Closure Demonstration
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const newClue = (name) => {
     const length = name.length;
@@ -1303,9 +1303,9 @@ const newClue = (name) => {
     };
 };
 
-{%- endhighlight -%}
+{% endhighlight %}
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 function countClues() {
     var n = 0;
@@ -1315,7 +1315,7 @@ function countClues() {
     };
 };
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 With the above function, you can create separate execution contexts by declaring variables that are equal to the function `countClues()`; i.e. `counter = countClues(); counter2 = countClues;`
 
@@ -1345,7 +1345,7 @@ The execution piece of a colsure is as follows:
 
 4. What happened?
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const findSomeone = () => {
 
@@ -1358,9 +1358,9 @@ const findSomeone = () => {
     return speak;
 };
 
-{%- endhighlight -%}
+{% endhighlight %}
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const makeTimer = () => {
     let elapsed = 0;
@@ -1377,11 +1377,11 @@ const makeTimer = () => {
 
 let timer = makeTimer();
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 Same as above, but with console.log(s)
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const makeTimer = () => {
     console.log('initialized);
@@ -1400,7 +1400,7 @@ const makeTimer = () => {
 
 const timer = makeTimer();
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### Currying and Componsing Exercises
 
@@ -1410,7 +1410,7 @@ Skips right to solutions...
 
 Currying
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const curry = (fn) => {
     return (arg) => {
@@ -1420,11 +1420,11 @@ const curry = (fn) => {
     }
 }
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 Composing
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const compose = (fn, fn2) => {
     return (arg) => {
@@ -1433,7 +1433,7 @@ const compose = (fn, fn2) => {
     };
 };
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ## Wrapping Up "JavaScript: From Fundamentals to Functional JS"
 

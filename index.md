@@ -6,21 +6,9 @@ layout: home
 intro: |
 ---
 
-<h1>👋</h1>
+<h1>👋 I'm William Harrison</h1>
 
-My name is William Harrison, I am a Frontend Developer.
-
-<h3>Looking for Full Stack Wizard!!! 🧙‍♂️</h3>
-
-<h3>Seeking Frontend Unicorn 🦄🎉</h3>
-
-<h3>🗡 HTML Ninja Needed 🖤</h3>
-
-When looking for work, I ~~used to~~ see a ton of job posts with titles like the above, where companies seem to throw their "kitchen-sink-ideal-candidate-who-has-all-the-things-but-requires-little-pay" requirements into their job posts.
-
-Thinking it was kind of funny, while also realizing that I am some form of wizard, unicorn, and ninja (My background is in Graphic Design, Video Production, and now Frontend Development), I thought, "Hey, .ninja is a thing now, is wizardunicorn.ninja available?". And it was...
-
-I mostly keep this site for [workshop] notes, there are some resources I gather along the way as well, and sometimes I will add a little JavaScript or style update that seems fun when I am working on a project.
+As a Frontend Developer, I work mostly in HTML, CSS, and JavaScript, but sometimes pretend that I am actually a full stack developer and cobble together React apps (mostly using anti-patterns because I don't know any better) and construct weird queries in PostgresQL (because I also have no idea). I primarily keep this site for [workshop] notes, there are some resources I gather along the way as well, and sometimes I will add a little JavaScript or style update that seems fun when I am working on a project.
 
 Built in Jekyll with the USWDS theme and deployed with Github Pages.
 

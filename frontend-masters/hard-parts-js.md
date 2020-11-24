@@ -24,7 +24,7 @@ When JavaScript runs, it:
 
 * We can even save code (functions)
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const num = 3; // define a variable and assign it the number 3
 
@@ -36,7 +36,7 @@ function multiplyBy2 (inputNumber) { // defining the function
 const output = multiplyBy2(num); // declare a constant and define it to a function call
 const newOutput = multiplyBy2(10); // declare a constant and define it to a function call
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 Memory is the place in which we store data.
 
@@ -70,13 +70,13 @@ JavaScript contains a single thread of execution, which means that you can only 
 
 ### Generalized Functions
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 function tenSquared() {
     return 10*10
 }
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 The above function is not generic enough, if we wanted to square other numbers, we would have to rewrite the function for each number we would want to square.
 
@@ -84,13 +84,13 @@ Don't Repeat Yourself!
 
 How could we make the function more generic?
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 function squareNum(num) {
     return num*num
 }
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 With the above function, you could now pass any number and it would return the square of that number `num*num`
 
@@ -112,7 +112,7 @@ This lesson walks through a function, further driving home the points above abou
 
 A better, more general, way to implement a function could be:
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 function copyArrayAndManipulate(array, instructions) {
     const output = [];
@@ -125,7 +125,7 @@ function copyArrayAndManipulate(array, instructions) {
 function multiplyBy2(input) { return input * 2; }
 const result = copyArrayAndManipulate([1, 2, 3], multiplyBy2);
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### Higher Order Functions Example
 
@@ -159,7 +159,7 @@ Callbacks and Higher Order Functions simplify code and keep it DRY
 
 Arrow functions are a shorthand way to save functions
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 function multiplyBy2(input) { return input * 2; }
 
@@ -167,7 +167,7 @@ function multiplyBy2(input) { return input * 2; }
 
 const multiplyBy2 = input => input*2
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 Under the hood, JavaScript will put in parenthesis, curly brackets, and a return statement if your function only has one return.
 
@@ -221,7 +221,7 @@ Functions with memories!
 
 Returning a function from another function
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 function createFunction() {
     function multiplyBy2 (num) {
@@ -233,13 +233,13 @@ function createFunction() {
 const generatedFunc = createFunction();
 const result = generatedFunc(3); // 6
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### Nested Function Scope
 
 Calling a function in the same function call as it was defined:
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 function outer() {
     let counter = 0;
@@ -255,7 +255,7 @@ const myNewFunction = outer();
 myNewFunction();
 myNewFunction();
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### Retaining Function Memory
 
@@ -331,7 +331,7 @@ So what if we have a task:
 
 Challenge: We want to wait for the tweets to be stores in tweets so that they're there to run displayTweets on - but no code can run in the meantime
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 // Slow function blocks further code from running
 
@@ -345,7 +345,7 @@ displayTweets(tweets)
 
 console.log('I am waiting for getTweets...')
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 JavaScript is not enough - we need new pieces (some of which are not JavaScript at all)
 
@@ -383,7 +383,7 @@ This section is focused on setTimeout which is not a feature of JavaScript, but 
 
 This section quickly talks about there being rules between JavaScript and how the browser interacts with it. They are defined as being quite strict and the following JavaScript was displayed as an example to consider:
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 function printHello(){console.log("Hello"); }
 function blockFor1Sec(){
     // blocks the JavaScript Thread of Execution for 1 second, maybe with a for loop?
@@ -393,7 +393,7 @@ setTimeout(printHello,0);
 
 blockFor1Sec();
 console.log("Me first!");
-{%- endhighlight -%}
+{% endhighlight %}
 
 What will happen?!
 
@@ -448,7 +448,7 @@ In ES6, `fetch` is the replacement for `xhr`, but unlike `xhr`, `fetch` (referre
 
 ES6+ Promises
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 function display(data){
     console.log(data)
@@ -459,7 +459,7 @@ futureData.then(display);
 
 console.log('Me first!');
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### Promises Example: fetch
 
@@ -481,7 +481,7 @@ In the example above, the following is happening:
 
 It is important to understand how promise-deferred functionality gets back into JavaScript to be run
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 function display(data){console.log(data)}
 function printHello(){console.log("hello");}
@@ -495,7 +495,7 @@ futureData.then(display)
 blockFor300ms()
 console.log("Me first!");
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 *The `then` method and its functionality to call on completion*
 
@@ -619,7 +619,7 @@ Objects store functions with their associated data.
 
 This is the principle of encapsulation - and it is going to transform how we can 'reason about' code
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const user1 = {
     name: "First Name",
@@ -629,7 +629,7 @@ const user1 = {
 
 user1.increment(); // user1.score -> 8
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 ### Factory Functions
 
@@ -639,7 +639,7 @@ What is a built-in function of JavaScript who's output will be an empty object?
 
 A potential solution to avoid repeating yourself when creating multiple users would be as follows:
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 function userCreator(name, score) {
     const newUser = {};
@@ -655,7 +655,7 @@ const user1 = userCreator("Viljar", 3);
 const user2 = userCreator("Yep", 5);
 user1.increment();
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 The instructor says not to use the above code in practice. The usable version is to follow.
 
@@ -675,7 +675,7 @@ Make the link with `Object.create()` technique.
 
 Expanding on what we've seen above, consider the following:
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 function userCreator(name, score) {
     const newUser = Object.create(userFunctionStore); // the argument passed into Object.create creates the 'link' to the object that is passed in as an argument
@@ -693,7 +693,7 @@ const user1 = userCreator("Viljar", 3);
 const user2 = userCreator("Yep", 5);
 user1.increment();
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 [MDN Object.create() documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create)
 
@@ -715,7 +715,7 @@ What if we want to confirm if a property exists in an object? `hasOwnProperty`! 
 
 `this` would work fine in the above code block, but consider this:
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 const userFunctionStore = {
     increment: function() {
@@ -724,7 +724,7 @@ const userFunctionStore = {
     }
 };
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 `this` would not evaluate to `user1`, but would look in Global Memory for `user1` which does not exist, but if you change `add1()` to `add1.call(this)`, `this` would still hold the same value in the execution context of `add1()` as it did in the function stored in the label `increment`
 
@@ -750,7 +750,7 @@ But now we need to adjust how we write the body of our object creator. How can w
 
 * Know where to put single copies of functions?
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 function userCreator(name, score) {
     this.name = name;
@@ -764,11 +764,11 @@ userCreator.prototype.increment = function(){
 
 const user1 = new userCreator("Viljar", 7);
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 Functions are both objects and functions 🧐
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 function multiplyBy2(num) {
     return num*2
@@ -780,7 +780,7 @@ multiplyBy2(3) // 6
 multiplyBy2.stored // 5
 multiplyBy2.prototype // {}
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 All functions have a default property `prototype` on their object version (itself an object). Using a dot on the end of a function, you can get access to the object portion of a function.
 
@@ -788,7 +788,7 @@ All functions have a default property `prototype` on their object version (itsel
 
 Walks through this code:
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 function userCreator(name, score) {
     this.name = name;
@@ -802,7 +802,7 @@ userCreator.prototype.increment = function(){
 
 const user1 = new userCreator("Viljar", 7);
 
-{%- endhighlight -%}
+{% endhighlight %}
 
 The benefit to using the `new` keyword is that it is faster to write and it is often used in practice in professional code.
 
@@ -812,7 +812,7 @@ The problem(s) to using the `new` keyword is that 95% of developers have no idea
 
 In languages other than JavaScript, there is a way to construct the function/object combo (similar to `new`), but all at once rather than declaring a function, then assigning functions to labels in the `.prototype` object. Using `class` allows everything to be declared at once.
 
-{%- highlight javascript -%}
+{% highlight javascript %}
 
 class UserCreator {
     constructor (name, score){ // same as function userCreator(name, score){...}
@@ -826,7 +826,7 @@ class UserCreator {
 const user1 = new UserCreator("Viljar", 7);
 user1.increment();
 
-{%- endhighlight-%}
+{% endhighlight%}
 
 [`constructor` on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor)
 
