@@ -86,6 +86,7 @@
     <p>We can even save code (functions)</p>
   </li>
 </ul>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">num</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span> <span class="c1">// define a variable and assign it the number 3</span>
 
 <span class="kd">function</span> <span class="nx">multiplyBy2</span> <span class="p">(</span><span class="nx">inputNumber</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// defining the function</span>
@@ -95,6 +96,7 @@
 
 <span class="kd">const</span> <span class="nx">output</span> <span class="o">=</span> <span class="nx">multiplyBy2</span><span class="p">(</span><span class="nx">num</span><span class="p">);</span> <span class="c1">// declare a constant and define it to a function call</span>
 <span class="kd">const</span> <span class="nx">newOutput</span> <span class="o">=</span> <span class="nx">multiplyBy2</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span> <span class="c1">// declare a constant and define it to a function call</span></code></pre></figure>
+
 <p>Memory is the place in which we store data.</p>
 
 <h3 id="functions">Functions</h3>
@@ -138,17 +140,21 @@
 <h2 id="functions--callbacks">Functions &amp; Callbacks</h2>
 
 <h3 id="generalized-functions">Generalized Functions</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">tenSquared</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span> <span class="mi">10</span><span class="o">*</span><span class="mi">10</span>
 <span class="p">}</span></code></pre></figure>
+
 <p>The above function is not generic enough, if we wanted to square other numbers, we would have to rewrite the function for each number we would want to square.</p>
 
 <p>Don’t Repeat Yourself!</p>
 
 <p>How could we make the function more generic?</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">squareNum</span><span class="p">(</span><span class="nx">num</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">num</span><span class="o">*</span><span class="nx">num</span>
 <span class="p">}</span></code></pre></figure>
+
 <p>With the above function, you could now pass any number and it would return the square of that number <code class="language-plaintext highlighter-rouge">num*num</code></p>
 
 <p>Generalizing functions:</p>
@@ -172,6 +178,7 @@
 <h3 id="higher-order-functions">Higher Order Functions</h3>
 
 <p>A better, more general, way to implement a function could be:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">copyArrayAndManipulate</span><span class="p">(</span><span class="nx">array</span><span class="p">,</span> <span class="nx">instructions</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">const</span> <span class="nx">output</span> <span class="o">=</span> <span class="p">[];</span>
     <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
@@ -182,6 +189,7 @@
 
 <span class="kd">function</span> <span class="nx">multiplyBy2</span><span class="p">(</span><span class="nx">input</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">input</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span> <span class="p">}</span>
 <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">copyArrayAndManipulate</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="nx">multiplyBy2</span><span class="p">);</span></code></pre></figure>
+
 <h3 id="higher-order-functions-example">Higher Order Functions Example</h3>
 
 <p>The example used in the section is the above code block. Just walking through each step of the execution context from global through the call stack as it is updated by calling functions.</p>
@@ -224,11 +232,13 @@
 <h3 id="arrow-functions">Arrow Functions</h3>
 
 <p>Arrow functions are a shorthand way to save functions</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">multiplyBy2</span><span class="p">(</span><span class="nx">input</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">input</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span> <span class="p">}</span>
 
 <span class="c1">//  in an arrow function, becomes</span>
 
 <span class="kd">const</span> <span class="nx">multiplyBy2</span> <span class="o">=</span> <span class="nx">input</span> <span class="o">=&gt;</span> <span class="nx">input</span><span class="o">*</span><span class="mi">2</span></code></pre></figure>
+
 <p>Under the hood, JavaScript will put in parenthesis, curly brackets, and a return statement if your function only has one return.</p>
 
 <p>Anonymous and arrow functions</p>
@@ -308,6 +318,7 @@
 <h3 id="returning-functions">Returning Functions</h3>
 
 <p>Returning a function from another function</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">createFunction</span><span class="p">()</span> <span class="p">{</span>
     <span class="kd">function</span> <span class="nx">multiplyBy2</span> <span class="p">(</span><span class="nx">num</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="nx">num</span><span class="o">*</span><span class="mi">2</span><span class="p">;</span>
@@ -317,9 +328,11 @@
 
 <span class="kd">const</span> <span class="nx">generatedFunc</span> <span class="o">=</span> <span class="nx">createFunction</span><span class="p">();</span>
 <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">generatedFunc</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span> <span class="c1">// 6</span></code></pre></figure>
+
 <h3 id="nested-function-scope">Nested Function Scope</h3>
 
 <p>Calling a function in the same function call as it was defined:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">outer</span><span class="p">()</span> <span class="p">{</span>
     <span class="kd">let</span> <span class="nx">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="kd">function</span> <span class="nx">incrementCounter</span> <span class="p">()</span> <span class="p">{</span>
@@ -333,6 +346,7 @@
 <span class="kd">const</span> <span class="nx">myNewFunction</span> <span class="o">=</span> <span class="nx">outer</span><span class="p">();</span>
 <span class="nx">myNewFunction</span><span class="p">();</span>
 <span class="nx">myNewFunction</span><span class="p">();</span></code></pre></figure>
+
 <h3 id="retaining-function-memory">Retaining Function Memory</h3>
 
 <p>In the above function definition, when <code class="language-plaintext highlighter-rouge">myNewFunction</code> is assigned to <code class="language-plaintext highlighter-rouge">outer()</code>, the inner function <code class="language-plaintext highlighter-rouge">incrementCounter()</code> is saved to it, including the parent scope of <code class="language-plaintext highlighter-rouge">outer()</code>, which allows access to the variable <code class="language-plaintext highlighter-rouge">counter</code>.</p>
@@ -430,6 +444,7 @@
 </ul>
 
 <p>Challenge: We want to wait for the tweets to be stores in tweets so that they’re there to run displayTweets on - but no code can run in the meantime</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Slow function blocks further code from running</span>
 
 <span class="kd">const</span> <span class="nx">tweets</span> <span class="o">=</span> <span class="nx">getTweets</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://twitter.com/potus</span><span class="dl">"</span><span class="p">)</span>
@@ -441,6 +456,7 @@
 <span class="c1">// more code to run</span>
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">I am waiting for getTweets...</span><span class="dl">'</span><span class="p">)</span></code></pre></figure>
+
 <p>JavaScript is not enough - we need new pieces (some of which are not JavaScript at all)</p>
 
 <p>Our core JavaScript engine has 3 main parts:</p>
@@ -488,6 +504,7 @@
 <h3 id="web-api-rules">Web API Rules</h3>
 
 <p>This section quickly talks about there being rules between JavaScript and how the browser interacts with it. They are defined as being quite strict and the following JavaScript was displayed as an example to consider:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">printHello</span><span class="p">(){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">);</span> <span class="p">}</span>
 <span class="kd">function</span> <span class="nx">blockFor1Sec</span><span class="p">(){</span>
     <span class="c1">// blocks the JavaScript Thread of Execution for 1 second, maybe with a for loop?</span>
@@ -497,6 +514,7 @@
 
 <span class="nx">blockFor1Sec</span><span class="p">();</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Me first!</span><span class="dl">"</span><span class="p">);</span></code></pre></figure>
+
 <p>What will happen?!</p>
 
 <h3 id="callback-queue--event-loop">Callback Queue &amp; Event Loop</h3>
@@ -563,6 +581,7 @@
 <p>In ES6, <code class="language-plaintext highlighter-rouge">fetch</code> is the replacement for <code class="language-plaintext highlighter-rouge">xhr</code>, but unlike <code class="language-plaintext highlighter-rouge">xhr</code>, <code class="language-plaintext highlighter-rouge">fetch</code> (referred to above as a ‘two-pronged’ facade function) will both initiate a Web Browser function and in the JavaScript environment create a placeholder object called a <code class="language-plaintext highlighter-rouge">promise object</code>. When the network request completes, the object will be filled in with the result. The Web Browser function and the placeholder object are intrinsically linked.</p>
 
 <p>ES6+ Promises</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">display</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
 <span class="p">}</span>
@@ -571,6 +590,7 @@
 <span class="nx">futureData</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">display</span><span class="p">);</span>
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Me first!</span><span class="dl">'</span><span class="p">);</span></code></pre></figure>
+
 <h3 id="promises-example-fetch">Promises Example: fetch</h3>
 
 <p>In the example above, the following is happening:</p>
@@ -601,6 +621,7 @@
 <h3 id="web-apis--promises-example-fetch">Web APIs &amp; Promises Example: fetch</h3>
 
 <p>It is important to understand how promise-deferred functionality gets back into JavaScript to be run</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">display</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">)}</span>
 <span class="kd">function</span> <span class="nx">printHello</span><span class="p">(){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">hello</span><span class="dl">"</span><span class="p">);}</span>
 <span class="kd">function</span> <span class="nx">blockFor300ms</span><span class="p">(){</span><span class="c1">// blocks js thread for 300ms}</span>
@@ -612,6 +633,7 @@
 
 <span class="nx">blockFor300ms</span><span class="p">()</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Me first!</span><span class="dl">"</span><span class="p">);</span></code></pre></figure>
+
 <p><em>The <code class="language-plaintext highlighter-rouge">then</code> method and its functionality to call on completion</em></p>
 
 <ul>
@@ -786,6 +808,7 @@
 <p>Objects store functions with their associated data.</p>
 
 <p>This is the principle of encapsulation - and it is going to transform how we can ‘reason about’ code</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">user1</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">First Name</span><span class="dl">"</span><span class="p">,</span>
     <span class="na">score</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
@@ -793,6 +816,7 @@
 <span class="p">};</span>
 
 <span class="nx">user1</span><span class="p">.</span><span class="nx">increment</span><span class="p">();</span> <span class="c1">// user1.score -&gt; 8</span></code></pre></figure>
+
 <h3 id="factory-functions">Factory Functions</h3>
 
 <p>What is a built-in function of JavaScript who’s output will be an empty object?</p>
@@ -800,6 +824,7 @@
 <p><code class="language-plaintext highlighter-rouge">Object.create</code> which will provide fine-grained control over the object later on.</p>
 
 <p>A potential solution to avoid repeating yourself when creating multiple users would be as follows:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">userCreator</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">score</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">const</span> <span class="nx">newUser</span> <span class="o">=</span> <span class="p">{};</span>
     <span class="nx">newUser</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
@@ -813,6 +838,7 @@
 <span class="kd">const</span> <span class="nx">user1</span> <span class="o">=</span> <span class="nx">userCreator</span><span class="p">(</span><span class="dl">"</span><span class="s2">Viljar</span><span class="dl">"</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">user2</span> <span class="o">=</span> <span class="nx">userCreator</span><span class="p">(</span><span class="dl">"</span><span class="s2">Yep</span><span class="dl">"</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
 <span class="nx">user1</span><span class="p">.</span><span class="nx">increment</span><span class="p">();</span></code></pre></figure>
+
 <p>The instructor says not to use the above code in practice. The usable version is to follow.</p>
 
 <h3 id="factory-functions-example">Factory Functions Example</h3>
@@ -830,6 +856,7 @@
 <p>Make the link with <code class="language-plaintext highlighter-rouge">Object.create()</code> technique.</p>
 
 <p>Expanding on what we’ve seen above, consider the following:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">userCreator</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">score</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">const</span> <span class="nx">newUser</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">userFunctionStore</span><span class="p">);</span> <span class="c1">// the argument passed into Object.create creates the 'link' to the object that is passed in as an argument</span>
     <span class="nx">newUser</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
@@ -845,6 +872,7 @@
 <span class="kd">const</span> <span class="nx">user1</span> <span class="o">=</span> <span class="nx">userCreator</span><span class="p">(</span><span class="dl">"</span><span class="s2">Viljar</span><span class="dl">"</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">user2</span> <span class="o">=</span> <span class="nx">userCreator</span><span class="p">(</span><span class="dl">"</span><span class="s2">Yep</span><span class="dl">"</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
 <span class="nx">user1</span><span class="p">.</span><span class="nx">increment</span><span class="p">();</span></code></pre></figure>
+
 <p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create">MDN Object.create() documentation</a></p>
 
 <h3 id="prototype-chain-example-prototypal-link">Prototype Chain Example: Prototypal Link</h3>
@@ -864,12 +892,14 @@
 <h3 id="this-keyword">this Keyword</h3>
 
 <p><code class="language-plaintext highlighter-rouge">this</code> would work fine in the above code block, but consider this:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">userFunctionStore</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">increment</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
         <span class="kd">function</span> <span class="nx">add1</span><span class="p">(){</span> <span class="k">this</span><span class="p">.</span><span class="nx">score</span><span class="o">++</span><span class="p">;</span> <span class="p">}</span>
         <span class="nx">add1</span><span class="p">();</span>
     <span class="p">}</span>
 <span class="p">};</span></code></pre></figure>
+
 <p><code class="language-plaintext highlighter-rouge">this</code> would not evaluate to <code class="language-plaintext highlighter-rouge">user1</code>, but would look in Global Memory for <code class="language-plaintext highlighter-rouge">user1</code> which does not exist, but if you change <code class="language-plaintext highlighter-rouge">add1()</code> to <code class="language-plaintext highlighter-rouge">add1.call(this)</code>, <code class="language-plaintext highlighter-rouge">this</code> would still hold the same value in the execution context of <code class="language-plaintext highlighter-rouge">add1()</code> as it did in the function stored in the label <code class="language-plaintext highlighter-rouge">increment</code></p>
 
 <h3 id="arrow-function-scope--this">Arrow Function Scope &amp; this</h3>
@@ -903,6 +933,7 @@
     <p>Know where to put single copies of functions?</p>
   </li>
 </ul>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">userCreator</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">score</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">score</span> <span class="o">=</span> <span class="nx">score</span><span class="p">;</span>
@@ -914,7 +945,9 @@
 <span class="p">}</span>
 
 <span class="kd">const</span> <span class="nx">user1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">userCreator</span><span class="p">(</span><span class="dl">"</span><span class="s2">Viljar</span><span class="dl">"</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span></code></pre></figure>
+
 <p>Functions are both objects and functions 🧐</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">multiplyBy2</span><span class="p">(</span><span class="nx">num</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">num</span><span class="o">*</span><span class="mi">2</span>
 <span class="p">}</span>
@@ -924,11 +957,13 @@
 
 <span class="nx">multiplyBy2</span><span class="p">.</span><span class="nx">stored</span> <span class="c1">// 5</span>
 <span class="nx">multiplyBy2</span><span class="p">.</span><span class="nx">prototype</span> <span class="c1">// {}</span></code></pre></figure>
+
 <p>All functions have a default property <code class="language-plaintext highlighter-rouge">prototype</code> on their object version (itself an object). Using a dot on the end of a function, you can get access to the object portion of a function.</p>
 
 <h3 id="new-keyword-example">new Keyword Example</h3>
 
 <p>Walks through this code:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">userCreator</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">score</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">score</span> <span class="o">=</span> <span class="nx">score</span><span class="p">;</span>
@@ -940,6 +975,7 @@
 <span class="p">}</span>
 
 <span class="kd">const</span> <span class="nx">user1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">userCreator</span><span class="p">(</span><span class="dl">"</span><span class="s2">Viljar</span><span class="dl">"</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span></code></pre></figure>
+
 <p>The benefit to using the <code class="language-plaintext highlighter-rouge">new</code> keyword is that it is faster to write and it is often used in practice in professional code.</p>
 
 <p>The problem(s) to using the <code class="language-plaintext highlighter-rouge">new</code> keyword is that 95% of developers have no idea how it works and therefore fail interviews. And… we should uppercase the first letter of the function so we know it requires <code class="language-plaintext highlighter-rouge">new</code> to work!</p>
@@ -947,6 +983,7 @@
 <h3 id="class-keyword">class Keyword</h3>
 
 <p>In languages other than JavaScript, there is a way to construct the function/object combo (similar to <code class="language-plaintext highlighter-rouge">new</code>), but all at once rather than declaring a function, then assigning functions to labels in the <code class="language-plaintext highlighter-rouge">.prototype</code> object. Using <code class="language-plaintext highlighter-rouge">class</code> allows everything to be declared at once.</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">class</span> <span class="nx">UserCreator</span> <span class="p">{</span>
     <span class="kd">constructor</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">score</span><span class="p">){</span> <span class="c1">// same as function userCreator(name, score){...}</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
@@ -958,6 +995,7 @@
 
 <span class="kd">const</span> <span class="nx">user1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">UserCreator</span><span class="p">(</span><span class="dl">"</span><span class="s2">Viljar</span><span class="dl">"</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
 <span class="nx">user1</span><span class="p">.</span><span class="nx">increment</span><span class="p">();</span></code></pre></figure>
+
 <p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor"><code class="language-plaintext highlighter-rouge">constructor</code> on MDN</a></p>
 
 <p>The benefits of using <code class="language-plaintext highlighter-rouge">class</code> are that it is emerging as the new standard (introduced in ES6) and that it ‘feels’ more like the style of other languages (e.g. Python).</p>

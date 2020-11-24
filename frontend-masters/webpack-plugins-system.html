@@ -126,6 +126,7 @@
 <h3 id="creating-a-webpack-plugin">Creating a Webpack Plugin</h3>
 
 <p>In its most basic form, a plugin is just a class that has an apply method. Continuing in the repo from the <a href="/frontend-masters/webpack-4-fundamentals">Webpack 4 Fundamentals workshop</a> or if you are only reading this document, <a href="https://github.com/TheLarkInn/webpack-workshop-2018/tree/feature/0504-webpack-prefetch-preload">grab the repo here</a>, create a new file in the <code class="language-plaintext highlighter-rouge">build-utils</code> folder called <code class="language-plaintext highlighter-rouge">MyFirstWebpackPlugin.js</code> (<code class="language-plaintext highlighter-rouge">...WebpackPlugin...</code> is a naming convention that Webpack follows). In that <code class="language-plaintext highlighter-rouge">MyFirstWebpackPlugin.js</code> file, add the following:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">class</span> <span class="nx">MyFirstWebpackPlugin</span> <span class="p">{</span>
     <span class="nx">apply</span><span class="p">(</span><span class="nx">compiler</span><span class="p">)</span> <span class="p">{</span> 
         <span class="nx">compiler</span><span class="p">.</span><span class="nx">hooks</span><span class="p">.</span><span class="nx">done</span><span class="p">.</span><span class="nx">tapAsync</span><span class="p">(</span><span class="dl">"</span><span class="s2">MyFirstWebpackPlugin</span><span class="dl">"</span><span class="p">,</span> <span class="p">(</span><span class="nx">stats</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -142,7 +143,9 @@
 <span class="p">}</span>
 
 <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">MyFirstWebpackPlugin</span><span class="p">;</span></code></pre></figure>
+
 <p>And in your <code class="language-plaintext highlighter-rouge">webpack.config.js</code> file add:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//..</span>
 <span class="kd">const</span> <span class="nx">MyFirstWebpackPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">./build-utils/MyFirstWebpackPlugin</span><span class="dl">'</span><span class="p">);</span>
 <span class="c1">//...</span>
@@ -150,11 +153,13 @@
     <span class="k">new</span> <span class="nx">MyFirstWebpackPlugin</span><span class="p">()</span>
 <span class="p">]</span>
 <span class="c1">//...</span></code></pre></figure>
+
 <p>Now when you run <code class="language-plaintext highlighter-rouge">npm run prod</code>, in addition to the standard Webpack terminal logs, you should see the names of your assets output (somewhere) in the terminal. Try just logging stats and check out the object it returns, it contains all of the information about your build.</p>
 
 <h3 id="plugin-instance-hooks">Plugin Instance Hooks</h3>
 
 <p>Let’s look at how to plug in to something that is not the compiler! If you want to plug in to a different instance, you still have to go through the compiler. In <code class="language-plaintext highlighter-rouge">MyFirstWebpackPlugin.js</code> update your code like so:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">class</span> <span class="nx">MyFirstWebpackPlugin</span> <span class="p">{</span>
     <span class="nx">apply</span><span class="p">(</span><span class="nx">compiler</span><span class="p">)</span> <span class="p">{</span> 
         <span class="nx">compiler</span><span class="p">.</span><span class="nx">hooks</span><span class="p">.</span><span class="nx">done</span><span class="p">.</span><span class="nx">tapAsync</span><span class="p">(</span><span class="dl">"</span><span class="s2">MyFirstWebpackPlugin</span><span class="dl">"</span><span class="p">,</span> <span class="p">(</span><span class="nx">stats</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -178,6 +183,7 @@
 <span class="p">}</span>
 
 <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">MyFirstWebpackPlugin</span><span class="p">;</span></code></pre></figure>
+
 <p>For more details about the available hooks see the <a href="https://webpack.js.org/api/plugins/">Webpack Plugin API Documentation</a>. Loaders are also applied with a plugin… <code class="language-plaintext highlighter-rouge">LoaderPlugin.js</code></p>
 
 <h3 id="isolating-plugins">Isolating Plugins</h3>
@@ -191,6 +197,7 @@
 <h3 id="creating-a-custom-loader">Creating a Custom Loader</h3>
 
 <p>To write a custom loader and develop it locally, you just need a couple of pieces. One of the pieces is a property called <code class="language-plaintext highlighter-rouge">resolveLoader</code>, the properties of which are identical to the <code class="language-plaintext highlighter-rouge">resolve</code> property. Any custom behavior that you want to apply to resolving modules, you can do the same thing for your loaders. A simple JS loader (filename: <code class="language-plaintext highlighter-rouge">webpack.myloader.js</code>) would look something like this:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">({</span>
     <span class="na">resolveLoader</span><span class="p">:</span> <span class="p">{</span>
         <span class="na">alias</span><span class="p">:</span> <span class="p">{</span>
@@ -206,12 +213,15 @@
         <span class="p">]</span>
     <span class="p">}</span>
 <span class="p">})</span></code></pre></figure>
+
 <p>Now you actually have to build the loader… make a new file, following the path above <code class="language-plaintext highlighter-rouge">my-loader.js</code>, and insert the following:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">myLoader</span><span class="p">(</span><span class="nx">source</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// this is the basic anatomy of a loader. It takes a function which requires the `source` argument, then returns the `source`</span>
     <span class="k">return</span> <span class="nx">source</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">myLoader</span><span class="p">;</span></code></pre></figure>
+
 <p>There is a ton of additional information about the <a href="https://webpack.js.org/api/loaders">loader API in the Webpack documentation</a>.</p>
 
 <h3 id="configuring-babel-for-webpack">Configuring Babel for Webpack</h3>

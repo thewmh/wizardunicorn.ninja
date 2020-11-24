@@ -110,6 +110,7 @@
 <h3 id="code-splitting-demonstration">Code Splitting Demonstration</h3>
 
 <p>Take a look at the following pseudo code for an example of code splitting:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">Listener</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./listeners.js</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">const</span> <span class="nx">getModal</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="dl">'</span><span class="s1">./src/modal.js</span><span class="dl">'</span><span class="p">);</span>
@@ -121,7 +122,9 @@
         <span class="nx">module</span><span class="p">.</span><span class="nx">initModal</span><span class="p">(</span><span class="nx">modalTarget</span><span class="p">);</span>
     <span class="p">});</span>
 <span class="p">});</span></code></pre></figure>
+
 <p>Walking through the above code, we are first importing <code class="language-plaintext highlighter-rouge">Listener</code>, then assigning a function that returns a dynamic import statement and a path to a module. Finally, when an event occurs, the above code is returning a promise that will, on promise fulfillment, perform the functionality. In the <a href="/frontend-masters/webpack-4-fundamentals">Webpack 4 Fundamentals workshop</a> [see the bottom of the page, “Q&amp;A Section”], this was shown when clicking on a button and then loading the footer code. If you are lazy… here’s the code example:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// from index.js in the workshop repo</span>
 <span class="c1">//..</span>
 <span class="kd">const</span> <span class="nx">loadFooter</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="dl">'</span><span class="s1">./footer</span><span class="dl">'</span><span class="p">);</span>
@@ -132,6 +135,7 @@
         <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">footer</span><span class="p">)</span> <span class="c1">// moved from below</span>
     <span class="p">});</span>
 <span class="p">});</span></code></pre></figure>
+
 <p>The above is code splitting. Nothing else is code splitting. If the event that triggers the asynchronous dynamic loading of JavaScript is re-triggered, it will not re-fetch the asset, but look into the cache for the code.</p>
 
 <h3 id="webpack-code-splitting-under-the-hood">Webpack Code Splitting Under the Hood</h3>
@@ -153,7 +157,9 @@
 <h3 id="code-splitting-named-exports">Code Splitting Named Exports</h3>
 
 <p>As of Webpack 4, code splitting named exports was not supported, there are some ideas around how they could approach it, but the example used was to import a single feature of a utility library i.e. lodash-es</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">getLodashUniq</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="dl">"</span><span class="s2">lodash-es/uniq</span><span class="dl">"</span><span class="p">);</span></code></pre></figure>
+
 <h3 id="vendor-bundles-are-an-anti-pattern">Vendor Bundles are an Anti Pattern</h3>
 
 <p>Optimizing for caching is not the preferred method for saving load time. Pay attention to code coverage for the greatest savings at page load. Only when you get your bundle down to a very small size should you concern yourself with caching.</p>
@@ -161,6 +167,7 @@
 <h3 id="dynamic-code-splitting">Dynamic Code Splitting</h3>
 
 <p>Anytime you use an import statement i.e. <code class="language-plaintext highlighter-rouge">import('./thing.js')</code>, it’s always returning a promise and its creating and putting the modules that you dynamically imported into a separate file. “Dynamic” code splitting in Webpack is not truly dynamic. Consider the following code example:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">getTheme</span> <span class="o">=</span> <span class="p">(</span><span class="nx">themeName</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="s2">`./src/themes/</span><span class="p">${</span><span class="nx">themeName</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
 
 <span class="c1">// Using `import()` 'dynamically'</span>
@@ -173,11 +180,13 @@
         <span class="nx">module</span><span class="p">.</span><span class="nx">applyTheme</span><span class="p">();</span>
     <span class="p">});</span>
 <span class="p">}</span></code></pre></figure>
+
 <p>The above import statement should be familiar, assigning a variable to a function that returns a dynamic import, but in this case the path is not fully static. If you were actually using the above code, you can see that you can actually access global conditions at runtime to choose when to dynamically load something. You can use runtime conditions to choose when to load something lazily. In Webpack terms, this is considered to be a <code class="language-plaintext highlighter-rouge">Context Module</code>. The above code would tell Webpack to find all of the modules that are in the partial path <code class="language-plaintext highlighter-rouge">./src/themes/</code> and create a bundle for each of them. Ultimately, there is no real dynamic code splitting happening because all of the assets will be produced as static assets at build time, but you can dynamically serve them. Potential use cases include; A/B Testing, Theming, and Convenience.</p>
 
 <h3 id="dynamic-code-splitting-walkthrough">Dynamic Code Splitting Walkthrough</h3>
 
 <p>For this example, first make sure your <code class="language-plaintext highlighter-rouge">index.js</code> file looks like this:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">getFooter</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="dl">"</span><span class="s2">./footer</span><span class="dl">"</span><span class="p">);</span>
 <span class="k">import</span> <span class="nx">makeButton</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./button</span><span class="dl">"</span><span class="p">;</span>
 <span class="k">import</span> <span class="p">{</span> <span class="nx">makeColorStyle</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./button-styles</span><span class="dl">"</span><span class="p">;</span>
@@ -197,7 +206,9 @@
         <span class="nx">button</span><span class="p">.</span><span class="nx">style</span> <span class="o">=</span> <span class="nx">styleStr</span><span class="p">.</span><span class="k">default</span><span class="p">;</span>
     <span class="p">});</span>
 <span class="p">});</span></code></pre></figure>
+
 <p>And your <code class="language-plaintext highlighter-rouge">button.js</code> file looks like this:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">makeButton</span> <span class="o">=</span> <span class="nx">buttonName</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">buttonLabel</span> <span class="o">=</span>  <span class="s2">`Button: </span><span class="p">${</span><span class="nx">buttonName</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
@@ -208,8 +219,11 @@
 <span class="p">};</span>
 
 <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">makeButton</span><span class="p">;</span></code></pre></figure>
+
 <p>Once your files match the above, make a new folder in your <code class="language-plaintext highlighter-rouge">src</code> directory named <code class="language-plaintext highlighter-rouge">button-styles</code>. In the <code class="language-plaintext highlighter-rouge">button-styles</code> folder add <code class="language-plaintext highlighter-rouge">red.js blue.js green.js yellow.js</code> files. Each of those files should look like this:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">export</span> <span class="k">default</span> <span class="dl">"</span><span class="s2">color: colorFromFileName;</span><span class="dl">"</span> <span class="c1">// i.e. blue.js would be "color: blue;"</span></code></pre></figure>
+
 <p>If you now run <code class="language-plaintext highlighter-rouge">npm run dev</code>, you should find new bundle files, 1 for each file in the <code class="language-plaintext highlighter-rouge">button-styles</code> folder, output in the <code class="language-plaintext highlighter-rouge">dist</code> folder. Following the button example, try to think of some other examples where you might want to structure your components so that the code for them is only downloaded when needed, perhaps based on an event trigger? If you had additional files in the <code class="language-plaintext highlighter-rouge">button-styles</code> folder, that maybe you did not want to include, you can specify in the <code class="language-plaintext highlighter-rouge">index.js</code> file (or wherever you have defined the import) that you only want that specific file type by adding the extension i.e. <code class="language-plaintext highlighter-rouge">...import(</code>./button-styles/${color}.js<code class="language-plaintext highlighter-rouge">)</code>.</p>
 
 <h2 id="module-methods--magic-comments">Module Methods &amp; Magic Comments</h2>
@@ -217,8 +231,11 @@
 <h3 id="introducing-magic-comments">Introducing Magic Comments</h3>
 
 <p>When you are using code splitting as a technique, there is no name that is created when you add the bundle. This is because it is not an entry-point so it cannot be given an assigned name. When you look at the <code class="language-plaintext highlighter-rouge">dist</code> folder after a build, you will find a number of bundles there, but they are not named in a way that is immediately understandable. Enter <a href="https://webpack.js.org/api/module-methods/#magic-comments">Magic Comments</a>! One of the things that Magic Comments allow you to do is name your bundles. This could prove valuable when you are debugging or if you are trying to keep track of which files generate their own bundles. In <code class="language-plaintext highlighter-rouge">index.js</code> add a <code class="language-plaintext highlighter-rouge">webpackChunkName</code> to the footer import:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">getFooter</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="cm">/* webpackChunkName: "footer" */</span><span class="dl">"</span><span class="s2">./footer</span><span class="dl">"</span><span class="p">);</span></code></pre></figure>
+
 <p>To get the name to appear as part of the bundle name, update the <code class="language-plaintext highlighter-rouge">webpack.config.js</code> file like so:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
 
 <span class="nx">output</span><span class="p">:</span> <span class="p">{</span>
@@ -227,16 +244,19 @@
     <span class="p">},</span>
 
 <span class="c1">//...</span></code></pre></figure>
+
 <p>This may be useful to include as part of a base configuration, depending on your requirements maybe only the dev configuration?</p>
 
 <h3 id="webpack-modes">Webpack Modes</h3>
 
 <p>Also a part of Magic Comments is a feature called <code class="language-plaintext highlighter-rouge">webpackMode</code>. With this you can further control how code splitting happens, with four different settings. In the instance of the button styles, <code class="language-plaintext highlighter-rouge">/* webpaackMode: "lazy-once" */</code> would generate a single bundle, which can save build time. Pushing this further and continuing to define different build configurations, you could add this to the <code class="language-plaintext highlighter-rouge">index.js</code> file:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">development</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">const</span> <span class="nx">setButtonStyle</span> <span class="o">=</span> <span class="p">(</span><span class="nx">color</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="cm">/* webpackMode: "lazy-once" */</span> <span class="s2">`./button-styles/</span><span class="p">${</span><span class="nx">color</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
 <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
     <span class="kd">const</span> <span class="nx">setButtonStyle</span> <span class="o">=</span> <span class="p">(</span><span class="nx">color</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="s2">`./button-styles/</span><span class="p">${</span><span class="nx">color</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
 <span class="p">}</span></code></pre></figure>
+
 <p>Webpack, by default, injects a macro replacement to the <code class="language-plaintext highlighter-rouge">process.ev.NODE_ENV</code> variable. When you set the mode to <code class="language-plaintext highlighter-rouge">development</code>, the macro converts to development and by default, Webpack can convert the above code and evaluate the if/else statement. You probably care less about performance optimizations in your dev code, but while in dev would like faster build times, this is useful for that.</p>
 
 <h3 id="webpack-prefetch--preload">Webpack Prefetch &amp; Preload</h3>
@@ -252,6 +272,7 @@
 <h3 id="webpack-config-organization">Webpack Config Organization</h3>
 
 <p>The Webpack config organization has already been discussed / built in the <a href="/frontend-masters/webpack-4-fundamentals">Webpack 4 Fundamentals workshop</a>, with something like:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">-</span> <span class="nx">build</span><span class="o">-</span><span class="nx">utils</span>
     <span class="o">-</span> <span class="nx">presets</span>
         <span class="nx">webpack</span><span class="p">.</span><span class="nx">analyze</span><span class="p">.</span><span class="nx">js</span>
@@ -268,6 +289,7 @@
 <span class="nx">README</span><span class="p">.</span><span class="nx">md</span>
 <span class="nx">TODO</span><span class="p">.</span><span class="nx">md</span>
 <span class="nx">webpack</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">js</span></code></pre></figure>
+
 <p>The idea with presets is not that you only test out a single piece of functionality, like analyze or compress, but that you can build out entire sets of isolated functionality that allows you to experiment, test, or any other reason that you can just add on with a flag or add on with an extra script. The above configuration is enough to get started with the most complex piece of it being the <code class="language-plaintext highlighter-rouge">loadPresets.js</code> file, which is basically just flattening presets and making sure that if there is not a preset that it doesn’t fail. Best practice is, don’t hide your Webpack config, keep it at the root level of your project.</p>
 
 <h3 id="building-your-library-with-webpack">Building Your Library with Webpack</h3>

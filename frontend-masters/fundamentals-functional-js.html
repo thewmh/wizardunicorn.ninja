@@ -98,6 +98,7 @@
 <h3 id="property-access">Property Access</h3>
 
 <p>Assignments with Dots</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">person</span> <span class="o">=</span> <span class="p">{};</span> <span class="c1">// declare a person object</span>
 
 <span class="nx">person</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Mrs. White</span><span class="dl">"</span><span class="p">;</span> <span class="c1">// assign a vaule to a property</span>
@@ -105,11 +106,13 @@
 <span class="kd">var</span> <span class="nx">person</span> <span class="o">=</span> <span class="p">{</span> <span class="c1">// object literal notation</span>
     <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">Mrs. White</span><span class="dl">"</span> <span class="c1">// the quotation marks are not needed for a one-word property declaration, JavaScript will assume it is a string</span>
 <span class="p">};</span></code></pre></figure>
+
 <p>Anything that ever uses a dot in JavaScript is an object.</p>
 
 <p>A primitive value is a string, number, boolean, null, or undefined. A non-primitive valye is an object, array, function, promise. Primitive values get passed by value, non-primitive values get passed by reference. If you are passing primitive values, a copy is made, non-primitive values are passed as a reference. This behavior can produce unpredictable results if you are not careful. For example, if you were to assign <code class="language-plaintext highlighter-rouge">person.name</code> to a variable i.e. <code class="language-plaintext highlighter-rouge">who</code>, then reassign <code class="language-plaintext highlighter-rouge">person.name</code>, who would retain the original reference for <code class="language-plaintext highlighter-rouge">person.name</code>.</p>
 
 <h3 id="arrays">Arrays</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">person</span> <span class="o">=</span> <span class="p">[];</span> <span class="c1">// declare a person array</span>
 
 <span class="nx">person</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Mrs. White</span><span class="dl">"</span><span class="p">;</span> <span class="c1">// assign a vaule to a property</span>
@@ -117,25 +120,32 @@
 <span class="kd">var</span> <span class="nx">who</span> <span class="o">=</span> <span class="nx">person</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
 
 <span class="nx">who</span><span class="p">;</span> <span class="c1">//??</span></code></pre></figure>
+
 <p>Arrays are objects, and because of that, the rules are exactly the same. The major difference between an array and an object are the available methods for either, an example of which is <code class="language-plaintext highlighter-rouge">.length</code> being an available method for arrays, but not objects. If you check the <code class="language-plaintext highlighter-rouge">typeof</code> for the <code class="language-plaintext highlighter-rouge">person</code> variable in the code block above, the console should return <code class="language-plaintext highlighter-rouge">object</code>.</p>
 
 <h3 id="bracket-notation">Bracket Notation</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">person</span> <span class="o">=</span> <span class="p">[];</span> <span class="c1">// declare a person array</span>
 <span class="kd">var</span> <span class="nx">plea</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">wouldShe</span><span class="dl">"</span>
 
 <span class="nx">person</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Mrs. White</span><span class="dl">"</span><span class="p">;</span> <span class="c1">// assign a vaule to a property</span>
 
 <span class="nx">person</span><span class="p">[</span><span class="nx">plea</span><span class="p">]</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">I would never!</span><span class="dl">"</span></code></pre></figure>
+
 <p>The <code class="language-plaintext highlighter-rouge">person[plea] = "I would never!"</code> will create a new property in the person object based on the original value of the plea variable <code class="language-plaintext highlighter-rouge">"wouldShe"</code>, which will make the person object look like this:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">person</span> <span class="o">=</span> <span class="p">{</span>
   <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Mrs. White</span><span class="dl">"</span>
   <span class="na">wouldShe</span><span class="p">:</span> <span class="dl">"</span><span class="s2">I would never!</span><span class="dl">"</span>
 <span class="p">}</span></code></pre></figure>
+
 <p>If the intention was to create a <code class="language-plaintext highlighter-rouge">plea</code> key for the person object, then you need to surround the <code class="language-plaintext highlighter-rouge">plea</code> with quotes. i.e. <code class="language-plaintext highlighter-rouge">person["plea"] = "I would never!"</code>. The person object would then look like this:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">person</span> <span class="o">=</span> <span class="p">{</span>
   <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Mrs. White</span><span class="dl">"</span>
   <span class="na">plea</span><span class="p">:</span> <span class="dl">"</span><span class="s2">I would never!</span><span class="dl">"</span>
 <span class="p">}</span></code></pre></figure>
+
 <p>Reviewing what we’ve learned about objects and arrays:</p>
 
 <ul>
@@ -174,12 +184,15 @@
 <p>Characters
 Weapons
 Rooms</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">clue</span> <span class="o">=</span> <span class="p">{</span>
   <span class="na">characters</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">Professor Plum</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Miss Scarlet</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Mrs. Peacock</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Mr. Boddy</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Mrs. White</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Colonel Mustard</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">The Singing Telegram Girl</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">The Motorist</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Mr. Green],
   weapons: [</span><span class="dl">'</span><span class="nx">candlestick</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="nx">dagger</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="nx">lead</span> <span class="nx">pipe</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="nx">revolver</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="nx">rope</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="nx">spanner</span><span class="dl">'</span><span class="s1">],
   rooms: [</span><span class="dl">'</span><span class="nx">dining</span> <span class="nx">room</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="nx">kitchen</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="nx">study</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="nx">billiard</span> <span class="nx">room</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="nx">sunroom</span><span class="dl">'</span><span class="s1">, </span><span class="dl">'</span><span class="nx">ballroom</span><span class="dl">'</span><span class="s1">]
 }</span></code></pre></figure>
+
 <h3 id="game-characters-solution">Game Characters Solution</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="p">{};</span> <span class="c1">// initialize an object literal</span>
 
 <span class="nx">game</span><span class="p">.</span><span class="nx">murderer</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">??</span><span class="dl">"</span><span class="p">;</span> <span class="c1">// initialize a property</span>
@@ -198,6 +211,7 @@ Rooms</p>
 
 <span class="nx">game</span><span class="p">.</span><span class="nx">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Miss Scarlet</span><span class="dl">'</span><span class="p">;</span>
 <span class="nx">game</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">Mr. Green</span><span class="dl">'</span><span class="p">)</span></code></pre></figure>
+
 <h3 id="object-review">Object Review</h3>
 
 <p>JavaScript Object Rules</p>
@@ -217,6 +231,7 @@ Rooms</p>
 <p>Destructuring is a simplified way of defining variables and taking them outside of an object or an array.</p>
 
 <p>i.e. Destructuring an Array</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// create a new array and declare it's values. could use let, var, etc…</span>
 
 <span class="kd">const</span> <span class="p">[</span><span class="nx">thing1</span><span class="p">,</span> <span class="nx">thing2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">];</span>
@@ -224,6 +239,7 @@ Rooms</p>
 <span class="c1">// reassigning values to existing array</span>
 
 <span class="p">[</span><span class="nx">thing1</span><span class="p">,</span> <span class="nx">thing2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">];</span></code></pre></figure>
+
 <p><code class="language-plaintext highlighter-rouge">const</code> and <code class="language-plaintext highlighter-rouge">let</code> are features of ES6</p>
 
 <p><code class="language-plaintext highlighter-rouge">const</code> is used when you want the value of the variable to remain constant</p>
@@ -233,6 +249,7 @@ Rooms</p>
 <p><code class="language-plaintext highlighter-rouge">let</code> is used when you want to restrict a variable to a certain scope</p>
 
 <p>i.e. Destructuring an Object</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// create a new object and declare it's values. could use let, var, etc…</span>
 
 <span class="kd">const</span> <span class="p">{</span><span class="nx">thing1</span><span class="p">,</span> <span class="nx">thing2</span><span class="p">}</span> <span class="o">=</span> <span class="p">{</span><span class="na">thing1</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">thing2</span><span class="p">:</span> <span class="kc">false</span><span class="p">};</span>
@@ -240,6 +257,7 @@ Rooms</p>
 <span class="c1">// reassigning values to existing object</span>
 
 <span class="p">{</span><span class="nx">thing1</span><span class="p">,</span> <span class="nx">thing2</span><span class="p">}</span> <span class="o">=</span> <span class="p">{</span><span class="na">thing1</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">thing2</span><span class="p">:</span> <span class="kc">false</span><span class="p">};</span></code></pre></figure>
+
 <p>Objects do not have an order, but the names do have to match. If you think or expect that an object needs an order, you should be using an array.</p>
 
 <h3 id="destructuring-challenge">Destructuring Challenge</h3>
@@ -257,6 +275,7 @@ Rooms</p>
 <h3 id="destructuring-examples">Destructuring Examples</h3>
 
 <p>On extracting data and working with nested data structures</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Destructuring === arrays</span>
 
 <span class="kd">var</span> <span class="p">[</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">];</span>
@@ -287,6 +306,7 @@ Rooms</p>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">a:</span><span class="dl">"</span><span class="p">,</span> <span class="nx">a</span><span class="p">,</span> <span class="dl">"</span><span class="s2">b:</span><span class="dl">"</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="dl">"</span><span class="s2">c:</span><span class="dl">"</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="dl">"</span><span class="s2">d:</span><span class="dl">"</span><span class="p">,</span> <span class="nx">d</span><span class="p">);</span>
 <span class="c1">// =&gt; a: 1 b: 2 c: [ [ 3, 4 ], 5 ] d: 6</span>
 <span class="c1">// ^ None of the 'Advance deep arrays' example above is useful</span></code></pre></figure>
+
 <p>There are many more notes in the course itself covering destructuring but the instructor does not cover them and suggests to look for a course on ES6</p>
 
 <h2 id="list-transformations">List Transformations</h2>
@@ -296,6 +316,7 @@ Rooms</p>
 <p>Nesting</p>
 
 <p>Nesting had been talked about earlier, below is an example.</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// nesting</span>
 
 <span class="kd">const</span> <span class="nx">game</span> <span class="o">=</span> <span class="p">{};</span>
@@ -325,6 +346,7 @@ Rooms</p>
         <span class="p">}</span>       
     <span class="p">]</span>
 <span class="p">}</span></code></pre></figure>
+
 <p>Considering the above, what would <code class="language-plaintext highlighter-rouge">game[suspects]</code> return?</p>
 
 <p>nothing… because the quote marks were missing around ‘suspects’. With the added quote marks, it would return an array with the suspect objects.</p>
@@ -336,13 +358,16 @@ Rooms</p>
 <h3 id="looping-solution">Looping Solution</h3>
 
 <p>Here is a solution by a participant of the in-person class</p>
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">foo</span><span class="p">()</span> <span class="p">{</span>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"> 
+<span class="kd">function</span> <span class="nx">foo</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">game</span><span class="p">.</span><span class="nx">suspects</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">suspects</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
 <span class="nx">foo</span><span class="p">()</span></code></pre></figure>
+
 <h3 id="looping-exercise-part-2">Looping Exercise, Part 2</h3>
 
 <p>Loop through all of the properties of the suspect objects in the suspects array, mark them if you think they are guilty.</p>
@@ -350,6 +375,7 @@ Rooms</p>
 <h3 id="looping-solution-part-2">Looping Solution, Part 2</h3>
 
 <p>Here is a solution by a participant of the in-person class</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gameLoop</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">game</span><span class="p">.</span><span class="nx">suspects</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">outer loop</span><span class="dl">'</span><span class="p">);</span>
@@ -376,6 +402,7 @@ Rooms</p>
 <span class="dl">'</span><span class="s1">next time!</span><span class="dl">'</span>
 <span class="dl">'</span><span class="s1">inner loop</span><span class="dl">'</span>
 <span class="dl">'</span><span class="s1">next time!</span><span class="dl">'</span></code></pre></figure>
+
 <h3 id="looping-exercise-part-3">Looping Exercise, Part 3</h3>
 
 <p>Destructure the nested data structure into two variables with the strings ‘red’ and ‘orange’</p>
@@ -383,17 +410,20 @@ Rooms</p>
 <h3 id="looping-solution-part-3">Looping Solution, Part 3</h3>
 
 <p>Here is a solution by a participant of the in-person class</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">firstColor</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">suspects</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">color</span><span class="p">;</span>
 <span class="kd">const</span> <span class="nx">secondColor</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">suspects</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">color</span><span class="p">;</span>
 
 <span class="kd">var</span> <span class="p">[</span><span class="nx">color</span><span class="p">,</span> <span class="nx">color2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nx">suspects</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">color</span><span class="p">,</span> <span class="nx">suspects</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">color</span><span class="p">];</span>
 
 <span class="kd">var</span> <span class="p">[{</span><span class="na">color</span><span class="p">:</span> <span class="nx">firstColor</span><span class="p">},</span> <span class="p">{</span><span class="na">color</span><span class="p">:</span> <span class="nx">secondColor</span><span class="p">}]</span> <span class="o">=</span> <span class="nx">suspects</span><span class="p">;</span> <span class="c1">// specifies a specific property of the targeted object and returns an array</span></code></pre></figure>
+
 <h2 id="foreach-function">.forEach() Function</h2>
 
 <h3 id="using-functions">Using Functions</h3>
 
 <p>This section covers list transformations with functions and shows how to convert data into a class</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">CreateSuspectObjects</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="na">name</span><span class="p">:</span> <span class="nx">name</span><span class="p">,</span>
@@ -407,18 +437,22 @@ Rooms</p>
 <span class="kd">var</span> <span class="nx">suspects</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">Miss Scarlet</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Colonel Mustard</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Mr. White</span><span class="dl">'</span><span class="p">,</span> <span class="p">....];</span>
 
 <span class="kd">var</span> <span class="nx">suspectsList</span> <span class="o">=</span> <span class="p">[];</span></code></pre></figure>
+
 <p>In JavaScript classes are just functions that return objects.</p>
 
 <p>Using the above code, how would you create a suspect object from each suspect in the suspects array?</p>
 
 <p>One way would be to loop through the list like this:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">suspects</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">let</span> <span class="nx">suspect</span> <span class="o">=</span> <span class="nx">CreateSuspectObjects</span><span class="p">(</span><span class="nx">suspects</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
     <span class="nx">suspectsList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">suspect</span><span class="p">);</span> <span class="o">||</span> <span class="nx">suspectsList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">CreateSuspectObjects</span><span class="p">(</span><span class="nx">suspects</span><span class="p">[</span><span class="nx">i</span><span class="p">]));</span>
 <span class="p">}</span></code></pre></figure>
+
 <h3 id="foreach-function-1">forEach Function</h3>
 
 <p>_.each takes 2 arguments, the first thing is a list and the second thing is a callback function, also known as an iterator function because it is used on things that can be looped through (arrays). Using _.each, the callback function will be called on each item in the first argument; the list. i.e.</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">CreateSuspectObjects</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="na">name</span><span class="p">:</span> <span class="nx">name</span><span class="p">,</span>
@@ -437,6 +471,7 @@ Rooms</p>
     <span class="kd">let</span> <span class="nx">suspectObj</span> <span class="o">=</span> <span class="nx">CreateSuspectObjects</span><span class="p">(</span><span class="nx">name</span><span class="p">);</span>
     <span class="nx">suspectsList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">suspectObj</span><span class="p">);</span> <span class="o">||</span> <span class="nx">suspectsList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">CreateSuspectObjects</span><span class="p">(</span><span class="nx">name</span><span class="p">))</span>
 <span class="p">}</span></code></pre></figure>
+
 <p>_.each / forEach defined</p>
 
 <ul>
@@ -453,12 +488,14 @@ Rooms</p>
 <p>The difference between _.each and .forEach is: .forEach is a method on the array itself, _.each takes in the array as an argument</p>
 
 <p>What would the following log?</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">rooms</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">observatory</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">ballroom</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">library</span><span class="dl">'</span><span class="p">];</span>
 <span class="kd">var</span> <span class="nx">logger</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
 <span class="p">};</span>
 
 <span class="nx">_</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">rooms</span><span class="p">,</span> <span class="nx">logger</span><span class="p">);</span></code></pre></figure>
+
 <p><code class="language-plaintext highlighter-rouge">observatory
 ballroom
 library</code></p>
@@ -466,6 +503,7 @@ library</code></p>
 <h3 id="foreach-and-_each-exercises">forEach and _.each Exercises</h3>
 
 <p>Complete the rest of this function so that it works as described in the previous sections:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">_</span><span class="p">.</span><span class="nx">each</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">//... TODO</span>
 <span class="p">}</span></code></pre></figure>
@@ -475,7 +513,9 @@ library</code></p>
         <span class="nx">callback</span><span class="p">(</span><span class="nx">list</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
     <span class="p">}</span>
 <span class="p">}</span></code></pre></figure>
+
 <h3 id="foreach-and-_each-solution">forEach and _.each Solution</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">_</span> <span class="o">=</span> <span class="p">{};</span>
 
 <span class="nx">_</span><span class="p">.</span><span class="nx">each</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
@@ -493,6 +533,7 @@ library</code></p>
     <span class="p">}</span>
         <span class="c1">// call the callback with a list item</span>
 <span class="p">}</span></code></pre></figure>
+
 <h2 id="map-function">.map() Function</h2>
 
 <h3 id="_map-vs-map-functions">_.map() vs .map() Functions</h3>
@@ -511,14 +552,17 @@ library</code></p>
 <p>map is used to take lists and transform them into a new array - manipulate, change, update</p>
 
 <h3 id="_map-exercise">_.map() Exercise</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">weapons</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">candlestick</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">lead pipe</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">revolver</span><span class="dl">'</span><span class="p">];</span>
 
 <span class="kd">const</span> <span class="nx">makeBroken</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="s2">`broken </span><span class="p">${</span><span class="nx">item</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 <span class="p">};</span></code></pre></figure>
+
 <p>Unrelated Note: If you want to quickly test out a function in a library, you can usually visit the library’s site and open the console. i.e. visit underscorejs.org, open the console and type <code class="language-plaintext highlighter-rouge">_.map()</code></p>
 
 <h3 id="_map-solution">_.map() Solution</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">weapons</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">candlestick</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">lead pipe</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">revolver</span><span class="dl">'</span><span class="p">];</span>
 
 <span class="kd">const</span> <span class="nx">makeBroken</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
@@ -526,6 +570,7 @@ library</code></p>
 <span class="p">};</span>
 
 <span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">weapons</span><span class="p">,</span> <span class="nx">makeBroken</span><span class="p">)</span></code></pre></figure>
+
 <h3 id="_map-vs-_each">_.map() vs _.each()</h3>
 
 <p>No notes. Was merely a comparison of underscore.js _.map and _.each. Refer to above notes for comparison.</p>
@@ -535,6 +580,7 @@ library</code></p>
 <p>Map returns an array</p>
 
 <p>Like each, map iterates through a list</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">_</span><span class="p">.</span><span class="nx">map</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
 
     <span class="kd">var</span> <span class="nx">newArray</span> <span class="o">=</span> <span class="p">[];</span>
@@ -549,7 +595,9 @@ library</code></p>
 
     <span class="p">}</span>
 <span class="p">}</span></code></pre></figure>
+
 <h3 id="_map-solution-part-2">_.map() Solution, Part 2</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">_</span><span class="p">.</span><span class="nx">map</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// create an empty array to store</span>
     <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[];</span>
@@ -569,6 +617,7 @@ library</code></p>
     <span class="c1">//return []</span>
     <span class="k">return</span> <span class="nx">a</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
+
 <p>Pro tip: Seek to understand the internals of the code you are implementing. Don’t rely on; change, save, check, change, save, check. Understand and clearly model what you are doing. It may (seem to) take more time up-front, but the payoff is greater in the long-run. If your code is getting too difficult to hold in your mind, that could be a sign that your code is too complex and may be an opportune time to revisit and simplify your code.</p>
 
 <h2 id="filter-function">.filter() Function</h2>
@@ -580,6 +629,7 @@ library</code></p>
 <p>The exercise was not detailed. So it is in the solution</p>
 
 <h3 id="filter-solution">.filter() Solution</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">_</span> <span class="o">=</span> <span class="p">{}</span>
 
 <span class="nx">_</span><span class="p">.</span><span class="nx">filter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">array</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
@@ -596,9 +646,11 @@ library</code></p>
     <span class="c1">// return new array</span>
     <span class="k">return</span> <span class="nx">a</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
+
 <h3 id="filter-application-exercise">.filter() Application Exercise</h3>
 
 <p>Using the below object <code class="language-plaintext highlighter-rouge">videoData</code> and _.filter, return an array of objects containing only the people that were present</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">videoData</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
         <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Miss Scarlet</span><span class="dl">'</span><span class="p">,</span>
@@ -673,10 +725,13 @@ library</code></p>
         <span class="p">]</span>
     <span class="p">}</span>
 <span class="p">];</span></code></pre></figure>
+
 <h3 id="filter-application-solution">.filter() Application Solution</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">_</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">videoData</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">suspectObject</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">suspectObject</span><span class="p">.</span><span class="nx">present</span><span class="p">;</span>
 <span class="p">})</span></code></pre></figure>
+
 <h2 id="functions-in-depth">Functions In-Depth</h2>
 
 <h3 id="anatomy-of-a-function">Anatomy of a Function</h3>
@@ -684,6 +739,7 @@ library</code></p>
 <p>How exactly does our code execute.</p>
 
 <p><a href="http://slides.com/bgando/f2f-final-day-1#/7/1">Check out the anatomy of a function</a></p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">add</span> <span class="c1">// function name</span>
 <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="c1">// parameters</span>
 <span class="p">{</span> <span class="c1">// function body</span>
@@ -691,6 +747,7 @@ library</code></p>
 <span class="p">}</span> <span class="c1">// function body</span>
 
 <span class="nx">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span> <span class="c1">// invocation / call-time (3, 4, 5) are the arguments</span></code></pre></figure>
+
 <p>A function definition does not invoke the function, the invocation happens after the function has been declared, usually by functionName(arguments).</p>
 
 <p>Parameters of a function hold no value, their value is determined by the arguments passed at call-time.</p>
@@ -743,6 +800,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <p>Filter and then map <a href="http://jsbin.com/duvafoc/edit">this data structure</a> to get the names of the final suspects to send back to the “team”</p>
 
 <h3 id="projecting-solution">Projecting Solution</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// store the return value from the filter function</span>
 
 <span class="kd">const</span> <span class="nx">suspects</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">videoData</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">suspectObject</span><span class="p">)</span> <span class="p">{</span>
@@ -752,22 +810,27 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <span class="kd">const</span> <span class="nx">suspectsName</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">suspects</span><span class="p">,</span> <span class="nx">suspect</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">suspect</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
 <span class="p">})</span></code></pre></figure>
+
 <h3 id="spread-operator">Spread Operator</h3>
 
 <p>Quick Review; what will this return?</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">createTuple</span> <span class="o">=</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">d</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">[[</span><span class="nx">a</span><span class="p">,</span> <span class="nx">c</span><span class="p">],</span> <span class="p">[</span><span class="nx">b</span><span class="p">,</span> <span class="nx">d</span><span class="p">]];</span>
 <span class="p">}</span>
 
 <span class="nx">createTuple</span><span class="p">(</span><span class="dl">'</span><span class="s1">It</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">be</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">could</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">anyone</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">no one</span><span class="dl">'</span><span class="p">);</span></code></pre></figure>
+
 <p><code class="language-plaintext highlighter-rouge">[['It', 'could'], ['be', 'anyone']]</code></p>
 
 <p>With the addition of the […] spread operator, what will this return?</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">createTuple</span> <span class="o">=</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="p">...</span><span class="nx">d</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">[[</span><span class="nx">a</span><span class="p">,</span> <span class="nx">c</span><span class="p">],</span> <span class="p">[</span><span class="nx">b</span><span class="p">,</span> <span class="nx">d</span><span class="p">]];</span>
 <span class="p">}</span>
 
 <span class="nx">createTuple</span><span class="p">(</span><span class="dl">'</span><span class="s1">It</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">be</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">could</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">anyone</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">no one</span><span class="dl">'</span><span class="p">);</span></code></pre></figure>
+
 <p><code class="language-plaintext highlighter-rouge">[['It', 'could'], ['be', ['anyone', 'no one']]]</code></p>
 
 <p>Since <code class="language-plaintext highlighter-rouge">createTuple</code> only takes 4 arguments (a, b, c, d), ‘no one’ gets left out. But with the spread operator, the remaining values will be places into an array with the final value.</p>
@@ -777,35 +840,42 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <p>The arguments keyword references all of the arguments as a pseudo-array. A pseudo-array is an object that looks like an array, but it is actually an object. This means that we do not have access to any array methods (push, pop, slice, etc).</p>
 
 <p>The arguments keyword is useful when a variable has been passed in, but it was not accounted for with a parameter.</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">createTuple</span> <span class="o">=</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">d</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arguments</span><span class="p">);</span>
     <span class="k">return</span> <span class="p">[[</span><span class="nx">a</span><span class="p">,</span> <span class="nx">c</span><span class="p">],</span> <span class="p">[</span><span class="nx">b</span><span class="p">,</span> <span class="nx">d</span><span class="p">]];</span>
 <span class="p">}</span>
 
 <span class="nx">createTuple</span><span class="p">(</span><span class="dl">'</span><span class="s1">It</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">be</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">could</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">anyone</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">no one</span><span class="dl">'</span><span class="p">);</span></code></pre></figure>
+
 <p>The above would log: <code class="language-plaintext highlighter-rouge">'[It', 'be', 'could', 'anyone', 'no one']</code></p>
 
 <h3 id="default-parameters">Default Parameters</h3>
 
 <p>A default parameter is the value that your parameter defaults to when it is not passed an argument.</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">add</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arguments</span><span class="p">);</span> <span class="c1">// logs [3]</span>
     <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="nx">add</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span> <span class="c1">// logs [5]</span></code></pre></figure>
+
 <p>The default value of <code class="language-plaintext highlighter-rouge">b</code> is 2, so if an argument is not passed, it will default to that value.</p>
 
 <h3 id="es5-rewrite-exercise">ES5 Rewrite Exercise</h3>
 
 <p>Using ES5, how would you set a default parameter for:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">add</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arguments</span><span class="p">);</span> <span class="c1">// logs [3]</span>
     <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="nx">add</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span> <span class="c1">// logs [5]</span></code></pre></figure>
+
 <p>Solution:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">add</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">b</span> <span class="o">=</span> <span class="nx">b</span> <span class="o">||</span> <span class="mi">2</span><span class="p">;</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arguments</span><span class="p">);</span> <span class="c1">// logs [3]</span>
@@ -813,11 +883,13 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <span class="p">}</span>
 
 <span class="nx">add</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span> <span class="c1">// logs [5]</span></code></pre></figure>
+
 <h3 id="es5-rewrite-solution">ES5 Rewrite Solution</h3>
 
 <p>The above exercise has the solution.</p>
 
 <h3 id="array-like-object">Array-Like Object</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">constructArr</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// create function definition</span>
     <span class="kd">const</span> <span class="nx">arr</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">);</span> <span class="c1">// declare a new variable, assign it to the values that were passed in. An array-like object (arguments) will be turned into an actual array ['was', 'it', 'in']</span>
     <span class="nx">arr</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">the billiards room?</span><span class="dl">'</span><span class="p">);</span> <span class="c1">// push the string onto the array ['was', 'it', 'in', 'the billiards room?']</span>
@@ -825,6 +897,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <span class="p">};</span>
 
 <span class="nx">constructArr</span><span class="p">(</span><span class="dl">'</span><span class="s1">was</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">it</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">in</span><span class="dl">'</span><span class="p">);</span> <span class="c1">// call the function</span></code></pre></figure>
+
 <h3 id="arrayfrom">Array.from</h3>
 
 <p>Array.from can turn the arguments pseudo-array into an actual array… replaces <code class="language-plaintext highlighter-rouge">Array.prototype.slice.call</code>. It has many more features <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from">described here</a></p>
@@ -832,17 +905,21 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <h3 id="_from-exercise">_.from() Exercise</h3>
 
 <p>Implement _.from() to mimick Array.prototype.slice.call in a function</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">_</span> <span class="o">=</span> <span class="p">{};</span>
 
 <span class="nx">_</span><span class="p">.</span><span class="k">from</span>  <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">)</span>
 <span class="p">}</span></code></pre></figure>
+
 <h3 id="_from-solution">_.from() Solution</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">_</span> <span class="o">=</span> <span class="p">{};</span>
 
 <span class="nx">_</span><span class="p">.</span><span class="k">from</span>  <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">)</span>
 <span class="p">}</span></code></pre></figure>
+
 <h2 id="scope">Scope</h2>
 
 <h3 id="scope-walkthrough-setup">Scope Walkthrough Setup</h3>
@@ -858,6 +935,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <h3 id="scope-walkthrough-part-2">Scope Walkthrough, Part 2</h3>
 
 <p>Variables declared within a function are scoped to that function. If you declare a variable and then redeclare that variable within a function, the value of that variable will be as it has been set inside of the function.</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">ACTUAL</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">sameName</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">outer</span><span class="dl">'</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">fn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
@@ -867,6 +945,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <span class="nx">fn</span><span class="p">();</span>
 
 <span class="c1">// ACTUAL = 'inner'</span></code></pre></figure>
+
 <p>Whenever you call a function, you create a brand new function scope (execution context) each time.</p>
 
 <h3 id="scope-walkthrough-part-3">Scope Walkthrough, Part 3</h3>
@@ -890,6 +969,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <p>A Higher-Order Function can take a function as an input i.e. <code class="language-plaintext highlighter-rouge">addEventListener</code>.</p>
 
 <p>Callbacks are functions that are passed to functions.</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">ifElse</span> <span class="o">=</span> <span class="p">(</span><span class="nx">condition</span><span class="p">,</span> <span class="nx">isTrue</span><span class="p">,</span> <span class="nx">isFalse</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">condition</span> <span class="p">?</span> <span class="nx">isTrue</span><span class="p">()</span> <span class="p">:</span> <span class="nx">isFalse</span><span class="p">();</span>
 <span class="p">};</span>
@@ -898,9 +978,11 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="kc">true</span><span class="p">);},</span>
 <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="kc">false</span><span class="p">);}</span>
 <span class="p">);</span></code></pre></figure>
+
 <p>The above is a very basic example of a callback function. ifElse is being passed: true and 2 anonymous functions. The <code class="language-plaintext highlighter-rouge">condition</code> is true, so the <code class="language-plaintext highlighter-rouge">true</code> will be printed in the console.</p>
 
 <h3 id="passing-arguments">Passing Arguments</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">increment</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">){</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
 
 <span class="kd">var</span> <span class="nx">square</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">){</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">*</span> <span class="nx">n</span><span class="p">;</span> <span class="p">};</span>
@@ -910,7 +992,9 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <span class="nx">doMathSoIDontHaveTo</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="nx">square</span><span class="p">);</span> <span class="c1">// 25</span>
 
 <span class="nx">doMathSoIDontHaveTo</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="nx">increment</span><span class="p">);</span> <span class="c1">// 5</span></code></pre></figure>
+
 <h3 id="translate-into-es6-exercise">Translate into ES6 Exercise</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">increment</span> <span class="o">=</span> <span class="nx">n</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
 
 <span class="kd">var</span> <span class="nx">square</span> <span class="o">=</span> <span class="nx">n</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">*</span> <span class="nx">n</span><span class="p">;</span> <span class="p">};</span>
@@ -920,6 +1004,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <span class="nx">doMathSoIDontHaveTo</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="nx">square</span><span class="p">);</span> <span class="c1">// 25</span>
 
 <span class="nx">doMathSoIDontHaveTo</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="nx">increment</span><span class="p">);</span> <span class="c1">// 5</span></code></pre></figure>
+
 <h3 id="translate-into-es6-solution">Translate into ES6 Solution</h3>
 
 <p>See above solution</p>
@@ -931,6 +1016,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <h3 id="_reduce-exercise">_.reduce() Exercise</h3>
 
 <p>Implement _.reduce()</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">_</span> <span class="o">=</span> <span class="p">{};</span>
 
 <span class="kd">const</span> <span class="nx">_</span><span class="p">.</span><span class="nx">reduce</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="nx">callback</span><span class="p">,</span> <span class="nx">initial</span><span class="p">)</span> <span class="p">{</span>
@@ -946,6 +1032,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <span class="p">}</span>
 
 <span class="nx">_</span><span class="p">.</span><span class="nx">reduce</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">(</span><span class="nx">v</span><span class="p">,</span> <span class="nx">sum</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">v</span> <span class="o">+</span> <span class="nx">sum</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></code></pre></figure>
+
 <h3 id="_reduce-solution">_.reduce() Solution</h3>
 
 <p>The above exercise has the solution.</p>
@@ -953,6 +1040,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <h3 id="empty-room-exercise">Empty Room Exercise</h3>
 
 <p><a href="http://jsbin.com/pazixim/edit?js">Link to dataset for this exercise</a></p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">newDevelopment</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
         <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Miss Scarlet</span><span class="dl">'</span><span class="p">,</span>
@@ -1003,7 +1091,9 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
         <span class="p">]</span>
     <span class="p">}</span>
 <span class="p">];</span></code></pre></figure>
+
 <h3 id="empty-room-solution">Empty Room Solution</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">notInRoom</span> <span class="o">=</span> <span class="nx">suspect</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// return an array of all of the false values</span>
 
@@ -1018,6 +1108,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <span class="kd">const</span> <span class="nx">notInRooms</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">newDevelopment</span><span class="p">,</span> <span class="nx">notInRoom</span><span class="p">);</span>
 
 <span class="nx">_</span><span class="p">.</span><span class="nx">intersection</span><span class="p">(...</span><span class="nx">notInRooms</span><span class="p">)</span></code></pre></figure>
+
 <h2 id="functional-utilities">Functional Utilities</h2>
 
 <h3 id="currying">Currying</h3>
@@ -1025,6 +1116,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <p>Currying is when you create a function that can then later be called multiple times with different arguments.</p>
 
 <p>For example:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">abc</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">[</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span><span class="p">];</span>
 <span class="p">};</span>
@@ -1036,6 +1128,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 
 <span class="nx">curried</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)(</span><span class="mi">3</span><span class="p">);</span>
 <span class="c1">// =&gt; [1, 2, 3]</span></code></pre></figure>
+
 <p>Currying allows you to break up arguments passed by the number of arguments.</p>
 
 <h3 id="composing">Composing</h3>
@@ -1043,6 +1136,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <p>Composing is when you take two functions and combine them.</p>
 
 <p>For example:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">consider</span> <span class="o">=</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="s2">`I think it could be... </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 <span class="p">};</span>
@@ -1056,11 +1150,13 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <span class="nx">blame</span><span class="p">(</span><span class="dl">'</span><span class="s1">you);
 
 // =&gt; </span><span class="dl">'</span><span class="nx">I</span> <span class="nx">think</span> <span class="nx">it</span> <span class="nx">could</span> <span class="nx">be</span><span class="p">...</span> <span class="nx">YOU</span><span class="o">!</span><span class="dl">'</span></code></pre></figure>
+
 <p><a href="https://underscorejs.org/#compose">_.compose documentation</a></p>
 
 <h2 id="advanced-scope-closure">Advanced Scope: Closure</h2>
 
 <h3 id="closure">Closure</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">myAlert</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="c1">// declare a function</span>
     <span class="kd">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Help! I think I found a clue!</span><span class="dl">'</span><span class="p">;</span> <span class="c1">// save a string to the constant x</span>
     <span class="kd">const</span> <span class="nx">alerter</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="c1">// declare another function</span>
@@ -1070,7 +1166,9 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <span class="p">};</span>
 
 <span class="nx">myAlert</span><span class="p">();</span> <span class="c1">// invoke the function</span></code></pre></figure>
+
 <h3 id="closure-part-2">Closure, Part 2</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">myAlert</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kd">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Help! I think I found a clue!</span><span class="dl">'</span><span class="p">;</span>
     <span class="kd">const</span> <span class="nx">alerter</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -1082,7 +1180,9 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <span class="p">};</span>
 
 <span class="nx">myAlert</span><span class="p">();</span> <span class="c1">// invoke the function</span></code></pre></figure>
+
 <h3 id="creating-closure">Creating Closure</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">myAlert</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kd">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Help! I think I found a clue!</span><span class="dl">'</span><span class="p">;</span>
     <span class="kd">let</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -1096,9 +1196,11 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <span class="kd">const</span> <span class="nx">funcAlert</span> <span class="o">=</span> <span class="nx">myAlert</span><span class="p">();</span> <span class="c1">// creates a new execution context of the myAlert function</span>
 <span class="kd">const</span> <span class="nx">funcAlert2</span> <span class="o">=</span> <span class="nx">myAlert</span><span class="p">();</span> <span class="c1">// creates a new execution context of the myAlert function</span>
 <span class="nx">funcAlert</span><span class="p">();</span> <span class="c1">// since myAlert ultimately returns the alerter function, this will run the alerter function again from within the new execution context that has been created by funcAlert</span></code></pre></figure>
+
 <p>If you continue to call <code class="language-plaintext highlighter-rouge">funcAlert();</code>, the <code class="language-plaintext highlighter-rouge">count</code> value would continue to increase by 1 each time the function is called and it would be independent of the execution contect of <code class="language-plaintext highlighter-rouge">funcAlert2();</code>; which would still be at 0 until called.</p>
 
 <h3 id="closure-demonstration">Closure Demonstration</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">newClue</span> <span class="o">=</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kd">const</span> <span class="nx">length</span> <span class="o">=</span> <span class="nx">name</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
 
@@ -1115,6 +1217,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
         <span class="na">reset</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="p">}</span>
     <span class="p">};</span>
 <span class="p">};</span></code></pre></figure>
+
 <p>With the above function, you can create separate execution contexts by declaring variables that are equal to the function <code class="language-plaintext highlighter-rouge">countClues()</code>; i.e. <code class="language-plaintext highlighter-rouge">counter = countClues(); counter2 = countClues;</code></p>
 
 <h3 id="closure-recipe">Closure Recipe</h3>
@@ -1156,6 +1259,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
     <p>What happened?</p>
   </li>
 </ol>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">findSomeone</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
     <span class="kd">const</span> <span class="nx">speak</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -1181,7 +1285,9 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <span class="p">};</span>
 
 <span class="kd">let</span> <span class="nx">timer</span> <span class="o">=</span> <span class="nx">makeTimer</span><span class="p">();</span></code></pre></figure>
+
 <p>Same as above, but with console.log(s)</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">makeTimer</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">initialized);
     let elapsed = 0;
@@ -1198,6 +1304,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <span class="p">};</span>
 
 <span class="kd">const</span> <span class="nx">timer</span> <span class="o">=</span> <span class="nx">makeTimer</span><span class="p">();</span></code></pre></figure>
+
 <h3 id="currying-and-componsing-exercises">Currying and Componsing Exercises</h3>
 
 <p>Skips right to solutions…</p>
@@ -1205,6 +1312,7 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
 <h3 id="currying-and-componsing-solutions">Currying and Componsing Solutions</h3>
 
 <p>Currying</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">curry</span> <span class="o">=</span> <span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">(</span><span class="nx">arg</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="k">return</span> <span class="p">(</span><span class="nx">arg2</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -1212,13 +1320,16 @@ Arguments; ‘body’, ‘button’, ‘click’, function()…</p>
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span></code></pre></figure>
+
 <p>Composing</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">compose</span> <span class="o">=</span> <span class="p">(</span><span class="nx">fn</span><span class="p">,</span> <span class="nx">fn2</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">(</span><span class="nx">arg</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">fn2</span><span class="p">(</span><span class="nx">arg</span><span class="p">);</span>
         <span class="k">return</span> <span class="nx">fn</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
     <span class="p">};</span>
 <span class="p">};</span></code></pre></figure>
+
 <h2 id="wrapping-up-javascript-from-fundamentals-to-functional-js">Wrapping Up “JavaScript: From Fundamentals to Functional JS”</h2>
 
 <h3 id="wrapping-up">Wrapping Up</h3>

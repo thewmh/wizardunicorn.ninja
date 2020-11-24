@@ -713,6 +713,7 @@ Type the command:
     <p>It can add inherited data. However, by default, we inherit the addRoute function, which adds an app route data definition. Therefore, the addRoute function does not need to be called out explicitly.</p>
   </li>
 </ul>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="p">{</span> <span class="nx">CommonFieldTypes</span><span class="p">,</span> <span class="nx">Manifest</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@sitecore-jss/sitecore-jss-manifest”;
 
 export default function (manifest) {
@@ -730,6 +731,7 @@ export default function (manifest) {
     ]
   });
 }</span></code></pre></figure>
+
 <ol>
   <li>Add a Template Property</li>
 </ol>
@@ -739,6 +741,7 @@ export default function (manifest) {
 <p>Use the example code below, which matches the route name, to tell JSS that a page should use the custom route.</p>
 
 <p><strong>Tip:</strong> If you are pulling route data from files, you may want to apply this dynamically, especially if all your routes utilize the same type.</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">{</span>
     <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">route</span><span class="dl">"</span><span class="p">,</span>
     <span class="dl">"</span><span class="s2">template</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">MyRoute</span><span class="dl">"</span><span class="p">,</span>
@@ -747,6 +750,7 @@ export default function (manifest) {
         <span class="c1">// ...</span>
     <span class="p">}</span>
 <span class="p">}</span></code></pre></figure>
+
 <h3 id="inspect-jss-app-templates">Inspect JSS App Templates</h3>
 
 <p>Now that you have some experience using directories and creating routes, you are ready to inspect how to use an application template for your preferred framework (Angular, React, or Vue).</p>
@@ -817,6 +821,7 @@ export default function (manifest) {
 <p><strong>2. View Output Data</strong></p>
 
 <p>Next, you will look at an example of a JSON file’s output data to see how content items might be represented.</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">{</span>
     <span class="dl">"</span><span class="s2">context</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
         <span class="dl">"</span><span class="s2">pageEditing</span><span class="dl">"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
@@ -833,6 +838,7 @@ export default function (manifest) {
         <span class="p">},</span>
     <span class="p">}</span>
 <span class="p">}</span></code></pre></figure>
+
 <p>The above includes context data that is common for each of the following:</p>
 
 <ul>
@@ -848,6 +854,7 @@ export default function (manifest) {
 </ul>
 
 <p>Here’s another section of a JSON file’s output data:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="dl">"</span><span class="s2">placeholders</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">{</span>
         <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Main</span><span class="dl">"</span><span class="p">,</span>
@@ -875,6 +882,7 @@ export default function (manifest) {
         <span class="p">]</span>
     <span class="p">}</span>
 <span class="p">]</span></code></pre></figure>
+
 <p>The above rendering takes place inside the <strong>elements</strong> property. Rendering includes:</p>
 
 <ul>

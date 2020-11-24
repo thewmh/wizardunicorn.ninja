@@ -72,6 +72,7 @@
 <p><a href="https://static.frontendmasters.com/resources/2019-03-07-deep-javascript-v2/deep-js-foundations-v2-exercises.zip">Link to the course’s code exercises</a></p>
 
 <p>The instructor talks about the depth that this course gets into. But why dive deep into JavaScript? Consider the following code:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">40</span><span class="p">;</span>
 
 <span class="nx">x</span><span class="o">++</span><span class="p">;</span> <span class="c1">// 40 - placing the plus symbols after the variable will give you the current value of the variable and then increment</span>
@@ -79,6 +80,7 @@
 
 <span class="o">++</span><span class="nx">x</span><span class="p">;</span> <span class="c1">// 42 - placing the plus symbols before the variable will increment the value and then return the result</span>
 <span class="nx">x</span><span class="p">;</span> <span class="c1">// 42 - this will log the current value of the variable</span></code></pre></figure>
+
 <p>We as developers tend to assume mental models about code and when something goes wrong instead of having a better understanding about the code. The unintuitive-ness of JavaScript does not mean that it was poorly defined. <strong>Read the spec docs!</strong></p>
 
 <h3 id="understanding-your-code">Understanding Your Code</h3>
@@ -101,6 +103,7 @@
 <p>The purpose of this course is to help you understand the DNA of JavaScript to better understand when you are doing as a developer.</p>
 
 <p>To translate the above <strong>++</strong> spec into a function, it may look something like this:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">plusPlus</span><span class="p">(</span><span class="nx">orig_val</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">orig_val_coerced</span> <span class="o">=</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">orig_val</span><span class="p">);</span>
     <span class="nx">x</span> <span class="o">=</span> <span class="nx">orig_val_coerced</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
@@ -110,6 +113,7 @@
 <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">5</span><span class="dl">"</span><span class="p">;</span>
 <span class="nx">plusPlus</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span> <span class="c1">// 5</span>
 <span class="nx">x</span><span class="p">;</span> <span class="c1">// 6</span></code></pre></figure>
+
 <p>Whenever there is a divergence between what your brain thinks is happening and what the computer does, that’s where bugs enter the code.</p>
 
 <h3 id="course-overview">Course Overview</h3>
@@ -229,9 +233,11 @@
 <p>When we assign a value to a variable, we can use the <code class="language-plaintext highlighter-rouge">typeof</code> operator to determine the type of the value stored in the variable. <code class="language-plaintext highlighter-rouge">undefined</code> is the default value assigned to a variable when a value is not assigned. <code class="language-plaintext highlighter-rouge">undefined</code> does not mean no value, but a value of <code class="language-plaintext highlighter-rouge">undefined</code>. <code class="language-plaintext highlighter-rouge">typeof</code> when applied to a variable storing a function will return ‘function’, which is not a primitive type.</p>
 
 <h3 id="bigint">BigInt</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">v</span> <span class="o">=</span> <span class="mi">42</span><span class="nx">n</span><span class="p">;</span>
 
 <span class="k">typeof</span> <span class="nx">v</span><span class="p">;</span> <span class="c1">// "bigint"</span></code></pre></figure>
+
 <p>Coming soon functionality, does not behave like a standard number primitive type. It will be important to know the difference between a ‘number’ and a ‘bigint’.</p>
 
 <h3 id="kinds-of-emptiness">Kinds of Emptiness</h3>
@@ -280,12 +286,15 @@
 </blockquote>
 
 <p>To define a polyfill, it looks like this:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">Object</span><span class="p">.</span><span class="nx">is</span><span class="p">)</span> <span class="p">{</span>
     <span class="nb">Object</span><span class="p">.</span><span class="nx">is</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">ObjectIs</span><span class="p">(..)</span> <span class="p">{..};</span>
 <span class="p">}</span></code></pre></figure>
+
 <p>In the (Code Exercises)[https://static.frontendmasters.com/resources/2019-03-07-deep-javascript-v2/deep-js-foundations-v2-exercises.zip], the file <code class="language-plaintext highlighter-rouge">types-exercises &gt; object-is &gt; ex.js</code> you will find the file that has all of the <code class="language-plaintext highlighter-rouge">Object.is(..)</code> tests.</p>
 
 <h3 id="type-check-exercise-solution">Type Check Exercise Solution</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">Object</span><span class="p">.</span><span class="nx">is</span> <span class="o">||</span> <span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
     <span class="nb">Object</span><span class="p">.</span><span class="nx">is</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">ObjectIs</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">xNegZero</span> <span class="o">=</span> <span class="nx">isItNegZero</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
@@ -308,6 +317,7 @@
         <span class="p">}</span>
     <span class="p">};</span>
 <span class="p">}</span></code></pre></figure>
+
 <h3 id="fundamental-objects">Fundamental Objects</h3>
 
 <p>In addition to Primitive Values are Fundamental Objects. AKA Built-In Objects or Native Functions. Under the following circumstances, it is recommended to use the <code class="language-plaintext highlighter-rouge">new</code> keyword:</p>
@@ -406,6 +416,7 @@
 <p>Most developers tend to think that implicit mechanisms are magical. That when something happens behind the scenes and it wasn’t obvious, then it’s some sort of magic. And we tend to equate magic with bad. This is a predominant reason why anti-coercion perspective exists, because people feel like the implicitness of coercion is the downfall. Where they point to the explicitness of type casting in something like Java or C++. Like you would never automatically convert a number into some sort of float or something, but JavaScript does all this sort of automatic stuff and then they say that’s a weakness of JavaScript because it’s  magical and bad. It is actually neither bad nor magical, but abstraction.</p>
 
 <p>Not all abstractions are good, but some are necessary. Implicitness, in functional programming, actually makes the implicitness more explicit. Implicitness is not bad, it is the proper use of abstraction. We want to hide key unnecessary details to re-focus the reader and increase clarity. Part of the reason that JavaScript has such a low point of entry is that it does not force the user to focus on such fine details. It would betray JavaScript’s DNA to say that anything implicit should be avoided. Take the following examples:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">numStudents</span> <span class="o">=</span> <span class="mi">16</span><span class="p">;</span>
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
@@ -419,7 +430,9 @@
     <span class="s2">`There are </span><span class="p">${</span><span class="nx">numStudents</span><span class="p">}</span><span class="s2"> students.`</span>
 <span class="p">);</span>
 <span class="c1">// "There are 16 students."</span></code></pre></figure>
+
 <p>The second example is more readable and is a fine example of implicit coercion not being a bad or magical thing. And in this example:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">workshopEnrollment1</span> <span class="o">=</span> <span class="mi">16</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">workshopEnrollment2</span> <span class="o">=</span> <span class="nx">workshop2Elem</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
 
@@ -430,6 +443,7 @@
 <span class="k">if</span><span class="p">(</span><span class="nx">workshopEnrollment1</span> <span class="o">&lt;</span> <span class="nx">workshopEnrollment2</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">//...</span>
 <span class="p">}</span></code></pre></figure>
+
 <p>If both of the numbers are strings, JavaScript wouldn’t turn them into numbers, the less than operator will do an alphanumeric comparison. Again, if you can guarantee that each of the variables for the less than comparison would be numbers, then the second version of the if statement is just fine and we can deal with implicit coercion without fear. If you have the choice to use coercion but it’s not obvious, it would be in your purview to make it obvious. If you communicate your intent, it will not trip up other readers of your code. Is showing the extra details helpful to the reader (of your code) or not? Sometimes yes, sometimes no. Be a critical and analytical thinker, be an engineer and not a code monkey!</p>
 
 <h3 id="understanding-features">Understanding Features</h3>
@@ -481,12 +495,12 @@
   </li>
 </ol>
 
-<h3 id="coercion-exercise-solution">Coercion Exercise Solution<details></details></h3>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>&lt;summary&gt;Click to view the solution
-</pre></td></tr></tbody></table></code></pre></div></div>
-<p>&lt;/summary&gt;</p>
+<h3 id="coercion-exercise-solution">Coercion Exercise Solution</h3>
 
+<details>
+    <summary>Click to view the solution
+</summary>
+    
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">isValidName</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span>
         <span class="k">typeof</span> <span class="nx">name</span> <span class="o">==</span> <span class="dl">"</span><span class="s2">string</span><span class="dl">"</span> <span class="o">&amp;&amp;</span>
@@ -526,13 +540,17 @@
     <span class="k">return</span> <span class="kc">false</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>&lt;/details&gt;## Equality</p>
+
+</details>
+
+<h2 id="equality">Equality</h2>
 
 <h3 id="double--triple-equals">Double &amp; Triple Equals</h3>
 
 <p><code class="language-plaintext highlighter-rouge">==</code> checks value (loose) and <code class="language-plaintext highlighter-rouge">===</code> checks value and type (strict)? This is a very common misconception. <strong>If you’re trying to understand your code, it’s critical that you learn to think like JavaScript.</strong>  Check the JavaScript specification for <a href="https://www.ecma-international.org/ecma-262/9.0/index.html#sec-abstract-equality-comparison">Abstract Equality Comparison</a> and <a href="https://www.ecma-international.org/ecma-262/9.0/index.html#sec-strict-equality-comparison">Strict Equality Comparison</a> to dig deeper into the difference between <code class="language-plaintext highlighter-rouge">==</code> and <code class="language-plaintext highlighter-rouge">===</code>. When the types of the two elements you are comparing with <code class="language-plaintext highlighter-rouge">==</code> are the same, then (according to the spec) the <code class="language-plaintext highlighter-rouge">===</code> is performed. Ideally, you should try to have the value types and make that obvious as much as possible. You should not be doing equality comparisons when you have no idea what the types are.</p>
 
 <p>For <code class="language-plaintext highlighter-rouge">===</code> if the types are different, it returns <code class="language-plaintext highlighter-rouge">false</code>. The basic difference between <code class="language-plaintext highlighter-rouge">==</code> and <code class="language-plaintext highlighter-rouge">===</code> is whether or not we are going to allow any coercion to occur. JavaScript’s equality is based on identity, not structure. Consider the following:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">let</span> <span class="nx">workshop1</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Deep JS Foundations</span><span class="dl">"</span>
 <span class="p">};</span>
@@ -548,6 +566,7 @@
 <span class="k">if</span> <span class="p">(</span><span class="nx">workshop1</span> <span class="o">===</span> <span class="nx">workshop2</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// never going to get here...</span>
 <span class="p">}</span></code></pre></figure>
+
 <p>While, the above elements may be of the same type, they are effectively different from one another. However, if <code class="language-plaintext highlighter-rouge">workshop2 = workshop1</code> then we could get a true statement to return from a comparison of these two objects.</p>
 
 <p>In summary, <code class="language-plaintext highlighter-rouge">==</code> allows coercion (types different), <code class="language-plaintext highlighter-rouge">===</code> disallows coercion (types same).</p>
@@ -556,10 +575,12 @@
 
 <p><em>Like every other operation, is coercion helpful in an equality comparison or not?</em> You should consider that statement whenever making a decision to use coercion. Again, driving home the point to be a critical, analytical thinker vs. a code monkey. The decision between using <code class="language-plaintext highlighter-rouge">==</code> or <code class="language-plaintext highlighter-rouge">===</code> is a trailing indicator to whether you truly understand your program or not. It is perhaps better to get to the root of why you would be using <code class="language-plaintext highlighter-rouge">===</code>… do you truly not know what <code class="language-plaintext highlighter-rouge">types</code> of data your function will be working with? How can you fix that? If you can solve this issue, deciding and making obvious what your types are, you will find that you have better code with fewer bugs.</p>
 
-<p>Through coercive equality, you have the option to treat the <code class="language-plaintext highlighter-rouge">null</code> and <code class="language-plaintext highlighter-rouge">undefined</code> values as equal (read the spec…). Which of the following is ‘better’?:<details>
-    &lt;summary&gt;Click to view the code
-&lt;/summary&gt;</details></p>
+<p>Through coercive equality, you have the option to treat the <code class="language-plaintext highlighter-rouge">null</code> and <code class="language-plaintext highlighter-rouge">undefined</code> values as equal (read the spec…). Which of the following is ‘better’?:</p>
 
+<details>
+    <summary>Click to view the code
+</summary>
+    
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">workshop1</span> <span class="o">=</span> <span class="p">{</span> <span class="na">topic</span><span class="p">:</span> <span class="kc">null</span> <span class="p">};</span>
 <span class="kd">var</span> <span class="nx">workshop2</span> <span class="o">=</span> <span class="p">{};</span>
 
@@ -577,7 +598,10 @@
     <span class="c1">// ..</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>&lt;/details&gt;Arguably, the second <code class="language-plaintext highlighter-rouge">if</code> statement is more concise and readable, and since we know that <code class="language-plaintext highlighter-rouge">null == undefined</code> this would work exactly the same as the first <code class="language-plaintext highlighter-rouge">if</code> statement. This is an example of using coercive equality.</p>
+
+</details>
+
+<p>Arguably, the second <code class="language-plaintext highlighter-rouge">if</code> statement is more concise and readable, and since we know that <code class="language-plaintext highlighter-rouge">null == undefined</code> this would work exactly the same as the first <code class="language-plaintext highlighter-rouge">if</code> statement. This is an example of using coercive equality.</p>
 
 <h3 id="double-equals-algorithm">Double Equals Algorithm</h3>
 
@@ -585,10 +609,12 @@
 
 <p><strong><code class="language-plaintext highlighter-rouge">==</code> prefers numeric comparison.</strong></p>
 
-<p>Considering the above, which of the below <code class="language-plaintext highlighter-rouge">if</code> statements is more concise?<details>
-    &lt;summary&gt;Click to view the code
-&lt;/summary&gt;</details></p>
+<p>Considering the above, which of the below <code class="language-plaintext highlighter-rouge">if</code> statements is more concise?</p>
 
+<details>
+    <summary>Click to view the code
+</summary>
+    
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">workshopEnrollment1</span> <span class="o">=</span> <span class="mi">16</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">workshopEnrollment2</span> <span class="o">=</span> <span class="nx">workshop2Elem</span><span class="p">.</span><span class="nx">value</span><span class="p">();</span>
 
@@ -600,14 +626,19 @@
     <span class="c1">// ..</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>&lt;/details&gt;Arguably, the second comparison is cleaner, especially if we can guarantee that either variable will only ever be a number or a string. The coercion that would occur from using <code class="language-plaintext highlighter-rouge">==</code> would be acceptable for this use case. You can choose to structure your code in such a way that coercion is a useful and obvious system, rather than the complex magic that some people feel it to be. If you invoke <code class="language-plaintext highlighter-rouge">==</code> with something that is not already of a primitive type, it will invoke <code class="language-plaintext highlighter-rouge">ToPrimitive()</code> on that.</p>
+
+</details>
+
+<p>Arguably, the second comparison is cleaner, especially if we can guarantee that either variable will only ever be a number or a string. The coercion that would occur from using <code class="language-plaintext highlighter-rouge">==</code> would be acceptable for this use case. You can choose to structure your code in such a way that coercion is a useful and obvious system, rather than the complex magic that some people feel it to be. If you invoke <code class="language-plaintext highlighter-rouge">==</code> with something that is not already of a primitive type, it will invoke <code class="language-plaintext highlighter-rouge">ToPrimitive()</code> on that.</p>
 
 <h3 id="double-equals-walkthrough">Double Equals Walkthrough</h3>
 
-<p>If you wrote a function like this:<details>
-    &lt;summary&gt;Click to view the code
-&lt;/summary&gt;</details></p>
+<p>If you wrote a function like this:</p>
 
+<details>
+    <summary>Click to view the code
+</summary>
+    
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">workshop1Count</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">workshop2Count</span> <span class="o">=</span> <span class="p">[</span><span class="mi">42</span><span class="p">];</span>
 
@@ -615,10 +646,15 @@
     <span class="c1">// ..</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>&lt;/details&gt;What would happen? Would it work coercively? In the above case, yes… but should it? More importantly, why would it work? Why would a number somehow be coercively equal to an array holding that number? According to the specification, the <code class="language-plaintext highlighter-rouge">==</code> algorithm would execute in the following way:<details>
-    &lt;summary&gt;Click to view the code
-&lt;/summary&gt;</details></p>
 
+</details>
+
+<p>What would happen? Would it work coercively? In the above case, yes… but should it? More importantly, why would it work? Why would a number somehow be coercively equal to an array holding that number? According to the specification, the <code class="language-plaintext highlighter-rouge">==</code> algorithm would execute in the following way:</p>
+
+<details>
+    <summary>Click to view the code
+</summary>
+    
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">workshop1Count</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">workshop2Count</span> <span class="o">=</span> <span class="p">[</span><span class="mi">42</span><span class="p">];</span>
 
@@ -629,7 +665,10 @@
     <span class="c1">// ..</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>&lt;/details&gt;The array gets transformed into its primitive type, which is a stringified version of the array (“42”). Then, 42 is compared to the string “42”. The <code class="language-plaintext highlighter-rouge">==</code> algorithm prefers numeric comparison, therefore the string “42” is now turned into the number 42. And now that both operators are the same type, <code class="language-plaintext highlighter-rouge">==</code> will do a <code class="language-plaintext highlighter-rouge">===</code> comparison and finally return true. All of this is an example of when coercion could be a bad thing for a developer. Just because this works does not mean that you should use it. You should reduce the surface area and not make a comparison between numbers and arrays of numbers. The fix for this would not be to use a <code class="language-plaintext highlighter-rouge">===</code> comparison, but to actually fix the problem, the comparison between two things that are not the same type. Fix it so that the comparisons that you are making make sense.</p>
+
+</details>
+
+<p>The array gets transformed into its primitive type, which is a stringified version of the array (“42”). Then, 42 is compared to the string “42”. The <code class="language-plaintext highlighter-rouge">==</code> algorithm prefers numeric comparison, therefore the string “42” is now turned into the number 42. And now that both operators are the same type, <code class="language-plaintext highlighter-rouge">==</code> will do a <code class="language-plaintext highlighter-rouge">===</code> comparison and finally return true. All of this is an example of when coercion could be a bad thing for a developer. Just because this works does not mean that you should use it. You should reduce the surface area and not make a comparison between numbers and arrays of numbers. The fix for this would not be to use a <code class="language-plaintext highlighter-rouge">===</code> comparison, but to actually fix the problem, the comparison between two things that are not the same type. Fix it so that the comparisons that you are making make sense.</p>
 
 <h3 id="double-equals-summary">Double Equals Summary</h3>
 
@@ -639,6 +678,7 @@ If non-primitives: <code class="language-plaintext highlighter-rouge">ToPrimitiv
 Prefer: <code class="language-plaintext highlighter-rouge">ToNumber()</code></p>
 
 <h3 id="double-equals-corner-cases">Double Equals Corner Cases</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">[]</span> <span class="o">==</span> <span class="o">!</span><span class="p">[];</span> <span class="c1">// true</span>
 
 <span class="c1">// Under no circumstances would you compare a value to the negation of itself. BUT... here's why it works</span>
@@ -664,9 +704,11 @@ Prefer: <code class="language-plaintext highlighter-rouge">ToNumber()</code></p>
 <span class="k">if</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// Works...</span>
 <span class="p">}</span></code></pre></figure>
+
 <h3 id="corner-cases-booleans">Corner Cases: Booleans</h3>
 
 <p>Just don’t do this… If you want to all the boolean conversion of an array to be true, that’s fine.</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[];</span>
 
 <span class="c1">// if(a) {</span>
@@ -688,6 +730,7 @@ Prefer: <code class="language-plaintext highlighter-rouge">ToNumber()</code></p>
 <span class="k">if</span> <span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// Works...</span>
 <span class="p">}</span></code></pre></figure>
+
 <p>The comparison of <code class="language-plaintext highlighter-rouge">[] == true || false</code> is unnecessarily complicating the above code. It is simpler, and also more understandable, to just have JavaScript perform the <code class="language-plaintext highlighter-rouge">Boolean</code> operation on the original array instead of comparing it to true or false. In this case, implicit coercion does not have a gotcha whereas the explicit coercion does.</p>
 
 <h3 id="corner-cases-summary">Corner Cases: Summary</h3>
@@ -774,12 +817,12 @@ Prefer: <code class="language-plaintext highlighter-rouge">ToNumber()</code></p>
   </li>
 </ol>
 
-<h3 id="equality-exercise-solution">Equality Exercise Solution<details></details></h3>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>&lt;summary&gt;Click to view the solution
-</pre></td></tr></tbody></table></code></pre></div></div>
-<p>&lt;/summary&gt;</p>
+<h3 id="equality-exercise-solution">Equality Exercise Solution</h3>
 
+<details>
+    <summary>Click to view the solution
+</summary>
+    
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">findAll</span><span class="p">(</span><span class="nx">match</span><span class="p">,</span> <span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">ret</span> <span class="o">=</span> <span class="p">[];</span>
 
@@ -857,7 +900,10 @@ Prefer: <code class="language-plaintext highlighter-rouge">ToNumber()</code></p>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">setsMatch</span><span class="p">(</span><span class="nx">findAll</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span><span class="nx">values</span><span class="p">),[</span><span class="kc">true</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span> <span class="o">===</span> <span class="kc">false</span><span class="p">);</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">setsMatch</span><span class="p">(</span><span class="nx">findAll</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span><span class="nx">values</span><span class="p">),[</span><span class="kc">false</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span> <span class="o">===</span> <span class="kc">false</span><span class="p">);</span></code></pre></figure>
 
-<p>&lt;/details&gt;The point of this exercise was to drive home the point that coercion can be safe when you have eliminated the corner cases and made it obvious that you have done so.</p>
+
+</details>
+
+<p>The point of this exercise was to drive home the point that coercion can be safe when you have eliminated the corner cases and made it obvious that you have done so.</p>
 
 <h2 id="static-typing">Static Typing</h2>
 
@@ -896,22 +942,27 @@ Prefer: <code class="language-plaintext highlighter-rouge">ToNumber()</code></p>
 <h3 id="inferencing">Inferencing</h3>
 
 <p>Consider the following:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">teacher</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">You</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="c1">// ..</span>
 
 <span class="nx">teacher</span> <span class="o">=</span> <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">You</span><span class="dl">"</span> <span class="p">};</span>
 <span class="c1">// Error: can't assign object to string</span></code></pre></figure>
+
 <p>The above is an example of static typing that comes with the use of TypeScript or Flow. Because you initially set the value of <code class="language-plaintext highlighter-rouge">teacher</code> to a string, these statically typed systems will infer that <code class="language-plaintext highlighter-rouge">teacher</code> should always be a string… but what if you want to reassign <code class="language-plaintext highlighter-rouge">teacher</code> to hold an object? You’re SOL. You can also strictly declare that <code class="language-plaintext highlighter-rouge">teacher</code> should only ever be a string:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">teacher</span><span class="p">:</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">You</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="c1">// ..</span>
 
 <span class="nx">teacher</span> <span class="o">=</span> <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">You</span><span class="dl">"</span> <span class="p">};</span>
 <span class="c1">// Error: can't assign object to string</span></code></pre></figure>
+
 <p>…and you would of course see the same error as before.</p>
 
 <h3 id="custom-types">Custom Types</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">type</span> <span class="nx">student</span> <span class="o">=</span> <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="nx">string</span> <span class="p">};</span>
 
 <span class="kd">function</span> <span class="nx">getName</span><span class="p">(</span><span class="nx">studentRec</span><span class="p">:</span> <span class="nx">student</span><span class="p">):</span> <span class="nx">string</span> <span class="p">{</span>
@@ -921,15 +972,18 @@ Prefer: <code class="language-plaintext highlighter-rouge">ToNumber()</code></p>
 <span class="kd">var</span> <span class="nx">firstStudent</span><span class="p">:</span> <span class="nx">student</span> <span class="o">=</span> <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Frank</span><span class="dl">"</span> <span class="p">};</span>
 
 <span class="kd">var</span> <span class="nx">firstStudentName</span><span class="p">:</span> <span class="nx">string</span> <span class="o">=</span> <span class="nx">getName</span><span class="p">(</span><span class="nx">firstStudent</span><span class="p">);</span></code></pre></figure>
+
 <p>With TypeScript and Flow, you can define custom types. The above defines that an object of a type that has a property called name that is of type string. You can pass values of that type as parameters and receive values back as parameters. Any of the above only works based on the ‘guarantee’ that things are assigned correctly.</p>
 
 <h3 id="validating-operand-types">Validating Operand Types</h3>
 
 <p>Something undervalued about TypeScript is that it can tell us that certain operations would be invalid. The following would produce an error in TypeScript:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">studentName</span><span class="p">:</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Frank</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="kd">var</span> <span class="nx">studentCount</span><span class="p">:</span> <span class="nx">number</span> <span class="o">=</span> <span class="mi">16</span> <span class="o">-</span> <span class="nx">studentName</span><span class="p">;</span>
 <span class="c1">// error: can't subtract string</span></code></pre></figure>
+
 <p>The only issue with how TypeScript handles the above, in the instructors opinion, is the inability to change how TypeScript handles coercion on a case-by-case basis.</p>
 
 <h3 id="typescript--flow-summary">TypeScript &amp; Flow Summary</h3>
@@ -977,6 +1031,7 @@ Prefer: <code class="language-plaintext highlighter-rouge">ToNumber()</code></p>
 <p>Understanding the above, it is important to think of JavaScript as a two-pass system rather than a single-pass. JavaScript organizes scopes with functions and blocks.</p>
 
 <h3 id="compilation--scope">Compilation &amp; Scope</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">teacher</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="kd">function</span> <span class="nx">otherClass</span><span class="p">()</span> <span class="p">{</span>
@@ -991,6 +1046,7 @@ Prefer: <code class="language-plaintext highlighter-rouge">ToNumber()</code></p>
 
 <span class="nx">otherClass</span><span class="p">();</span> <span class="c1">// Welcome!</span>
 <span class="nx">ask</span><span class="p">();</span> <span class="c1">// Why?</span></code></pre></figure>
+
 <p>Looking at the above code, you can likely understand everything that will happen, but is that the entire picture? But how exactly does the JavaScript engine think about / handle this code? To understand the complete picture, we need to consider that JavaScript has both a compiler and a scope manager. These two pieces of JavaScript will help us complete the picture of what <em>exactly</em> is happening with the above code. The compiler and scope manager will have some back and forth while sorting through the JavaScript code to organize the code in terms of global scope and local scope. The first <code class="language-plaintext highlighter-rouge">var</code> and the functions will be in global scope while the <code class="language-plaintext highlighter-rouge">var</code>(s) inside of the functions will be in the local scope of their function(s). This is then handed over, as part of the execution plan, to the virtual (JavaScript) machine can run this code.</p>
 
 <p>In a lexically scoped language, which JavaScript is, all of the scopes that we are dealing with are determined at compile time, not at run time. This allows the (JavaScript) engine to more efficiently optimize because everything is known.</p>
@@ -1020,18 +1076,25 @@ The lexing phase of compilation determines where and how all identifiers are dec
 <p>Consider these examples:</p>
 
 <p>Example 1:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">a:</span><span class="dl">'</span><span class="p">,</span> <span class="nx">a</span><span class="p">);</span> <span class="c1">// a: 1</span></code></pre></figure>
+
 <p>Example 2:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">a:</span><span class="dl">'</span><span class="p">,</span> <span class="nx">a</span><span class="p">);</span> <span class="c1">// a: undefined</span>
 <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span></code></pre></figure>
+
 <p>Example 3:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">a:</span><span class="dl">'</span><span class="p">,</span> <span class="nx">a</span><span class="p">);</span> <span class="c1">// Uncaught ReferenceError: a is not defined</span></code></pre></figure>
+
 <p>Example 1 is straightforward and works as expected, however note the subtle difference between other two examples. Example 2 logs that the value of a is undefined, but the identifier a has itself been declared; compared with example 3 in which the identifier a has not been declared, hence resulting in a reference error.</p>
 
 <p>This demonstrates that during the lexing phase, the JavaScript engine declares the variables first, before the following step in which the values are assigned to the identifiers - this is hoisting. Because functions are also defined at this time (lexing phase), we can say that lexical scope is based on where variables and blocks of scope exist at author time, and thus are locked down at the end of the lexing phase. Scope is not defined at runtime, rather it can be accessed at runtime.</p>
 
 <p>Again, a closure is when a function is able to remember and access its lexical scope even when that function is executing outside its lexical scope.</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">foo</span><span class="p">()</span> <span class="p">{</span>  <span class="c1">// 'scope of foo' aka lexical scope for bar</span>
    <span class="kd">var</span> <span class="nx">memory</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">hello closure</span><span class="dl">'</span><span class="p">;</span>
    <span class="k">return</span> <span class="kd">function</span> <span class="nx">bar</span><span class="p">()</span> <span class="p">{</span>
@@ -1043,6 +1106,7 @@ The lexing phase of compilation determines where and how all identifiers are dec
 <span class="kd">const</span> <span class="nx">closure</span> <span class="o">=</span> <span class="nx">foo</span><span class="p">();</span>
  
 <span class="nx">closure</span><span class="p">();</span> <span class="c1">// hello closure</span></code></pre></figure>
+
 <p>So… lexical scope is the author-time scope created by a closure. It is the ‘outer’ scope of a function which is defined inside a closure.</p>
 
 <h3 id="code-execution-finishing-up">Code Execution: Finishing Up</h3>
@@ -1052,6 +1116,7 @@ The lexing phase of compilation determines where and how all identifiers are dec
 <h3 id="lexical-scope-review">Lexical Scope Review</h3>
 
 <p>JavaScript is not an interpreted language, in the sense that it does not execute code line-by-line. Instead, JavaScript should be thought of as a two-pass processing. The first pass is compilation / parsing, during which the main thing that happens is the scope / plan is created and the identifiers are mapped. The second pass is execution. Let’s walk through some code… again.</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">teacher</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="kd">function</span> <span class="nx">otherClass</span><span class="p">()</span> <span class="p">{</span>
@@ -1066,6 +1131,7 @@ The lexing phase of compilation determines where and how all identifiers are dec
 
 <span class="nx">otherClass</span><span class="p">();</span> <span class="c1">// Welcome!</span>
 <span class="nx">ask</span><span class="p">();</span> <span class="c1">// Why?</span></code></pre></figure>
+
 <p>The (compilation) process for the above code is something like this:</p>
 
 <p>Compiler: Hey Scope Manager, I have a formal declaration for a variable called <code class="language-plaintext highlighter-rouge">teacher</code>, have you ever heard of that before?</p>
@@ -1143,6 +1209,7 @@ The lexing phase of compilation determines where and how all identifiers are dec
 <h3 id="compilation-review">Compilation Review</h3>
 
 <p>Another review, like the last section, but this time walking through the following code:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">teacher</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="kd">function</span> <span class="nx">otherClass</span><span class="p">()</span> <span class="p">{</span>
@@ -1155,6 +1222,7 @@ The lexing phase of compilation determines where and how all identifiers are dec
 
 <span class="nx">teacher</span><span class="p">;</span> <span class="c1">// ??</span>
 <span class="nx">topic</span><span class="p">;</span> <span class="c1">// ??</span></code></pre></figure>
+
 <p>Try to walk through the code and have the conversion(s) of the two passes (compilation and execution) that JavaScript goes through.</p>
 
 <h3 id="dynamic-global-variables">Dynamic Global Variables</h3>
@@ -1170,6 +1238,7 @@ The lexing phase of compilation determines where and how all identifiers are dec
 <h3 id="nested-scope">Nested Scope</h3>
 
 <p>Now let’s look at some code with a nested scope:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">teacher</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="kd">function</span> <span class="nx">otherClass</span><span class="p">()</span> <span class="p">{</span>
@@ -1184,6 +1253,7 @@ The lexing phase of compilation determines where and how all identifiers are dec
 
 <span class="nx">otherClass</span><span class="p">();</span> <span class="c1">// Suzy Why?</span>
 <span class="nx">ask</span><span class="p">(</span><span class="dl">"</span><span class="s2">????</span><span class="dl">"</span><span class="p">);</span></code></pre></figure>
+
 <p>The final line of the above code would throw a ReferenceError because <code class="language-plaintext highlighter-rouge">ask()</code> does not exist in the global scope and therefore cannot be located.</p>
 
 <h3 id="undefined-vs-undeclared">Undefined vs Undeclared</h3>
@@ -1203,6 +1273,7 @@ The lexing phase of compilation determines where and how all identifiers are dec
 <h2 id="scope--function-expressions">Scope &amp; Function Expressions</h2>
 
 <h3 id="function-expressions">Function Expressions</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">teacher</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/* .. */</span> <span class="p">}</span>
 
 <span class="kd">var</span> <span class="nx">myTeacher</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">anotherTeacher</span><span class="p">()</span> <span class="p">{</span>
@@ -1212,12 +1283,14 @@ The lexing phase of compilation determines where and how all identifiers are dec
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">teacher</span><span class="p">);</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">myTeacher</span><span class="p">);</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">anotherTeacher</span><span class="p">);</span></code></pre></figure>
+
 <p><code class="language-plaintext highlighter-rouge">myTeacher</code> is a function expression. Unlike a function declaration, which adds any declarations into its own scope, a function expression
 will add declarations within its own scope, which is not the same scope as its identifier. i.e. <code class="language-plaintext highlighter-rouge">myTeacher</code> is in the global scope, but <code class="language-plaintext highlighter-rouge">anotherTeacher</code> is in its own scope, as is anything declared within it.</p>
 
 <p>The final line <code class="language-plaintext highlighter-rouge">console.log(anotherTeacher);</code> will throw a ReferenceError because <code class="language-plaintext highlighter-rouge">anotherTeacher</code> is not declared in the global scope.</p>
 
 <p>What is a named function expression? It is a function expression that has a name…</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">clickHandler</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
     <span class="c1">// ..</span>
 <span class="p">};</span>
@@ -1225,6 +1298,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <span class="kd">var</span> <span class="nx">keyHandler</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">keyHandler</span><span class="p">()</span> <span class="p">{</span>
     <span class="c1">// ..</span>
 <span class="p">};</span></code></pre></figure>
+
 <p>The first function above is an anonymous function expression, while the second function is an example of a named function expression. It is suggested that you should 💯% prefer the named function expression over the anonymous function expression, like always, forever, because…</p>
 
 <h3 id="naming-function-expressions">Naming Function Expressions</h3>
@@ -1246,11 +1320,13 @@ will add declarations within its own scope, which is not the same scope as its i
 <p>The purpose of code is not to make it as convenient as possible for you to type, but to communicate clearly your intent. The argument is made that it is likely more clear and simple to instead use function declarations over function expressions. The purpose of a function name is to tell you, “why does this thing exist?”.</p>
 
 <h3 id="arrow-functions">Arrow Functions</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">ids</span> <span class="o">=</span> <span class="nx">people</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">person</span> <span class="o">=&gt;</span> <span class="nx">person</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
 
 <span class="kd">var</span> <span class="nx">ids</span> <span class="o">=</span> <span class="nx">people</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="nx">getId</span><span class="p">(</span><span class="nx">person</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">person</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
 <span class="p">});</span></code></pre></figure>
+
 <p>Arrow functions are anonymous. The instructor believes that you should not be using arrow functions as a replacement for all other functions. Named (arrow) function expressions? You would be saving characters (used) be just using a function declaration <em>and</em> making your code more readable. More concise code != more readable code</p>
 
 <h3 id="function-types-hierarchy">Function Types Hierarchy</h3>
@@ -1306,12 +1382,12 @@ will add declarations within its own scope, which is not the same scope as its i
 
 <p>As the appeal of <code class="language-plaintext highlighter-rouge">=&gt;</code> arrow functions is their conciseness, wherever possible try to use only expression bodies (<code class="language-plaintext highlighter-rouge">x =&gt; x.id</code>) instead of full function bodies (<code class="language-plaintext highlighter-rouge">x =&gt; { return x.id; }</code>).</p>
 
-<h3 id="function-expression-solution-functions">Function Expression Solution: Functions<details></details></h3>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>&lt;summary&gt;Click to view the solution
-</pre></td></tr></tbody></table></code></pre></div></div>
-<p>&lt;/summary&gt;</p>
+<h3 id="function-expression-solution-functions">Function Expression Solution: Functions</h3>
 
+<details>
+    <summary>Click to view the solution
+</summary>
+    
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">getStudentById</span><span class="p">(</span><span class="nx">studentId</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">studentRecords</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="kd">function</span> <span class="nx">matchId</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="p">(</span><span class="nx">record</span><span class="p">.</span><span class="nx">id</span> <span class="o">==</span> <span class="nx">studentId</span><span class="p">);</span>
@@ -1391,10 +1467,15 @@ will add declarations within its own scope, which is not the same scope as its i
 	Henry (105): Not Paid
 */</span></code></pre></figure>
 
-<p>&lt;/details&gt;### Function Expression Solution: Arrow Functions<details>
-    &lt;summary&gt;Click to view the solution
-&lt;/summary&gt;</details></p>
 
+</details>
+
+<h3 id="function-expression-solution-arrow-functions">Function Expression Solution: Arrow Functions</h3>
+
+<details>
+    <summary>Click to view the solution
+</summary>
+    
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">getStudentById</span> <span class="o">=</span> <span class="nx">studentId</span> <span class="o">=&gt;</span>
     <span class="nx">studentRecords</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span>
         <span class="nx">record</span> <span class="o">=&gt;</span> <span class="nx">record</span><span class="p">.</span><span class="nx">id</span> <span class="o">==</span> <span class="nx">studentId</span>
@@ -1466,7 +1547,10 @@ will add declarations within its own scope, which is not the same scope as its i
 	Henry (105): Not Paid
 */</span></code></pre></figure>
 
-<p>&lt;/details&gt;## Advanced Scope</p>
+
+</details>
+
+<h2 id="advanced-scope">Advanced Scope</h2>
 
 <h3 id="lexical--dynamic-scope">Lexical &amp; Dynamic Scope</h3>
 
@@ -1483,6 +1567,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <h3 id="dynamic-scope">Dynamic Scope</h3>
 
 <p>In a dynamically scoped language (not JavaScript), the value assigned to a variable is dependent on where it was called from. Consider the following:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">teacher</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="kd">function</span> <span class="nx">ask</span><span class="p">(</span><span class="nx">question</span><span class="p">)</span> <span class="p">{</span>
@@ -1496,6 +1581,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <span class="p">}</span>
 
 <span class="nx">otherClass</span><span class="p">():</span></code></pre></figure>
+
 <p>In the above code, what is the value of <code class="language-plaintext highlighter-rouge">teacher</code> in the <code class="language-plaintext highlighter-rouge">ask</code> function? In a lexically scoped language (JavaScript), the value of teacher would come from the global scope, because the <code class="language-plaintext highlighter-rouge">ask</code> function does not have any reference to the <code class="language-plaintext highlighter-rouge">teacher</code> variable, so the value of <code class="language-plaintext highlighter-rouge">teacher</code> would be <code class="language-plaintext highlighter-rouge">"Kyle"</code>. But in a dynamically scoped language (not JavaScript), the value of <code class="language-plaintext highlighter-rouge">teacher</code> would depend on where the <code class="language-plaintext highlighter-rouge">ask</code> function was called from, in this case <code class="language-plaintext highlighter-rouge">otherClass</code>. In <code class="language-plaintext highlighter-rouge">otherClass</code>, the value of <code class="language-plaintext highlighter-rouge">teacher</code> is <code class="language-plaintext highlighter-rouge">"Suzy"</code>, so in the <code class="language-plaintext highlighter-rouge">ask</code> function, <code class="language-plaintext highlighter-rouge">teacher</code> would return <code class="language-plaintext highlighter-rouge">"Suzy"</code>.</p>
 
 <p>This can be quite flexible, but it is not how JavaScript works…</p>
@@ -1517,6 +1603,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <h3 id="iife-pattern">IIFE Pattern</h3>
 
 <p>IIFE - Immediately Invoked Function Expression - Using a function expression to create a scope, immediately invoking it. If you are making an IIFE, there is likely some purpose for it and it should be named! Whether they are anonymous or not, IIFEs are just functions, which means that you can pass values into them. An interesting use case for an IIFE is a <code class="language-plaintext highlighter-rouge">try / catch</code>. If you are setting the value of a variable based on the result of a <code class="language-plaintext highlighter-rouge">try / catch</code> statement, it could be confusing to your reader… make it an IIFE!</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">teacher</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="nx">getTeacher</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">try</span> <span class="p">{</span>
         <span class="k">return</span> <span class="nx">fetchTeacher</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
@@ -1525,11 +1612,13 @@ will add declarations within its own scope, which is not the same scope as its i
         <span class="k">return</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">})();</span></code></pre></figure>
+
 <p>IFFEs can be used any place that you need an expression, and any time you need a statement or scope in an expression.</p>
 
 <h3 id="block-scoping">Block Scoping</h3>
 
 <p>Block scoping is done with curly braces <code class="language-plaintext highlighter-rouge">{}</code>, instead of with functions. <code class="language-plaintext highlighter-rouge">let</code> and <code class="language-plaintext highlighter-rouge">const</code> exist so that you can make a declaration inside of a block and it turns that block into a scope. i.e.</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">teacher</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="p">{</span>
@@ -1538,6 +1627,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <span class="p">}</span>
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">teacher</span><span class="p">);</span> <span class="c1">// Kyle</span></code></pre></figure>
+
 <p>Blocks are not scopes until they have a <code class="language-plaintext highlighter-rouge">let</code> or a <code class="language-plaintext highlighter-rouge">const</code> inside of them which implicitly makes them a scope. You should use <code class="language-plaintext highlighter-rouge">let</code> in places where it already makes sense for it to be used, inside of a block scope. <code class="language-plaintext highlighter-rouge">let</code> is a replacement for your already semantically signaled block scope(s).</p>
 
 <p>Is <code class="language-plaintext highlighter-rouge">let</code> the new <code class="language-plaintext highlighter-rouge">var</code>? Nope. <code class="language-plaintext highlighter-rouge">let</code> is a new tool that we should add on to our existing usage and there are still reasons to use the <code class="language-plaintext highlighter-rouge">var</code> keyword.</p>
@@ -1545,6 +1635,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <h3 id="choosing-let-or-var">Choosing let or var</h3>
 
 <p>Consider the following:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">repeat</span><span class="p">(</span><span class="nx">fn</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">result</span><span class="p">;</span>
 
@@ -1554,9 +1645,11 @@ will add declarations within its own scope, which is not the same scope as its i
 
     <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
+
 <p>In the above code, you <em>could</em> replace both <code class="language-plaintext highlighter-rouge">var</code>(s) with <code class="language-plaintext highlighter-rouge">let</code>, but the instructor suggests to only replace the <code class="language-plaintext highlighter-rouge">var</code> in the <code class="language-plaintext highlighter-rouge">for loop</code> with <code class="language-plaintext highlighter-rouge">let</code>. Here’s why: If you have a variable that belongs to the entire scope of the function, the correct and semantic way to signal that to your reader is not to use a <code class="language-plaintext highlighter-rouge">let</code> at the top level of your function scope, but to use a <code class="language-plaintext highlighter-rouge">var</code> because that is the thing it has always done for 24 years. Again, you could replace the initial <code class="language-plaintext highlighter-rouge">var</code> with <code class="language-plaintext highlighter-rouge">let</code>, it is recommended not to because doing so would remove a small amount of important semantic information from the reader, who may then not know your intent. <code class="language-plaintext highlighter-rouge">let</code> is supposed to signify a very localized usage of a variable, ideally within a couple lines of code.</p>
 
 <p>If your code has something that is <em>naturally</em> block scoped, use <code class="language-plaintext highlighter-rouge">let</code>. Here’s an example of some code that would not work if you replaced <code class="language-plaintext highlighter-rouge">var</code> with <code class="language-plaintext highlighter-rouge">let</code>:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">lookupRecord</span><span class="p">(</span><span class="nx">searchStr</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">try</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">getRecord</span><span class="p">(</span><span class="nx">searchStr</span><span class="p">);</span>
@@ -1567,6 +1660,7 @@ will add declarations within its own scope, which is not the same scope as its i
 
     <span class="k">return</span> <span class="nx">id</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
+
 <p>If the <code class="language-plaintext highlighter-rouge">var</code>(s) were replaced with <code class="language-plaintext highlighter-rouge">let</code>(s), the <code class="language-plaintext highlighter-rouge">let</code>(s) would be scoped to their blocks (<code class="language-plaintext highlighter-rouge">try / catch</code>) and would not be available for the <code class="language-plaintext highlighter-rouge">return</code> statement. 🤯</p>
 
 <p><code class="language-plaintext highlighter-rouge">var</code> attaches itself to the function scope and is preferable in the above case because it is able to break out of the <em>unintended</em> block scope of the <code class="language-plaintext highlighter-rouge">try / catch</code>.</p>
@@ -1574,6 +1668,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <h3 id="explicit-let-block">Explicit let Block</h3>
 
 <p>If you are going to use <code class="language-plaintext highlighter-rouge">let</code> for only a few lines of code and not again within the same function, it is recommended to put it in its own block scope. Like so:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">formatStr</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="p">{</span>
     <span class="p">{</span> <span class="kd">let</span> <span class="nx">prefix</span><span class="p">,</span> <span class="nx">rest</span><span class="p">;</span>
         <span class="nx">prefix</span> <span class="o">=</span> <span class="nx">str</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span> <span class="p">);</span>
@@ -1587,6 +1682,7 @@ will add declarations within its own scope, which is not the same scope as its i
 
     <span class="k">return</span> <span class="nx">str</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span> <span class="mi">4</span> <span class="p">);</span>
 <span class="p">}</span></code></pre></figure>
+
 <h3 id="const">const</h3>
 
 <p><code class="language-plaintext highlighter-rouge">const</code> is even better than <code class="language-plaintext highlighter-rouge">let</code>! But <code class="language-plaintext highlighter-rouge">const</code> does not carry its own weight in JavaScript. <code class="language-plaintext highlighter-rouge">const</code> is a variable that cannot be reassigned. <code class="language-plaintext highlighter-rouge">const</code> can be mutated! <code class="language-plaintext highlighter-rouge">const teachers = ["Me", "You"]; teachers[1] = "Someone Else";</code> There is baggage that comes with <code class="language-plaintext highlighter-rouge">const</code>. What the <code class="language-plaintext highlighter-rouge">const</code> keyword is actually supposed to inform is something along the lines of: For the rest of this [code] block, I am not going to be reassigned. The instructor will only use <code class="language-plaintext highlighter-rouge">const</code> with primitive values, which are immutable; strings, booleans, and numbers.</p>
@@ -1604,14 +1700,17 @@ will add declarations within its own scope, which is not the same scope as its i
 <h3 id="hoisting">Hoisting</h3>
 
 <p>Until a couple of years ago, the word ‘hoisting’ literally did not appear in the JavaScript specification. Turns out, hoisting is not a real thing. The JavaScript engine does not hoist, it does not move things around the way it is suggested with hoisting. Hoisting is a made up [English] language convention to discuss the idea of lexical scope. Consider the following code:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">student</span><span class="p">;</span> <span class="c1">// ??</span>
 <span class="nx">teacher</span><span class="p">;</span> <span class="c1">// ??</span>
 
 <span class="kd">var</span> <span class="nx">student</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">You</span><span class="dl">"</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">teacher</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">;</span></code></pre></figure>
+
 <p>What will happen?! JavaScript will, in its first of two passes, parse the above code and create the variables, but without any value assigned to them, so both <code class="language-plaintext highlighter-rouge">student</code> and <code class="language-plaintext highlighter-rouge">teacher</code> would return <code class="language-plaintext highlighter-rouge">undefined</code>. <em>But</em>, the concept of hoisting does not mean that any actual code has been moved around. Functions hoist, they are taken at compile time and defined in such a way so they can be used earlier in the scope than when they’ve been declared.</p>
 
 <h3 id="hoisting-example">Hoisting Example</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// var hoisting?</span>
 <span class="c1">// usually bad :/</span>
 <span class="nx">teacher</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">;</span>
@@ -1624,6 +1723,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <span class="kd">function</span> <span class="nx">getTeacher</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">teacher</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
+
 <p>Unlike <code class="language-plaintext highlighter-rouge">var</code> hoisting, function hoisting can be useful. Do you usually put all of your function calls at the end of your files? How about putting them all at the top so you can immediately see them?! You can!</p>
 
 <h3 id="let-doesnt-hoist">let Doesn’t Hoist</h3>
@@ -1648,12 +1748,12 @@ will add declarations within its own scope, which is not the same scope as its i
 
 <p>Also, pull function declarations to outer scopes if they don’t need to be nested.</p>
 
-<h3 id="hoisting-exercise-solution">Hoisting Exercise Solution<details></details></h3>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>&lt;summary&gt;Click to view the solution
-</pre></td></tr></tbody></table></code></pre></div></div>
-<p>&lt;/summary&gt;</p>
+<h3 id="hoisting-exercise-solution">Hoisting Exercise Solution</h3>
 
+<details>
+    <summary>Click to view the solution
+</summary>
+    
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">currentEnrollment</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">410</span><span class="p">,</span> <span class="mi">105</span><span class="p">,</span> <span class="mi">664</span><span class="p">,</span> <span class="mi">375</span> <span class="p">];</span>
 
 <span class="kd">var</span> <span class="nx">studentRecords</span> <span class="o">=</span> <span class="p">[</span>
@@ -1747,7 +1847,10 @@ will add declarations within its own scope, which is not the same scope as its i
     <span class="k">return</span> <span class="o">!</span><span class="nx">record</span><span class="p">.</span><span class="nx">paid</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>&lt;/details&gt;The purpose of this exercise is to flatten the scope of the program, which makes it [scope] easier to manage. Additionally, this can make your code more readable, which makes it easier for both your future self or another developer to dig in and work with your code.</p>
+
+</details>
+
+<p>The purpose of this exercise is to flatten the scope of the program, which makes it [scope] easier to manage. Additionally, this can make your code more readable, which makes it easier for both your future self or another developer to dig in and work with your code.</p>
 
 <h2 id="closure">Closure</h2>
 
@@ -1760,6 +1863,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <p>Closure is when a function is able to “remember” and access its lexical scope, the variables outside of itself, even when the function is executed outside of that lexical scope. The first part, a function is able to access variables outside of itself, is lexical scope; if <code class="language-plaintext highlighter-rouge">teacher</code> is not defined in <em>my</em> scope, is it in the ‘next-level-up’ scope? And so on, until it finds <code class="language-plaintext highlighter-rouge">teacher</code> or not. But without the second part, even when the function is executed outside of that lexical scope, is what makes closure… closure. The preservation, or linkage, back to the original scope where a function was defined, no matter where it is passed, it retains its value and retains its scope, that is closure.</p>
 
 <p>Here is an example of closure:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">ask</span><span class="p">(</span><span class="nx">question</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="nx">waitASec</span><span class="p">()</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">question</span><span class="p">);</span>
@@ -1767,7 +1871,9 @@ will add declarations within its own scope, which is not the same scope as its i
 <span class="p">}</span>
 
 <span class="nx">ask</span><span class="p">(</span><span class="dl">"</span><span class="s2">What is closure?</span><span class="dl">"</span><span class="p">);</span></code></pre></figure>
+
 <h3 id="closing-over-variables">Closing Over Variables</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">teacher</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="kd">var</span> <span class="nx">myTeacher</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
@@ -1777,7 +1883,9 @@ will add declarations within its own scope, which is not the same scope as its i
 <span class="nx">teacher</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Suzy</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="nx">myTeacher</span><span class="p">();</span> <span class="c1">// ??</span></code></pre></figure>
+
 <p><code class="language-plaintext highlighter-rouge">myTeacher();</code> would return <code class="language-plaintext highlighter-rouge">Suzy</code>. Closure is not capturing values, but preserving access to variables. One cannot effectively use closure until you get away from the perception that closure captures values. Consider the following:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`i: </span><span class="p">${</span><span class="nx">i</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
@@ -1787,7 +1895,9 @@ will add declarations within its own scope, which is not the same scope as its i
 <span class="c1">// i: 4</span>
 <span class="c1">// i: 4</span>
 <span class="c1">// i: 4</span></code></pre></figure>
+
 <p><code class="language-plaintext highlighter-rouge">i</code> would only return <code class="language-plaintext highlighter-rouge">4</code> because we need another variable, or variables, to store the various ‘states’ that <code class="language-plaintext highlighter-rouge">i</code> would be through its iteration. One way to ‘solve’ this would be to declare a new variable and assign it to the value of <code class="language-plaintext highlighter-rouge">i</code>. i.e.</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
 
     <span class="kd">let</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
@@ -1800,7 +1910,9 @@ will add declarations within its own scope, which is not the same scope as its i
 <span class="c1">// j: 1</span>
 <span class="c1">// j: 2</span>
 <span class="c1">// j: 3</span></code></pre></figure>
+
 <p>For each iteration, <code class="language-plaintext highlighter-rouge">j</code> will be ‘updated’ with the ‘new’ value of <code class="language-plaintext highlighter-rouge">i</code>, so the console will log the expected values of 1,2,3. An arguably better / more concise approach would be to do the following:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`i: </span><span class="p">${</span><span class="nx">i</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
@@ -1810,6 +1922,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <span class="c1">// i: 1</span>
 <span class="c1">// i: 2</span>
 <span class="c1">// i: 3</span></code></pre></figure>
+
 <p>Using <code class="language-plaintext highlighter-rouge">let</code> also produces the expected result because <code class="language-plaintext highlighter-rouge">let</code> creates a new <code class="language-plaintext highlighter-rouge">i</code> for each iteration. This is new behavior as of ES6. The point is if you need to close over different variables, then you need the different variables, not try to capture different values.</p>
 
 <p>Q: The <code class="language-plaintext highlighter-rouge">i</code> declared in the <code class="language-plaintext highlighter-rouge">for loop</code> is interpreted as a new variable for each iteration?</p>
@@ -1821,6 +1934,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <h3 id="module-pattern">Module Pattern</h3>
 
 <p>Now that we understand lexical scope and closure, we can look at the module pattern. First let’s look at what is not a module, like this:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">workshop</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">teacher</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">,</span>
     <span class="nx">ask</span><span class="p">(</span><span class="nx">question</span><span class="p">)</span> <span class="p">{</span>
@@ -1830,9 +1944,11 @@ will add declarations within its own scope, which is not the same scope as its i
 
 <span class="nx">workshop</span><span class="p">.</span><span class="nx">ask</span><span class="p">(</span><span class="dl">"</span><span class="s2">Is this a module?</span><span class="dl">"</span><span class="p">);</span>
 <span class="c1">// Kyle Is this a module?</span></code></pre></figure>
+
 <p>The above code is not a module, it <em>is</em> what could be called a ‘namespace’. Not really a syntactic feature of the [JavaScript] language, but it’s an idiom that we make namespaces with objects. While there is nothing wrong with writing your code in this way, it is definitely not a module. The reason being is that the module pattern requires the concept of encapsulation. Encapsulation is to hide data and behavior. The idea of a module is that there are things that are ‘public’, that’s your public API, and there are things that are private, things that nobody on the outside can touch. If you want to have a module, you need to have encapsulation (data hiding).</p>
 
 <p>The ‘classic’ module pattern, sometimes referred to as the revealing module pattern, encapsulates data and it does so with closure. You can’t have a module if you don’t have closure. Here is an example of what a module <em>does</em> look like:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">workshop</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="nx">Module</span><span class="p">(</span><span class="nx">teacher</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">publicAPI</span> <span class="o">=</span> <span class="p">{</span><span class="nx">ask</span><span class="p">,</span> <span class="p">};</span>
     <span class="k">return</span> <span class="nx">publicAPI</span><span class="p">;</span>
@@ -1844,6 +1960,7 @@ will add declarations within its own scope, which is not the same scope as its i
 
 <span class="nx">workshop</span><span class="p">.</span><span class="nx">ask</span><span class="p">(</span><span class="dl">"</span><span class="s2">It's a module, right?</span><span class="dl">"</span><span class="p">);</span>
 <span class="c1">// Kyle It's a module, right?</span></code></pre></figure>
+
 <p>The above module has two components to it.</p>
 
 <ol>
@@ -1858,6 +1975,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <p>The module pattern keeps private state private and exposes things on an object, as you can see in the <code class="language-plaintext highlighter-rouge">publicAPI</code> object, where <code class="language-plaintext highlighter-rouge">ask</code> is exposed. This usage of closure is actually closing over variables that are designed to change state over time. That’s the whole purpose of a module, to track state over time. You could go so far as to say that if you have something that you are calling a module but it does not track state in any way, it is not really a module.</p>
 
 <p>Here is an example of a module in a factory function style:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">WorkshopModule</span><span class="p">(</span><span class="nx">teacher</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">publicAPI</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">ask</span><span class="p">,</span> <span class="p">};</span>
     <span class="k">return</span> <span class="nx">publicAPI</span><span class="p">;</span>
@@ -1871,21 +1989,25 @@ will add declarations within its own scope, which is not the same scope as its i
 
 <span class="nx">workshop</span><span class="p">.</span><span class="nx">ask</span><span class="p">(</span><span class="dl">"</span><span class="s2">It's a module, right?</span><span class="dl">"</span><span class="p">);</span>
 <span class="c1">// Kyle It's a module, right?</span></code></pre></figure>
+
 <p>With the Module Factory pattern, you can create as many instances of the module and they will all have their own state. The module pattern is arguable the most prevalent and important of all code organization patterns. ~80-90% of all JavaScript that’s ever been written has used some mechanism like the module pattern as it’s code organization pattern. But, the module pattern in JavaScript is more of a syntactic hack in that it is not exactly a language feature or first-class citizen, but rather a methodology of using the tools in a way that accomplishes some end goal.</p>
 
 <h3 id="es6-modules--nodejs">ES6 Modules &amp; Node.js</h3>
 
 <p>Because the module pattern is actually not a part of JavaScript, and many wanted them to be, modules eventually found their way to the language in ES6. In the current implementation, they are still very much a WIP. The issue being that TC39 and Node.js did not communicate about how modules would be implemented at first. There have been some conversations about how to fix this, but where its landed is that to use modules in Node, you have to use a new file extension name; <code class="language-plaintext highlighter-rouge">.mjs</code>. There is a working group within Node that is trying to get full support for modules, which they will implement in phases. And at the time of writing this, Node should have pushed phase 1 of 4 of module support in Node. The ES6 module pattern looks like this:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">teacher</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="k">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">ask</span><span class="p">(</span><span class="nx">question</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">teacher</span><span class="p">,</span> <span class="nx">question</span><span class="p">);</span>
 <span class="p">};</span></code></pre></figure>
+
 <p>Because the above is a module, it is assumed that everything is private. The way you make something public is by using the <code class="language-plaintext highlighter-rouge">export</code> keyword, everything you do not export will be private. In ES6, modules are file-based. Which means it is impossible to have more than one ES6 module in the same file. Which means that for each module your application needs, you need to have a separate file for it. This can grow quickly. And since you have to compile everything back to the module format we’ve previously covered anyway, wouldn’t it make sense to just write your modules in that format and skip the compilation step?</p>
 
 <h3 id="es6-module-syntax">ES6 Module Syntax</h3>
 
 <p>To import modules into your files, there are two major styles used:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">ask</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">workshop.mjs</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="nx">ask</span><span class="p">(</span><span class="dl">"</span><span class="s2">It's a default import, right?</span><span class="dl">"</span><span class="p">);</span>
@@ -1895,6 +2017,7 @@ will add declarations within its own scope, which is not the same scope as its i
 
 <span class="nx">workshop</span><span class="p">.</span><span class="nx">ask</span><span class="p">(</span><span class="dl">"</span><span class="s2">It's a namespace import, right?</span><span class="dl">"</span><span class="p">);</span>
 <span class="c1">// Kyle It's a namespace import, right?</span></code></pre></figure>
+
 <p>The first import is known as a <code class="language-plaintext highlighter-rouge">named import</code>, the second style is known as a <code class="language-plaintext highlighter-rouge">namespace import</code> which is effectively collecting all (*) of the exports and placing them in the namespace of <code class="language-plaintext highlighter-rouge">workshop</code>. The <code class="language-plaintext highlighter-rouge">namespace import</code> is more similar to how modules have been done in JavaScript over the last 20 years, whereas the <code class="language-plaintext highlighter-rouge">named import</code> style is more of a new school thinking. Neither is right or wrong, but comes down to how you prefer to work with your modules.</p>
 
 <p>Whichever way you choose to implement your modules, the same underlying structure / purpose applies. You are organizing a set of behavior into a cohesive unit, hiding data in it and exposing a minimal necessary API. The module pattern is one of the three core pillars of JavaScript and touches everything else in a foundational way.</p>
@@ -1935,13 +2058,14 @@ will add declarations within its own scope, which is not the same scope as its i
     <p>Define the student enrollments by calling <code class="language-plaintext highlighter-rouge">deepJS.enrollStudent(..)</code> for each.</p>
   </li>
   <li>
-    <p>Change the execution code (the console output steps) to references to <code class="language-plaintext highlighter-rouge">deepJS.*</code> public API methods.<details></details></p>
-    <summary>Work from this code
-</summary>
+    <p>Change the execution code (the console output steps) to references to <code class="language-plaintext highlighter-rouge">deepJS.*</code> public API methods.</p>
   </li>
 </ol>
-<p>&lt;/summary&gt;</p>
 
+<details>
+    <summary>Work from this code
+</summary>
+    
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">currentEnrollment</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">410</span><span class="p">,</span> <span class="mi">105</span><span class="p">,</span> <span class="mi">664</span><span class="p">,</span> <span class="mi">375</span> <span class="p">];</span>
 
 <span class="kd">var</span> <span class="nx">studentRecords</span> <span class="o">=</span> <span class="p">[</span>
@@ -2039,10 +2163,15 @@ will add declarations within its own scope, which is not the same scope as its i
 	<span class="k">return</span> <span class="o">!</span><span class="nx">record</span><span class="p">.</span><span class="nx">paid</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>&lt;/details&gt;### Module Exercise Solution<details>
-    &lt;summary&gt;Click to view the solution
-&lt;/summary&gt;</details></p>
 
+</details>
+
+<h3 id="module-exercise-solution">Module Exercise Solution</h3>
+
+<details>
+    <summary>Click to view the solution
+</summary>
+    
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">deepJS</span> <span class="o">=</span> <span class="nx">defineWorkshop</span><span class="p">();</span>
 <span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">313</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Frank</span><span class="dl">"</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 <span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">410</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Suzy</span><span class="dl">"</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
@@ -2177,7 +2306,10 @@ will add declarations within its own scope, which is not the same scope as its i
     <span class="p">}</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>&lt;/details&gt;Modules are pretty important in JavaScript, maybe even in all of software development. You will get a lot of mileage out of thinking in this pattern, practicing it, trying to implement it more. Try to find opportunities to implement the module pattern!</p>
+
+</details>
+
+<p>Modules are pretty important in JavaScript, maybe even in all of software development. You will get a lot of mileage out of thinking in this pattern, practicing it, trying to implement it more. Try to find opportunities to implement the module pattern!</p>
 
 <h2 id="objects">Objects</h2>
 
@@ -2192,6 +2324,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <p>A function’s <code class="language-plaintext highlighter-rouge">this</code> references the execution context for that call, determined entirely by how the function was called. In other words, if you look at a function that has the <code class="language-plaintext highlighter-rouge">this</code> keyword in it, it is defined by how the function was called. This is counterintuitive because most people think you could look at a function and figure out what its <code class="language-plaintext highlighter-rouge">this</code> keyword is going to point out. But the definition of the function does not  matter at all, to determining the <code class="language-plaintext highlighter-rouge">this</code> keyword. The only thing that matters is how the function was invoked.</p>
 
 <p>A <code class="language-plaintext highlighter-rouge">this</code>-aware function can have a different context each time it is called, which makes it more flexible and reusable. Here is an example of the dynamic flexibility of the <code class="language-plaintext highlighter-rouge">this</code> keyword in action:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">ask</span><span class="p">(</span><span class="nx">question</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">teacher</span><span class="p">,</span> <span class="nx">question</span><span class="p">);</span>
 <span class="p">}</span>
@@ -2204,11 +2337,13 @@ will add declarations within its own scope, which is not the same scope as its i
 <span class="p">}</span>
 
 <span class="nx">otherClass</span><span class="p">();</span></code></pre></figure>
+
 <p>The <code class="language-plaintext highlighter-rouge">this</code> keyword exists so we can invoke functions in different contexts. There are four different ways to invoke a function. Each of the four ways to call a function in JavaScript will define what is the <code class="language-plaintext highlighter-rouge">this</code> keyword differently.</p>
 
 <h3 id="implicit--explicit-binding">Implicit &amp; Explicit Binding</h3>
 
 <p>The first of the four methods to invoke a function we’ll cover is implicit binding.</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">workshop</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">teacher</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">,</span>
     <span class="nx">ask</span><span class="p">(</span><span class="nx">question</span><span class="p">)</span> <span class="p">{</span>
@@ -2218,7 +2353,9 @@ will add declarations within its own scope, which is not the same scope as its i
 
 <span class="nx">workshop</span><span class="p">.</span><span class="nx">ask</span><span class="p">(</span><span class="dl">"</span><span class="s2">What is implicit binding?</span><span class="dl">"</span><span class="p">);</span>
 <span class="c1">// Kyle What is implicit binding?</span></code></pre></figure>
+
 <p>Revisiting the namespace pattern, how does the <code class="language-plaintext highlighter-rouge">this</code> keyword behave inside of this pattern? When <code class="language-plaintext highlighter-rouge">ask</code> function is invoked, how do you know what the <code class="language-plaintext highlighter-rouge">this</code> keyword will point at? Because of the ‘call site’ (workshop), the <code class="language-plaintext highlighter-rouge">this</code> keyword will point at the <code class="language-plaintext highlighter-rouge">workshop</code> object. This is exactly how the <code class="language-plaintext highlighter-rouge">this</code> binding works in other languages. This is the most intuitive form of the <code class="language-plaintext highlighter-rouge">this</code> keyword because it decides the method based upon what object you call it from. The idea of having implicit binding is useful because this is how we share behavior among different contexts. Here is another example of implicit binding where the <code class="language-plaintext highlighter-rouge">ask</code> function is being used more than once and has two different <code class="language-plaintext highlighter-rouge">this</code> contexts:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">ask</span><span class="p">(</span><span class="nx">question</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">teacher</span><span class="p">,</span> <span class="nx">question</span><span class="p">);</span>
 <span class="p">}</span>
@@ -2238,7 +2375,9 @@ will add declarations within its own scope, which is not the same scope as its i
 
 <span class="nx">workshop2</span><span class="p">.</span><span class="nx">ask</span><span class="p">(</span><span class="dl">"</span><span class="s2">How do I share a method?</span><span class="dl">"</span><span class="p">);</span>
 <span class="c1">// Suzy How do I share a method?</span></code></pre></figure>
+
 <p>In the above code, you can see that the <code class="language-plaintext highlighter-rouge">ask</code> function is being assigned to different contexts (<code class="language-plaintext highlighter-rouge">workshop1</code> <code class="language-plaintext highlighter-rouge">workshop2</code>) and because of this, the <code class="language-plaintext highlighter-rouge">this</code> keyword will point at the respective objects that it was called from. Another method to invoke functions which we’ve seen before is the <code class="language-plaintext highlighter-rouge">.call</code> method. Along with the <code class="language-plaintext highlighter-rouge">.apply</code> method, the <code class="language-plaintext highlighter-rouge">.call</code> method takes, as their first argument, a <code class="language-plaintext highlighter-rouge">this</code> keyword.</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">ask</span><span class="p">(</span><span class="nx">question</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">teacher</span><span class="p">,</span> <span class="nx">question</span><span class="p">);</span>
 <span class="p">}</span>
@@ -2256,9 +2395,11 @@ will add declarations within its own scope, which is not the same scope as its i
 
 <span class="nx">ask</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">workshop2</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Can I explicitly set context?</span><span class="dl">"</span><span class="p">);</span>
 <span class="c1">// Suzy Can I explicitly set context?</span></code></pre></figure>
+
 <p>Above, on the first <code class="language-plaintext highlighter-rouge">ask.call</code>, when you pass in <code class="language-plaintext highlighter-rouge">workshop1</code>, it is saying invoke the <code class="language-plaintext highlighter-rouge">ask</code> function with the <code class="language-plaintext highlighter-rouge">this</code> context of <code class="language-plaintext highlighter-rouge">workshop1</code>. It is similar to the implicit binding example at the beginning of this section, the function is still being shared, but it is now being done explicitly rather than implicitly. We are saying, wherever this function comes from, invoke it in this particular context, which I am going to specify. <code class="language-plaintext highlighter-rouge">.call</code> and <code class="language-plaintext highlighter-rouge">.apply</code> can be used to explicitly tell JavaScript what context to invoke a function in.</p>
 
 <p>A variation of explicit binding is called hard binding, which looks like this:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">workshop</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">teacher</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">,</span>
     <span class="nx">ask</span><span class="p">(</span><span class="nx">question</span><span class="p">)</span> <span class="p">{</span>
@@ -2271,6 +2412,7 @@ will add declarations within its own scope, which is not the same scope as its i
 
 <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">workshop</span><span class="p">.</span><span class="nx">ask</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">workshop</span><span class="p">),</span> <span class="mi">10</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Hard bound this?</span><span class="dl">"</span><span class="p">);</span>
 <span class="c1">// Kyle Hard bound this?</span></code></pre></figure>
+
 <p>The first <code class="language-plaintext highlighter-rouge">setTimeout</code> above is not the call site for <code class="language-plaintext highlighter-rouge">workshop.ask</code>, so the binding is lost and bound to the global object in this case. A common solution to this can be seen on the second <code class="language-plaintext highlighter-rouge">setTimeout</code> which hard binds the <code class="language-plaintext highlighter-rouge">workshop.ask</code> function to the <code class="language-plaintext highlighter-rouge">workshop</code> object. <em>If</em> you use <code class="language-plaintext highlighter-rouge">.bind</code> to hard bind the <code class="language-plaintext highlighter-rouge">this</code> to a particular scope, you are effectively removing the flexibility of the <code class="language-plaintext highlighter-rouge">this</code> keyword, which is not the intended purpose of the <code class="language-plaintext highlighter-rouge">this</code> keyword. If you do not need the flexibility, you may be better off refactoring your code to a module pattern which provides a fixed, predictable behavior.</p>
 
 <p>If you are only occasionally using hard binding when setting up a <code class="language-plaintext highlighter-rouge">this</code> aware function, you are probably getting enough benefit out of your code as it is written and do not need to refactor it. If you are frequently using hard binding when setting up a <code class="language-plaintext highlighter-rouge">this</code> aware function, you should probably refactor your code. If you want flexible dynamism, use a <code class="language-plaintext highlighter-rouge">this</code> keyword, if you want predictability, use closures, use lexical scope.</p>
@@ -2303,6 +2445,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <h3 id="binding-precedence">Binding Precedence</h3>
 
 <p>What if you had a [function] call site like this:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">workshop</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">teacher</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">;</span>
     <span class="nl">ask</span><span class="p">:</span> <span class="kd">function</span> <span class="nx">ask</span><span class="p">(</span><span class="nx">question</span><span class="p">)</span> <span class="p">{</span>
@@ -2311,6 +2454,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <span class="p">};</span>
 
 <span class="k">new</span> <span class="p">(</span><span class="nx">workshop</span><span class="p">.</span><span class="nx">ask</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">workshop</span><span class="p">))(</span><span class="dl">"</span><span class="s2">What does this do?</span><span class="dl">"</span><span class="p">);</span></code></pre></figure>
+
 <p>In the above code, the function <code class="language-plaintext highlighter-rouge">ask</code> is being called with <code class="language-plaintext highlighter-rouge">new</code>, a context object, <code class="language-plaintext highlighter-rouge">.bind</code>, that’s three of the ways to invoke a function being used at once. This is not a useful thing to do, but let’s look at how it works and which of the function invoke(rs?) takes precedence. The order of binding precedence is as follows:</p>
 
 <ol>
@@ -2333,6 +2477,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <p>But what about arrow functions and the <code class="language-plaintext highlighter-rouge">this</code> keyword?! Lexical <code class="language-plaintext highlighter-rouge">this</code> occurs. But what is lexical <code class="language-plaintext highlighter-rouge">this</code>? An arrow functions <code class="language-plaintext highlighter-rouge">this</code> is not hardbound to its parents <code class="language-plaintext highlighter-rouge">this</code>, the correct way to think about what an arrow function does is; An arrow function does not define a <code class="language-plaintext highlighter-rouge">this</code> keyword at all. So if you put a <code class="language-plaintext highlighter-rouge">this</code> keyword inside of an arrow function, it will behave just like every other variable, which in this case means that it will resolve itself to a scope that does define a <code class="language-plaintext highlighter-rouge">this</code> keyword. The [JavaScript] spec states: An arrow function does not define local bindings for arguments, super, this, or new.target. Any reference to arguments, super, this, or new.target within an arrow function must resolve to a binding in a lexically enclosing environment.</p>
 
 <h3 id="resolving-this-in-arrow-functions">Resolving this in Arrow Functions</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">workshop</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">teacher</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">,</span>
     <span class="na">ask</span><span class="p">:</span> <span class="p">(</span><span class="nx">question</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -2345,6 +2490,7 @@ will add declarations within its own scope, which is not the same scope as its i
 
 <span class="nx">workshop</span><span class="p">.</span><span class="nx">ask</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">workshop</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Still no 'this'?:</span><span class="dl">"</span><span class="p">);</span>
 <span class="c1">// undefined Still no 'this'?</span></code></pre></figure>
+
 <p>Ummm… why is <code class="language-plaintext highlighter-rouge">this</code> returning undefined? Well, what is the parent scope for the <code class="language-plaintext highlighter-rouge">ask</code> function in the above code? Did you guess global? If you did, that is correct; the <code class="language-plaintext highlighter-rouge">workshop</code> object is not a scope, it is an object, so the <code class="language-plaintext highlighter-rouge">ask</code> function would look in the global scope for <code class="language-plaintext highlighter-rouge">this</code>, which in this case is in fact undefined. 😞</p>
 
 <p>It is recommended that the <em>only</em> time you should use an arrow function is when you will benefit from the lexical <code class="language-plaintext highlighter-rouge">this</code> behavior. The only alternative is a <em>hack</em> such as <code class="language-plaintext highlighter-rouge">var self = this;</code>. Which is not a good alternative because the <code class="language-plaintext highlighter-rouge">this</code> keyword never points at a function but at a context, so if you absolutely must do the <code class="language-plaintext highlighter-rouge">var self = this;</code> hack, it is probably better to write it as <code class="language-plaintext highlighter-rouge">var context = this;</code>. (Preference of the instructor, may help readability) But really, the purpose, or function, of the arrow function should be to adopt the <code class="language-plaintext highlighter-rouge">this</code> of a parent scope.</p>
@@ -2381,13 +2527,14 @@ will add declarations within its own scope, which is not the same scope as its i
     <p>Change all internal function references and references to the data  arrays to use the <code class="language-plaintext highlighter-rouge">this</code> keyword prefix.</p>
   </li>
   <li>
-    <p>Make sure any place where a <code class="language-plaintext highlighter-rouge">this</code>-aware callback is passed is hard-bound with <code class="language-plaintext highlighter-rouge">bind(..)</code>. Don’t <code class="language-plaintext highlighter-rouge">bind(..)</code> a function reference if it’s not <code class="language-plaintext highlighter-rouge">this</code>-aware.<details></details></p>
-    <summary>Work from this code
-</summary>
+    <p>Make sure any place where a <code class="language-plaintext highlighter-rouge">this</code>-aware callback is passed is hard-bound with <code class="language-plaintext highlighter-rouge">bind(..)</code>. Don’t <code class="language-plaintext highlighter-rouge">bind(..)</code> a function reference if it’s not <code class="language-plaintext highlighter-rouge">this</code>-aware.</p>
   </li>
 </ol>
-<p>&lt;/summary&gt;</p>
 
+<details>
+    <summary>Work from this code
+</summary>
+    
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">deepJS</span> <span class="o">=</span> <span class="nx">defineWorkshop</span><span class="p">();</span>
 
 <span class="nx">deepJS</span><span class="p">.</span><span class="nx">addStudent</span><span class="p">(</span><span class="mi">311</span><span class="p">,</span><span class="dl">"</span><span class="s2">Frank</span><span class="dl">"</span><span class="p">,</span><span class="cm">/*paid=*/</span><span class="kc">true</span><span class="p">);</span>
@@ -2527,10 +2674,15 @@ will add declarations within its own scope, which is not the same scope as its i
 	<span class="p">}</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>&lt;/details&gt;### this Exercise Solution<details>
-    &lt;summary&gt;Click to view the solution
-&lt;/summary&gt;</details></p>
 
+</details>
+
+<h3 id="this-exercise-solution">this Exercise Solution</h3>
+
+<details>
+    <summary>Click to view the solution
+</summary>
+    
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// ********************************</span>
 
 <span class="kd">var</span> <span class="nx">deepJS</span> <span class="o">=</span>  <span class="p">{</span>
@@ -2641,7 +2793,10 @@ will add declarations within its own scope, which is not the same scope as its i
 	Henry (105): Not Paid
 */</span></code></pre></figure>
 
-<p>&lt;/details&gt;Q: Would you [instructor] use this type of namespace object with so many functions in practice?</p>
+
+</details>
+
+<p>Q: Would you [instructor] use this type of namespace object with so many functions in practice?</p>
 
 <p>A: If I am going to create a namespace(d) object, the only reason I am going to use this approach (instead of the module approach) is when I know that I have two or three objects that I want to link through a prototype chain and have them work with each other.</p>
 
@@ -2652,6 +2807,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <h3 id="es6-class-keyword">ES6 class Keyword</h3>
 
 <p>The class pattern is by far the most prevalent used in JavaScript. The class system is syntactic sugar layered on top of the prototype system. The class pattern looks like this:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">class</span> <span class="nx">Workshop</span> <span class="p">{</span>
     <span class="kd">constructor</span><span class="p">(</span><span class="nx">teacher</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">teacher</span> <span class="o">=</span> <span class="nx">teacher</span><span class="p">;</span>
@@ -2669,7 +2825,9 @@ will add declarations within its own scope, which is not the same scope as its i
 
 <span class="nx">reactJS</span><span class="p">.</span><span class="nx">ask</span><span class="p">(</span><span class="dl">"</span><span class="s2">Is this class OK?</span><span class="dl">"</span><span class="p">);</span>
 <span class="c1">// Suzy Is this class OK?</span></code></pre></figure>
+
 <p>Classes don’t have to be statements, they can be expressions and they can be anonymous. Classes can be defined with or without an extends clause. In the above code a class is being defined, nothing is being extended. You can choose to define a <code class="language-plaintext highlighter-rouge">constructor</code> and you can add methods (no comma needed). If you want to extend a class, it could look something like this:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">class</span> <span class="nx">Workshop</span> <span class="p">{</span>
     <span class="kd">constructor</span><span class="p">(</span><span class="nx">teacher</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">teacher</span> <span class="o">=</span> <span class="nx">teacher</span><span class="p">;</span>
@@ -2689,6 +2847,7 @@ will add declarations within its own scope, which is not the same scope as its i
 
 <span class="nx">JSRecentParts</span><span class="p">.</span><span class="nx">speakUp</span><span class="p">(</span><span class="dl">"</span><span class="s2">Are classes getting any better?</span><span class="dl">"</span><span class="p">);</span>
 <span class="c1">// Kyle Are classes getting any better?</span></code></pre></figure>
+
 <p>If you have a child class that extends the a method of the same name in its parent class, you can refer to the parent from the child by using <code class="language-plaintext highlighter-rouge">super.</code>; i.e. <code class="language-plaintext highlighter-rouge">super.ask...</code>. If you pay attention to the [JavaScript] spec, classes have a lot of features coming down the pipeline, almost making them a language inside of a language, not just syntactic sugar. Class methods are not auto-bound to the <code class="language-plaintext highlighter-rouge">this</code> keyword. The entire class system is built on the idea that your methods do not exist on their instances, but on your prototypes.</p>
 
 <h3 id="fixing-this-in-classes">Fixing this in Classes</h3>
@@ -2711,13 +2870,14 @@ will add declarations within its own scope, which is not the same scope as its i
     <p>Define a class called <code class="language-plaintext highlighter-rouge">Workshop</code> that extends <code class="language-plaintext highlighter-rouge">Helpers</code>, which includes all the other functions. Hint: <code class="language-plaintext highlighter-rouge">constructor()</code> and <code class="language-plaintext highlighter-rouge">super()</code>.</p>
   </li>
   <li>
-    <p>Instantiate the <code class="language-plaintext highlighter-rouge">Workshop</code> class as <code class="language-plaintext highlighter-rouge">deepJS</code>.<details></details></p>
-    <summary>Work from this code
-</summary>
+    <p>Instantiate the <code class="language-plaintext highlighter-rouge">Workshop</code> class as <code class="language-plaintext highlighter-rouge">deepJS</code>.</p>
   </li>
 </ol>
-<p>&lt;/summary&gt;</p>
 
+<details>
+    <summary>Work from this code
+</summary>
+    
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">deepJS</span> <span class="o">=</span> <span class="p">{</span>
 	<span class="na">currentEnrollment</span><span class="p">:</span> <span class="p">[],</span>
 	<span class="na">studentRecords</span><span class="p">:</span> <span class="p">[],</span>
@@ -2829,10 +2989,15 @@ will add declarations within its own scope, which is not the same scope as its i
 	Henry (105): Not Paid
 */</span></code></pre></figure>
 
-<p>&lt;/details&gt;### class Exercise Solution<details>
-    &lt;summary&gt;Click to view the solution
-&lt;/summary&gt;</details></p>
 
+</details>
+
+<h3 id="class-exercise-solution">class Exercise Solution</h3>
+
+<details>
+    <summary>Click to view the solution
+</summary>
+    
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">class</span> <span class="nx">Helpers</span> <span class="p">{</span>
 
     <span class="nx">sortByNameAsc</span><span class="p">(</span><span class="nx">record1</span><span class="p">,</span><span class="nx">record2</span><span class="p">){</span>
@@ -2954,9 +3119,12 @@ will add declarations within its own scope, which is not the same scope as its i
 	Henry (105): Not Paid
 */</span></code></pre></figure>
 
-<p>&lt;/details&gt;## Prototypes</p>
 
-<h3 id="prototypes">Prototypes</h3>
+</details>
+
+<h2 id="prototypes">Prototypes</h2>
+
+<h3 id="prototypes-1">Prototypes</h3>
 
 <p>Now that we have learned what the syntactic sugar layer looks like, lets look under the hood and find out how the prototype system that classes are layered on top of actually works. First observation: Objects that exist in our programs that we can see, have created, or that we interact with are always created by ‘constructor calls’ (via <code class="language-plaintext highlighter-rouge">new</code>). When you use <code class="language-plaintext highlighter-rouge">new</code> in front of a function call, JavaScript is constructing an object to be used for <code class="language-plaintext highlighter-rouge">this</code> binding of that function call. The following statement is not <em>entirely</em> correct:</p>
 
@@ -2967,6 +3135,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <p>Speaking of inheritance, a parent / child relationship between classes is also fundamentally a copy operation as previously described. One small caveat to the idea of creating a copy… JavaScript doesn’t do any copying… To properly describe what is happening when a constructor call makes an object, it doesn’t make it ‘based-on’ the prototype, it makes it <strong>linked to</strong> the prototype. Some would argue that copy vs link is just two sides of the same coin, but copying and linking are fundamentally opposite to one another. The difference between them can completely change based on whether your mental model is all about copying vs linking. The difference matters because when your program breaks, why did it break? It broke because you had a divergence from what you thought your program was doing, your mental model, and what the system was actually doing. If you are thinking copying and it is doing linking, what do you think is going to happen? BUGS!</p>
 
 <h3 id="prototypal-class">Prototypal Class</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">Workshop</span><span class="p">(</span><span class="nx">teacher</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">teacher</span> <span class="o">=</span> <span class="nx">teacher</span><span class="p">;</span>
 <span class="p">}</span>
@@ -2983,6 +3152,7 @@ will add declarations within its own scope, which is not the same scope as its i
 
 <span class="nx">reactJS</span><span class="p">.</span><span class="nx">ask</span><span class="p">(</span><span class="dl">"</span><span class="s2">Isn't 'prototype' ugly?</span><span class="dl">"</span><span class="p">);</span>
 <span class="c1">// Suzy Isn't 'prototype' ugly?</span></code></pre></figure>
+
 <p>Underneath the syntactic sugar of <code class="language-plaintext highlighter-rouge">class</code> is the <code class="language-plaintext highlighter-rouge">prototype</code>, which looks quite similar. This is useful for our understanding of how classes work.</p>
 
 <h3 id="the-prototype-chain">The Prototype Chain</h3>
@@ -2996,6 +3166,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <p><img src="../../assets/img/frontend-masters/prototype-chain.png" alt="alt text" title="Prototype Chain Diagram" /></p>
 
 <h3 id="dunder-prototypes">Dunder Prototypes</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">Workshop</span><span class="p">(</span><span class="nx">teacher</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">teacher</span> <span class="o">=</span> <span class="nx">teacher</span><span class="p">;</span>
 <span class="p">}</span>
@@ -3009,6 +3180,7 @@ will add declarations within its own scope, which is not the same scope as its i
 
 <span class="nx">deepJS</span><span class="p">.</span><span class="nx">__proto__</span> <span class="o">===</span> <span class="nx">Workshop</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span> <span class="c1">// true</span>
 <span class="nb">Object</span><span class="p">.</span><span class="nx">getPrototypeOf</span><span class="p">(</span><span class="nx">deepJS</span><span class="p">)</span> <span class="o">===</span> <span class="nx">Workshop</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span> <span class="c1">// true</span></code></pre></figure>
+
 <p>How is it possible to set the <code class="language-plaintext highlighter-rouge">constructor</code> property of <code class="language-plaintext highlighter-rouge">deepJS</code> when that property does not exist? Because while the object <code class="language-plaintext highlighter-rouge">deepJS</code> does not have the constructor, the prototype chain points to the original object which does have a <code class="language-plaintext highlighter-rouge">constructor</code> property that <code class="language-plaintext highlighter-rouge">deepJS</code> can use. The <code class="language-plaintext highlighter-rouge">.__proto__</code> on <code class="language-plaintext highlighter-rouge">deepJS</code> is what is referred to as a ‘Dunder Prototype’, <strong>underscore underscore proto underscore underscore = double underscore proto = dunder proto</strong>. <code class="language-plaintext highlighter-rouge">deepJS</code> does not have a dunder prototype on it, nor does what it is  directly linked to <code class="language-plaintext highlighter-rouge">Workshop.prototype</code>, and what <code class="language-plaintext highlighter-rouge">Workshop.prototype</code> is linked to <code class="language-plaintext highlighter-rouge">object.prototype</code> also does not have a dunder prototype, but it does have a getter that is dunder prototype.</p>
 
 <h3 id="this--prototypes-qa">this &amp; prototypes Q&amp;A</h3>
@@ -3034,6 +3206,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <p><strong>A:</strong> Regular functions have prototypes, arrow functions do not.</p>
 
 <h3 id="shadowing-prototypes">Shadowing Prototypes</h3>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">Workshop</span><span class="p">(</span><span class="nx">teacher</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">teacher</span> <span class="o">=</span> <span class="nx">teacher</span><span class="p">;</span>
 <span class="p">}</span>
@@ -3048,7 +3221,9 @@ will add declarations within its own scope, which is not the same scope as its i
 <span class="p">};</span>
 
 <span class="nx">deepJS</span><span class="p">.</span><span class="nx">ask</span><span class="p">(</span><span class="dl">"</span><span class="s2">Oops, is this infinite recursion?</span><span class="dl">"</span><span class="p">);</span></code></pre></figure>
+
 <p>If you were to do the above, add a <code class="language-plaintext highlighter-rouge">ask</code> to <code class="language-plaintext highlighter-rouge">deepJS</code>, what would happen? This would be considered ‘shadowing’, two different levels of the prototype chain with the exact same property. When in <code class="language-plaintext highlighter-rouge">deepJS.ask</code>, what would the <code class="language-plaintext highlighter-rouge">this</code> point to? The answer of course depends on where the call site is, and in this case, when you call <code class="language-plaintext highlighter-rouge">deepJS.ask</code>, the implicit binding will bind the <code class="language-plaintext highlighter-rouge">this</code> to deepJS. So, the code is effectively recalling <code class="language-plaintext highlighter-rouge">deepJS.ask</code> again, which results in infinite recursion and stack overflow. The <code class="language-plaintext highlighter-rouge">this.</code> does not work in place of a <code class="language-plaintext highlighter-rouge">super()</code>. If you intended to go up one level in the prototype chain to <code class="language-plaintext highlighter-rouge">Workshop</code>, how would you do that? <code class="language-plaintext highlighter-rouge">__proto__</code> (dunder proto)!</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">Workshop</span><span class="p">(</span><span class="nx">teacher</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">teacher</span> <span class="o">=</span> <span class="nx">teacher</span><span class="p">;</span>
 <span class="p">}</span>
@@ -3064,11 +3239,13 @@ will add declarations within its own scope, which is not the same scope as its i
 
 <span class="nx">deepJS</span><span class="p">.</span><span class="nx">ask</span><span class="p">(</span><span class="dl">"</span><span class="s2">Is this fake polymorphism?</span><span class="dl">"</span><span class="p">);</span>
 <span class="c1">// Kyle Is THIS FAKE POLYMORPHISM?</span></code></pre></figure>
+
 <p>If you left out the <code class="language-plaintext highlighter-rouge">.call</code>, the above code would point to <code class="language-plaintext highlighter-rouge">Workshop</code>. So doing the above would allow you to go one level up the prototype chain and then invoke it in our <code class="language-plaintext highlighter-rouge">this</code> context. When you try to shadow without using the class system, when you are in prototypes and you try to shadow, you end up creating this complete breakage. So why would you shadow in the first place? Because shadowing is how you do polymorphism. In class design theory, the whole point of having a child class is so you can inherit something from the parent, override it and then call <code class="language-plaintext highlighter-rouge">super</code> to access the parent version of it, to extend it.</p>
 
 <h3 id="prototypal-inheritance">Prototypal Inheritance</h3>
 
 <p>If you wanted to do a true sort of child class in the prototypal style, you’d do something like this:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">Workshop</span><span class="p">(</span><span class="nx">teacher</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">teacher</span> <span class="o">=</span> <span class="nx">teacher</span><span class="p">;</span>
 <span class="p">}</span>
@@ -3088,6 +3265,7 @@ will add declarations within its own scope, which is not the same scope as its i
 
 <span class="nx">JSRecentParts</span><span class="p">.</span><span class="nx">speakUp</span><span class="p">(</span><span class="dl">"</span><span class="s2">Is this actually inheritance?</span><span class="dl">"</span><span class="p">)</span>
 <span class="c1">// Kyle IS THIS ACTUALLY INHERITANCE?</span></code></pre></figure>
+
 <p>In the above code, the way you make <code class="language-plaintext highlighter-rouge">AnotherWorkshop</code> extend or inherit from <code class="language-plaintext highlighter-rouge">Workshop</code> is seen on the line where <code class="language-plaintext highlighter-rouge">Object.create</code> is called. This is changing the initial [prototype] link of <code class="language-plaintext highlighter-rouge">AnotherWorkshop</code> to that of <code class="language-plaintext highlighter-rouge">Workshop</code>. <code class="language-plaintext highlighter-rouge">Object.create</code> does two things:</p>
 
 <ol>
@@ -3120,6 +3298,7 @@ will add declarations within its own scope, which is not the same scope as its i
 <p>OLOO - Objects Linked to Other Objects</p>
 
 <p>Here is an OLOO style block of code:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">Workshop</span> <span class="o">=</span> <span class="p">{</span>
     <span class="nx">setTeacher</span><span class="p">(</span><span class="nx">teacher</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">teacher</span> <span class="o">=</span> <span class="nx">teacher</span><span class="p">;</span>
@@ -3141,7 +3320,9 @@ will add declarations within its own scope, which is not the same scope as its i
 <span class="nx">JSRecentParts</span><span class="p">.</span><span class="nx">setTeacher</span><span class="p">(</span><span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">);</span>
 <span class="nx">JSRecentParts</span><span class="p">.</span><span class="nx">speakUp</span><span class="p">(</span><span class="dl">"</span><span class="s2">But isn't this cleaner?</span><span class="dl">"</span><span class="p">);</span>
 <span class="c1">// Kyle But isn't this cleaner?</span></code></pre></figure>
+
 <p>Everything is an object! And all of the linking between the objects is happening thanks to <code class="language-plaintext highlighter-rouge">Object.create</code>. But how does <code class="language-plaintext highlighter-rouge">Object.create</code> make the magic? Take a look at this <code class="language-plaintext highlighter-rouge">Object.create</code> polyfill for some insight.</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">)</span> <span class="p">{</span>
     <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">function</span> <span class="nx">F</span><span class="p">()</span> <span class="p">{}</span>
@@ -3149,11 +3330,13 @@ will add declarations within its own scope, which is not the same scope as its i
         <span class="k">return</span> <span class="k">new</span> <span class="nx">F</span><span class="p">();</span>
     <span class="p">};</span>
 <span class="p">}</span></code></pre></figure>
+
 <p>The polyfill makes an empty function, sets its prototype to ‘o’ and calls new on whatever function to give us the newly created object. Essentially, <code class="language-plaintext highlighter-rouge">Object.create</code> takes all of the constructor functions, <code class="language-plaintext highlighter-rouge">.prototype</code>(s), and <code class="language-plaintext highlighter-rouge">new</code> keywords and hides them inside of <code class="language-plaintext highlighter-rouge">Object.create</code>, which leaves just a clean, simple linkage between objects.</p>
 
 <h3 id="delegation-oriented-design">Delegation-Oriented Design</h3>
 
 <p>The Delegation design pattern does not consider parent / child relationships, but peer-to-peer. If you were working on a Login Page that required a couple of objects, one for authentication and another for the UI, a delegation design pattern would handle this in the following way:</p>
+
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">AuthController</span> <span class="o">=</span> <span class="p">{</span>
     <span class="nx">authenticate</span><span class="p">()</span> <span class="p">{</span>
         <span class="nx">server</span><span class="p">.</span><span class="nx">authenticate</span><span class="p">(</span>
@@ -3177,6 +3360,7 @@ will add declarations within its own scope, which is not the same scope as its i
             <span class="nx">alert</span><span class="p">(</span><span class="nx">msg</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">});</span></code></pre></figure>
+
 <p>The above two objects <code class="language-plaintext highlighter-rouge">AuthController</code> and <code class="language-plaintext highlighter-rouge">LoginFormController</code> are linked through the prototype chain, so when one needs something from the other, it can find it and they can work together. One of the many benefits of this linking is that your code is more testable.</p>
 
 <h2 id="wrapping-up">Wrapping Up</h2>
