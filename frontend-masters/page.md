@@ -4,7 +4,7 @@ description: These are the links to notes from the Frontend Masters workshops I 
 permalink: /frontend-masters/
 
 layout: post
-sidenav: Frontend Masters Workshop Notes
+sidenav: frontend-masters-workshop-notes
 subnav:
   - text: JavaScript
     href: '#javascript'
@@ -38,7 +38,8 @@ Organized by subject.
 
 ## React
 
-<!-- [ -->
+[//]: # ([)
+
     11/2020 **IN PROGRESS** Complete Intro to React, v5
 
-<!-- ](complete-intro-react.md) -->
+[//]: # (](complete-intro-react.md))
