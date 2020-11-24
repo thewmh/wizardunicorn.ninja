@@ -60,19 +60,23 @@ body {
     }
 }
 
-.usa-header-extended {
+.usa-header {
 
-    .usa-logo {
-        margin-bottom: 0;
-    }
-
-    .usa-logo-img {
-        
-        @include media($nav-width) {
-            height: 8rem;
-          }
+    .usa-header-extended {
+    
+        .usa-logo {
+            margin-bottom: 0;
+        }
+    
+        .usa-logo-img {
+            
+            @include media($nav-width) {
+                height: 8rem;
+              }
+        }
     }
 }
+
 
 @include media($large-screen){
 
