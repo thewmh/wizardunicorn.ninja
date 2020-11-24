@@ -21,8 +21,8 @@ type: extended
 # Configuration for site header logo
 # If the logo is external add external: true
 logo:
-  src: /assets/img/hztl-wm.svg
-  alt: HZTL-WM
+  src: /assets/img/wizardunicornninja.svg
+  alt: Wizard Unicorn Ninja
   # external: true
 
 # this is a key into _data/navigation.yml
