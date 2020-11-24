@@ -5,7 +5,7 @@ theme: null
 # GitHub information
 # This is used for adding an edit this page link to the footer
 github_info:
-  repository: hztl-wm
+  repository: wizardunicorn.ninja
   default_branch: main
 
 # Configuration for setting the site width to 100%

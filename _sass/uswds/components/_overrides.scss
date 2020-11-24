@@ -63,6 +63,18 @@ body {
 
 @include media($large-screen){
 
+    .usa-header-extended {
+
+        .usa-logo {
+            margin-bottom: 0;
+        }
+        
+        .usa-logo-img {
+            height: 8rem;
+        }
+    }
+
+
     .usa-nav-primary {
 
         button {
