@@ -25,21 +25,7 @@ primary:
   - text: Resources
     href: /resources/
   - text: Frontend Masters Workshop Notes
-    links:
-      - text: "Javascript: From Fundamentals to Functional JS"
-        href: /frontend-masters/fundamentals-functional-js
-      - text: "Javascript: The Hard Parts, v2"
-        href: /frontend-masters/hard-parts-js
-      - text: "Deep Javascript Foundations, v3"
-        href: /frontend-masters/deep-javascript-foundations
-      - text: "Webpack 4 Fundamentals"
-        href: /frontend-masters/webpack-4-fundamentals
-      - text: "Web Performance with Webpack"
-        href: /frontend-masters/web-performance-webpack
-      - text: "Webpack Plugins System"
-        href: /frontend-masters/webpack-plugins-system
-      # - text: "Complete Intro to React, v5"
-      #   href: /frontend-masters/complete-intro-react
+    href: /frontend-masters/
   - text: Sitecore Workshop Notes
     links:
       - text: "Sitecore JSS Fundamentals"

@@ -3,7 +3,7 @@ title: Home
 permalink: /
 
 layout: home
-intro: |
+intro: | 
 ---
 
 <h1>👋 I'm William Harrison</h1>
