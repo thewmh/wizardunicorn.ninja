@@ -40,6 +40,6 @@ Organized by subject.
 
 [//]: # ([)
 
-    11/2020 **IN PROGRESS** Complete Intro to React, v5
+11/2020 **IN PROGRESS** Complete Intro to React, v5
 
 [//]: # (](complete-intro-react.md))
