@@ -127,11 +127,36 @@
   <p><em>“It’s pretty, that’s why I do it”</em></p>
 </blockquote>
 
-<p>There may also be an argument for reducing cognitive overhead, because ligatures combine character pairs, making then into one character instead of two… Anyway, Brian is using the font called ‘Dank Mono’. He did not name it. Before we continue, head off to <a href="https://dank.sh">dank.sh</a> and buy their ‘Dank Mono’ font. It will only set you back ~$50, but the upside is you get an awesome font and Brian gets a nice little kickback (even though he insists he does not). If you don’t want to shell out ~$50, you can get a free font that has ligatures, <a href="https://github.com/tonsky/FiraCode">FiraCode</a>. Then Brian shows you how to install and use your fancy new font and what happens if you disable ligatures. 🤯</p>
+<p>There may also be an argument for reducing cognitive overhead, because ligatures combine character pairs, making them into one character instead of two… Anyway, Brian is using the font called ‘Dank Mono’. He did not name it. Before we continue, head off to <del><a href="https://dank.sh">dank.sh</a></del> <a href="https://gumroad.com/l/dank-mono">gumroad?</a> and buy their ‘Dank Mono’ font. It will only set you back ~$50, but the upside is you get an awesome font and Brian gets a nice little kickback (even though he insists he does not). If you don’t want to shell out ~$50, you can get a free font that has ligatures, <a href="https://github.com/tonsky/FiraCode">FiraCode</a>. Then Brian shows you how to install and use your fancy new font and what happens if you disable ligatures. 🤯</p>
 
 <h2 id="pure-react">Pure React</h2>
 
 <h3 id="getting-started-with-pure-react">Getting Started with Pure React</h3>
+
+<p>Ok, for real this time, put this into the inline <code class="language-plaintext highlighter-rouge">&lt;script&gt;</code> tag in your <code class="language-plaintext highlighter-rouge">index.html</code> file:</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;script&gt;</span>
+    <span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span>
+            <span class="dl">"</span><span class="s2">div</span><span class="dl">"</span><span class="p">,</span>
+            <span class="p">{},</span>
+            <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">h1</span><span class="dl">"</span><span class="p">,</span> <span class="p">{},</span> <span class="dl">"</span><span class="s2">Adopt Me!</span><span class="dl">"</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">};</span>
+<span class="nt">&lt;/script&gt;</span></code></pre></figure>
+
+<p>What we’ve done is create a component called ‘App’. In this case, the component is just returning a function, in this case the result of <code class="language-plaintext highlighter-rouge">React.createElement</code>. But what is <code class="language-plaintext highlighter-rouge">createElement</code>? What is <code class="language-plaintext highlighter-rouge">App</code>? Think of <code class="language-plaintext highlighter-rouge">App</code> as if it were a rubber stamp. If used, our ‘rubber stamp’ can make many impressions of the design that is carved on it, if not used, it is just a rubber stamp. So far, all we have done is create the ‘rubber stamp’. <code class="language-plaintext highlighter-rouge">.createElement</code> is like stamping something; i.e. anytime <code class="language-plaintext highlighter-rouge">App</code> gets called, <code class="language-plaintext highlighter-rouge">.createElement</code> is going to ‘stamp<code class="language-plaintext highlighter-rouge"> a </code>&lt;div&gt;<code class="language-plaintext highlighter-rouge"> and inside of that </code>.createElement<code class="language-plaintext highlighter-rouge"> is going to 'stamp</code> an <code class="language-plaintext highlighter-rouge">&lt;h1&gt;</code>. And that is the basis of everything in React, it is just returning markup. So now that we have <code class="language-plaintext highlighter-rouge">App</code>, we need to actually use it somewhere. So add this to the bottom of your script tag:</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;script&gt;</span>
+    <span class="c1">//...</span>
+    <span class="nx">ReactDOM</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="nx">App</span><span class="p">),</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">root</span><span class="dl">"</span><span class="p">));</span>
+<span class="nt">&lt;/script&gt;</span></code></pre></figure>
+
+<p>The new line we’ve just added will actually ‘stamp’ our <code class="language-plaintext highlighter-rouge">App</code> into the DOM. <code class="language-plaintext highlighter-rouge">React.createElement</code> can either take in a component, as we’ve seen with the last thing added to the <code class="language-plaintext highlighter-rouge">&lt;script&gt;</code> tag, or it can take a series of arguments to output to the DOM, as was the case with the first part of the <code class="language-plaintext highlighter-rouge">&lt;script&gt;</code> tag at the beginning of this section. If you now check your <code class="language-plaintext highlighter-rouge">index.html</code> file in your browser, you will see a fancy logo. Don’t be too confused by how fancy the <code class="language-plaintext highlighter-rouge">&lt;h1&gt;</code> is, the CSS file wee downloaded earlier is doing some magic to replace the original text with a logo.</p>
+
+<p>Brian declares this workshop is over and walks off camera. JKLOL.</p>
+
+<p>At its simplest, this is really what React is; taking a component and using it. The power here is that you can make components that you put inside of components that you put inside of components that you put inside of components. React gives you a composability model.</p>
 
 <h3 id="createelement-arguments">createElement Arguments</h3>
 
