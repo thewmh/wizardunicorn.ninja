@@ -17,12 +17,13 @@
 # Header types can be 'basic', 'basic-mega', 'extended' or 'extended-mega'.
 # https://designsystem.digital.gov/components/headers/
 type: extended
+title: Wizard Unicorn Ninja
 
 # Configuration for site header logo
 # If the logo is external add external: true
 logo:
   src: /assets/img/hztl-wm.svg
-  alt: Wizard Unicorn Ninja
+  alt: Wizard Unicorn Ninja Logo
   # external: true
 
 # this is a key into _data/navigation.yml
