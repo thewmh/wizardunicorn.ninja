@@ -41,7 +41,7 @@
               {%- assign section_links = site.data.navigation[_section.links] | default: _section.links -%}
               {%- assign _section_id = _section.id -%}
               {%- unless _section_id -%}{%- assign _section_id = 'nav-' | append: forloop.index -%}{%- endunless -%}
-            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="{{ _section_id }}">
+            <button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="{{ _section_id }}" alt="{{ _section.text }}" title="{{ _section.text }}">
               <span>{{ _section.text }}</span>
             </button>
             {%- if header.type == 'basic' or header.type == 'extended' -%}
@@ -60,7 +60,7 @@
                   {%- endif -%}
                 {%- endif -%}
                 <li>
-                  <a href="{%- if _link.external -%}{{ _link.href }}{%- else -%}{{ _link.href | relative_url }}{%- endif -%}">{{ _link.text }}</a>
+                  <a href="{%- if _link.external -%}{{ _link.href }}{%- else -%}{{ _link.href | relative_url }}{%- endif -%}" title="{{ _link.text }}" alt="{{ _link.text }}">{{ _link.text }}</a>
                 </li>
                 {%- if header.type == 'basic-mega' or header.type == 'extended-mega' -%}
                   {%- if modulo == '0' or forloop.last -%}
