@@ -91,6 +91,25 @@
 <span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span></code></pre></figure>
 
+<p>You can see the entire Emmet cheatsheet at <a href="https://emmet.io">emmet.io</a>. And Emmet is not just for VS Code, you can use Emmet with Sublime and maybe other editors as well. Update the <code class="language-plaintext highlighter-rouge">&lt;title&gt;</code> of your page to ‘Adopt Me!’ (or whatever you like). Inside the <code class="language-plaintext highlighter-rouge">&lt;body&gt;</code> of you page, add:</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"root"</span><span class="nt">&gt;</span>not rendered<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://unpkg.com/react@16.8.4/umd/react.development.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://unpkg.com/react-dom@16.8.4/umd/react-dom.development.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+    <span class="c1">// your code will go here, for now</span>
+<span class="nt">&lt;/script&gt;</span></code></pre></figure>
+
+<p>BTW Emmet is a very powerful tool, but Brian mostly uses the lazy abbreviations; to make the <code class="language-plaintext highlighter-rouge">&lt;div&gt;</code> with the ‘root’ id, just type <code class="language-plaintext highlighter-rouge">#root</code> and hit tab, Emmet will do the rest. The ‘not rendered’ text in the root div is there to let you know if there is an issue with React, because if everything is working as expected, the contents of that div should be replaced. The first script tag is grabbing React from unpkg’s CDN so you can have access to React as a top-level variable, AKA you can use React. The second script tag grabs React DOM which allows you to render React to the browser. But why are there two packages? Because React Native and React DOM both share the React package.</p>
+
+<p>And the final script tag is an example of something that you should never do, write JavaScript directly inside of your HTML, but Brian wants you to do this so that you can see how bare-bones you can implement React. Open the index.html file in your favorite browser. You should see ‘not rendered’ appear. Cool. If you check the console in the browser and type <code class="language-plaintext highlighter-rouge">React</code> or <code class="language-plaintext highlighter-rouge">ReactDOM</code> you will be able to see the objects that were received from the files that were downloaded from the CDN.</p>
+
+<p>Surprisingly, this course is not about CSS, so there is a pre-made CSS file for you to use for this workshop, you can <a href="https://raw.githubusercontent.com/btholt/complete-intro-to-react-v5/master/src/style.css">grab the CSS file here</a>. Save that CSS file in your <code class="language-plaintext highlighter-rouge">src</code> folder (the easiest way being to hit ⌘+A to select all, ⌘+C to copy it, make a <code class="language-plaintext highlighter-rouge">style.css</code> file in your <code class="language-plaintext highlighter-rouge">src</code> folder, then ⌘+V to paste the copied CSS into the <code class="language-plaintext highlighter-rouge">styles.css</code> file). Now add it to the <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code> of your <code class="language-plaintext highlighter-rouge">index.html</code> file:</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"style.css"</span><span class="nt">&gt;</span></code></pre></figure>
+
+<p>If you reload the <code class="language-plaintext highlighter-rouge">index.html</code> file in your browser, you will see the CSS has made your page look pretty!</p>
+
 <h3 id="a-note-on-the-course-font">A Note on the Course Font</h3>
 
 <h2 id="pure-react">Pure React</h2>
