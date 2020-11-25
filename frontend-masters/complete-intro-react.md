@@ -50,6 +50,33 @@ In your code editor, create a new folder in your project folder, here the name i
 
 {% endhighlight %}
 
+You can see the entire Emmet cheatsheet at [emmet.io](https://emmet.io). And Emmet is not just for VS Code, you can use Emmet with Sublime and maybe other editors as well. Update the `<title>` of your page to 'Adopt Me!' (or whatever you like). Inside the `<body>` of you page, add:
+
+{% highlight html %}
+
+<div id="root">not rendered</div>
+<script src="https://unpkg.com/react@16.8.4/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@16.8.4/umd/react-dom.development.js"></script>
+<script>
+    // your code will go here, for now
+</script>
+
+{% endhighlight %}
+
+BTW Emmet is a very powerful tool, but Brian mostly uses the lazy abbreviations; to make the `<div>` with the 'root' id, just type `#root` and hit tab, Emmet will do the rest. The 'not rendered' text in the root div is there to let you know if there is an issue with React, because if everything is working as expected, the contents of that div should be replaced. The first script tag is grabbing React from unpkg's CDN so you can have access to React as a top-level variable, AKA you can use React. The second script tag grabs React DOM which allows you to render React to the browser. But why are there two packages? Because React Native and React DOM both share the React package.
+
+And the final script tag is an example of something that you should never do, write JavaScript directly inside of your HTML, but Brian wants you to do this so that you can see how bare-bones you can implement React. Open the index.html file in your favorite browser. You should see 'not rendered' appear. Cool. If you check the console in the browser and type `React` or `ReactDOM` you will be able to see the objects that were received from the files that were downloaded from the CDN.
+
+Surprisingly, this course is not about CSS, so there is a pre-made CSS file for you to use for this workshop, you can [grab the CSS file here](https://raw.githubusercontent.com/btholt/complete-intro-to-react-v5/master/src/style.css). Save that CSS file in your `src` folder (the easiest way being to hit ⌘+A to select all, ⌘+C to copy it, make a `style.css` file in your `src` folder, then ⌘+V to paste the copied CSS into the `styles.css` file). Now add it to the `<head>` of your `index.html` file:
+
+{% highlight html %}
+
+<link rel="stylesheet" href="style.css">
+
+{% endhighlight %}
+
+If you reload the `index.html` file in your browser, you will see the CSS has made your page look pretty!
+
 ### A Note on the Course Font
 
 ## Pure React
