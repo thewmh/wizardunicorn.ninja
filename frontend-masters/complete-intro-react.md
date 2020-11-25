@@ -79,9 +79,30 @@ If you reload the `index.html` file in your browser, you will see the CSS has ma
 
 ### A Note on the Course Font
 
+Time to put some code in those empty script tags! Write the following: 
+
+{% highlight html %}
+
+<script>
+    // your code will go here, for now
+    const App = () => {
+            
+    }
+</script>
+
+{% endhighlight %}
+
+If you were watching this course, Brian goes on a tangent about font ligatures.
+
+> *"It's pretty, that's why I do it"*
+
+There may also be an argument for reducing cognitive overhead, because ligatures combine character pairs, making then into one character instead of two... Anyway, Brian is using the font called 'Dank Mono'. He did not name it. Before we continue, head off to [dank.sh](https://dank.sh) and buy their 'Dank Mono' font. It will only set you back ~$50, but the upside is you get an awesome font and Brian gets a nice little kickback (even though he insists he does not). If you don't want to shell out ~$50, you can get a free font that has ligatures, [FiraCode](https://github.com/tonsky/FiraCode). Then Brian shows you how to install and use your fancy new font and what happens if you disable ligatures. 🤯
+
 ## Pure React
 
 ### Getting Started with Pure React
+
+
 
 ### createElement Arguments
 
