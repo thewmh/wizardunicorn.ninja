@@ -1,5 +1,5 @@
 ---
-title: Home
+title: Wizard Unicorn Ninja
 permalink: /
 
 layout: home
