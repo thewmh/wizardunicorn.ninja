@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<title>{%- if page.title -%}{{ page.title | append: " | "}}{%- endif -%}{{ site.title }}</title>
+<title>{{ site.title  | append: " | "}}{%- if page.title -%}{{ page.title}}{%- endif -%}</title>
 
 {%- assign description = page.description | default: site.description -%}
 {%- if description -%}
