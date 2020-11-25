@@ -96,13 +96,44 @@ If you were watching this course, Brian goes on a tangent about font ligatures.
 
 > *"It's pretty, that's why I do it"*
 
-There may also be an argument for reducing cognitive overhead, because ligatures combine character pairs, making then into one character instead of two... Anyway, Brian is using the font called 'Dank Mono'. He did not name it. Before we continue, head off to [dank.sh](https://dank.sh) and buy their 'Dank Mono' font. It will only set you back ~$50, but the upside is you get an awesome font and Brian gets a nice little kickback (even though he insists he does not). If you don't want to shell out ~$50, you can get a free font that has ligatures, [FiraCode](https://github.com/tonsky/FiraCode). Then Brian shows you how to install and use your fancy new font and what happens if you disable ligatures. 🤯
+There may also be an argument for reducing cognitive overhead, because ligatures combine character pairs, making them into one character instead of two... Anyway, Brian is using the font called 'Dank Mono'. He did not name it. Before we continue, head off to ~~[dank.sh](https://dank.sh)~~ [gumroad?](https://gumroad.com/l/dank-mono) and buy their 'Dank Mono' font. It will only set you back ~$50, but the upside is you get an awesome font and Brian gets a nice little kickback (even though he insists he does not). If you don't want to shell out ~$50, you can get a free font that has ligatures, [FiraCode](https://github.com/tonsky/FiraCode). Then Brian shows you how to install and use your fancy new font and what happens if you disable ligatures. 🤯
 
 ## Pure React
 
 ### Getting Started with Pure React
 
+Ok, for real this time, put this into the inline `<script>` tag in your `index.html` file:
 
+{% highlight html %}
+
+<script>
+    const App = () => {
+        return React.createElement(
+            "div",
+            {},
+            React.createElement("h1", {}, "Adopt Me!")
+        )
+    };
+</script>
+
+{% endhighlight %}
+
+What we've done is create a component called 'App'. In this case, the component is just returning a function, in this case the result of `React.createElement`. But what is `createElement`? What is `App`? Think of `App` as if it were a rubber stamp. If used, our 'rubber stamp' can make many impressions of the design that is carved on it, if not used, it is just a rubber stamp. So far, all we have done is create the 'rubber stamp'. `.createElement` is like stamping something; i.e. anytime `App` gets called, `.createElement` is going to 'stamp` a `<div>` and inside of that `.createElement` is going to 'stamp` an `<h1>`. And that is the basis of everything in React, it is just returning markup. So now that we have `App`, we need to actually use it somewhere. So add this to the bottom of your script tag:
+
+{% highlight html %}
+
+<script>
+    //...
+    ReactDOM.render(React.createElement(App), document.getElementById("root"));
+</script>
+
+{% endhighlight %}
+
+The new line we've just added will actually 'stamp' our `App` into the DOM. `React.createElement` can either take in a component, as we've seen with the last thing added to the `<script>` tag, or it can take a series of arguments to output to the DOM, as was the case with the first part of the `<script>` tag at the beginning of this section. If you now check your `index.html` file in your browser, you will see a fancy logo. Don't be too confused by how fancy the `<h1>` is, the CSS file wee downloaded earlier is doing some magic to replace the original text with a logo.
+
+Brian declares this workshop is over and walks off camera. JKLOL.
+
+At its simplest, this is really what React is; taking a component and using it. The power here is that you can make components that you put inside of components that you put inside of components that you put inside of components. React gives you a composability model.
 
 ### createElement Arguments
 
