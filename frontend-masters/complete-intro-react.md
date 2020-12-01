@@ -295,7 +295,7 @@ Q: Why is there a `package-lock.json` file in my project folder?
 
 A: The `package-lock.json` file 'locks' the versions of the dependencies for your project so that what you run locally is the same as what you run in production.
 
-* Code linters are concerned with code style as opposed to code formatting (prettier). Style includes; methods, accessibility, syntax, etc.
+\* Code linters are concerned with code style as opposed to code formatting (prettier). Style includes; methods, accessibility, syntax, etc.
 
 ### ESLint Configuration
 
