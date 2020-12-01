@@ -253,13 +253,56 @@
 
 <h3 id="npm--generating-a-packagejson-file">npm &amp; Generating a package.json File</h3>
 
+<p>So far, we’ve been just straight up writing React. No one actually uses React like that, there is always some tool involved. Brian comes from front end infrastructure, so he is going to subject you to his madness, which is that you also need to understand the tools just like you understand the framework. Brian claims that he will keep it as <em>light</em> as possible and will give you his opinion about some of the better ways to write React.</p>
+
+<p>The first tool we are going to look at is npm, which does not stand for Node Package Manager, but kind of does stand for Node Package Manager. npm will allow us to install node from the registry instead of grabbing it from a CDN, which is nice because we can then include it in our package instead of having to rely on whether or not unpkg is ‘up’. unpkg is good for testing things out, but not reliable for production. So… open up your terminal, if you are using VS Code, you can press ‘control+`’ to open it. First thing, in the terminal, check if you have node installed by typing ‘node -v’. If you do not, <a href="https://nodejs.org/en/">check out these instructions for how to install node</a>. As long as you have node 8 or greater, you should be fine to continue, if you do not…</p>
+
+<p>Node comes with npm. Once you have node and npm, (still in the terminal) go into the root of your project directory and type <code class="language-plaintext highlighter-rouge">npm init</code> which will ‘initiate’ a new project for you. If you are lazy like Brian, instead of <code class="language-plaintext highlighter-rouge">npm init</code>, type <code class="language-plaintext highlighter-rouge">npm init -y</code> and you can skip over all of the questions that you would have been asked (otherwise there would have been an interactive prompt asking a bunch of questions about your project). You will now find a new file in your project directory, <code class="language-plaintext highlighter-rouge">package.json</code>.</p>
+
+<p>Inside of the <code class="language-plaintext highlighter-rouge">package.json</code> file, you can find details about your project, but Brian doesn’t care about what’s in the file and he doesn’t care if you care either. But any project dependencies will be tracked in the  <code class="language-plaintext highlighter-rouge">package.json</code> file, so anytime Brian says <code class="language-plaintext highlighter-rouge">npm install...</code>, a new dependency will be tracked in the <code class="language-plaintext highlighter-rouge">package.json</code> file.</p>
+
 <h3 id="prettier">Prettier</h3>
+
+<p>The next tool we are going to look at, as you may have guessed by the title of this section, is ‘Prettier’. It will help us maintain ‘high-quality’ code. In the terminal (it should still be open and in the root directory of your project, if not, make it…) type <code class="language-plaintext highlighter-rouge">npm i -D prettier</code> ( <code class="language-plaintext highlighter-rouge">i</code> is shorthand for ‘install’ and <code class="language-plaintext highlighter-rouge">-D</code> is for Developer, which means that this [prettier] will not ‘ship’ with your production app ). If you check the <code class="language-plaintext highlighter-rouge">package.json</code> file again, you will see prettier listed in the ‘devDependencies’. At the time when this course was filmed, prettier 1.17.0 installed for Brian, and at the time these notes were written, prettier 2.2.1 installed, you, human from the future may get a newer version.</p>
+
+<p>Prettier will help you to format the code of your project in a consistent manner. Prettier will remove the need to discuss tabs vs spaces, trailing commas, and all the nitpicky things that developers like Brian spend time talking about. Prettier aims to cease conversation about these trivial matters, get everyone on the same page, and unify the format(ting) of your code. Brian actually does not care what his code looks like as long as it is well formatted. Be like Brian.</p>
+
+<p>Prettier, similar to the Dank Mono font that gives Brian monetary kickbacks, reduces cognitive load because you don’t need to think about formatting your code, Prettier does it for you. Use it.</p>
 
 <h3 id="npm-scripts">npm Scripts</h3>
 
+<p>Inside of the <code class="language-plaintext highlighter-rouge">package.json</code> file, there is a ‘scripts’ section, initially with only a ‘test’ script. This section of the <code class="language-plaintext highlighter-rouge">package.json</code> file allows you to add ‘scripts’ to run your project. You can define new scripts by following the format of the ‘test’ script that is in that file, i.e. <code class="language-plaintext highlighter-rouge">"name": "do something"</code> (don’t forget to add a comma at the end of the line unless it is the last one…). Make a new script to use prettier to format your code:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"format"</span><span class="p">:</span><span class="w"> </span><span class="s2">"prettier </span><span class="se">\"</span><span class="s2">src/**/*.{js,html}</span><span class="se">\"</span><span class="s2"> --write"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"test"</span><span class="err">...</span><span class="w">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>The ‘format’ script from above will run prettier on any .js or .html file in any directory. This is a nice way to force team members to use your workflow.</p>
+
 <h3 id="prettier-setup">Prettier Setup</h3>
 
+<p>Brian doesn’t use Prettier in the above way, but as a VS Code extension which runs every time you hit save (Pro tip: make VS Code autosave). Install the ‘Prettier - Code formatter’ extension (if you are using VS Code). Once installed, go to your ‘Settings’ and search for ‘format on save’, check the box ‘Editor: Format On Save’, then search for ‘require config’ and check the box under ‘Prettier: Require Config’. The ‘require config’ will make Prettier run only on projects that it is installed on (which is a good thing because we don’t want Prettier to run on projects that it is not installed on so that it does not format all the code in a project that is not using it which would result in probably every file being changed which would be bad when you commit something and every file has changed when you maybe only worked in one file and then you will git blamed and that is not fun).</p>
+
+<p>Now, the project currently has no configuration file for Prettier, so one should be made. In the root directory of your project, make a new file <code class="language-plaintext highlighter-rouge">.prettierrc</code>. Brian had no idea what the ‘rc’ at the end of the file name stands for, but a quick search looks like it stands for ‘run commands’, ‘resource control’, ‘run control’, or ‘runtime configuration’ (<a href="https://stackoverflow.com/questions/11030552/what-does-rc-mean-in-dot-files">see this stack overflow post for the deets</a>). In your <code class="language-plaintext highlighter-rouge">.prettierrc</code> file, add an empty object <code class="language-plaintext highlighter-rouge">{}</code>. There are some things that you can configure, but Brian doesn’t care, he just wants it to work. The empty object will just give you the default configuration for prettier. <a href="https://prettier.io/docs/en/configuration.html">Here’s the Prettier configuration documentation</a></p>
+
+<p>If you go back to one of your .js or .html files and ruin a bunch of formatting, then save the file, Prettier should fix the formatting for you.</p>
+
 <h3 id="eslint-setup">ESLint Setup</h3>
+
+<p>Back in the terminal (yes, still in the root directory of your project) type <code class="language-plaintext highlighter-rouge">npm i -D eslint eslint-config-prettier</code>. This will install 2 things, ESLint, which is a code linter*, and the prettier config for ESLint which will let ESLint ignore the mechanical formatting things that Prettier does.</p>
+
+<p>To verify that the 2 packages have installed, check the <code class="language-plaintext highlighter-rouge">package.json</code> file.</p>
+
+<p>In the projects root directory, make a <code class="language-plaintext highlighter-rouge">.eslintrc.json</code> file.</p>
+
+<p>Q: Why is there a <code class="language-plaintext highlighter-rouge">package-lock.json</code> file in my project folder?</p>
+
+<p>A: The <code class="language-plaintext highlighter-rouge">package-lock.json</code> file ‘locks’ the versions of the dependencies for your project so that what you run locally is the same as what you run in production.</p>
+
+<ul>
+  <li>Code linters are concerned with code style as opposed to code formatting (prettier). Style includes; methods, accessibility, syntax, etc.</li>
+</ul>
 
 <h3 id="eslint-configuration">ESLint Configuration</h3>
 
