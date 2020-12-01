@@ -244,13 +244,58 @@ This concludes the first section, which is in fact what most of React is. If you
 
 ### npm & Generating a package.json File
 
+So far, we've been just straight up writing React. No one actually uses React like that, there is always some tool involved. Brian comes from front end infrastructure, so he is going to subject you to his madness, which is that you also need to understand the tools just like you understand the framework. Brian claims that he will keep it as *light* as possible and will give you his opinion about some of the better ways to write React.
+
+The first tool we are going to look at is npm, which does not stand for Node Package Manager, but kind of does stand for Node Package Manager. npm will allow us to install node from the registry instead of grabbing it from a CDN, which is nice because we can then include it in our package instead of having to rely on whether or not unpkg is 'up'. unpkg is good for testing things out, but not reliable for production. So... open up your terminal, if you are using VS Code, you can press 'control+`' to open it. First thing, in the terminal, check if you have node installed by typing 'node -v'. If you do not, [check out these instructions for how to install node](https://nodejs.org/en/). As long as you have node 8 or greater, you should be fine to continue, if you do not...
+
+Node comes with npm. Once you have node and npm, (still in the terminal) go into the root of your project directory and type `npm init` which will 'initiate' a new project for you. If you are lazy like Brian, instead of `npm init`, type `npm init -y` and you can skip over all of the questions that you would have been asked (otherwise there would have been an interactive prompt asking a bunch of questions about your project). You will now find a new file in your project directory, `package.json`.
+
+Inside of the `package.json` file, you can find details about your project, but Brian doesn't care about what's in the file and he doesn't care if you care either. But any project dependencies will be tracked in the  `package.json` file, so anytime Brian says `npm install...`, a new dependency will be tracked in the `package.json` file.
+
 ### Prettier
+
+The next tool we are going to look at, as you may have guessed by the title of this section, is 'Prettier'. It will help us maintain 'high-quality' code. In the terminal (it should still be open and in the root directory of your project, if not, make it...) type `npm i -D prettier` ( `i` is shorthand for 'install' and `-D` is for Developer, which means that this [prettier] will not 'ship' with your production app ). If you check the `package.json` file again, you will see prettier listed in the 'devDependencies'. At the time when this course was filmed, prettier 1.17.0 installed for Brian, and at the time these notes were written, prettier 2.2.1 installed, you, human from the future may get a newer version.
+
+Prettier will help you to format the code of your project in a consistent manner. Prettier will remove the need to discuss tabs vs spaces, trailing commas, and all the nitpicky things that developers like Brian spend time talking about. Prettier aims to cease conversation about these trivial matters, get everyone on the same page, and unify the format(ting) of your code. Brian actually does not care what his code looks like as long as it is well formatted. Be like Brian.
+
+Prettier, similar to the Dank Mono font that gives Brian monetary kickbacks, reduces cognitive load because you don't need to think about formatting your code, Prettier does it for you. Use it.
 
 ### npm Scripts
 
+Inside of the `package.json` file, there is a 'scripts' section, initially with only a 'test' script. This section of the `package.json` file allows you to add 'scripts' to run your project. You can define new scripts by following the format of the 'test' script that is in that file, i.e. `"name": "do something"` (don't forget to add a comma at the end of the line unless it is the last one...). Make a new script to use prettier to format your code:
+
+{% highlight json %}
+
+"scripts": {
+    "format": "prettier \"src/**/*.{js,html}\" --write",
+    "test"...
+}
+
+{% endhighlight %}
+
+The 'format' script from above will run prettier on any .js or .html file in any directory. This is a nice way to force team members to use your workflow. 
+
 ### Prettier Setup
 
+Brian doesn't use Prettier in the above way, but as a VS Code extension which runs every time you hit save (Pro tip: make VS Code autosave). Install the 'Prettier - Code formatter' extension (if you are using VS Code). Once installed, go to your 'Settings' and search for 'format on save', check the box 'Editor: Format On Save', then search for 'require config' and check the box under 'Prettier: Require Config'. The 'require config' will make Prettier run only on projects that it is installed on (which is a good thing because we don't want Prettier to run on projects that it is not installed on so that it does not format all the code in a project that is not using it which would result in probably every file being changed which would be bad when you commit something and every file has changed when you maybe only worked in one file and then you will git blamed and that is not fun).
+
+Now, the project currently has no configuration file for Prettier, so one should be made. In the root directory of your project, make a new file `.prettierrc`. Brian had no idea what the 'rc' at the end of the file name stands for, but a quick search looks like it stands for 'run commands', 'resource control', 'run control', or 'runtime configuration' ([see this stack overflow post for the deets](https://stackoverflow.com/questions/11030552/what-does-rc-mean-in-dot-files)). In your `.prettierrc` file, add an empty object `{}`. There are some things that you can configure, but Brian doesn't care, he just wants it to work. The empty object will just give you the default configuration for prettier. [Here's the Prettier configuration documentation](https://prettier.io/docs/en/configuration.html)
+
+If you go back to one of your .js or .html files and ruin a bunch of formatting, then save the file, Prettier should fix the formatting for you. 
+
 ### ESLint Setup
+
+Back in the terminal (yes, still in the root directory of your project) type `npm i -D eslint eslint-config-prettier`. This will install 2 things, ESLint, which is a code linter*, and the prettier config for ESLint which will let ESLint ignore the mechanical formatting things that Prettier does.
+
+To verify that the 2 packages have installed, check the `package.json` file.
+
+In the projects root directory, make a `.eslintrc.json` file.
+
+Q: Why is there a `package-lock.json` file in my project folder?
+
+A: The `package-lock.json` file 'locks' the versions of the dependencies for your project so that what you run locally is the same as what you run in production.
+
+* Code linters are concerned with code style as opposed to code formatting (prettier). Style includes; methods, accessibility, syntax, etc.
 
 ### ESLint Configuration
 
