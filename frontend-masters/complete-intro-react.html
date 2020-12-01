@@ -160,11 +160,94 @@
 
 <h3 id="createelement-arguments">createElement Arguments</h3>
 
+<p>Q: Why is there still a <code class="language-plaintext highlighter-rouge">&lt;div id="root"&gt;</code> in the markup and why does it no longer appear in the DOM?</p>
+
+<p>A: Because React. You don’t need to have any content in the <code class="language-plaintext highlighter-rouge">&lt;div&gt;</code>, but I (Brian) do it so that I know my JavaScript is loading.</p>
+
+<p>Q: In <code class="language-plaintext highlighter-rouge">App</code>, you have a return statement for <code class="language-plaintext highlighter-rouge">React.createElement</code>, but then you pass <em>another</em> <code class="language-plaintext highlighter-rouge">React.createElement</code> inside of that?</p>
+
+<p>A: <code class="language-plaintext highlighter-rouge">React.createElement</code> takes three parameters:</p>
+
+<ol>
+  <li>
+    <p>What kind of tag is it; i.e. “div”</p>
+  </li>
+  <li>
+    <p>An object, which is currently an empty object. But, this could contain all of the attributes that you would like your component / DOM element that you are creating to have.</p>
+  </li>
+  <li>
+    <p>The children. In our case, it is another element (an h1). You could pass in an array of elements, or not an array of elements, but imagine it as an array of elements because we will not continue writing React in this way.</p>
+  </li>
+</ol>
+
 <h3 id="reusable-components">Reusable Components</h3>
+
+<p>Writing this component inside of a script tag is absolutely disgusting, so lets not do that anymore. Make a new file in your <code class="language-plaintext highlighter-rouge">src</code> directory and name it <code class="language-plaintext highlighter-rouge">App.js</code>. React is extremely flexible, it’s not very prescriptive at all about pretty much anything. This is nice because it allows you to make technical decisions for yourself. Grab all the things from within your script tag and put it into the <code class="language-plaintext highlighter-rouge">App.js</code> file. Back in <code class="language-plaintext highlighter-rouge">index.html</code> add <code class="language-plaintext highlighter-rouge">src="./App.js"</code> to your now empty script tag; i.e. <code class="language-plaintext highlighter-rouge">&lt;script src="./App.js"&gt;&lt;/script&gt;</code></p>
+
+<p>Now we are going to create another component. Make this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">Pet</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">div</span><span class="dl">"</span><span class="p">,</span> <span class="p">{},</span> <span class="p">[</span>
+        <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">h1</span><span class="dl">"</span><span class="p">,</span> <span class="p">{},</span> <span class="dl">"</span><span class="s2">Theodore</span><span class="dl">"</span><span class="p">),</span>
+        <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">h2</span><span class="dl">"</span><span class="p">,</span> <span class="p">{},</span> <span class="dl">"</span><span class="s2">Cat</span><span class="dl">"</span><span class="p">),</span>
+        <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">h2</span><span class="dl">"</span><span class="p">,</span> <span class="p">{},</span> <span class="dl">"</span><span class="s2">Tuxedo</span><span class="dl">"</span><span class="p">),</span>
+    <span class="p">]);</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>You can change the text of each element to reflect your pets information or just make something up. We’ve now created a new ‘stamp’, now we need to use it. Add three instances of <code class="language-plaintext highlighter-rouge">React.createElement(Pet)</code> to the <code class="language-plaintext highlighter-rouge">App</code> component, like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span>
+        <span class="dl">"</span><span class="s2">div</span><span class="dl">"</span><span class="p">,</span>
+        <span class="p">{},</span>
+        <span class="p">[</span>
+            <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">h1</span><span class="dl">"</span><span class="p">,</span> <span class="p">{},</span> <span class="dl">"</span><span class="s2">Adopt Me!</span><span class="dl">"</span><span class="p">),</span>
+            <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="nx">Pet</span><span class="p">),</span>
+            <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="nx">Pet</span><span class="p">),</span>
+            <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="nx">Pet</span><span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>Now, if you refresh the index.html page in your browser, you should see 3 instances of your <code class="language-plaintext highlighter-rouge">Pet</code> component! This highlights the reusability of components, but in this case, the component is not at all flexible. Apparently, not all cats have the same name or are the same color, so lets make it a more flexible component.</p>
 
 <h3 id="passing-in-component-props">Passing in Component Props</h3>
 
+<p>Let’s take another look at the <code class="language-plaintext highlighter-rouge">Pet</code> component and see if we can pass in some data to make it more flexible. Update all three instances where <code class="language-plaintext highlighter-rouge">Pet</code> is called in <code class="language-plaintext highlighter-rouge">App</code> to the following:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//..</span>
+<span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="nx">Pet</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Theodore</span><span class="dl">"</span><span class="p">,</span>
+    <span class="na">animal</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Cat</span><span class="dl">"</span><span class="p">,</span>
+    <span class="na">breed</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Tuxedo</span><span class="dl">"</span>
+<span class="p">}),</span>
+<span class="c1">//..</span></code></pre></figure>
+
+<p>Update the last two instances of <code class="language-plaintext highlighter-rouge">Pet</code> to have unique attributes (name, animal, breed). Now you have new information being passed into the <code class="language-plaintext highlighter-rouge">Pet</code> component, but now it needs to be put to use. Update the <code class="language-plaintext highlighter-rouge">Pet</code> component as follows:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">Pet</span> <span class="o">=</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">div</span><span class="dl">"</span><span class="p">,</span> <span class="p">{},</span> <span class="p">[</span>
+        <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">h1</span><span class="dl">"</span><span class="p">,</span> <span class="p">{},</span> <span class="nx">props</span><span class="p">.</span><span class="nx">name</span><span class="p">),</span>
+        <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">h2</span><span class="dl">"</span><span class="p">,</span> <span class="p">{},</span> <span class="nx">props</span><span class="p">.</span><span class="nx">animal</span><span class="p">),</span>
+        <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">h2</span><span class="dl">"</span><span class="p">,</span> <span class="p">{},</span> <span class="nx">props</span><span class="p">.</span><span class="nx">breed</span><span class="p">)</span>
+    <span class="p">]);</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>Now all of the unique animal information will be used by the <code class="language-plaintext highlighter-rouge">Pet</code> component when it is called from within the <code class="language-plaintext highlighter-rouge">App</code> component!</p>
+
 <h3 id="destructuring-props">Destructuring Props</h3>
+
+<p>Writing <code class="language-plaintext highlighter-rouge">props.</code> over and over is going to become cumbersome as the app grows, so lets destructure the props. Update the <code class="language-plaintext highlighter-rouge">Pet</code> component like so:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">Pet</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">animal</span><span class="p">,</span> <span class="nx">breed</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">div</span><span class="dl">"</span><span class="p">,</span> <span class="p">{},</span> <span class="p">[</span>
+        <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">h1</span><span class="dl">"</span><span class="p">,</span> <span class="p">{},</span> <span class="nx">name</span><span class="p">),</span>
+        <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">h2</span><span class="dl">"</span><span class="p">,</span> <span class="p">{},</span> <span class="nx">animal</span><span class="p">),</span>
+        <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">h2</span><span class="dl">"</span><span class="p">,</span> <span class="p">{},</span> <span class="nx">breed</span><span class="p">)</span>
+    <span class="p">]);</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>This concludes the first section, which is in fact what most of React is. If you were watching the video for this on Frontend Masters and fell behind, which you should not because you can pause it, you can skip to the first commit in the courses GitHub repository and be all caught up. Next, we are going to get some tooling set up to make React much easier to write, because the way we’ve done it so far is not the way. Don’t worry, Brian knows the way. This introduction was to introduce the core concepts of what React is to you, the reader!</p>
 
 <h2 id="tools">Tools</h2>
 
