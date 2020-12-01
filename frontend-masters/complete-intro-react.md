@@ -137,11 +137,108 @@ At its simplest, this is really what React is; taking a component and using it. 
 
 ### createElement Arguments
 
+Q: Why is there still a `<div id="root">` in the markup and why does it no longer appear in the DOM?
+
+A: Because React. You don't need to have any content in the `<div>`, but I (Brian) do it so that I know my JavaScript is loading.
+
+Q: In `App`, you have a return statement for `React.createElement`, but then you pass *another* `React.createElement` inside of that?
+
+A: `React.createElement` takes three parameters:
+
+1. What kind of tag is it; i.e. "div"
+
+2. An object, which is currently an empty object. But, this could contain all of the attributes that you would like your component / DOM element that you are creating to have.
+
+3. The children. In our case, it is another element (an h1). You could pass in an array of elements, or not an array of elements, but imagine it as an array of elements because we will not continue writing React in this way.
+
 ### Reusable Components
+
+Writing this component inside of a script tag is absolutely disgusting, so lets not do that anymore. Make a new file in your `src` directory and name it `App.js`. React is extremely flexible, it's not very prescriptive at all about pretty much anything. This is nice because it allows you to make technical decisions for yourself. Grab all the things from within your script tag and put it into the `App.js` file. Back in `index.html` add `src="./App.js"` to your now empty script tag; i.e. `<script src="./App.js"></script>`
+
+Now we are going to create another component. Make this:
+
+{% highlight javascript %}
+
+const Pet = () => {
+    return React.createElement("div", {}, [
+        React.createElement("h1", {}, "Theodore"),
+        React.createElement("h2", {}, "Cat"),
+        React.createElement("h2", {}, "Tuxedo"),
+    ]);
+};
+
+{% endhighlight %}
+
+You can change the text of each element to reflect your pets information or just make something up. We've now created a new 'stamp', now we need to use it. Add three instances of `React.createElement(Pet)` to the `App` component, like this:
+
+{% highlight javascript %}
+
+const App = () => {
+    return React.createElement(
+        "div",
+        {},
+        [
+            React.createElement("h1", {}, "Adopt Me!"),
+            React.createElement(Pet),
+            React.createElement(Pet),
+            React.createElement(Pet)
+        ]
+    )
+};
+
+{% endhighlight %}
+
+Now, if you refresh the index.html page in your browser, you should see 3 instances of your `Pet` component! This highlights the reusability of components, but in this case, the component is not at all flexible. Apparently, not all cats have the same name or are the same color, so lets make it a more flexible component.
 
 ### Passing in Component Props
 
+Let's take another look at the `Pet` component and see if we can pass in some data to make it more flexible. Update all three instances where `Pet` is called in `App` to the following:
+
+{% highlight javascript %}
+
+//..
+React.createElement(Pet, {
+    name: "Theodore",
+    animal: "Cat",
+    breed: "Tuxedo"
+}),
+//..
+
+{% endhighlight %}
+
+Update the last two instances of `Pet` to have unique attributes (name, animal, breed). Now you have new information being passed into the `Pet` component, but now it needs to be put to use. Update the `Pet` component as follows:
+
+{% highlight javascript %}
+
+const Pet = props => {
+    return React.createElement("div", {}, [
+        React.createElement("h1", {}, props.name),
+        React.createElement("h2", {}, props.animal),
+        React.createElement("h2", {}, props.breed)
+    ]);
+};
+
+{% endhighlight %}
+
+Now all of the unique animal information will be used by the `Pet` component when it is called from within the `App` component!
+
 ### Destructuring Props
+
+Writing `props.` over and over is going to become cumbersome as the app grows, so lets destructure the props. Update the `Pet` component like so:
+
+{% highlight javascript %}
+
+const Pet = ({ name, animal, breed }) => {
+    return React.createElement("div", {}, [
+        React.createElement("h1", {}, name),
+        React.createElement("h2", {}, animal),
+        React.createElement("h2", {}, breed)
+    ]);
+};
+
+{% endhighlight %}
+
+This concludes the first section, which is in fact what most of React is. If you were watching the video for this on Frontend Masters and fell behind, which you should not because you can pause it, you can skip to the first commit in the courses GitHub repository and be all caught up. Next, we are going to get some tooling set up to make React much easier to write, because the way we've done it so far is not the way. Don't worry, Brian knows the way. This introduction was to introduce the core concepts of what React is to you, the reader!
 
 ## Tools
 
