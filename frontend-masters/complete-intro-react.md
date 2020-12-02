@@ -362,21 +362,227 @@ coverage/
 
 ### Parcel
 
+In a previous iteration of this workshop, Brian taught React v3 with Webpack. Webpack is cool, but he is now using Parcel because it is hands off, i.e. easier to use which makes it simpler for the purposes of this workshop. We will simply point Parcel at a file and there is no additional configuration required. With power comes complexity, so we (Brian) leave(s) Webpack out of this workshop now. In your terminal, type the following: `npm i -D parcel-bundler`.
+
+It may take a while to install. Parcel, when installed, is super simple, just point it at your index.html file and it will do the rest. Once Parcel is installed, jump back to your `package.json` file and add another script:
+
+{% highlight json %}
+
+//...
+"dev": "parcel src/index.html",
+//...
+
+{% endhighlight %}
+
+If you run your new script, `npm run dev`, you will see that there is now a `.cache` and a `dist` directory. Those directories can be ignored for now and you should also see in the terminal that your app is being served at a local host address. Click it and open the browser to see your app being served by Parcel! Now, whenever you make changes to your files, Parcel will run and update your page.
+
 ### Installing React & ReactDom
 
+Time to fix the ESLint `error 'React' is not defined` errors. In the terminal, stop the Parcel server by hitting `control+c`, then type `npm i react react-dom` which will install the 2 packages that we have been using from unpkg from the npm registry. In your projects `index.html` file, delete the following lines:
+
+{% highlight html %}
+
+<script src="https://unpkg.com/react@16.8.4/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@16.8.4/umd/react-dom.development.js"></script>
+
+{% endhighlight %}
+
+In the `App.js` file, add:
+
+{% highlight javascript %}
+
+import React from 'react';
+import { render } from 'react-dom';
+
+{% endhighlight %}
+
+The above will import the default export from the React package and 'render' from the React DOM package. Now at the bottom of the `App.js` file, delete `React.` from the last line. Brian encourages you to use the named exports, i.e. `import { render }...`, from packages you are using so that only the code you are using gets included. Run your dev script again, `npm run dev`, and you will find that your project still runs!
+
 ### Separate App into Modules
+
+Now that we have a bundler, we can start to separate our `App.js` file into modules! Brian has no idea why you would ever have more than one component per file, so we will fix that. If you are using VS Code, highlight the `Pet` component in `App.js` and you should see a little 💡 appear. Click the 💡 and select the 'Move to a new file' option. VS Code will make a new file from the `Pet` component and add an import statement for it in `App.js`. It's pretty magical, and you can thank TypeScript, which VS Code is constantly running against your code even though this project is not using it.
+
+Update the import statement in `App.js` to:
+
+{% highlight javascript %}
+
+import Pet from "./Pet";
+
+{% endhighlight %}
+
+And update `Pet.js` to:
+
+{% highlight javascript %}
+
+import React from "react";
+
+export default function Pet({ name, animal, breed }) {
+  return React.createElement("div", {}, [
+    React.createElement("h1", {}, name),
+    React.createElement("h2", {}, animal),
+    React.createElement("h2", {}, breed),
+  ]);
+};
+
+{% endhighlight %}
+
+Brian makes the above edits because it is a pattern he follows and he also claims that it is a fairly common pattern, but says that you can do whatever you want YMMV. With the above changes, your app should still be working as it was, but these changes will make everything easier to maintain.
 
 ## JSX
 
 ### Converting to JSX
 
+So far, we've been writing React without any transpilation, but now we will start to work with JSX. Because we are using Parcel, we can now use JSX. Parcel will do transformations to our code using a project called Babel. Writing React as we've done so far has required us to think about what HTML we want then translate that to React / JavaScript. JSX will allow us to write something closer to HTML without having to think about how the HTML needs to be translated to React / JavaScript which will make our coding easier. Update `Pet.js` like so:
+
+{% highlight javascript %}
+
+import React from "react";
+
+export default function Pet({ name, animal, breed }) {
+    return (
+    <div>
+      <h1>{name}</h1>
+      <h2>{animal}</h2>
+      <h2>{breed}</h2>
+    </div>
+  );
+}
+
+{% endhighlight %}
+
+The above code, at transpilation, will actually become what it once was `React.createElement...`, but this [JSX] is arguably much easier to write.
+
 ### Configuring ESLint for React
 
+Now that we've started using JSX, ESLint is upset because `React.createElement...` no longer appears in the `Pet.js` file, even though once our code is transpiled by Parcel / Babel it will in fact be using `React.createElement...`. Let's fix this. Back in the terminal, in the root directory for your project, type: `npm install -D babel-eslint eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react` (if the Parcel server is still running, hit `control+c`). All of these tools will allow ESLint to correctly understand React.
+
+`babel-eslint` allows ESLint to be augmented by Babel, a transpiler.
+`eslint-plugin-import` gives you some new rules around importing and exporting things, so you have some good habits...
+`eslint-plugin-jsx-a11y` is a bunch of no-brainer things for accessibility, i.e. don't make divs clickable, this will help you catch the easy accessibility things you should be doing.
+`eslint-plugin-react` will help with some additional React rules that we need.
+
+Once those things are installed, go to the `.eslintrc.json` file and update it so it looks like this:
+
+{% highlight json %}
+
+{
+    "extends": [
+        "eslint:recommended",
+        "plugin:import/errors",
+        "plugin:react/recommended",
+        "plugin:jsx-a11y/recommended",
+        "prettier",
+        "prettier/react"
+    ],
+    "rules": {
+        "react/prop-types": 0,
+        "no-console": 1
+    },
+    "plugins": ["react", "import", "jsx-a11y"],
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "env": {
+        "es6": true,
+        "browser": true,
+        "node": true
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    }
+}
+
+{% endhighlight %}
+
+The new 'extends' are sets of rules and the 'plugins' are new abilities for ESLint. The order of the 'extends' is not important, only that the two for prettier come at the end of the list. 'rules' set a couple of rules for things we want or not and ESLint requires information about the version of React you are using, so the 'settings' object is needed, in which we are telling ESLint to figure out what version of React we are using by itself (ESLint will figure it out from the `package.json` file). This ESLint configuration is what Brian uses for basically all of his React projects. Now that the ESLint config has been updated, ESLint will no longer complain about React being imported when you are writing your code in JSX (not explicitly calling `React.`).
+
 ### JSX Composite Components & Expressions
+
+Now, let's update `App.js` to also use JSX. Open `App.js` and make it look like this:
+
+{% highlight javascript %}
+
+import React from "react";
+import { render } from "react-dom";
+import Pet from "./Pet";
+
+const App = () => {
+  return (
+    <div>
+      <h1>Adopt Me!</h1>
+      <Pet name="Theodore" animal="Cat" breed="Tuxedo" />
+      <Pet name="Kuma" animal="Dog" breed="Doberman" />
+      <Pet name="Salvador" animal="Cat" breed="Fake Russian Blue" />
+    </div>
+  );
+};
+
+render(<App />, document.getElementById("root"));
+
+{% endhighlight %}
+
+In the above code, feel free to use whatever pet name, animal, and breed you like. 
 
 ## Hooks
 
 ### Creating a Search Component
+
+According to 2019 Brian, hooks were considered a new feature to React. Guess I'm pretty late to the party 🎉. While hooks are optional to learn, Brian is going to learn us on em. Classes are also a need to know which we will get into later. If you are only here to learn hooks, [check out this 'Hooks In Depth' section from the 'Intermediate React, v2' course](https://btholt.github.io/complete-intro-to-react-v5/hooks-in-depth). Make a new component (in the `src` directory), `SearchParams.js` . In the `SearchParams.js` file, add this:
+
+{% highlight javascript %}
+
+import React from "react";
+
+const SearchParams = () => {
+  const location = "Seattle, WA";
+
+  return (
+    <div className="search-params">
+      <form>
+        <label htmlFor="location">
+          Location
+          <input id="location" value={location} placeholder="Location" />
+        </label>
+        <button>Submit</button>
+      </form>
+    </div>
+  );
+};
+
+export default SearchParams;
+
+{% endhighlight %}
+
+The API that we are going to be using is restricted (by Brian) to Seattle, WA and San Francisco, CA, so use one of those. You'll notice that instead of `class` in the `div`, we are using `className`. This is due to the fact that `class` is used in JavaScript, so we have to use the DOM API version for declaring a class(Name) in JSX (similarly, you couldn't do something like `const let = "newLet";`, because `let` is a part of the JavaScript language and you cannot redeclare what it is). The rest of the markup should be familiar enough, the only real oddity being the `{location}`, which is grabbing the value that was assigned to the location variable in the above code.
+
+Now that we've made the `SearchParams` component, update `App.js` to use it, like this:
+
+{% highlight javascript %}
+
+import React from "react";
+import { render } from "react-dom";
+import SearchParams from "./SearchParams";
+
+const App = () => {
+  return (
+    <div>
+      <h1>Adopt Me!</h1>
+      <SearchParams />
+    </div>
+  );
+};
+
+render(<App />, document.getElementById("root"));
+
+{% endhighlight %}
+
+Check your page w/ the Parcel server, either open your browser if it's already running or open terminal and type `npm run dev` then open [your browser] to see the changes.
 
 ### Setting State with Hooks
 
