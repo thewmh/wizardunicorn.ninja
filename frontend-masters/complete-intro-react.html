@@ -355,21 +355,187 @@ coverage/
 
 <h3 id="parcel">Parcel</h3>
 
+<p>In a previous iteration of this workshop, Brian taught React v3 with Webpack. Webpack is cool, but he is now using Parcel because it is hands off, i.e. easier to use which makes it simpler for the purposes of this workshop. We will simply point Parcel at a file and there is no additional configuration required. With power comes complexity, so we (Brian) leave(s) Webpack out of this workshop now. In your terminal, type the following: <code class="language-plaintext highlighter-rouge">npm i -D parcel-bundler</code>.</p>
+
+<p>It may take a while to install. Parcel, when installed, is super simple, just point it at your index.html file and it will do the rest. Once Parcel is installed, jump back to your <code class="language-plaintext highlighter-rouge">package.json</code> file and add another script:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="err">//...</span><span class="w">
+</span><span class="nl">"dev"</span><span class="p">:</span><span class="w"> </span><span class="s2">"parcel src/index.html"</span><span class="err">,</span><span class="w">
+</span><span class="err">//...</span></code></pre></figure>
+
+<p>If you run your new script, <code class="language-plaintext highlighter-rouge">npm run dev</code>, you will see that there is now a <code class="language-plaintext highlighter-rouge">.cache</code> and a <code class="language-plaintext highlighter-rouge">dist</code> directory. Those directories can be ignored for now and you should also see in the terminal that your app is being served at a local host address. Click it and open the browser to see your app being served by Parcel! Now, whenever you make changes to your files, Parcel will run and update your page.</p>
+
 <h3 id="installing-react--reactdom">Installing React &amp; ReactDom</h3>
 
+<p>Time to fix the ESLint <code class="language-plaintext highlighter-rouge">error 'React' is not defined</code> errors. In the terminal, stop the Parcel server by hitting <code class="language-plaintext highlighter-rouge">control+c</code>, then type <code class="language-plaintext highlighter-rouge">npm i react react-dom</code> which will install the 2 packages that we have been using from unpkg from the npm registry. In your projects <code class="language-plaintext highlighter-rouge">index.html</code> file, delete the following lines:</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://unpkg.com/react@16.8.4/umd/react.development.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://unpkg.com/react-dom@16.8.4/umd/react-dom.development.js"</span><span class="nt">&gt;&lt;/script&gt;</span></code></pre></figure>
+
+<p>In the <code class="language-plaintext highlighter-rouge">App.js</code> file, add:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">render</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-dom</span><span class="dl">'</span><span class="p">;</span></code></pre></figure>
+
+<p>The above will import the default export from the React package and ‘render’ from the React DOM package. Now at the bottom of the <code class="language-plaintext highlighter-rouge">App.js</code> file, delete <code class="language-plaintext highlighter-rouge">React.</code> from the last line. Brian encourages you to use the named exports, i.e. <code class="language-plaintext highlighter-rouge">import { render }...</code>, from packages you are using so that only the code you are using gets included. Run your dev script again, <code class="language-plaintext highlighter-rouge">npm run dev</code>, and you will find that your project still runs!</p>
+
 <h3 id="separate-app-into-modules">Separate App into Modules</h3>
+
+<p>Now that we have a bundler, we can start to separate our <code class="language-plaintext highlighter-rouge">App.js</code> file into modules! Brian has no idea why you would ever have more than one component per file, so we will fix that. If you are using VS Code, highlight the <code class="language-plaintext highlighter-rouge">Pet</code> component in <code class="language-plaintext highlighter-rouge">App.js</code> and you should see a little 💡 appear. Click the 💡 and select the ‘Move to a new file’ option. VS Code will make a new file from the <code class="language-plaintext highlighter-rouge">Pet</code> component and add an import statement for it in <code class="language-plaintext highlighter-rouge">App.js</code>. It’s pretty magical, and you can thank TypeScript, which VS Code is constantly running against your code even though this project is not using it.</p>
+
+<p>Update the import statement in <code class="language-plaintext highlighter-rouge">App.js</code> to:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">Pet</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./Pet</span><span class="dl">"</span><span class="p">;</span></code></pre></figure>
+
+<p>And update <code class="language-plaintext highlighter-rouge">Pet.js</code> to:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">Pet</span><span class="p">({</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">animal</span><span class="p">,</span> <span class="nx">breed</span> <span class="p">})</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">div</span><span class="dl">"</span><span class="p">,</span> <span class="p">{},</span> <span class="p">[</span>
+    <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">h1</span><span class="dl">"</span><span class="p">,</span> <span class="p">{},</span> <span class="nx">name</span><span class="p">),</span>
+    <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">h2</span><span class="dl">"</span><span class="p">,</span> <span class="p">{},</span> <span class="nx">animal</span><span class="p">),</span>
+    <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">h2</span><span class="dl">"</span><span class="p">,</span> <span class="p">{},</span> <span class="nx">breed</span><span class="p">),</span>
+  <span class="p">]);</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>Brian makes the above edits because it is a pattern he follows and he also claims that it is a fairly common pattern, but says that you can do whatever you want YMMV. With the above changes, your app should still be working as it was, but these changes will make everything easier to maintain.</p>
 
 <h2 id="jsx">JSX</h2>
 
 <h3 id="converting-to-jsx">Converting to JSX</h3>
 
+<p>So far, we’ve been writing React without any transpilation, but now we will start to work with JSX. Because we are using Parcel, we can now use JSX. Parcel will do transformations to our code using a project called Babel. Writing React as we’ve done so far has required us to think about what HTML we want then translate that to React / JavaScript. JSX will allow us to write something closer to HTML without having to think about how the HTML needs to be translated to React / JavaScript which will make our coding easier. Update <code class="language-plaintext highlighter-rouge">Pet.js</code> like so:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">Pet</span><span class="p">({</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">animal</span><span class="p">,</span> <span class="nx">breed</span> <span class="p">})</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">animal</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/h2</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">breed</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/h2</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The above code, at transpilation, will actually become what it once was <code class="language-plaintext highlighter-rouge">React.createElement...</code>, but this [JSX] is arguably much easier to write.</p>
+
 <h3 id="configuring-eslint-for-react">Configuring ESLint for React</h3>
 
+<p>Now that we’ve started using JSX, ESLint is upset because <code class="language-plaintext highlighter-rouge">React.createElement...</code> no longer appears in the <code class="language-plaintext highlighter-rouge">Pet.js</code> file, even though once our code is transpiled by Parcel / Babel it will in fact be using <code class="language-plaintext highlighter-rouge">React.createElement...</code>. Let’s fix this. Back in the terminal, in the root directory for your project, type: <code class="language-plaintext highlighter-rouge">npm install -D babel-eslint eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react</code> (if the Parcel server is still running, hit <code class="language-plaintext highlighter-rouge">control+c</code>). All of these tools will allow ESLint to correctly understand React.</p>
+
+<p><code class="language-plaintext highlighter-rouge">babel-eslint</code> allows ESLint to be augmented by Babel, a transpiler.
+<code class="language-plaintext highlighter-rouge">eslint-plugin-import</code> gives you some new rules around importing and exporting things, so you have some good habits…
+<code class="language-plaintext highlighter-rouge">eslint-plugin-jsx-a11y</code> is a bunch of no-brainer things for accessibility, i.e. don’t make divs clickable, this will help you catch the easy accessibility things you should be doing.
+<code class="language-plaintext highlighter-rouge">eslint-plugin-react</code> will help with some additional React rules that we need.</p>
+
+<p>Once those things are installed, go to the <code class="language-plaintext highlighter-rouge">.eslintrc.json</code> file and update it so it looks like this:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"extends"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"eslint:recommended"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"plugin:import/errors"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"plugin:react/recommended"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"plugin:jsx-a11y/recommended"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"prettier"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"prettier/react"</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"rules"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"react/prop-types"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"no-console"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"plugins"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"react"</span><span class="p">,</span><span class="w"> </span><span class="s2">"import"</span><span class="p">,</span><span class="w"> </span><span class="s2">"jsx-a11y"</span><span class="p">],</span><span class="w">
+    </span><span class="nl">"parserOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"ecmaVersion"</span><span class="p">:</span><span class="w"> </span><span class="mi">2018</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"sourceType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"module"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"ecmaFeatures"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"jsx"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"env"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"es6"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"browser"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"node"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"react"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"detect"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>The new ‘extends’ are sets of rules and the ‘plugins’ are new abilities for ESLint. The order of the ‘extends’ is not important, only that the two for prettier come at the end of the list. ‘rules’ set a couple of rules for things we want or not and ESLint requires information about the version of React you are using, so the ‘settings’ object is needed, in which we are telling ESLint to figure out what version of React we are using by itself (ESLint will figure it out from the <code class="language-plaintext highlighter-rouge">package.json</code> file). This ESLint configuration is what Brian uses for basically all of his React projects. Now that the ESLint config has been updated, ESLint will no longer complain about React being imported when you are writing your code in JSX (not explicitly calling <code class="language-plaintext highlighter-rouge">React.</code>).</p>
+
 <h3 id="jsx-composite-components--expressions">JSX Composite Components &amp; Expressions</h3>
+
+<p>Now, let’s update <code class="language-plaintext highlighter-rouge">App.js</code> to also use JSX. Open <code class="language-plaintext highlighter-rouge">App.js</code> and make it look like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">render</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-dom</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Pet</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./Pet</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">Adopt</span> <span class="nx">Me</span><span class="o">!&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="nx">Pet</span> <span class="nx">name</span><span class="o">=</span><span class="dl">"</span><span class="s2">Theodore</span><span class="dl">"</span> <span class="nx">animal</span><span class="o">=</span><span class="dl">"</span><span class="s2">Cat</span><span class="dl">"</span> <span class="nx">breed</span><span class="o">=</span><span class="dl">"</span><span class="s2">Tuxedo</span><span class="dl">"</span> <span class="o">/&gt;</span>
+      <span class="o">&lt;</span><span class="nx">Pet</span> <span class="nx">name</span><span class="o">=</span><span class="dl">"</span><span class="s2">Kuma</span><span class="dl">"</span> <span class="nx">animal</span><span class="o">=</span><span class="dl">"</span><span class="s2">Dog</span><span class="dl">"</span> <span class="nx">breed</span><span class="o">=</span><span class="dl">"</span><span class="s2">Doberman</span><span class="dl">"</span> <span class="o">/&gt;</span>
+      <span class="o">&lt;</span><span class="nx">Pet</span> <span class="nx">name</span><span class="o">=</span><span class="dl">"</span><span class="s2">Salvador</span><span class="dl">"</span> <span class="nx">animal</span><span class="o">=</span><span class="dl">"</span><span class="s2">Cat</span><span class="dl">"</span> <span class="nx">breed</span><span class="o">=</span><span class="dl">"</span><span class="s2">Fake Russian Blue</span><span class="dl">"</span> <span class="o">/&gt;</span>
+    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">render</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">,</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">root</span><span class="dl">"</span><span class="p">));</span></code></pre></figure>
+
+<p>In the above code, feel free to use whatever pet name, animal, and breed you like.</p>
 
 <h2 id="hooks">Hooks</h2>
 
 <h3 id="creating-a-search-component">Creating a Search Component</h3>
+
+<p>According to 2019 Brian, hooks were considered a new feature to React. Guess I’m pretty late to the party 🎉. While hooks are optional to learn, Brian is going to learn us on em. Classes are also a need to know which we will get into later. If you are only here to learn hooks, <a href="https://btholt.github.io/complete-intro-to-react-v5/hooks-in-depth">check out this ‘Hooks In Depth’ section from the ‘Intermediate React, v2’ course</a>. Make a new component (in the <code class="language-plaintext highlighter-rouge">src</code> directory), <code class="language-plaintext highlighter-rouge">SearchParams.js</code> . In the <code class="language-plaintext highlighter-rouge">SearchParams.js</code> file, add this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">SearchParams</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">location</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Seattle, WA</span><span class="dl">"</span><span class="p">;</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="dl">"</span><span class="s2">search-params</span><span class="dl">"</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">form</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">label</span> <span class="nx">htmlFor</span><span class="o">=</span><span class="dl">"</span><span class="s2">location</span><span class="dl">"</span><span class="o">&gt;</span>
+          <span class="nx">Location</span>
+          <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">id</span><span class="o">=</span><span class="dl">"</span><span class="s2">location</span><span class="dl">"</span> <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">location</span><span class="p">}</span> <span class="nx">placeholder</span><span class="o">=</span><span class="dl">"</span><span class="s2">Location</span><span class="dl">"</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="sr">/label</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="nx">button</span><span class="o">&gt;</span><span class="nx">Submit</span><span class="o">&lt;</span><span class="sr">/button</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/form</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">SearchParams</span><span class="p">;</span></code></pre></figure>
+
+<p>The API that we are going to be using is restricted (by Brian) to Seattle, WA and San Francisco, CA, so use one of those. You’ll notice that instead of <code class="language-plaintext highlighter-rouge">class</code> in the <code class="language-plaintext highlighter-rouge">div</code>, we are using <code class="language-plaintext highlighter-rouge">className</code>. This is due to the fact that <code class="language-plaintext highlighter-rouge">class</code> is used in JavaScript, so we have to use the DOM API version for declaring a class(Name) in JSX (similarly, you couldn’t do something like <code class="language-plaintext highlighter-rouge">const let = "newLet";</code>, because <code class="language-plaintext highlighter-rouge">let</code> is a part of the JavaScript language and you cannot redeclare what it is). The rest of the markup should be familiar enough, the only real oddity being the <code class="language-plaintext highlighter-rouge">{location}</code>, which is grabbing the value that was assigned to the location variable in the above code.</p>
+
+<p>Now that we’ve made the <code class="language-plaintext highlighter-rouge">SearchParams</code> component, update <code class="language-plaintext highlighter-rouge">App.js</code> to use it, like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">render</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-dom</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">SearchParams</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./SearchParams</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">Adopt</span> <span class="nx">Me</span><span class="o">!&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="nx">SearchParams</span> <span class="o">/&gt;</span>
+    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">render</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">,</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">root</span><span class="dl">"</span><span class="p">));</span></code></pre></figure>
+
+<p>Check your page w/ the Parcel server, either open your browser if it’s already running or open terminal and type <code class="language-plaintext highlighter-rouge">npm run dev</code> then open [your browser] to see the changes.</p>
 
 <h3 id="setting-state-with-hooks">Setting State with Hooks</h3>
 
