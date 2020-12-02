@@ -299,7 +299,66 @@ A: The `package-lock.json` file 'locks' the versions of the dependencies for you
 
 ### ESLint Configuration
 
+In the `.eslintrc.json` file, add the following:
+
+{% highlight json %}
+
+{
+    "extends": ["eslint:recommended", "prettier", "prettier/react" ],
+    "plugins": [],
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "env": {
+        "es6": true,
+        "browser": true,
+        "node": true
+    }
+}
+
+{% endhighlight %}
+
+In the above, 'extends' is how you can extend the configuration of ESLint. 'eslint:recommended' is the bare-minimum set of recommended rules for ESLint, which Brian thinks everyone should be running all the time **and** he does not believe it to be a controversial opinion. Ok Brian. There are alternatives to 'recommended', i.e. standard or airbnb, which are much more opinionated. 'recommended' will catch bugs, but won't force you to write code in a specific way, which is a kind way to make sure that there are some standards in place without being overbearing. Then 'prettier' and 'prettier/react' tells ESLint to use prettier...
+
+'plugins' is set but undefined for now, we will add to it later. The 'parserOptions' object sets the latest supported version of ecma, 2018 (which includes support for async/await), the 'sourceType' to module (because we are using import and export, i.e. ES Modules), and 'ecmaFeatures' 'jsx' to true (so that ESLint understands the jsx we are about to be writing).
+
+Finally, the 'env' object is telling ESLint to allow ES6 syntax, 'browser' tells ESLint that `setTimeout`, `window, etc... are ok to use, and 'node' we will write later, so we don't want ESLint to choke on `http` and `require`.
+
+The above ESLint configuration is Brian's base configuration, he likes it.
+
+Now, open up your `package.json` file and add the following to your scripts:
+
+{% highlight json %}
+
+//..
+"lint": "eslint \"src/**/*.{js,jsx}\" --quiet",
+//..
+
+{% endhighlight %}
+
+The above will lint any files with the `.js` or `.jsx` extensions and `--quiet` will make ESLint... quiet. Right now if you were to run the `lint` script `npm run lint`, you would see a bunch of `error 'React' is not defined`, which is what is expected because ESLint does not know what React is, yet. Those errors will be fixed soon. Brian does not run the `lint` command often, but he does use the ESLint VS Code extension. If you install the ESLint VS Code extension, you will see the ESLint errors inside of your editor without having to run the `lint` script we just made for our project.
+
+Brian then goes on to explain how awesome and useful ESLint is. Use it. Additionally, ESLint is very extendible, you (and Brian) can write custom ESLint rules. There are other tools out there that can lint your code; JSHint and JSLint were mentioned.
+
 ### gitignore
+
+In your projects root directory, create a `.gitignore` file. The purpose of the `.gitignore` file is to let git know what files you would like to exclude from your project repository. Add the following to the `.gitignore` file:
+
+{% highlight markdown %}
+
+node_modules/
+.DS_Store
+.cache/
+dist/
+coverage/
+.vscode/
+.env
+
+{% endhighlight %}
 
 ### Parcel
 
