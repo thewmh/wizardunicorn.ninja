@@ -8,16 +8,14 @@ on:
 jobs:
   react: 
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        directory: complete-intro-react/adopt-me
-        steps:
-          # Run npm install
-          - name: Run npm Install 
-            run: npm install
-          # Build React App from Complete Intro to React workshop
-          - name: Build React App from Complete Intro to React workshop
-            run: complete-intro-react/adopt-me/build.sh
+      directory: complete-intro-react/adopt-me
+      steps:
+        # Run npm install
+        - name: Run npm Install 
+          run: npm install
+        # Build React App from Complete Intro to React workshop
+        - name: Build React App from Complete Intro to React workshop
+          run: complete-intro-react/adopt-me/build.sh
   jekyll:
     runs-on: ubuntu-16.04
 
