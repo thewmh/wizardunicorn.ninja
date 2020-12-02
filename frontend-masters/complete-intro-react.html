@@ -304,7 +304,54 @@
 
 <h3 id="eslint-configuration">ESLint Configuration</h3>
 
+<p>In the <code class="language-plaintext highlighter-rouge">.eslintrc.json</code> file, add the following:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"extends"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"eslint:recommended"</span><span class="p">,</span><span class="w"> </span><span class="s2">"prettier"</span><span class="p">,</span><span class="w"> </span><span class="s2">"prettier/react"</span><span class="w"> </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"plugins"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+    </span><span class="nl">"parserOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"ecmaVersion"</span><span class="p">:</span><span class="w"> </span><span class="mi">2018</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"sourceType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"module"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"ecmaFeatures"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"jsx"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"env"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"es6"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"browser"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"node"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>In the above, ‘extends’ is how you can extend the configuration of ESLint. ‘eslint:recommended’ is the bare-minimum set of recommended rules for ESLint, which Brian thinks everyone should be running all the time <strong>and</strong> he does not believe it to be a controversial opinion. Ok Brian. There are alternatives to ‘recommended’, i.e. standard or airbnb, which are much more opinionated. ‘recommended’ will catch bugs, but won’t force you to write code in a specific way, which is a kind way to make sure that there are some standards in place without being overbearing. Then ‘prettier’ and ‘prettier/react’ tells ESLint to use prettier…</p>
+
+<p>‘plugins’ is set but undefined for now, we will add to it later. The ‘parserOptions’ object sets the latest supported version of ecma, 2018 (which includes support for async/await), the ‘sourceType’ to module (because we are using import and export, i.e. ES Modules), and ‘ecmaFeatures’ ‘jsx’ to true (so that ESLint understands the jsx we are about to be writing).</p>
+
+<p>Finally, the ‘env’ object is telling ESLint to allow ES6 syntax, ‘browser’ tells ESLint that <code class="language-plaintext highlighter-rouge">setTimeout</code>, <code class="language-plaintext highlighter-rouge">window, etc... are ok to use, and 'node' we will write later, so we don't want ESLint to choke on </code>http<code class="language-plaintext highlighter-rouge"> and </code>require`.</p>
+
+<p>The above ESLint configuration is Brian’s base configuration, he likes it.</p>
+
+<p>Now, open up your <code class="language-plaintext highlighter-rouge">package.json</code> file and add the following to your scripts:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="err">//..</span><span class="w">
+</span><span class="nl">"lint"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eslint </span><span class="se">\"</span><span class="s2">src/**/*.{js,jsx}</span><span class="se">\"</span><span class="s2"> --quiet"</span><span class="err">,</span><span class="w">
+</span><span class="err">//..</span></code></pre></figure>
+
+<p>The above will lint any files with the <code class="language-plaintext highlighter-rouge">.js</code> or <code class="language-plaintext highlighter-rouge">.jsx</code> extensions and <code class="language-plaintext highlighter-rouge">--quiet</code> will make ESLint… quiet. Right now if you were to run the <code class="language-plaintext highlighter-rouge">lint</code> script <code class="language-plaintext highlighter-rouge">npm run lint</code>, you would see a bunch of <code class="language-plaintext highlighter-rouge">error 'React' is not defined</code>, which is what is expected because ESLint does not know what React is, yet. Those errors will be fixed soon. Brian does not run the <code class="language-plaintext highlighter-rouge">lint</code> command often, but he does use the ESLint VS Code extension. If you install the ESLint VS Code extension, you will see the ESLint errors inside of your editor without having to run the <code class="language-plaintext highlighter-rouge">lint</code> script we just made for our project.</p>
+
+<p>Brian then goes on to explain how awesome and useful ESLint is. Use it. Additionally, ESLint is very extendible, you (and Brian) can write custom ESLint rules. There are other tools out there that can lint your code; JSHint and JSLint were mentioned.</p>
+
 <h3 id="gitignore">gitignore</h3>
+
+<p>In your projects root directory, create a <code class="language-plaintext highlighter-rouge">.gitignore</code> file. The purpose of the <code class="language-plaintext highlighter-rouge">.gitignore</code> file is to let git know what files you would like to exclude from your project repository. Add the following to the <code class="language-plaintext highlighter-rouge">.gitignore</code> file:</p>
+
+<figure class="highlight"><pre><code class="language-markdown" data-lang="markdown">node_modules/
+.DS_Store
+.cache/
+dist/
+coverage/
+.vscode/
+.env</code></pre></figure>
 
 <h3 id="parcel">Parcel</h3>
 
