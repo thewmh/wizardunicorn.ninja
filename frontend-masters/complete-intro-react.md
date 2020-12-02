@@ -586,7 +586,67 @@ Check your page w/ the Parcel server, either open your browser if it's already r
 
 ### Setting State with Hooks
 
+While checking out the awesome changes you've made to your app, try to change the text in the input box. I'll wait. Couldn't change it? Congrats, you've broken the DOM. This was actually the same exact problem that many before you have run into when working with React, and the issue is, "why has something that used to be so simple to implement now been made so hard?". The issue is based in how React works, it goes something like this:
+
+* React hits `App.js` which renders whatever components are in it, in this case `App.js` and `SearchParams.js`
+* When you type even a single character into the `SearchParams.js` input field, a render is triggered
+* React finds a `const location` and uses that value as it is assigned, to the input field
+
+Two-way data binding is not automatic in React. Brian makes the case for this being a benefit in React, the fact that it is more verbose. While you do have to type more to achieve what may seem to be more simple in another framework, such as Angular, the end result is that your code is more explicit and readable. To fix the issue with not being able to type anything into the input field for the `SearchParams.js` component, update the `SearchParams.js` component like this:
+
+{% highlight javascript %}
+
+import React, { useState } from "react";
+
+const SearchParams = () => {
+  const [location, setLocation] = useState("Seattle, WA");
+
+  return (
+    <div className="search-params">
+      <form>
+        <label htmlFor="location">
+          Location
+          <input
+            id="location"
+            value={location}
+            placeholder="Location"
+            onChange={(e) => setLocation(e.target.value)}
+          />
+        </label>
+        <button>Submit</button>
+      </form>
+    </div>
+  );
+};
+
+export default SearchParams;
+
+{% endhighlight %}
+
+We're importing `useState` from React, updating the `const location` variable, and adding an `onChange` event with a wee little function to the input element (which takes an e(vent) and updates the input with the event.target.value). Now whenever something is typed in the input field, the `onChange` is triggered, which will then call `setLocation` to update `location` with whatever is in the input field. Check your page to verify that the change works. Here's how it works:
+
+* Typing in the input field triggers a re-render, `SearchParam` re-renders
+* `[location, setLocation]` location is the current state of location, setLocation is an 'updater' for that piece of state
+* Every time the `onChange` event happens, `e` will represent the event which then calls `setLocation` with the value of what was typed in the input field
+* The state is updated and when another re-render occurs, the 'state' of location will be whatever it has been updated to ("Seattle, WA" is the default state of the input field)
+
+With that being said, you can see that there is going to be a fair amount of re-rendering happening with this component, so it is important to keep what you are updating fairly narrow in its scope, because your component function will be re-rendered (run again) whenever its state changes. This line is the hook:
+
+{% highlight javascript %}
+
+//...
+const [location, setLocation] = useState("Seattle, WA");
+//...
+
+{% endhighlight %}
+
+The important thing to note about hooks is that they all begin with 'use'. `useState`, `useEffect`, `useCallback`, `useMemo`, all hooks begin with 'use'. Hooks is how you get 'stateful logic' with React.
+
+[check out the useState hook in the React docs](https://reactjs.org/docs/hooks-reference.html#usestate)
+
 ### Best Practices for Hooks
+
+
 
 ### Configuring ESLint for Hooks
 
