@@ -6,21 +6,6 @@ on:
       - main
 
 jobs:
-  react: 
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout main branch ✅
-        uses: actions/checkout@v2
-      # Install Node
-      - name: Setup Node 🖥
-        uses: actions/setup-node@v1
-        with:
-          node-version: 'v12.12.0'
-      # Build React App from Complete Intro to React workshop
-      - name: Build React App from Complete Intro to React workshop
-        run: complete-intro-react/adopt-me/build.sh
-
   jekyll:
     runs-on: ubuntu-16.04
 
