@@ -6,6 +6,18 @@ on:
       - main
 
 jobs:
+  react: 
+    runs-on: ubuntu-latest
+      defaults:
+        run:
+          directory: complete-intro-react/adopt-me
+          steps:
+            # Run npm install
+            - name: Run npm Install 
+              run: npm install
+            # Build React App from Complete Intro to React workshop
+            - name: Build React App from Complete Intro to React workshop
+              run: complete-intro-react/adopt-me/build.sh
   jekyll:
     runs-on: ubuntu-16.04
 
@@ -23,12 +35,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 'v12.12.0'
-      # Run npm install
-      - name: Run npm Install 
-        run: npm install
-      # Build React App from Complete Intro to React workshop
-      - name: Build React App from Complete Intro to React workshop
-        run: complete-intro-react/adopt-me/build.sh
       # Build site & Run PurgeCSS
       - name: Build Jekyll & Run PurgeCSS
         run: test/build.sh
