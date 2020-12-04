@@ -33,8 +33,9 @@ jobs:
         working-directory: complete-intro-react/adopt-me
       # Build site & Run PurgeCSS
       - name: Build Jekyll & Run PurgeCSS
-        run: test/build.sh
-        working-directory: ./test
+        run: |
+          cd ./
+          test/build.sh
       # Make CNAME record for Github Deployment to custom domain
       - name: Make CNAME File 📄
         uses: finnp/create-file-action@master
