@@ -1,0 +1,27 @@
+// La Croíx can styling
+/*! purgecss start ignore */
+.la-croix-can {
+    width: 39px;
+    height: 75px;
+    background-image: url("../img/la-croix.png");
+    display: inline-block;
+    background-size: 40px;
+    margin: 20px;
+
+    &:nth-of-type(2n) {
+        transform: rotate(20deg);
+    }
+
+    &:nth-of-type(3n) {
+        transform: rotate(-20deg);
+    }
+
+    &:nth-of-type(5n) {
+        transform: rotate(160deg);
+    }
+
+    &:hover {
+        transform: none;
+    }
+}
+/*! purgecss end ignore */
