@@ -57,4 +57,4 @@ plugins:
 
 css_dir: "<css_dir>" # defaults to "css"
 
-exclude: [worknotes, vendor, js30, node_modules, complete-intro-react/adopt-me/src]
+exclude: [worknotes, vendor, js30, node_modules, complete-intro-react]
