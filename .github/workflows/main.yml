@@ -34,7 +34,7 @@ jobs:
       # Build site & Run PurgeCSS
       - name: Build Jekyll & Run PurgeCSS
         run: test/build.sh
-        working-directory: test
+        working-directory: ./test
       # Make CNAME record for Github Deployment to custom domain
       - name: Make CNAME File 📄
         uses: finnp/create-file-action@master
