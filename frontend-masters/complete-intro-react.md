@@ -733,7 +733,46 @@ The `key` does need to be a unique identifier, in the case of the pet API, we kn
 
 ### Breed Dropdown
 
+Now we're basically going to repeat what we just did, but for breeds. Add this below the `</label>` that we just made:
+
+{% highlight javascript %}
+
+//...
+<label htmlFor="breed">
+    Breed
+    <select 
+        id="breed"
+        value={breed}
+        onChange={e => setBreed(e.target.value)}
+        onBlur={e => setBreed(e.target.value)}
+        disabled={!breeds.length}
+        >
+        <option>All</option>
+        {breeds.map(breedString => (
+            <option key={breedString} value="{breedString}">{breedString}</option>
+            ))}
+        </select>
+</label>
+//...
+
+{% endhighlight %}
+
+And add these 2 `const` variables just after the others in `SearchParams.js`:
+
+{% highlight javascript %}
+
+//...
+const [breed, setBreed] = useState("");
+const [breeds, setBreeds] = useState([]);
+//...
+
+{% endhighlight %}
+
+We'll get this wired up with a custom hook next.
+
 ### Custom Hooks
+
+So far, the `htmlFor...` 'animal' and 'breed' are quite similar. Brian thinks it would be nice if there was some way to make them a reusable something for them. Let's do that! Make a new file `useDropdown.js`
 
 ## Effects
 
