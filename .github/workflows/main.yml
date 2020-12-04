@@ -26,11 +26,11 @@ jobs:
       # Install Node Modules for React Workshop Project Build React
       - name: Install Node Modules for React Workshop Project
         run: npm install
-        working-directory: complete-intro-react/src
+        working-directory: complete-intro-react/adopt-me
       # Build React
       - name: Build React
         run: npm run dev
-        working-directory: complete-intro-react/src
+        working-directory: complete-intro-react/adopt-me
       # Build site & Run PurgeCSS
       - name: Build Jekyll & Run PurgeCSS
         run: test/build.sh
