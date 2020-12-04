@@ -693,7 +693,39 @@ coverage/
 
 <h3 id="custom-hooks">Custom Hooks</h3>
 
-<p>So far, the <code class="language-plaintext highlighter-rouge">htmlFor...</code> ‘animal’ and ‘breed’ are quite similar. Brian thinks it would be nice if there was some way to make them a reusable something for them. Let’s do that! Make a new file <code class="language-plaintext highlighter-rouge">useDropdown.js</code></p>
+<p>So far, the <code class="language-plaintext highlighter-rouge">htmlFor...</code> ‘animal’ and ‘breed’ are quite similar. Brian thinks it would be nice if there was some way to make them a reusable something for them. Let’s do that! Make a new file <code class="language-plaintext highlighter-rouge">useDropdown.js</code> and drop in the following code:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">useDropdown</span> <span class="o">=</span> <span class="p">(</span><span class="nx">label</span><span class="p">,</span> <span class="nx">defaultState</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">state</span><span class="p">,</span> <span class="nx">setState</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="nx">defaultState</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="s2">`use-dropdown-</span><span class="p">${</span><span class="nx">label</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="dl">"</span><span class="s2"> </span><span class="dl">"</span><span class="p">,</span> <span class="dl">""</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">()}</span><span class="s2">`</span><span class="p">;</span>
+  <span class="kd">const</span> <span class="nx">Dropdown</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">label</span> <span class="nx">htmlFor</span><span class="o">=</span><span class="p">{</span><span class="nx">id</span><span class="p">}</span><span class="o">&gt;</span>
+      <span class="p">{</span><span class="nx">label</span><span class="p">}</span>
+      <span class="o">&lt;</span><span class="nx">select</span>
+        <span class="nx">id</span><span class="o">=</span><span class="p">{</span><span class="nx">id</span><span class="p">}</span>
+        <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">state</span><span class="p">}</span>
+        <span class="nx">onChange</span><span class="o">=</span><span class="p">{(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">setState</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">)}</span>
+        <span class="nx">onBlur</span><span class="o">=</span><span class="p">{(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">setState</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">)}</span>
+        <span class="nx">disabled</span><span class="o">=</span><span class="p">{</span><span class="nx">options</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">}</span>
+      <span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">option</span><span class="o">&gt;</span><span class="nx">All</span><span class="o">&lt;</span><span class="sr">/option</span><span class="err">&gt;
+</span>        <span class="p">{</span><span class="nx">options</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">item</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span>
+          <span class="o">&lt;</span><span class="nx">option</span> <span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">item</span><span class="p">}</span> <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">item</span><span class="p">}</span><span class="o">&gt;</span>
+            <span class="p">{</span><span class="nx">item</span><span class="p">}</span>
+          <span class="o">&lt;</span><span class="sr">/option</span><span class="err">&gt;
+</span>        <span class="p">))}</span>
+      <span class="o">&lt;</span><span class="sr">/select</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/label</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+
+  <span class="k">return</span> <span class="p">[</span><span class="nx">state</span><span class="p">,</span> <span class="nx">Dropdown</span><span class="p">,</span> <span class="nx">setState</span><span class="p">];</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">useDropdown</span><span class="p">;</span></code></pre></figure>
+
+<p>Ok… Let’s try to walk through that. <code class="language-plaintext highlighter-rouge">import React...</code> we’ve seen. Every ‘component’ has to have that line, we’re also grabbing the <code class="language-plaintext highlighter-rouge">{ useState }</code> function hook. <code class="language-plaintext highlighter-rouge">const Dropdown</code>, that’s the component declaration, with 3 parameters being passed in; <code class="language-plaintext highlighter-rouge">label</code>, <code class="language-plaintext highlighter-rouge">defaultState</code>, <code class="language-plaintext highlighter-rouge">options</code>. <code class="language-plaintext highlighter-rouge">const [state, setState]...</code> is the same pattern that was initially set up for the ‘animal’ and ‘breed’ drop downs, but abstracted here. <code class="language-plaintext highlighter-rouge">const id...</code> is establishing a unique ‘id’ that can be used for the <code class="language-plaintext highlighter-rouge">htmlFor</code> and <code class="language-plaintext highlighter-rouge">&lt;select&gt;</code> ‘id(s)’ and removing any spaces, then converting the entire string to lowercase (<code class="language-plaintext highlighter-rouge">.toLowerCase()</code>). <code class="language-plaintext highlighter-rouge">const Dropdown...</code> is effectively the Class that we are going to (re)use to make this drop down component flexible enough to be used with different data sets. The structure of it is just like the ‘animal’ and ‘breed’ drop downs we’ve already created. <code class="language-plaintext highlighter-rouge">return...</code> will ‘return’ an array containing; ‘state’, the ‘Dropdown’ Class, and ‘setState’. Finally, <code class="language-plaintext highlighter-rouge">useDropdown</code> is exported so we can then import it in another component file.</p>
 
 <h2 id="effects">Effects</h2>
 
