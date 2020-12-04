@@ -23,6 +23,14 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 'v12.12.0'
+      # Install Node Modules for React Workshop Project Build React
+      - name: Install Node Modules for React Workshop Project
+        run: npm install
+        working-directory: complete-intro-react/adopt-me
+      # Build React
+      - name: Build React
+        run: npm run prod
+        working-directory: complete-intro-react/adopt-me
       # Build site & Run PurgeCSS
       - name: Build Jekyll & Run PurgeCSS
         run: |
@@ -34,14 +42,6 @@ jobs:
         env:
           FILE_NAME: "./CNAME"
           FILE_DATA: "wizardunicorn.ninja"
-      # Install Node Modules for React Workshop Project Build React
-      - name: Install Node Modules for React Workshop Project
-        run: npm install
-        working-directory: complete-intro-react/adopt-me
-      # Build React
-      - name: Build React
-        run: npm run prod
-        working-directory: complete-intro-react/adopt-me
       # Push the compiled _site-folder as (dev) branch into your GitHub repository
       - name: Deploy to GitHub Pages 🐣
         uses: peaceiris/actions-gh-pages@v3
