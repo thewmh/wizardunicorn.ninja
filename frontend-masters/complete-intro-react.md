@@ -772,7 +772,43 @@ We'll get this wired up with a custom hook next.
 
 ### Custom Hooks
 
-So far, the `htmlFor...` 'animal' and 'breed' are quite similar. Brian thinks it would be nice if there was some way to make them a reusable something for them. Let's do that! Make a new file `useDropdown.js`
+So far, the `htmlFor...` 'animal' and 'breed' are quite similar. Brian thinks it would be nice if there was some way to make them a reusable something for them. Let's do that! Make a new file `useDropdown.js` and drop in the following code:
+
+{% highlight javascript %}
+
+import React, { useState } from "react";
+
+const useDropdown = (label, defaultState, options) => {
+  const [state, setState] = useState(defaultState);
+  const id = `use-dropdown-${label.replace(" ", "").toLowerCase()}`;
+  const Dropdown = () => (
+    <label htmlFor={id}>
+      {label}
+      <select
+        id={id}
+        value={state}
+        onChange={(e) => setState(e.target.value)}
+        onBlur={(e) => setState(e.target.value)}
+        disabled={options.length === 0}
+      >
+        <option>All</option>
+        {options.map((item) => (
+          <option key={item} value={item}>
+            {item}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+
+  return [state, Dropdown, setState];
+};
+
+export default useDropdown;
+
+{% endhighlight %}
+
+Ok... Let's try to walk through that. `import React...` we've seen. Every 'component' has to have that line, we're also grabbing the `{ useState }` function hook. `const Dropdown`, that's the component declaration, with 3 parameters being passed in; `label`, `defaultState`, `options`. `const [state, setState]...` is the same pattern that was initially set up for the 'animal' and 'breed' drop downs, but abstracted here. `const id...` is establishing a unique 'id' that can be used for the `htmlFor` and `<select>` 'id(s)' and removing any spaces, then converting the entire string to lowercase (`.toLowerCase()`). `const Dropdown...` is effectively the Class that we are going to (re)use to make this drop down component flexible enough to be used with different data sets. The structure of it is just like the 'animal' and 'breed' drop downs we've already created. `return...` will 'return' an array containing; 'state', the 'Dropdown' Class, and 'setState'. Finally, `useDropdown` is exported so we can then import it in another component file. 
 
 ## Effects
 
