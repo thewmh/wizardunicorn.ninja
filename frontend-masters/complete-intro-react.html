@@ -727,6 +727,46 @@ coverage/
 
 <p>Ok… Let’s try to walk through that. <code class="language-plaintext highlighter-rouge">import React...</code> we’ve seen. Every ‘component’ has to have that line, we’re also grabbing the <code class="language-plaintext highlighter-rouge">{ useState }</code> function hook. <code class="language-plaintext highlighter-rouge">const Dropdown</code>, that’s the component declaration, with 3 parameters being passed in; <code class="language-plaintext highlighter-rouge">label</code>, <code class="language-plaintext highlighter-rouge">defaultState</code>, <code class="language-plaintext highlighter-rouge">options</code>. <code class="language-plaintext highlighter-rouge">const [state, setState]...</code> is the same pattern that was initially set up for the ‘animal’ and ‘breed’ drop downs, but abstracted here. <code class="language-plaintext highlighter-rouge">const id...</code> is establishing a unique ‘id’ that can be used for the <code class="language-plaintext highlighter-rouge">htmlFor</code> and <code class="language-plaintext highlighter-rouge">&lt;select&gt;</code> ‘id(s)’ and removing any spaces, then converting the entire string to lowercase (<code class="language-plaintext highlighter-rouge">.toLowerCase()</code>). <code class="language-plaintext highlighter-rouge">const Dropdown...</code> is effectively the Class that we are going to (re)use to make this drop down component flexible enough to be used with different data sets. The structure of it is just like the ‘animal’ and ‘breed’ drop downs we’ve already created. <code class="language-plaintext highlighter-rouge">return...</code> will ‘return’ an array containing; ‘state’, the ‘Dropdown’ Class, and ‘setState’. Finally, <code class="language-plaintext highlighter-rouge">useDropdown</code> is exported so we can then import it in another component file.</p>
 
+<p>If you have any questions about that… drop me a line.</p>
+
+<p>Now we can update the <code class="language-plaintext highlighter-rouge">SearchParams.js</code> component to use our fancy new custom hook! Open <code class="language-plaintext highlighter-rouge">SearchParams.js</code> and get it updated to look like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">ANIMALS</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@frontendmasters/pet</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">useDropdown</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./useDropdown</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">SearchParams</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">location</span><span class="p">,</span> <span class="nx">setLocation</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="dl">"</span><span class="s2">Seattle, WA</span><span class="dl">"</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">breeds</span><span class="p">,</span> <span class="nx">setBreeds</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">([]);</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">animal</span><span class="p">,</span> <span class="nx">AnimalDropdown</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useDropdown</span><span class="p">(</span><span class="dl">"</span><span class="s2">Animal</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">dog</span><span class="dl">"</span><span class="p">,</span> <span class="nx">ANIMALS</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">breed</span><span class="p">,</span> <span class="nx">BreedDropdown</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useDropdown</span><span class="p">(</span><span class="dl">"</span><span class="s2">Breed</span><span class="dl">"</span><span class="p">,</span> <span class="dl">""</span><span class="p">,</span> <span class="nx">breeds</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="dl">"</span><span class="s2">search-params</span><span class="dl">"</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">form</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">label</span> <span class="nx">htmlFor</span><span class="o">=</span><span class="dl">"</span><span class="s2">location</span><span class="dl">"</span><span class="o">&gt;</span>
+          <span class="nx">Location</span>
+          <span class="o">&lt;</span><span class="nx">input</span>
+            <span class="nx">id</span><span class="o">=</span><span class="dl">"</span><span class="s2">location</span><span class="dl">"</span>
+            <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">location</span><span class="p">}</span>
+            <span class="nx">placeholder</span><span class="o">=</span><span class="dl">"</span><span class="s2">Location</span><span class="dl">"</span>
+            <span class="nx">onChange</span><span class="o">=</span><span class="p">{(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">setLocation</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">)}</span>
+          <span class="sr">/</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="sr">/label</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="nx">AnimalDropdown</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="nx">BreedDropdown</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="nx">button</span><span class="o">&gt;</span><span class="nx">Submit</span><span class="o">&lt;</span><span class="sr">/button</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/form</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">SearchParams</span><span class="p">;</span></code></pre></figure>
+
+<p>Yeah! First is the new <code class="language-plaintext highlighter-rouge">import</code> statement for the <code class="language-plaintext highlighter-rouge">useDropdown.js</code> component we just made. Need that. Then, the <code class="language-plaintext highlighter-rouge">const(s)</code> have been updated to use the new hook; <code class="language-plaintext highlighter-rouge">useDropdown</code>. You can see we are passing in the ‘label’, ‘defaultState’, and the ‘options’ as defined inn <code class="language-plaintext highlighter-rouge">useDropdown.js</code>. Finally, we can get rid of all the ‘animal’ and ‘breed’ <code class="language-plaintext highlighter-rouge">&lt;label&gt;...&lt;/label&gt;</code> JSX and replace it with <code class="language-plaintext highlighter-rouge">&lt;AnimalDropdwn /&gt;</code> and <code class="language-plaintext highlighter-rouge">&lt;BreedDropdown /&gt;</code> respectively. Refresh your browser and while nothing (visually) has changed, we are now using a custom hook!</p>
+
+<p>This pattern is quite useful for testing and helps us to be D.R.Y. Brians favorite!</p>
+
 <h2 id="effects">Effects</h2>
 
 <h3 id="effects-1">Effects</h3>
