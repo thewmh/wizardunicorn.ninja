@@ -597,11 +597,68 @@ coverage/
 
 <h3 id="best-practices-for-hooks">Best Practices for Hooks</h3>
 
+<p>Hooks <strong>never</strong> go inside of <code class="language-plaintext highlighter-rouge">if</code> statements and they <strong>never</strong> go inside of <code class="language-plaintext highlighter-rouge">for</code> loops or anything like that. But why Brian? Basically, the way that hooks work is that they are keeping track of the order that you are creating hooks. So… <strong>if</strong> you put a hook inside of an <code class="language-plaintext highlighter-rouge">if</code> statement, the first time the condition may be true, so your hook would work, but what if on the second run of the <code class="language-plaintext highlighter-rouge">if</code> statement, the condition is not true? Your hook would not work. Don’t do it. Brian will help us set up an ESLint rule to prevent us from being so dumb in a minute. BTW, this is also mentioned in the React docs and applies to all hooks, not just <code class="language-plaintext highlighter-rouge">useState</code>.</p>
+
 <h3 id="configuring-eslint-for-hooks">Configuring ESLint for Hooks</h3>
+
+<p>Open up your console and type <code class="language-plaintext highlighter-rouge">npm i -D eslint-plugin-react-hooks</code>. This will install the official (ESLint) rules from the React team about writing hooks. Open up the <code class="language-plaintext highlighter-rouge">.eslintrc.json</code> file and add the following:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"rules"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="err">//...</span><span class="w">
+    </span><span class="nl">"react-hooks/rules-of-hooks"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"react-hooks/exhaustive-depths"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="err">,</span><span class="w">
+</span><span class="nl">"plugins"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"react"</span><span class="p">,</span><span class="w"> </span><span class="s2">"import"</span><span class="p">,</span><span class="w"> </span><span class="s2">"jsx-a11y"</span><span class="p">,</span><span class="w"> </span><span class="s2">"react-hooks"</span><span class="p">]</span><span class="err">,</span></code></pre></figure>
+
+<p><code class="language-plaintext highlighter-rouge">"react-hooks/exhaustive-depths": 1</code> will <em>force</em> you to do something that has to do with effects, Brian will talk about it later. The numbers in the rules stand for:</p>
+
+<p>0 - turn off
+1 - warn
+2 - throw error</p>
 
 <h3 id="calling-the-pet-api">Calling the Pet API</h3>
 
+<p>We need to install a new client library to make requests against an API. To do that, add the following line to the <code class="language-plaintext highlighter-rouge">SearchParams.js</code> file:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="p">{</span> <span class="nx">ANIMALS</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@frontendmasters/pet</span><span class="dl">'</span><span class="p">;</span></code></pre></figure>
+
+<p>We’ve not installed that library, but Parcel will do it for us! If you feel more comfortable installing that package through the terminal, run <code class="language-plaintext highlighter-rouge">npm i @frontendmasters/pet</code>.</p>
+
+<p>Still in <code class="language-plaintext highlighter-rouge">SearchParams.js</code> declare another <code class="language-plaintext highlighter-rouge">const</code> below the one for location:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+<span class="kd">const</span> <span class="p">[</span><span class="nx">animal</span><span class="p">,</span> <span class="nx">setAnimal</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="dl">"</span><span class="s2">dog</span><span class="dl">"</span><span class="p">);</span></code></pre></figure>
+
+<p>AND add this JSX (just below the <code class="language-plaintext highlighter-rouge">&lt;/label&gt;</code> so we can use the const:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+<span class="o">&lt;</span><span class="sr">/label</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="nx">label</span> <span class="nx">htmlFor</span><span class="o">=</span><span class="dl">"</span><span class="s2">animal</span><span class="dl">"</span><span class="o">&gt;</span>
+    <span class="nx">Animal</span>
+    <span class="o">&lt;</span><span class="nx">select</span>
+        <span class="nx">id</span><span class="o">=</span><span class="dl">"</span><span class="s2">animal</span><span class="dl">"</span>
+        <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">animal</span><span class="p">}</span>
+        <span class="nx">onChange</span><span class="o">=</span><span class="p">{</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="nx">setAnimal</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">)}</span>
+        <span class="nx">onBlur</span><span class="o">=</span><span class="p">{</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="nx">setAnimal</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">)}</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">option</span><span class="o">&gt;</span><span class="nx">All</span><span class="o">&lt;</span><span class="sr">/option</span><span class="err">&gt;
+</span>        <span class="p">{</span><span class="nx">ANIMALS</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">animal</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">option</span> <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">animal</span><span class="p">}</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">animal</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/option&gt;</span><span class="se">))</span><span class="err">}
+</span>    <span class="o">&lt;</span><span class="sr">/select</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="sr">/label</span><span class="err">&gt;
+</span><span class="c1">//...</span></code></pre></figure>
+
+<p>That’s a bunch of things! Due to A11y, if the <code class="language-plaintext highlighter-rouge">onBlur</code> were not a part of our <code class="language-plaintext highlighter-rouge">&lt;select&gt;</code>, A11y would complain that the <code class="language-plaintext highlighter-rouge">&lt;select&gt;</code> would not be accessible. The <code class="language-plaintext highlighter-rouge">{ANIMALS.map(animal =&gt; (&lt;option value={animal}&gt;{animal}&lt;/option&gt;))}</code> will allow us to take the array of strings which comes from the API and convert them into an <code class="language-plaintext highlighter-rouge">&lt;option&gt;</code> for each element (string) that is in the array. If you check your browser, you should now see the new select menu with all the animal types, but there is an error…</p>
+
 <h3 id="unique-list-item-keys">Unique List Item Keys</h3>
+
+<p>The error that you may have seen is React complaining that it needs a <code class="language-plaintext highlighter-rouge">key</code>. The <code class="language-plaintext highlighter-rouge">key</code> is an identifier that React uses to determine if something already existed or not. If a thing did not previously exist or has changed, then a re-render should trigger, but if the thing already existed and/or didn’t actually change in any way, we don’t necessarily want to trigger a re-render and the provision of a <code class="language-plaintext highlighter-rouge">key</code> is how we can prevent that from unnecessarily happening. Add a key to the <code class="language-plaintext highlighter-rouge">{ANIMALS.map...}</code> like so:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+    <span class="p">{</span><span class="nx">ANIMALS</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">animal</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">option</span> <span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">animal</span><span class="p">}</span> <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">animal</span><span class="p">}</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">animal</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/option&gt;</span><span class="se">))</span><span class="err">}
+</span><span class="c1">//...</span></code></pre></figure>
+
+<p>The <code class="language-plaintext highlighter-rouge">key</code> does need to be a unique identifier, in the case of the pet API, we know that the type of each animal is unique, so using <code class="language-plaintext highlighter-rouge">{animal}</code> will work.</p>
+
+<p><a href="https://reactjs.org/docs/lists-and-keys.html">Read more about keys in the official React documentation</a></p>
 
 <h3 id="breed-dropdown">Breed Dropdown</h3>
 
