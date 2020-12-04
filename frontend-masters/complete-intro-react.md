@@ -648,13 +648,88 @@ The important thing to note about hooks is that they all begin with 'use'. `useS
 
 ### Best Practices for Hooks
 
-
+Hooks **never** go inside of `if` statements and they **never** go inside of `for` loops or anything like that. But why Brian? Basically, the way that hooks work is that they are keeping track of the order that you are creating hooks. So... **if** you put a hook inside of an `if` statement, the first time the condition may be true, so your hook would work, but what if on the second run of the `if` statement, the condition is not true? Your hook would not work. Don't do it. Brian will help us set up an ESLint rule to prevent us from being so dumb in a minute. BTW, this is also mentioned in the React docs and applies to all hooks, not just `useState`.
 
 ### Configuring ESLint for Hooks
 
+Open up your console and type `npm i -D eslint-plugin-react-hooks`. This will install the official (ESLint) rules from the React team about writing hooks. Open up the `.eslintrc.json` file and add the following:
+
+{% highlight json %}
+
+"rules": {
+    //...
+    "react-hooks/rules-of-hooks": 2,
+    "react-hooks/exhaustive-depths": 1
+},
+"plugins": ["react", "import", "jsx-a11y", "react-hooks"],
+
+{% endhighlight %}
+
+`"react-hooks/exhaustive-depths": 1` will *force* you to do something that has to do with effects, Brian will talk about it later. The numbers in the rules stand for:
+
+0 - turn off
+1 - warn
+2 - throw error
+
 ### Calling the Pet API
 
+We need to install a new client library to make requests against an API. To do that, add the following line to the `SearchParams.js` file:
+
+{% highlight javascript %}
+
+import { ANIMALS } from '@frontendmasters/pet';
+
+{% endhighlight %}
+
+We've not installed that library, but Parcel will do it for us! If you feel more comfortable installing that package through the terminal, run `npm i @frontendmasters/pet`.
+
+Still in `SearchParams.js` declare another `const` below the one for location:
+
+{% highlight javascript %}
+
+//...
+const [animal, setAnimal] = useState("dog");
+
+{% endhighlight %}
+
+AND add this JSX (just below the `</label>` so we can use the const:
+
+{% highlight javascript %}
+
+//...
+</label>
+<label htmlFor="animal">
+    Animal
+    <select
+        id="animal"
+        value={animal}
+        onChange={e => setAnimal(e.target.value)}
+        onBlur={e => setAnimal(e.target.value)}>
+        <option>All</option>
+        {ANIMALS.map(animal => (<option value={animal}>{animal}</option>))}
+    </select>
+</label>
+//...
+
+{% endhighlight %}
+
+That's a bunch of things! Due to A11y, if the `onBlur` were not a part of our `<select>`, A11y would complain that the `<select>` would not be accessible. The `{ANIMALS.map(animal => (<option value={animal}>{animal}</option>))}` will allow us to take the array of strings which comes from the API and convert them into an `<option>` for each element (string) that is in the array. If you check your browser, you should now see the new select menu with all the animal types, but there is an error...
+
 ### Unique List Item Keys
+
+The error that you may have seen is React complaining that it needs a `key`. The `key` is an identifier that React uses to determine if something already existed or not. If a thing did not previously exist or has changed, then a re-render should trigger, but if the thing already existed and/or didn't actually change in any way, we don't necessarily want to trigger a re-render and the provision of a `key` is how we can prevent that from unnecessarily happening. Add a key to the `{ANIMALS.map...}` like so:
+
+{% highlight javascript %}
+
+//...
+    {ANIMALS.map(animal => (<option key={animal} value={animal}>{animal}</option>))}
+//...
+
+{% endhighlight %}
+
+The `key` does need to be a unique identifier, in the case of the pet API, we know that the type of each animal is unique, so using `{animal}` will work.
+
+[Read more about keys in the official React documentation](https://reactjs.org/docs/lists-and-keys.html)
 
 ### Breed Dropdown
 
