@@ -662,7 +662,38 @@ coverage/
 
 <h3 id="breed-dropdown">Breed Dropdown</h3>
 
+<p>Now we’re basically going to repeat what we just did, but for breeds. Add this below the <code class="language-plaintext highlighter-rouge">&lt;/label&gt;</code> that we just made:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+<span class="o">&lt;</span><span class="nx">label</span> <span class="nx">htmlFor</span><span class="o">=</span><span class="dl">"</span><span class="s2">breed</span><span class="dl">"</span><span class="o">&gt;</span>
+    <span class="nx">Breed</span>
+    <span class="o">&lt;</span><span class="nx">select</span> 
+        <span class="nx">id</span><span class="o">=</span><span class="dl">"</span><span class="s2">breed</span><span class="dl">"</span>
+        <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">breed</span><span class="p">}</span>
+        <span class="nx">onChange</span><span class="o">=</span><span class="p">{</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="nx">setBreed</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">)}</span>
+        <span class="nx">onBlur</span><span class="o">=</span><span class="p">{</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="nx">setBreed</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">)}</span>
+        <span class="nx">disabled</span><span class="o">=</span><span class="p">{</span><span class="o">!</span><span class="nx">breeds</span><span class="p">.</span><span class="nx">length</span><span class="p">}</span>
+        <span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">option</span><span class="o">&gt;</span><span class="nx">All</span><span class="o">&lt;</span><span class="sr">/option</span><span class="err">&gt;
+</span>        <span class="p">{</span><span class="nx">breeds</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">breedString</span> <span class="o">=&gt;</span> <span class="p">(</span>
+            <span class="o">&lt;</span><span class="nx">option</span> <span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">breedString</span><span class="p">}</span> <span class="nx">value</span><span class="o">=</span><span class="dl">"</span><span class="s2">{breedString}</span><span class="dl">"</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">breedString</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/option</span><span class="err">&gt;
+</span>            <span class="p">))}</span>
+        <span class="o">&lt;</span><span class="sr">/select</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="sr">/label</span><span class="err">&gt;
+</span><span class="c1">//...</span></code></pre></figure>
+
+<p>And add these 2 <code class="language-plaintext highlighter-rouge">const</code> variables just after the others in <code class="language-plaintext highlighter-rouge">SearchParams.js</code>:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+<span class="kd">const</span> <span class="p">[</span><span class="nx">breed</span><span class="p">,</span> <span class="nx">setBreed</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="dl">""</span><span class="p">);</span>
+<span class="kd">const</span> <span class="p">[</span><span class="nx">breeds</span><span class="p">,</span> <span class="nx">setBreeds</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">([]);</span>
+<span class="c1">//...</span></code></pre></figure>
+
+<p>We’ll get this wired up with a custom hook next.</p>
+
 <h3 id="custom-hooks">Custom Hooks</h3>
+
+<p>So far, the <code class="language-plaintext highlighter-rouge">htmlFor...</code> ‘animal’ and ‘breed’ are quite similar. Brian thinks it would be nice if there was some way to make them a reusable something for them. Let’s do that! Make a new file <code class="language-plaintext highlighter-rouge">useDropdown.js</code></p>
 
 <h2 id="effects">Effects</h2>
 
