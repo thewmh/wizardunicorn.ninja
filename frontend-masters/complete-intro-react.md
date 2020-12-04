@@ -808,7 +808,51 @@ export default useDropdown;
 
 {% endhighlight %}
 
-Ok... Let's try to walk through that. `import React...` we've seen. Every 'component' has to have that line, we're also grabbing the `{ useState }` function hook. `const Dropdown`, that's the component declaration, with 3 parameters being passed in; `label`, `defaultState`, `options`. `const [state, setState]...` is the same pattern that was initially set up for the 'animal' and 'breed' drop downs, but abstracted here. `const id...` is establishing a unique 'id' that can be used for the `htmlFor` and `<select>` 'id(s)' and removing any spaces, then converting the entire string to lowercase (`.toLowerCase()`). `const Dropdown...` is effectively the Class that we are going to (re)use to make this drop down component flexible enough to be used with different data sets. The structure of it is just like the 'animal' and 'breed' drop downs we've already created. `return...` will 'return' an array containing; 'state', the 'Dropdown' Class, and 'setState'. Finally, `useDropdown` is exported so we can then import it in another component file. 
+Ok... Let's try to walk through that. `import React...` we've seen. Every 'component' has to have that line, we're also grabbing the `{ useState }` function hook. `const Dropdown`, that's the component declaration, with 3 parameters being passed in; `label`, `defaultState`, `options`. `const [state, setState]...` is the same pattern that was initially set up for the 'animal' and 'breed' drop downs, but abstracted here. `const id...` is establishing a unique 'id' that can be used for the `htmlFor` and `<select>` 'id(s)' and removing any spaces, then converting the entire string to lowercase (`.toLowerCase()`). `const Dropdown...` is effectively the Class that we are going to (re)use to make this drop down component flexible enough to be used with different data sets. The structure of it is just like the 'animal' and 'breed' drop downs we've already created. `return...` will 'return' an array containing; 'state', the 'Dropdown' Class, and 'setState'. Finally, `useDropdown` is exported so we can then import it in another component file.
+
+If you have any questions about that... drop me a line.
+
+Now we can update the `SearchParams.js` component to use our fancy new custom hook! Open `SearchParams.js` and get it updated to look like this:
+
+{% highlight javascript %}
+
+import React, { useState } from "react";
+import { ANIMALS } from "@frontendmasters/pet";
+import useDropdown from "./useDropdown";
+
+const SearchParams = () => {
+  const [location, setLocation] = useState("Seattle, WA");
+  const [breeds, setBreeds] = useState([]);
+  const [animal, AnimalDropdown] = useDropdown("Animal", "dog", ANIMALS);
+  const [breed, BreedDropdown] = useDropdown("Breed", "", breeds);
+
+  return (
+    <div className="search-params">
+      <form>
+        <label htmlFor="location">
+          Location
+          <input
+            id="location"
+            value={location}
+            placeholder="Location"
+            onChange={(e) => setLocation(e.target.value)}
+          />
+        </label>
+        <AnimalDropdown />
+        <BreedDropdown />
+        <button>Submit</button>
+      </form>
+    </div>
+  );
+};
+
+export default SearchParams;
+
+{% endhighlight %}
+
+Yeah! First is the new `import` statement for the `useDropdown.js` component we just made. Need that. Then, the `const(s)` have been updated to use the new hook; `useDropdown`. You can see we are passing in the 'label', 'defaultState', and the 'options' as defined inn `useDropdown.js`. Finally, we can get rid of all the 'animal' and 'breed' `<label>...</label>` JSX and replace it with `<AnimalDropdwn />` and `<BreedDropdown />` respectively. Refresh your browser and while nothing (visually) has changed, we are now using a custom hook!
+
+This pattern is quite useful for testing and helps us to be D.R.Y. Brians favorite!
 
 ## Effects
 
