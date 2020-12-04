@@ -23,6 +23,14 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 'v12.12.0'
+      # Install Node Modules for React Workshop Project Build React
+      - name: Install Node Modules for React Workshop Project
+        run: npm install
+        working-directory: complete-intro-react/src
+      # Build React
+      - name: Build React
+        run: npm run dev
+        working-directory: complete-intro-react/src
       # Build site & Run PurgeCSS
       - name: Build Jekyll & Run PurgeCSS
         run: test/build.sh
