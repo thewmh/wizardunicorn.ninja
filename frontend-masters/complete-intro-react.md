@@ -10,6 +10,8 @@ layout: page
 
 [Link to Course Notes](https://bit.ly/react-v5)
 
+[Link to Completed Workshop Project](complete-intro-react/index.html)
+
 ## Introduction
 
 ### Introduction
