@@ -1058,7 +1058,7 @@ import Results from "./Results";
 // after </form>
 <Results pets={pets} />
 
-{% highlight javascript %}
+{% endhighlight %}
 
 But I don't have a `Results.js` component yet! Ok... make a `Results.js` file inside of `src` and add this to it:
 
@@ -1120,7 +1120,6 @@ export default function Pet({ name, animal, breed, media, location, id }) {
     </a>
   );
 }
-
 
 {% endhighlight %}
 
