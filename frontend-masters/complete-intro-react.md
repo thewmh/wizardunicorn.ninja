@@ -858,9 +858,105 @@ This pattern is quite useful for testing and helps us to be D.R.Y. Brians favori
 
 ### Effects
 
+Now we are going to start reading live data from an API. The data will be coming from PetFinder, which is one of the easiest ways to find pets to adopt. Let's look at how to handle asynchronous code with React. The API is still restricted to 'Seattle, WA' and 'San Francisco, CA' because Brian / Frontend Masters only has one API key and they don't want to hammer the API with requests and get restricted. Open up `SearchParams.js` and update the file like this:
+
+{% highlight javascript %}
+
+import React, { useState, useEffect } from "react";
+import pet, { ANIMALS } from "@frontendmasters/pet";
+import useDropdown from "./useDropdown";
+
+const SearchParams = () => {
+  const [location, setLocation] = useState("Seattle, WA");
+  const [breeds, setBreeds] = useState([]);
+  const [animal, AnimalDropdown] = useDropdown("Animal", "dog", ANIMALS);
+  const [breed, BreedDropdown] = useDropdown("Breed", "", breeds);
+
+  useEffect(() => {
+    pet.breeds("dog").then(console.log, console.error);
+  });
+
+  return (
+    <div className="search-params">
+      <form>
+        <label htmlFor="location">
+          Location
+          <input
+            id="location"
+            value={location}
+            placeholder="Location"
+            onChange={(e) => setLocation(e.target.value)}
+          />
+        </label>
+        <AnimalDropdown />
+        <BreedDropdown />
+        <button>Submit</button>
+      </form>
+    </div>
+  );
+};
+
+export default SearchParams;
+
+{% endhighlight %}
+
+We've updated the `import { ANIMALS }...` statement to include the `pet` object, and the `import React...` statement to also import `useEffect`. `useEffect` takes place of several lifecycle hooks, including; `componentDidMount`, `componentWillUnmount`, and `componentDidUpdate`. Let's look at this line in a bit more depth:
+
+{% highlight javascript %}
+
+//...
+useEffect(() => {
+    pet.breeds("dog").then(console.log, console.error);
+});
+//...
+
+{% endhighlight %}
+
+In effect, `useEffect` is 'scheduling' an event, in this case a function, to run after the (component) render happens. The `SearchParams.js` component will render before the `useEffect` function is run. But why Brian? Why would we want to do this? Using `useEffect` for asynchronous code will help to not slow the render down, so the user can see something immediately. If you refresh your page and check the console, you should be able to see the breeds returned from the API. Now we can set `setBreeds` to be all the various breeds of dogs that we have received from the API! Update the `useEffect` to this:
+
+{% highlight javascript %}
+
+//...
+useEffect(() => {
+    setBreeds([]);
+    setBreed("");
+
+    pet.breeds(animal).then(({ breeds }) => {
+        const breedStrings = breeds.map(({ name }) => name);
+        setBreeds(breedStrings);
+    }, console.error);
+});
+//...
+
+{% endhighlight %}
+
+Now, whenever `useEffect` is triggered, we'll clear out the 'breeds' array to an empty one, and reset the 'breed' string to an empty string, then set breeds to the strings of the breed names by using `.map`. 
+
 ### Declaring Effect Dependencies
 
+With `useEffect`, you have to declare your dependencies. Currently, without any dependencies listed, `useEffect` will run every time something is typed into the input field. We do not want this, it is too frequent. Update the `useEffect` in `SearchParams.js` to this:
+
+{% highlight javascript %}
+
+//...
+useEffect(() => {
+    setBreeds([]);
+    setBreed("");
+
+    pet.breeds(animal).then(({ breeds }) => {
+        const breedStrings = breeds.map(({ name }) => name);
+        setBreeds(breedStrings);
+    }, console.error);
+}, [animal, setBreed, setBreeds]);
+//...
+
+{% endhighlight %}
+
+The array `[animal, setBreed, setBreeds]` at the end of the `useEffect` will be the conditions that are checked against to determine whether or not `useEffect` needs to run again and trigger a render. If something that is not defined within the array of dependencies changes (location?), `useEffect` will not run. If you refresh your browser, you can see that typing in the input field will no longer cause React to retrieve breeds, only when you change the animal 'type' (dog, cat, etc.) will the `useEffect` get triggered to retrieve the breeds associated with the supplied animal. 
+
 ### Effect Lifecycle Walkthrough
+
+
 
 ### Run Only Once
 
