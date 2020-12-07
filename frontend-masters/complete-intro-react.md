@@ -956,29 +956,222 @@ The array `[animal, setBreed, setBreeds]` at the end of the `useEffect` will be 
 
 ### Effect Lifecycle Walkthrough
 
+There has been a lot of things happening since we've started to use `useEffect`. Let's walk though exactly what is happening with that.
 
+In `SearchParams.js`, first we declare the component `SearchParams`, then set state for a number of hooks (location, breeds, animal, breed). The `useEffect` is 'scheduled', but not triggered on the initial render of the `SearchParams` component. Then, all of the markup is going to be `return`ed, which is then rendered to the DOM for the user to 👀. Then, the `useEffect` can be run. `useEffect` will `setBreeds` to an empty array, `setBreed` to an empty string, and will then hit the API to get the `breedStrings`.
+
+Now, if you update the location in the input field, will `useEffect` run again? Nope, because we have defined the dependencies for `useEffect` and location is not one of them, a re-render / re-run of `useEffect` will not be triggered. If you then change the animal, to say 'cat', `useEffect` will be triggered. It will call the API and get the breeds for 'cat' back and `setBreeds` to be an array of strings of breeds.
 
 ### Run Only Once
 
+What happens if you only want the `useEffect` to run when the component mounts and then never run again? Just give the `useEffect` and empty array `[]` as its dependencies and it will run once and never again. An example use case could be when you need to do something once and not again, say when you are setting up D3.js. If you remove the `, []`, you will trigger an infinite loop which will endlessly call the API. Do not do that, Brian pays for access to the API and, even with all of his kickbacks, is not made of money.
+
 ### Hooks Review and Q&A
+
+Q: Why is `breeds` not a dependency of `useEffect`?
+
+A: Because the `breeds` in the `useEffect` is not the same as the `breeds` defined in the const above it. The `breeds` in `useEffect` could be renamed to remove confusion.
+
+Q: Was there any problem with the `componentDidMount` or `componentDidUnmount` lifecycle methods, why did hooks get created?
+
+A: There is a belief that hooks are simpler than having to learn the lifecycle of components and having to understand context and such. But Brian has his doubts about which is better, we will look more closely at this when we look at Class. But the short answer is that people think hooks are easier.
+
+`useState` and `useEffect` are the most commonly used hooks and will constitute about 90% of your use of hooks. `useRef` also on occasion. There are many other hooks that you may never have to know which are covered in the Intermediate React workshop.
 
 ## Dev Tools
 
 ### Environment Variables & Strict Mode
 
+It is important to note that you need to set `NODE_ENV` to `development` or `production` depending on which environment you are building for. Parcel will handle that for you, but Webpack requires you to be more explicit and actually set it. When you are in development mode, React will provide more descriptive errors and help you along the way. In production mode, React drops all the debugging code, making your application smaller and faster. Slack famously messed this up and were shipping the dev environment / code for a long time 🤣.
+
+You can wrap your entire application in `<React.StrictMode></React.StrictMode>` which will give you additional warnings about things you shouldn't be doing. It will 'future proof' your application in the sense that when features of React are being deprecated, you will receive warnings for those features if they are being used. `React.StrictMode` doesn't render anything or add any additional code, so this is fine to keep even when you are shipping your application(s).
+
 ### React Browser Dev Tools
+
+Do yourself a favor and get React Dev Tools for [Firefox](https://addons.mozilla.org/en-US/firefox/addon/react-devtools/) or [Chrome](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en). Brian has them and so shall you. All the other browsers didn't have React Dev Tools in 2019. Maybe you, reader from the future, may have better luck.
+
+The tool is useful in that you can inspect the React DOM of your application, something that you cannot do with the normal browser inspect tool. Cool thing:
+
+In both the standard browser and React inspector tools, if you highlight a DOM element, then switch to the console, you can type `$0` or `$r` respectively to manipulate the currently highlighted DOM element.
 
 ## Async & Routing
 
 ### Asynchronous API Requests
 
+Our app currently has all the search facets that we will need to search for pets, but we are not actually using that to hit the API yet, so let's set that up! Open up `SearchParams.js` and update it to look include this code:
+
+{% highlight javascript %}
+
+// inside of SearchParams after the other const declarations
+const [pets, setPets] = useState([]);
+
+async function requestPets() {
+    const { animals } = await pet.animals({
+      location,
+      breed,
+      type: animal,
+    });
+
+    setPets(animals || []);
+  }
+
+// replace <form> with this
+<form
+    onSubmit={(e) => {
+        e.preventDefault();
+        requestPets();
+    }}
+>
+
+{% endhighlight %}
+
+In the above code, we've already seen and learned about the `const` and `useState`. `async` is new, so let's look at that. The `const { animals }` inside of `requestPets()` will only be set once the `await` resolves. If `await` returns nothing, `setPets` will be set to an empty array `[]`. Then the `<form>` element is updated to call the `requestPets` function on submit. Because we don't want to trigger the default behavior of the submit button, we also add `e.preventDefault();`.
+
+Then Brian says that we should update the `package.json` file with browsers that we would like Parcel to target, [here is the information about that in the course notes](https://btholt.github.io/complete-intro-to-react-v5/async)... and it looks like you actually need to do that, otherwise Parcel will break the `async / await` 🤬. Add this to `package.json` (anywhere is fine, I put mine at the bottom of the file):
+
+{% highlight json %}
+
+,
+  "browserslist": ["last 2 Chrome versions"]
+
+{% endhighlight %}
+
+Now Parcel won't break the `async / await` and if you check the 'Network' tab in your browsers Developer Tools, you should be able to select an animal, a breed, and click 'Submit' and see that the network request to the API occurs. Amazing.
+
 ### Using the Fallback Mock API
+
+I am not going to do this Brian. If you, the reader of these notes, are interested, you can check out [this section of Brian's notes](https://btholt.github.io/complete-intro-to-react-v5/effects). The specific section that he goes over starts at:
+
+"Since this Petfinder is a real service and we don't want to hammer their API, we've built a client that heavily caches responses and limits your..."
+
+Apparently you can do this entire workshop offline.
 
 ### One-Way Data Flow
 
+If you've got this far, we're now receiving results from the API. Let's get them to display! Add this to `SearchParams.js`:
+
+{% highlight javascript %}
+
+// after import pet, ...
+import Results from "./Results";
+
+// after </form>
+<Results pets={pets} />
+
+{% highlight javascript %}
+
+But I don't have a `Results.js` component yet! Ok... make a `Results.js` file inside of `src` and add this to it:
+
+{% highlight javascript %}
+
+import React from "react";
+import Pet from "./Pet";
+
+const Results = ({ pets }) => {
+  return (
+    <div className="search">
+      {pets.length === 0 ? (
+        <h1>No Pets Found</h1>
+      ) : (
+        pets.map((pet) => (
+          <Pet
+            animal={pet.type}
+            key={pet.id}
+            name={pet.name}
+            breed={pet.breeds.primary}
+            media={pet.photos}
+            location={`${pet.contact.address.city}, ${pet.contact.address.state}`}
+            id={pet.id}
+          />
+        ))
+      )}
+    </div>
+  );
+};
+
+export default Results;
+
+{% endhighlight %}
+
+Once you have the above code, you should now be able to refresh your browser, select something about an animal and breed, hit Submit and see some results. We're using a component that we created early on, `Pet.js`, to display the data and setting up a bunch of attributes on that component from within `Results.js` such as, animal, key, name, breed, etc... We will refactor the `Pet.js` component in a moment to use the additional attributes.
+
 ### Reformatting the Pet Component
 
+Open up `Pet.js` and replace the code with this:
+
+{% highlight javascript %}
+
+import React from "react";
+
+export default function Pet({ name, animal, breed, media, location, id }) {
+  let hero = "http://placecorgi.com/300/300";
+  if (media.length) {
+    hero = media[0].small;
+  }
+  return (
+    <a href={`/details/${id}`} className="pet">
+      <div className="image-container">
+        <img src={hero} alt={name} />
+      </div>
+      <div className="info">
+        <h1>{name}</h1>
+        <h2>{`${animal} - ${breed} - ${location}`}</h2>
+      </div>
+    </a>
+  );
+}
+
+
+{% endhighlight %}
+
+`Pet.js` will now use those additional attributes that were set up in the `Results.js` component. First, if there is no image, the `let hero=...` statement will provide a default image from Brians favorite image placeholder site, otherwise, if there is an image, the small image for the pet will be used. Then in the `return` statement, the JSX has been updated to use all of the additional attributes / data that we will receive from any given result. First wrapping everything in an `<a>` tag (which we will set up in a moment) and then a couple of divs which use the remaining information that we will receive for any given pet. Check out the result in your browser and see if you
+can spot the (default) corgi images.
+
 ### Reach Router
+
+There's React Router, Navi Router, and Reach Router. Reach Router is Brian's fave because it handles a lot of the accessibility things for you. Make your life easier, use Reach Router™️. We are now going to implement Reach Router, but Brian also would like you to know that just because *we* are going to make a Single Page Application does not mean that **every** app needs to be one. Think about the ideal set up for your application, don't always make a Single Page Application because not every application should be one. Brian always takes the fun out of everything 😞.
+
+Make a new file in the `src` directory, `Details.js`. In that file add:
+
+{% highlight javascript %}
+
+import React from 'react';
+
+const Details = () => {
+    return <h1>hello</h1>;
+};
+
+export default Details;
+
+{% endhighlight %}
+
+Put whatever you like in the `<h1>`, we'll be replacing that with other stuff eventually. Have some fun! Just kidding... instead of having fun, install Reach Router. You can add this to the top of your `App.js` file and have Parcel do it for you `import { Router } from "@reach/router";` **or** you can use the terminal and type `npm i @reach/router` if you don't trust Parcel ✋. Once you have Reach Router installed, update `App.js` so that it looks like this:
+
+{% highlight javascript %}
+
+import React from "react";
+import { render } from "react-dom";
+import { Router } from "@reach/router";
+import SearchParams from "./SearchParams";
+import Details from "./Details";
+
+const App = () => {
+  return (
+    <div>
+      <h1>Adopt Me!</h1>
+      <Router>
+        <SearchParams path="/" />
+        <Details path="/details/:id" />
+      </Router>
+    </div>
+  );
+};
+
+render(<App />, document.getElementById("root"));
+
+{% endhighlight %}
+
+You tell me what any of that is... Ok fine, I'll tell you. There's 2 new `import` statements, one for Reach Router, one for the `Details.js` file we **just** created. Then in the `App` `return` statement, the JSX is updated to use Reach Router by wrapping the `SearchParams` and `Details` in a `Router`. Note that both `SearchParams` and `Details` also have `path="..."`, these will be the actual routes that we will hit, so `SearchParams` will live at the root of our application and the `Details` 'pages' will live at `/details/:id` where `:id` will depend on the 'id' of the pet (which is included in the updates we made to the `Pet.js` component). Boom! Refresh your page and watch the magic, or rather, do the things to get a list of pets to display, then click one, or alternatively add `/details/1` (or whatever number you feel like typing) to the end of the URL in your browser and you should see the `Details.js` component appear!
 
 ### Debugging & Reach Router Link
 
