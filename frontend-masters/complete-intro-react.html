@@ -771,7 +771,85 @@ coverage/
 
 <h3 id="effects-1">Effects</h3>
 
+<p>Now we are going to start reading live data from an API. The data will be coming from PetFinder, which is one of the easiest ways to find pets to adopt. Let’s look at how to handle asynchronous code with React. The API is still restricted to ‘Seattle, WA’ and ‘San Francisco, CA’ because Brian / Frontend Masters only has one API key and they don’t want to hammer the API with requests and get restricted. Open up <code class="language-plaintext highlighter-rouge">SearchParams.js</code> and update the file like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span><span class="p">,</span> <span class="nx">useEffect</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">pet</span><span class="p">,</span> <span class="p">{</span> <span class="nx">ANIMALS</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@frontendmasters/pet</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">useDropdown</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./useDropdown</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">SearchParams</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">location</span><span class="p">,</span> <span class="nx">setLocation</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="dl">"</span><span class="s2">Seattle, WA</span><span class="dl">"</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">breeds</span><span class="p">,</span> <span class="nx">setBreeds</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">([]);</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">animal</span><span class="p">,</span> <span class="nx">AnimalDropdown</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useDropdown</span><span class="p">(</span><span class="dl">"</span><span class="s2">Animal</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">dog</span><span class="dl">"</span><span class="p">,</span> <span class="nx">ANIMALS</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">breed</span><span class="p">,</span> <span class="nx">BreedDropdown</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useDropdown</span><span class="p">(</span><span class="dl">"</span><span class="s2">Breed</span><span class="dl">"</span><span class="p">,</span> <span class="dl">""</span><span class="p">,</span> <span class="nx">breeds</span><span class="p">);</span>
+
+  <span class="nx">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">pet</span><span class="p">.</span><span class="nx">breeds</span><span class="p">(</span><span class="dl">"</span><span class="s2">dog</span><span class="dl">"</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">,</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="dl">"</span><span class="s2">search-params</span><span class="dl">"</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">form</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">label</span> <span class="nx">htmlFor</span><span class="o">=</span><span class="dl">"</span><span class="s2">location</span><span class="dl">"</span><span class="o">&gt;</span>
+          <span class="nx">Location</span>
+          <span class="o">&lt;</span><span class="nx">input</span>
+            <span class="nx">id</span><span class="o">=</span><span class="dl">"</span><span class="s2">location</span><span class="dl">"</span>
+            <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">location</span><span class="p">}</span>
+            <span class="nx">placeholder</span><span class="o">=</span><span class="dl">"</span><span class="s2">Location</span><span class="dl">"</span>
+            <span class="nx">onChange</span><span class="o">=</span><span class="p">{(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">setLocation</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">)}</span>
+          <span class="sr">/</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="sr">/label</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="nx">AnimalDropdown</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="nx">BreedDropdown</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="nx">button</span><span class="o">&gt;</span><span class="nx">Submit</span><span class="o">&lt;</span><span class="sr">/button</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/form</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">SearchParams</span><span class="p">;</span></code></pre></figure>
+
+<p>We’ve updated the <code class="language-plaintext highlighter-rouge">import { ANIMALS }...</code> statement to include the <code class="language-plaintext highlighter-rouge">pet</code> object, and the <code class="language-plaintext highlighter-rouge">import React...</code> statement to also import <code class="language-plaintext highlighter-rouge">useEffect</code>. <code class="language-plaintext highlighter-rouge">useEffect</code> takes place of several lifecycle hooks, including; <code class="language-plaintext highlighter-rouge">componentDidMount</code>, <code class="language-plaintext highlighter-rouge">componentWillUnmount</code>, and <code class="language-plaintext highlighter-rouge">componentDidUpdate</code>. Let’s look at this line in a bit more depth:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+<span class="nx">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">pet</span><span class="p">.</span><span class="nx">breeds</span><span class="p">(</span><span class="dl">"</span><span class="s2">dog</span><span class="dl">"</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">,</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="c1">//...</span></code></pre></figure>
+
+<p>In effect, <code class="language-plaintext highlighter-rouge">useEffect</code> is ‘scheduling’ an event, in this case a function, to run after the (component) render happens. The <code class="language-plaintext highlighter-rouge">SearchParams.js</code> component will render before the <code class="language-plaintext highlighter-rouge">useEffect</code> function is run. But why Brian? Why would we want to do this? Using <code class="language-plaintext highlighter-rouge">useEffect</code> for asynchronous code will help to not slow the render down, so the user can see something immediately. If you refresh your page and check the console, you should be able to see the breeds returned from the API. Now we can set <code class="language-plaintext highlighter-rouge">setBreeds</code> to be all the various breeds of dogs that we have received from the API! Update the <code class="language-plaintext highlighter-rouge">useEffect</code> to this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+<span class="nx">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">setBreeds</span><span class="p">([]);</span>
+    <span class="nx">setBreed</span><span class="p">(</span><span class="dl">""</span><span class="p">);</span>
+
+    <span class="nx">pet</span><span class="p">.</span><span class="nx">breeds</span><span class="p">(</span><span class="nx">animal</span><span class="p">).</span><span class="nx">then</span><span class="p">(({</span> <span class="nx">breeds</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">breedStrings</span> <span class="o">=</span> <span class="nx">breeds</span><span class="p">.</span><span class="nx">map</span><span class="p">(({</span> <span class="nx">name</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="nx">name</span><span class="p">);</span>
+        <span class="nx">setBreeds</span><span class="p">(</span><span class="nx">breedStrings</span><span class="p">);</span>
+    <span class="p">},</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="c1">//...</span></code></pre></figure>
+
+<p>Now, whenever <code class="language-plaintext highlighter-rouge">useEffect</code> is triggered, we’ll clear out the ‘breeds’ array to an empty one, and reset the ‘breed’ string to an empty string, then set breeds to the strings of the breed names by using <code class="language-plaintext highlighter-rouge">.map</code>.</p>
+
 <h3 id="declaring-effect-dependencies">Declaring Effect Dependencies</h3>
+
+<p>With <code class="language-plaintext highlighter-rouge">useEffect</code>, you have to declare your dependencies. Currently, without any dependencies listed, <code class="language-plaintext highlighter-rouge">useEffect</code> will run every time something is typed into the input field. We do not want this, it is too frequent. Update the <code class="language-plaintext highlighter-rouge">useEffect</code> in <code class="language-plaintext highlighter-rouge">SearchParams.js</code> to this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+<span class="nx">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">setBreeds</span><span class="p">([]);</span>
+    <span class="nx">setBreed</span><span class="p">(</span><span class="dl">""</span><span class="p">);</span>
+
+    <span class="nx">pet</span><span class="p">.</span><span class="nx">breeds</span><span class="p">(</span><span class="nx">animal</span><span class="p">).</span><span class="nx">then</span><span class="p">(({</span> <span class="nx">breeds</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">breedStrings</span> <span class="o">=</span> <span class="nx">breeds</span><span class="p">.</span><span class="nx">map</span><span class="p">(({</span> <span class="nx">name</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="nx">name</span><span class="p">);</span>
+        <span class="nx">setBreeds</span><span class="p">(</span><span class="nx">breedStrings</span><span class="p">);</span>
+    <span class="p">},</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">);</span>
+<span class="p">},</span> <span class="p">[</span><span class="nx">animal</span><span class="p">,</span> <span class="nx">setBreed</span><span class="p">,</span> <span class="nx">setBreeds</span><span class="p">]);</span>
+<span class="c1">//...</span></code></pre></figure>
+
+<p>The array <code class="language-plaintext highlighter-rouge">[animal, setBreed, setBreeds]</code> at the end of the <code class="language-plaintext highlighter-rouge">useEffect</code> will be the conditions that are checked against to determine whether or not <code class="language-plaintext highlighter-rouge">useEffect</code> needs to run again and trigger a render. If something that is not defined within the array of dependencies changes (location?), <code class="language-plaintext highlighter-rouge">useEffect</code> will not run. If you refresh your browser, you can see that typing in the input field will no longer cause React to retrieve breeds, only when you change the animal ‘type’ (dog, cat, etc.) will the <code class="language-plaintext highlighter-rouge">useEffect</code> get triggered to retrieve the breeds associated with the supplied animal.</p>
 
 <h3 id="effect-lifecycle-walkthrough">Effect Lifecycle Walkthrough</h3>
 
