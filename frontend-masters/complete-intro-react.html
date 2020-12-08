@@ -1108,6 +1108,53 @@ can spot the (default) corgi images.</p>
 
 <h3 id="class-components-1">Class Components</h3>
 
+<p>So far, all we’ve covered is hooks. How to do state with hooks, which used to be called stateless functional components, now called function components, meaning a function that is not a Class. Brian will now show the <em>other way</em>  of making components, which is… Class components. Class components function similarly to stateless functional components, but in some ways they function differently. Let’s update <code class="language-plaintext highlighter-rouge">Details.js</code> to be a Class component. Update <code class="language-plaintext highlighter-rouge">Details.js</code> like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">pet</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@frontendmasters/pet</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nx">Details</span> <span class="kd">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">super</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="na">loading</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="p">};</span>
+  <span class="p">}</span>
+  <span class="nx">componentDidMount</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">pet</span><span class="p">.</span><span class="nx">animal</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">id</span><span class="p">).</span><span class="nx">then</span><span class="p">(({</span> <span class="nx">animal</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span>
+        <span class="na">name</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+        <span class="na">animal</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
+        <span class="na">location</span><span class="p">:</span> <span class="s2">`</span><span class="p">${</span><span class="nx">animal</span><span class="p">.</span><span class="nx">contact</span><span class="p">.</span><span class="nx">address</span><span class="p">.</span><span class="nx">city</span><span class="p">}</span><span class="s2">, </span><span class="p">${</span><span class="nx">animal</span><span class="p">.</span><span class="nx">contact</span><span class="p">.</span><span class="nx">address</span><span class="p">.</span><span class="nx">state</span><span class="p">}</span><span class="s2">`</span><span class="p">,</span>
+        <span class="na">description</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">description</span><span class="p">,</span>
+        <span class="na">media</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">photos</span><span class="p">,</span>
+        <span class="na">breed</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">breeds</span><span class="p">.</span><span class="nx">primary</span><span class="p">,</span>
+        <span class="na">loading</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+      <span class="p">});</span>
+    <span class="p">},</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">Details</span><span class="p">;</span></code></pre></figure>
+
+<p>🤦🏻‍♂️ Brian, you have given me a lot to explain…</p>
+
+<p>Top to bottom:</p>
+
+<p>Added an <code class="language-plaintext highlighter-rouge">import</code> statement for the <code class="language-plaintext highlighter-rouge">pet</code> API.</p>
+
+<p>Made a <code class="language-plaintext highlighter-rouge">class</code>, <code class="language-plaintext highlighter-rouge">Details</code>, which extends <code class="language-plaintext highlighter-rouge">React.Component</code>. This will give us access to a bunch of useful things that <code class="language-plaintext highlighter-rouge">React.Component</code> has.</p>
+
+<p>Added a <code class="language-plaintext highlighter-rouge">constructor</code> inside of <code class="language-plaintext highlighter-rouge">Details</code>. This is what allows the <code class="language-plaintext highlighter-rouge">Details</code> component to have state for itself, which no other component can touch. Parents pass props to children that the children cannot change. Children cannot pass props to their parents.</p>
+
+<p><code class="language-plaintext highlighter-rouge">componentDidMount()</code> this is one of the things we get from <code class="language-plaintext highlighter-rouge">React.Component</code>. It is a lifecycle method and will only run once, when the component mounted. Hooks gave us <code class="language-plaintext highlighter-rouge">useState</code>, but we cannot use any hooks in a Class component (not sure why I keep capitalizing Class…). So, <code class="language-plaintext highlighter-rouge">componentDidMount()</code>… <a href="https://reactjs.org/docs/react-component.html#componentdidmount">Here’s a list of React’s lifecycle methods, starting with componentDidMount()</a>. Inside of this lifecycle method we are going to hit the <code class="language-plaintext highlighter-rouge">pet</code> API and update state with the result.<code class="language-plaintext highlighter-rouge">setState</code> is a ‘shallow merge’ meaning any top-level properties in the state will be overwritten if they exist, other non-duplicate properties will remain untouched, and nested objects will not be included. Keep your state flat like Florida. Throw a lazy <code class="language-plaintext highlighter-rouge">console.error</code> in there and we’re good to go.</p>
+
+<p>The only thing we didn’t do was <strong>actually</strong> render this component. Hang tight, we will do that next.</p>
+
 <h3 id="rendering-the-component">Rendering the Component</h3>
 
 <h3 id="configuring-babel-for-parcel">Configuring Babel for Parcel</h3>
