@@ -1043,6 +1043,67 @@ can spot the (default) corgi images.</p>
 
 <h3 id="debugging--reach-router-link">Debugging &amp; Reach Router Link</h3>
 
+<p>Back in <code class="language-plaintext highlighter-rouge">Details.js</code>, let’s look at what ‘props’ our component is getting. Update the file like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">Details</span> <span class="o">=</span> <span class="nx">props</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+      <span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;</span>
+          <span class="o">&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">props</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">4</span><span class="p">)}</span><span class="o">&lt;</span><span class="sr">/code</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/pre</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">Details</span><span class="p">;</span></code></pre></figure>
+
+<p><code class="language-plaintext highlighter-rouge">JSON.stingify</code> is going to take the <code class="language-plaintext highlighter-rouge">props</code> and render them on the page in a ‘Pretty Printed’ kind of way. If you go to a details page, you will be able to see all of the things that are coming from the (Reach) router. You should see something like this:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/details/:id"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"41569882"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/details/41569882"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"location"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"pathname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/details/41569882"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"search"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://localhost:1234/details/41569882"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"origin"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://localhost:1234"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http:"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localhost:1234"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"hostname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localhost"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"port"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1234"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"state"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"initial"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span></code></pre></figure>
+
+<p>The above is also a nice technique to use with ‘state’ to be able to see (in the DOM) how state changes over time. You can also just use React Dev Tools. Now that you’ve seen that little gem, let’s make the ‘Adopt Me!’ logo take us back to the home page when it’s clicked! To do that, we’ll use React Router’s <code class="language-plaintext highlighter-rouge">&lt;Link&gt;</code> tag. Update <code class="language-plaintext highlighter-rouge">App.js</code> so that it looks like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">render</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-dom</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Router</span><span class="p">,</span> <span class="nx">Link</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@reach/router</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">SearchParams</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./SearchParams</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Details</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./Details</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">header</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">Link</span> <span class="nx">to</span><span class="o">=</span><span class="dl">"</span><span class="s2">/</span><span class="dl">"</span><span class="o">&gt;</span><span class="nx">Adopt</span> <span class="nx">Me</span><span class="o">!&lt;</span><span class="sr">/Link</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/header</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="nx">Router</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">SearchParams</span> <span class="nx">path</span><span class="o">=</span><span class="dl">"</span><span class="s2">/</span><span class="dl">"</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="nx">Details</span> <span class="nx">path</span><span class="o">=</span><span class="dl">"</span><span class="s2">/details/:id</span><span class="dl">"</span> <span class="o">/&gt;</span>
+      <span class="o">&lt;</span><span class="sr">/Router</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">render</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">,</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">root</span><span class="dl">"</span><span class="p">));</span></code></pre></figure>
+
+<p>We’ve added an additional import to Reach Router; <code class="language-plaintext highlighter-rouge">Link</code> and have replaced the <code class="language-plaintext highlighter-rouge">&lt;h1&gt;</code> with the <code class="language-plaintext highlighter-rouge">&lt;header&gt;</code> element and all the things inside of it. Now your ‘Adopt Me!’ logo will take you back to the home page! That’s the bulk of what we will directly learn about Reach Router, but Brian may sprinkle some more in throughout the rest of the course.</p>
+
 <h2 id="class-components">Class Components</h2>
 
 <h3 id="class-components-1">Class Components</h3>
