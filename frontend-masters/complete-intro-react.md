@@ -1174,6 +1174,79 @@ You tell me what any of that is... Ok fine, I'll tell you. There's 2 new `import
 
 ### Debugging & Reach Router Link
 
+Back in `Details.js`, let's look at what 'props' our component is getting. Update the file like this:
+
+{% highlight javascript %}
+
+import React from "react";
+
+const Details = props => {
+  return (
+      <pre>
+          <code>{JSON.stringify(props, null, 4)}</code>
+      </pre>
+  );
+};
+
+export default Details;
+
+{% endhighlight %}
+
+`JSON.stingify` is going to take the `props` and render them on the page in a 'Pretty Printed' kind of way. If you go to a details page, you will be able to see all of the things that are coming from the (Reach) router. You should see something like this:
+
+{% highlight json %}
+
+{
+    "path": "/details/:id",
+    "id": "41569882",
+    "uri": "/details/41569882",
+    "location": {
+        "pathname": "/details/41569882",
+        "search": "",
+        "hash": "",
+        "href": "http://localhost:1234/details/41569882",
+        "origin": "http://localhost:1234",
+        "protocol": "http:",
+        "host": "localhost:1234",
+        "hostname": "localhost",
+        "port": "1234",
+        "state": null,
+        "key": "initial"
+    }
+}
+
+{% endhighlight %}
+
+The above is also a nice technique to use with 'state' to be able to see (in the DOM) how state changes over time. You can also just use React Dev Tools. Now that you've seen that little gem, let's make the 'Adopt Me!' logo take us back to the home page when it's clicked! To do that, we'll use React Router's `<Link>` tag. Update `App.js` so that it looks like this:
+
+{% highlight javascript %}
+
+import React from "react";
+import { render } from "react-dom";
+import { Router, Link } from "@reach/router";
+import SearchParams from "./SearchParams";
+import Details from "./Details";
+
+const App = () => {
+  return (
+    <div>
+      <header>
+        <Link to="/">Adopt Me!</Link>
+      </header>
+      <Router>
+        <SearchParams path="/" />
+        <Details path="/details/:id" />
+      </Router>
+    </div>
+  );
+};
+
+render(<App />, document.getElementById("root"));
+
+{% endhighlight %}
+
+We've added an additional import to Reach Router; `Link` and have replaced the `<h1>` with the `<header>` element and all the things inside of it. Now your 'Adopt Me!' logo will take you back to the home page! That's the bulk of what we will directly learn about Reach Router, but Brian may sprinkle some more in throughout the rest of the course.
+
 ## Class Components
 
 ### Class Components
