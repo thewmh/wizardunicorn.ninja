@@ -1251,6 +1251,57 @@ We've added an additional import to Reach Router; `Link` and have replaced the `
 
 ### Class Components
 
+So far, all we've covered is hooks. How to do state with hooks, which used to be called stateless functional components, now called function components, meaning a function that is not a Class. Brian will now show the *other way*  of making components, which is... Class components. Class components function similarly to stateless functional components, but in some ways they function differently. Let's update `Details.js` to be a Class component. Update `Details.js` like this:
+
+{% highlight javascript %}
+
+import React from "react";
+import pet from "@frontendmasters/pet";
+
+class Details extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: true,
+    };
+  }
+  componentDidMount() {
+    pet.animal(this.props.id).then(({ animal }) => {
+      this.setState({
+        name: animal.name,
+        animal: animal.type,
+        location: `${animal.contact.address.city}, ${animal.contact.address.state}`,
+        description: animal.description,
+        media: animal.photos,
+        breed: animal.breeds.primary,
+        loading: false,
+      });
+    }, console.error);
+  }
+  render() {
+      return;
+  }
+}
+
+export default Details;
+
+{% endhighlight %}
+
+🤦🏻‍♂️ Brian, you have given me a lot to explain...
+
+Top to bottom:
+
+Added an `import` statement for the `pet` API.
+
+Made a `class`, `Details`, which extends `React.Component`. This will give us access to a bunch of useful things that `React.Component` has.
+
+Added a `constructor` inside of `Details`. This is what allows the `Details` component to have state for itself, which no other component can touch. Parents pass props to children that the children cannot change. Children cannot pass props to their parents.
+
+`componentDidMount()` this is one of the things we get from `React.Component`. It is a lifecycle method and will only run once, when the component mounted. Hooks gave us `useState`, but we cannot use any hooks in a Class component (not sure why I keep capitalizing Class...). So, `componentDidMount()`... [Here's a list of React's lifecycle methods, starting with componentDidMount()](https://reactjs.org/docs/react-component.html#componentdidmount). Inside of this lifecycle method we are going to hit the `pet` API and update state with the result.`setState` is a 'shallow merge' meaning any top-level properties in the state will be overwritten if they exist, other non-duplicate properties will remain untouched, and nested objects will not be included. Keep your state flat like Florida. Throw a lazy `console.error` in there and we're good to go.
+
+The only thing we didn't do was **actually** render this component. Hang tight, we will do that next.
+
 ### Rendering the Component
 
 ### Configuring Babel for Parcel
