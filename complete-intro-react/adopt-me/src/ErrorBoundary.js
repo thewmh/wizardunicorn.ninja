@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "@reach/router";
+import { Link, navigate } from "@reach/router";
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -7,10 +7,15 @@ class ErrorBoundary extends Component {
     this.state = { hasError: false };
   }
   static getDerivedStateFromError() {
-    return { hasError: true };
+    return { hasError: true, redirect: false };
   }
   componentDidCatch(error, info) {
     console.error("ErrorBoundary caught an error", error, info);
+  }
+  componentDidUpdate() {
+    if (this.state.hasError) {
+      setTimeout(() => navigate("/"), 5000);
+    }
   }
   render() {
     if (this.state.hasError) {
