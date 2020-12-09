@@ -1375,7 +1375,121 @@ can spot the (default) corgi images.</p>
 
 <h3 id="error-boundaries-1">Error Boundaries</h3>
 
+<p>Error boundaries is one of the things that hooks cannot do, you cannot do error boundaries without using classes. This is especially critical in React applications where we are using state, let’s have a look at how to make it. Make a new file <code class="language-plaintext highlighter-rouge">ErrorBoundary.js</code>. This is mostly code from the React documentation. Thanks Brian… Make your <code class="language-plaintext highlighter-rouge">ErrorBoundary.js</code> file like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Component</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Link</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@reach/router</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nx">ErrorBoundary</span> <span class="kd">extends</span> <span class="nx">Component</span> <span class="p">{</span>
+  <span class="nx">state</span> <span class="o">=</span> <span class="p">{</span> <span class="na">hasError</span><span class="p">:</span> <span class="kc">false</span> <span class="p">};</span>
+  <span class="kd">static</span> <span class="nx">getDerivedStateFromError</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="na">hasError</span><span class="p">:</span> <span class="kc">true</span> <span class="p">};</span>
+  <span class="p">}</span>
+  <span class="nx">componentDidCatch</span><span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">info</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="dl">"</span><span class="s2">ErrorBoundary caught an error</span><span class="dl">"</span><span class="p">,</span> <span class="nx">error</span><span class="p">,</span> <span class="nx">info</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">hasError</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="p">(</span>
+        <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span>
+          <span class="nx">There</span> <span class="nx">was</span> <span class="nx">an</span> <span class="nx">error</span> <span class="kd">with</span> <span class="k">this</span> <span class="nx">listing</span><span class="p">.</span> <span class="o">&lt;</span><span class="nx">Link</span> <span class="nx">to</span><span class="o">=</span><span class="dl">"</span><span class="s2">/</span><span class="dl">"</span><span class="o">&gt;</span><span class="nx">Click</span> <span class="nx">here</span><span class="o">&lt;</span><span class="sr">/Link&gt;{" "</span><span class="err">}
+</span>          <span class="nx">to</span> <span class="nx">go</span> <span class="nx">back</span> <span class="nx">to</span> <span class="nx">the</span> <span class="nx">home</span> <span class="nx">page</span> <span class="nx">or</span> <span class="nx">wait</span> <span class="nx">five</span> <span class="nx">seconds</span><span class="p">.</span>
+        <span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>      <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">children</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">ErrorBoundary</span><span class="p">;</span></code></pre></figure>
+
+<p>Here’s an attempt to explain what is happening above. <code class="language-plaintext highlighter-rouge">import</code> React and Component from React, <code class="language-plaintext highlighter-rouge">import</code> Link from React Router. Make a class component called ErrorBoundary and give it some state, <code class="language-plaintext highlighter-rouge">hasError</code>, set to false. Set up <code class="language-plaintext highlighter-rouge">getDerivedStateFromError</code> to update <code class="language-plaintext highlighter-rouge">hasError</code> to true if an error exists. Then if there is an error <code class="language-plaintext highlighter-rouge">this.state.hasError</code>, render some text with a link back to the home page, otherwise, render the children.</p>
+
 <h3 id="error-boundary-middleware">Error Boundary Middleware</h3>
+
+<p>The first component that we want to wrap with <code class="language-plaintext highlighter-rouge">ErrorBoundary.js</code> is the Details component. In <code class="language-plaintext highlighter-rouge">Details.js</code>, first import <code class="language-plaintext highlighter-rouge">ErrorBoundary</code>: <code class="language-plaintext highlighter-rouge">import ErrorBoundary from "./ErrorBoundary";</code>, then update the export statement at the bottom of <code class="language-plaintext highlighter-rouge">Details.js</code> to this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">DetailsWithErrorBoundary</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="o">&lt;</span><span class="nx">ErrorBoundary</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="nx">Details</span> <span class="p">{...</span><span class="nx">props</span><span class="p">}</span> <span class="sr">/</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="sr">/ErrorBoundary</span><span class="err">&gt;
+</span>    <span class="p">)</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Now when your application has an error, you <em>should</em> see the <code class="language-plaintext highlighter-rouge">&lt;h1&gt;</code> from the ErrorBoundary component render on the page. Doesn’t work for me (when there is an API error), so I clearly did something wrong 😩. But I was able to update the error handling like this:</p>
+
+<details>
+    <summary>Click to view the updated error handling I came up with for <code class="language-plaintext highlighter-rouge">Details.js</code>
+</summary>
+    
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">pet</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@frontendmasters/pet</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Carousel</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./Carousel</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">ErrorBoundary</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./ErrorBoundary</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nx">Details</span> <span class="kd">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">super</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span> <span class="na">loading</span><span class="p">:</span> <span class="kc">true</span> <span class="p">};</span>
+  <span class="p">}</span>
+  <span class="nx">componentDidMount</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">pet</span>
+      <span class="p">.</span><span class="nx">animal</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">then</span><span class="p">(({</span> <span class="nx">animal</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span>
+          <span class="na">name</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+          <span class="na">animal</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
+          <span class="na">location</span><span class="p">:</span> <span class="s2">`</span><span class="p">${</span><span class="nx">animal</span><span class="p">.</span><span class="nx">contact</span><span class="p">.</span><span class="nx">address</span><span class="p">.</span><span class="nx">city</span><span class="p">}</span><span class="s2">, </span><span class="p">${</span><span class="nx">animal</span><span class="p">.</span><span class="nx">contact</span><span class="p">.</span><span class="nx">address</span><span class="p">.</span><span class="nx">state</span><span class="p">}</span><span class="s2">`</span><span class="p">,</span>
+          <span class="na">description</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">description</span><span class="p">,</span>
+          <span class="na">media</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">photos</span><span class="p">,</span>
+          <span class="na">breed</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">breeds</span><span class="p">.</span><span class="nx">primary</span><span class="p">,</span>
+          <span class="na">loading</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="p">});</span>
+      <span class="p">})</span>
+      <span class="c1">// this catch helped to set a new property to state which the</span>
+      <span class="c1">// ErrorBoundary component can then use when a render is triggered</span>
+      <span class="p">.</span><span class="k">catch</span><span class="p">((</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span>
+          <span class="na">hasError</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="p">});</span>
+      <span class="p">});</span>
+  <span class="p">}</span>
+  <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// added &amp;&amp; !this.state.hasError which is initially unset,</span>
+      <span class="c1">// so you will see loading ...</span>
+      <span class="c1">// when the catch statement fails, hasError will then exist</span>
+      <span class="c1">// which negates the statement and loads the ErrorBoundary component</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">loading</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">hasError</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">loading</span> <span class="p">...</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span><span class="err">;
+</span>    <span class="p">}</span>
+    <span class="kd">const</span> <span class="p">{</span> <span class="nx">animal</span><span class="p">,</span> <span class="nx">breed</span><span class="p">,</span> <span class="nx">location</span><span class="p">,</span> <span class="nx">description</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">media</span> <span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="p">(</span>
+      <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="dl">"</span><span class="s2">details</span><span class="dl">"</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">Carousel</span> <span class="nx">media</span><span class="o">=</span><span class="p">{</span><span class="nx">media</span><span class="p">}</span> <span class="sr">/</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+          <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="p">{</span><span class="s2">`</span><span class="p">${</span><span class="nx">animal</span><span class="p">}</span><span class="s2"> - </span><span class="p">${</span><span class="nx">breed</span><span class="p">}</span><span class="s2"> - </span><span class="p">${</span><span class="nx">location</span><span class="p">}</span><span class="s2">`</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/h2</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="nx">button</span><span class="o">&gt;</span><span class="nx">Adopt</span> <span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/button</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">description</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>    <span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">DetailsWithErrorBoundary</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">ErrorBoundary</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">Details</span> <span class="p">{...</span><span class="nx">props</span><span class="p">}</span> <span class="sr">/</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/ErrorBoundary</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+
+</details>
 
 <h3 id="404-page-redirect">404 Page Redirect</h3>
 
