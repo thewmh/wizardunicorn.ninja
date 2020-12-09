@@ -1304,15 +1304,253 @@ The only thing we didn't do was **actually** render this component. Hang tight, 
 
 ### Rendering the Component
 
+Let's update the `render()` for `Details.js`. Make the `render()` inside of `Details.js` look like this:
+
+{% highlight javascript %}
+
+//...
+render() {
+    if (this.state.loading) {
+      return <h1>loading ...</h1>;
+    }
+    const { animal, breed, location, description, name } = this.state;
+
+    return (
+      <div className="details">
+        <div>
+          <h1>{name}</h1>
+          <h2>{`${animal} - ${breed} - ${location}`}</h2>
+          <button>Adopt {name}</button>
+          <p>{description}</p>
+        </div>
+      </div>
+    );
+  }
+//...
+
+{% endhighlight %}
+
+Walking through the updated render, if `loading` is `true`, which it will be on page load until the detail data about a pet is returned, show 'loading ...'. You can try this out by going to a (detail) page that is not real; i.e. /details/1 should work. Then Brian destructures state to make the 'calling' of the parts of state he will work with easier / less verbose to access (I also like this approach). The rest of the JSX should be familiar at this point, we're just building out the thing to show the stuff. Go to the home page of your application, search for some animals, click one to get to its detail page and see the result!
+
+Classes are how React was (originally) built (before hooks), and while they may appear to be a more difficult way of writing React, there are currently no plans to deprecate them.
+
 ### Configuring Babel for Parcel
+
+It would be a bit simpler if instead of this:
+
+{% highlight javascript %}
+
+constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: true,
+    };
+  }
+
+{% endhighlight %}
+
+We could write this:
+
+{% highlight javascript %}
+
+state = { loading: true };
+
+{% endhighlight %}
+
+The second way, as of 2018?, ~~was a proposal~~ for JavaScript and ~~isn't actually a~~ **is a** thing (yet), but with Babel we can make it work! So if you are in 2018 and reading these notes follow along, otherwise skip to the next section!
+
+Open your console and type (or just copy / paste) this: `npm install -D babel-eslint @babel/core @babel/preset-env @babel/plugin-proposal-class-properties @babel/preset-react`.
+
+WHAT?! All of this stuff is built into Parcel which has been handling this for us. But we have custom needs, so installing all these things will allow us to use a custom config instead of Parcel's. In the root of the project, make a new file, `.babelrc`. Then drop this into that file:
+
+{% highlight json %}
+
+{
+    "presets": [ "@babel/preset-react", "@babel/preset-env" ],
+    "plugins": [ "@babel/plugin-proposal-class-properties" ]
+}
+
+{% endhighlight %}
+
+`@babel/preset-react` provides all the things we need to transpile React; JSX and Flow (which is not something that we are using, but it is included).
+
+`@babel/preset-env` will transpile your code for the environment that you specify, which we've already done in `package.json` (browserslist). `@babel/preset-env` can also take an export from your Google Analytics which it will then use to transpile your code so that it functions for 99% of your users 🔥.
+
+`@babel/plugin-proposal-class-properties` allows you to use the syntax that started us on this journey. Again, this syntax should already be usable for you by now.
+
+Finally, add this line to your `.eslintrc.json` file:
+
+{% highlight json %}
+
+//...
+"parser": "babel-eslint",
+//...
+
+{% endhighlight %}
+
+This will allow Babel to understand the new syntax that we are trying to use. Now you can use that new syntax that you could already use.
 
 ### Creating an Image Carousel
 
+Make a new file in the `src` directory called `Carousel.js` because we want to make a happy little carousel for the people to be able to see the various different pictures of the animals. Add this to `Carousel.js`:
+
+{% highlight javascript %}
+
+import React from "react";
+
+class Carousel extends React.Component {
+    state = {
+        photos: [],
+        active: 0
+    };
+    static getDerivedStateFromProps({ media }) {
+        let photos = ['http://plaacecorgi.com/600/600'];
+
+        if (media.length) {
+            photos = media.map(({ large }) => large);
+        }
+
+        return { photos };
+    }
+
+    render() {
+        const { photos, active } = this.state;
+
+        return (
+            <div className="carousel">
+                <img src={photos[active]} alt="animal" />
+                <div className="carousel-smaller">
+                    {photos.map((photo, index) => (
+                        <img
+                        key={photo}
+                        onClick={this.handleIndexClick}
+                        data-index={index}
+                        src={photo}
+                        className={index === active ? "active" : ""}
+                        alt="animal thumbnail"
+                    ))}
+                </div>
+            </div>
+        )
+    }
+}
+
+export default Carousel;
+
+{% endhighlight %}
+
+Another Class component! Now that we are in the future and can use the `state = {};` syntax, our component is a bit cleaner! Let's break down the new bits:
+
+`static getDerivedStateFromProps` - This will allow our component to access its parent props and use them for something, in this case we are capturing the `media` and updating the `photo` property in our components state, then returning that from `getDerivedStateFromProps` so that the carousel component can use em. [Here's React's documentation on getDerivedStateFromProps which is way better than my explanation](https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops)
+
+The rest of the carousel component set up is JSX, the only part left unhandled is the `onClick` event. Please hold.
+
 ### Context
+
+Still inside of `Carousel.js`, add this:
+
+{% highlight javascript %}
+
+handleIndexClick = event => {
+    this.setState({
+        active: +event.target.dataset.index
+    });
+};
+
+{% endhighlight %}
+
+That will be the event that gets triggered when an image is clicked. It is important to note that we are using an arrow function here so that `this` is bound to the context of the Carousel class that it is in. Brian recommends:
+
+> Whenever you are writing an event listener, use an arrow function. Your `this` will be correct.
 
 ### Index Click Q&A
 
+Q: Could you explain the `+` in front of `event.target...`?
+
+A: The `+` there is to turn the string that is returned from `event.target.dataset.index` into a number. It is called the unary plus operator. [See MDN for more information about the unary plus operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Unary_plus). Another approach to this event handler could look like this:
+
+{% highlight javascript %}
+
+//...
+handleIndexClick = (index) => {
+    this.setState({
+        active: index
+    })
+}
+//...
+onClick={this.handleIndexClick.bind(this, index)}
+//...
+
+{% endhighlight %}
+
+Why we didn't go straight to that method is because `bind` used to be very 'expensive' to use. It used to be one of the slowest things you could do in Chrome. It has been fixed, but in old browsers, using the above example is really slow, so the best recommended practice is to not do it that way.
+
 ### Carousel Implementation
+
+Open up `Details.js` and add this:
+
+{% highlight javascript %}
+
+//...
+import Carousel from "./Carousel";
+//... add media
+const { animal, breed, location, description, name, media } = this.state;
+//... place this just inside of the <div className="details">
+<Carousel media={media} />
+//...
+
+{% endhighlight %}
+
+In `Details.js` we've imported the Carousel component, added `media` to our state, and finally added the Carousel component to the render. If you refresh or load a details page, you should be able to see all of the images for any given pet, displayed in a carousel-like format. Here's the entire `Details.js` file in case something is not working:
+
+{% capture summary %}Click to view the current state of `Details.js`{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+import React from "react";
+import pet from "@frontendmasters/pet";
+import Carousel from "./Carousel";
+
+class Details extends React.Component {
+  state = { loading: true };
+  componentDidMount() {
+    pet.animal(this.props.id).then(({ animal }) => {
+      this.setState({
+        name: animal.name,
+        animal: animal.type,
+        location: `${animal.contact.address.city}, ${animal.contact.address.state}`,
+        description: animal.description,
+        media: animal.photos,
+        breed: animal.breeds.primary,
+        loading: false,
+      });
+    }, console.error);
+  }
+  render() {
+    if (this.state.loading) {
+      return <h1>loading ...</h1>;
+    }
+    const { animal, breed, location, description, name, media } = this.state;
+
+    return (
+      <div className="details">
+        <Carousel media={media} />
+        <div>
+          <h1>{name}</h1>
+          <h2>{`${animal} - ${breed} - ${location}`}</h2>
+          <button>Adopt {name}</button>
+          <p>{description}</p>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default Details;
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %}
 
 ## Error Boundaries
 
