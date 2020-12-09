@@ -1556,7 +1556,129 @@ export default Details;
 
 ### Error Boundaries
 
+Error boundaries is one of the things that hooks cannot do, you cannot do error boundaries without using classes. This is especially critical in React applications where we are using state, let's have a look at how to make it. Make a new file `ErrorBoundary.js`. This is mostly code from the React documentation. Thanks Brian... Make your `ErrorBoundary.js` file like this:
+
+{% highlight javascript %}
+
+import React, { Component } from "react";
+import { Link } from "@reach/router";
+
+class ErrorBoundary extends Component {
+  state = { hasError: false };
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  componentDidCatch(error, info) {
+    console.error("ErrorBoundary caught an error", error, info);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <h1>
+          There was an error with this listing. <Link to="/">Click here</Link>{" "}
+          to go back to the home page or wait five seconds.
+        </h1>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+export default ErrorBoundary;
+
+{% endhighlight %}
+
+Here's an attempt to explain what is happening above. `import` React and Component from React, `import` Link from React Router. Make a class component called ErrorBoundary and give it some state, `hasError`, set to false. Set up `getDerivedStateFromError` to update `hasError` to true if an error exists. Then if there is an error `this.state.hasError`, render some text with a link back to the home page, otherwise, render the children.
+
 ### Error Boundary Middleware
+
+The first component that we want to wrap with `ErrorBoundary.js` is the Details component. In `Details.js`, first import `ErrorBoundary`: `import ErrorBoundary from "./ErrorBoundary";`, then update the export statement at the bottom of `Details.js` to this:
+
+{% highlight javascript %}
+
+export default function DetailsWithErrorBoundary(props) {
+    return (
+        <ErrorBoundary>
+            <Details {...props} />
+        </ErrorBoundary>
+    )
+}
+
+{% endhighlight %}
+
+Now when your application has an error, you *should* see the `<h1>` from the ErrorBoundary component render on the page. Doesn't work for me (when there is an API error), so I clearly did something wrong 😩. But I was able to update the error handling like this:
+
+{% capture summary %}Click to view the updated error handling I came up with for `Details.js`{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+import React from "react";
+import pet from "@frontendmasters/pet";
+import Carousel from "./Carousel";
+import ErrorBoundary from "./ErrorBoundary";
+
+class Details extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { loading: true };
+  }
+  componentDidMount() {
+    pet
+      .animal(this.props.id)
+      .then(({ animal }) => {
+        this.setState({
+          name: animal.name,
+          animal: animal.type,
+          location: `${animal.contact.address.city}, ${animal.contact.address.state}`,
+          description: animal.description,
+          media: animal.photos,
+          breed: animal.breeds.primary,
+          loading: false,
+        });
+      })
+      // this catch helped to set a new property to state which the
+      // ErrorBoundary component can then use when a render is triggered
+      .catch((e) => {
+        this.setState({
+          hasError: true,
+        });
+      });
+  }
+  render() {
+      // added && !this.state.hasError which is initially unset,
+      // so you will see loading ...
+      // when the catch statement fails, hasError will then exist
+      // which negates the statement and loads the ErrorBoundary component
+    if (this.state.loading && !this.state.hasError) {
+      return <h1>loading ...</h1>;
+    }
+    const { animal, breed, location, description, name, media } = this.state;
+
+    return (
+      <div className="details">
+        <Carousel media={media} />
+        <div>
+          <h1>{name}</h1>
+          <h2>{`${animal} - ${breed} - ${location}`}</h2>
+          <button>Adopt {name}</button>
+          <p>{description}</p>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default function DetailsWithErrorBoundary(props) {
+  return (
+    <ErrorBoundary>
+      <Details {...props} />
+    </ErrorBoundary>
+  );
+}
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %}
 
 ### 404 Page Redirect
 
