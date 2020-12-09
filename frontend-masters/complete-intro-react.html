@@ -1157,15 +1157,219 @@ can spot the (default) corgi images.</p>
 
 <h3 id="rendering-the-component">Rendering the Component</h3>
 
+<p>Let’s update the <code class="language-plaintext highlighter-rouge">render()</code> for <code class="language-plaintext highlighter-rouge">Details.js</code>. Make the <code class="language-plaintext highlighter-rouge">render()</code> inside of <code class="language-plaintext highlighter-rouge">Details.js</code> look like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+<span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">loading</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">loading</span> <span class="p">...</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span><span class="err">;
+</span>    <span class="p">}</span>
+    <span class="kd">const</span> <span class="p">{</span> <span class="nx">animal</span><span class="p">,</span> <span class="nx">breed</span><span class="p">,</span> <span class="nx">location</span><span class="p">,</span> <span class="nx">description</span><span class="p">,</span> <span class="nx">name</span> <span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="p">(</span>
+      <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="dl">"</span><span class="s2">details</span><span class="dl">"</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+          <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="p">{</span><span class="s2">`</span><span class="p">${</span><span class="nx">animal</span><span class="p">}</span><span class="s2"> - </span><span class="p">${</span><span class="nx">breed</span><span class="p">}</span><span class="s2"> - </span><span class="p">${</span><span class="nx">location</span><span class="p">}</span><span class="s2">`</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/h2</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="nx">button</span><span class="o">&gt;</span><span class="nx">Adopt</span> <span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/button</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">description</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>    <span class="p">);</span>
+  <span class="p">}</span>
+<span class="c1">//...</span></code></pre></figure>
+
+<p>Walking through the updated render, if <code class="language-plaintext highlighter-rouge">loading</code> is <code class="language-plaintext highlighter-rouge">true</code>, which it will be on page load until the detail data about a pet is returned, show ‘loading …’. You can try this out by going to a (detail) page that is not real; i.e. /details/1 should work. Then Brian destructures state to make the ‘calling’ of the parts of state he will work with easier / less verbose to access (I also like this approach). The rest of the JSX should be familiar at this point, we’re just building out the thing to show the stuff. Go to the home page of your application, search for some animals, click one to get to its detail page and see the result!</p>
+
+<p>Classes are how React was (originally) built (before hooks), and while they may appear to be a more difficult way of writing React, there are currently no plans to deprecate them.</p>
+
 <h3 id="configuring-babel-for-parcel">Configuring Babel for Parcel</h3>
+
+<p>It would be a bit simpler if instead of this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">constructor</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">super</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="na">loading</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="p">};</span>
+  <span class="p">}</span></code></pre></figure>
+
+<p>We could write this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span> <span class="na">loading</span><span class="p">:</span> <span class="kc">true</span> <span class="p">};</span></code></pre></figure>
+
+<p>The second way, as of 2018?, <del>was a proposal</del> for JavaScript and <del>isn’t actually a</del> <strong>is a</strong> thing (yet), but with Babel we can make it work! So if you are in 2018 and reading these notes follow along, otherwise skip to the next section!</p>
+
+<p>Open your console and type (or just copy / paste) this: <code class="language-plaintext highlighter-rouge">npm install -D babel-eslint @babel/core @babel/preset-env @babel/plugin-proposal-class-properties @babel/preset-react</code>.</p>
+
+<p>WHAT?! All of this stuff is built into Parcel which has been handling this for us. But we have custom needs, so installing all these things will allow us to use a custom config instead of Parcel’s. In the root of the project, make a new file, <code class="language-plaintext highlighter-rouge">.babelrc</code>. Then drop this into that file:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"presets"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"@babel/preset-react"</span><span class="p">,</span><span class="w"> </span><span class="s2">"@babel/preset-env"</span><span class="w"> </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"plugins"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"@babel/plugin-proposal-class-properties"</span><span class="w"> </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span></code></pre></figure>
+
+<p><code class="language-plaintext highlighter-rouge">@babel/preset-react</code> provides all the things we need to transpile React; JSX and Flow (which is not something that we are using, but it is included).</p>
+
+<p><code class="language-plaintext highlighter-rouge">@babel/preset-env</code> will transpile your code for the environment that you specify, which we’ve already done in <code class="language-plaintext highlighter-rouge">package.json</code> (browserslist). <code class="language-plaintext highlighter-rouge">@babel/preset-env</code> can also take an export from your Google Analytics which it will then use to transpile your code so that it functions for 99% of your users 🔥.</p>
+
+<p><code class="language-plaintext highlighter-rouge">@babel/plugin-proposal-class-properties</code> allows you to use the syntax that started us on this journey. Again, this syntax should already be usable for you by now.</p>
+
+<p>Finally, add this line to your <code class="language-plaintext highlighter-rouge">.eslintrc.json</code> file:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="err">//...</span><span class="w">
+</span><span class="nl">"parser"</span><span class="p">:</span><span class="w"> </span><span class="s2">"babel-eslint"</span><span class="err">,</span><span class="w">
+</span><span class="err">//...</span></code></pre></figure>
+
+<p>This will allow Babel to understand the new syntax that we are trying to use. Now you can use that new syntax that you could already use.</p>
 
 <h3 id="creating-an-image-carousel">Creating an Image Carousel</h3>
 
+<p>Make a new file in the <code class="language-plaintext highlighter-rouge">src</code> directory called <code class="language-plaintext highlighter-rouge">Carousel.js</code> because we want to make a happy little carousel for the people to be able to see the various different pictures of the animals. Add this to <code class="language-plaintext highlighter-rouge">Carousel.js</code>:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nx">Carousel</span> <span class="kd">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+    <span class="nx">state</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="na">photos</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="na">active</span><span class="p">:</span> <span class="mi">0</span>
+    <span class="p">};</span>
+    <span class="kd">static</span> <span class="nx">getDerivedStateFromProps</span><span class="p">({</span> <span class="nx">media</span> <span class="p">})</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">photos</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">http://plaacecorgi.com/600/600</span><span class="dl">'</span><span class="p">];</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">media</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">photos</span> <span class="o">=</span> <span class="nx">media</span><span class="p">.</span><span class="nx">map</span><span class="p">(({</span> <span class="nx">large</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="nx">large</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="p">{</span> <span class="nx">photos</span> <span class="p">};</span>
+    <span class="p">}</span>
+
+    <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="p">{</span> <span class="nx">photos</span><span class="p">,</span> <span class="nx">active</span> <span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">;</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="dl">"</span><span class="s2">carousel</span><span class="dl">"</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="nx">img</span> <span class="nx">src</span><span class="o">=</span><span class="p">{</span><span class="nx">photos</span><span class="p">[</span><span class="nx">active</span><span class="p">]}</span> <span class="nx">alt</span><span class="o">=</span><span class="dl">"</span><span class="s2">animal</span><span class="dl">"</span> <span class="o">/&gt;</span>
+                <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="dl">"</span><span class="s2">carousel-smaller</span><span class="dl">"</span><span class="o">&gt;</span>
+                    <span class="p">{</span><span class="nx">photos</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">photo</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span>
+                        <span class="o">&lt;</span><span class="nx">img</span>
+                        <span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">photo</span><span class="p">}</span>
+                        <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleIndexClick</span><span class="p">}</span>
+                        <span class="nx">data</span><span class="o">-</span><span class="nx">index</span><span class="o">=</span><span class="p">{</span><span class="nx">index</span><span class="p">}</span>
+                        <span class="nx">src</span><span class="o">=</span><span class="p">{</span><span class="nx">photo</span><span class="p">}</span>
+                        <span class="nx">className</span><span class="o">=</span><span class="p">{</span><span class="nx">index</span> <span class="o">===</span> <span class="nx">active</span> <span class="p">?</span> <span class="dl">"</span><span class="s2">active</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">""</span><span class="p">}</span>
+                        <span class="nx">alt</span><span class="o">=</span><span class="dl">"</span><span class="s2">animal thumbnail</span><span class="dl">"</span>
+                    <span class="p">))}</span>
+                <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>            <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>        <span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">Carousel</span><span class="p">;</span></code></pre></figure>
+
+<p>Another Class component! Now that we are in the future and can use the <code class="language-plaintext highlighter-rouge">state = {};</code> syntax, our component is a bit cleaner! Let’s break down the new bits:</p>
+
+<p><code class="language-plaintext highlighter-rouge">static getDerivedStateFromProps</code> - This will allow our component to access its parent props and use them for something, in this case we are capturing the <code class="language-plaintext highlighter-rouge">media</code> and updating the <code class="language-plaintext highlighter-rouge">photo</code> property in our components state, then returning that from <code class="language-plaintext highlighter-rouge">getDerivedStateFromProps</code> so that the carousel component can use em. <a href="https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops">Here’s React’s documentation on getDerivedStateFromProps which is way better than my explanation</a></p>
+
+<p>The rest of the carousel component set up is JSX, the only part left unhandled is the <code class="language-plaintext highlighter-rouge">onClick</code> event. Please hold.</p>
+
 <h3 id="context">Context</h3>
+
+<p>Still inside of <code class="language-plaintext highlighter-rouge">Carousel.js</code>, add this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">handleIndexClick</span> <span class="o">=</span> <span class="nx">event</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span>
+        <span class="na">active</span><span class="p">:</span> <span class="o">+</span><span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">dataset</span><span class="p">.</span><span class="nx">index</span>
+    <span class="p">});</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>That will be the event that gets triggered when an image is clicked. It is important to note that we are using an arrow function here so that <code class="language-plaintext highlighter-rouge">this</code> is bound to the context of the Carousel class that it is in. Brian recommends:</p>
+
+<blockquote>
+  <p>Whenever you are writing an event listener, use an arrow function. Your <code class="language-plaintext highlighter-rouge">this</code> will be correct.</p>
+</blockquote>
 
 <h3 id="index-click-qa">Index Click Q&amp;A</h3>
 
+<p>Q: Could you explain the <code class="language-plaintext highlighter-rouge">+</code> in front of <code class="language-plaintext highlighter-rouge">event.target...</code>?</p>
+
+<p>A: The <code class="language-plaintext highlighter-rouge">+</code> there is to turn the string that is returned from <code class="language-plaintext highlighter-rouge">event.target.dataset.index</code> into a number. It is called the unary plus operator. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Unary_plus">See MDN for more information about the unary plus operator</a>. Another approach to this event handler could look like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+<span class="nx">handleIndexClick</span> <span class="o">=</span> <span class="p">(</span><span class="nx">index</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span>
+        <span class="na">active</span><span class="p">:</span> <span class="nx">index</span>
+    <span class="p">})</span>
+<span class="p">}</span>
+<span class="c1">//...</span>
+<span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleIndexClick</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">index</span><span class="p">)}</span>
+<span class="c1">//...</span></code></pre></figure>
+
+<p>Why we didn’t go straight to that method is because <code class="language-plaintext highlighter-rouge">bind</code> used to be very ‘expensive’ to use. It used to be one of the slowest things you could do in Chrome. It has been fixed, but in old browsers, using the above example is really slow, so the best recommended practice is to not do it that way.</p>
+
 <h3 id="carousel-implementation">Carousel Implementation</h3>
+
+<p>Open up <code class="language-plaintext highlighter-rouge">Details.js</code> and add this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+<span class="k">import</span> <span class="nx">Carousel</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./Carousel</span><span class="dl">"</span><span class="p">;</span>
+<span class="c1">//... add media</span>
+<span class="kd">const</span> <span class="p">{</span> <span class="nx">animal</span><span class="p">,</span> <span class="nx">breed</span><span class="p">,</span> <span class="nx">location</span><span class="p">,</span> <span class="nx">description</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">media</span> <span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">;</span>
+<span class="c1">//... place this just inside of the &lt;div className="details"&gt;</span>
+<span class="o">&lt;</span><span class="nx">Carousel</span> <span class="nx">media</span><span class="o">=</span><span class="p">{</span><span class="nx">media</span><span class="p">}</span> <span class="sr">/</span><span class="err">&gt;
+</span><span class="c1">//...</span></code></pre></figure>
+
+<p>In <code class="language-plaintext highlighter-rouge">Details.js</code> we’ve imported the Carousel component, added <code class="language-plaintext highlighter-rouge">media</code> to our state, and finally added the Carousel component to the render. If you refresh or load a details page, you should be able to see all of the images for any given pet, displayed in a carousel-like format. Here’s the entire <code class="language-plaintext highlighter-rouge">Details.js</code> file in case something is not working:</p>
+
+<details>
+    <summary>Click to view the current state of <code class="language-plaintext highlighter-rouge">Details.js</code>
+</summary>
+    
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">pet</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@frontendmasters/pet</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Carousel</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./Carousel</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nx">Details</span> <span class="kd">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+  <span class="nx">state</span> <span class="o">=</span> <span class="p">{</span> <span class="na">loading</span><span class="p">:</span> <span class="kc">true</span> <span class="p">};</span>
+  <span class="nx">componentDidMount</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">pet</span><span class="p">.</span><span class="nx">animal</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">id</span><span class="p">).</span><span class="nx">then</span><span class="p">(({</span> <span class="nx">animal</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span>
+        <span class="na">name</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+        <span class="na">animal</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
+        <span class="na">location</span><span class="p">:</span> <span class="s2">`</span><span class="p">${</span><span class="nx">animal</span><span class="p">.</span><span class="nx">contact</span><span class="p">.</span><span class="nx">address</span><span class="p">.</span><span class="nx">city</span><span class="p">}</span><span class="s2">, </span><span class="p">${</span><span class="nx">animal</span><span class="p">.</span><span class="nx">contact</span><span class="p">.</span><span class="nx">address</span><span class="p">.</span><span class="nx">state</span><span class="p">}</span><span class="s2">`</span><span class="p">,</span>
+        <span class="na">description</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">description</span><span class="p">,</span>
+        <span class="na">media</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">photos</span><span class="p">,</span>
+        <span class="na">breed</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">breeds</span><span class="p">.</span><span class="nx">primary</span><span class="p">,</span>
+        <span class="na">loading</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+      <span class="p">});</span>
+    <span class="p">},</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">loading</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">loading</span> <span class="p">...</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span><span class="err">;
+</span>    <span class="p">}</span>
+    <span class="kd">const</span> <span class="p">{</span> <span class="nx">animal</span><span class="p">,</span> <span class="nx">breed</span><span class="p">,</span> <span class="nx">location</span><span class="p">,</span> <span class="nx">description</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">media</span> <span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="p">(</span>
+      <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="dl">"</span><span class="s2">details</span><span class="dl">"</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">Carousel</span> <span class="nx">media</span><span class="o">=</span><span class="p">{</span><span class="nx">media</span><span class="p">}</span> <span class="sr">/</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+          <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="p">{</span><span class="s2">`</span><span class="p">${</span><span class="nx">animal</span><span class="p">}</span><span class="s2"> - </span><span class="p">${</span><span class="nx">breed</span><span class="p">}</span><span class="s2"> - </span><span class="p">${</span><span class="nx">location</span><span class="p">}</span><span class="s2">`</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/h2</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="nx">button</span><span class="o">&gt;</span><span class="nx">Adopt</span> <span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/button</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">description</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>    <span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">Details</span><span class="p">;</span></code></pre></figure>
+
+
+</details>
 
 <h2 id="error-boundaries">Error Boundaries</h2>
 
