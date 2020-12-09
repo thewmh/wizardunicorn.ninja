@@ -1493,6 +1493,57 @@ can spot the (default) corgi images.</p>
 
 <h3 id="404-page-redirect">404 Page Redirect</h3>
 
+<p>Let’s update the <code class="language-plaintext highlighter-rouge">ErrorBoundary.js</code> file with <del><code class="language-plaintext highlighter-rouge">componentWillUpdate</code></del> (deprecated) <code class="language-plaintext highlighter-rouge">componentDidUpdate</code> which will run every time the component receives new state or props. Update <code class="language-plaintext highlighter-rouge">ErrorBoundary.js</code> so that it looks like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Component</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Link</span><span class="p">,</span> <span class="nx">Redirect</span><span class="p">,</span> <span class="nx">navigate</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@reach/router</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nx">ErrorBoundary</span> <span class="kd">extends</span> <span class="nx">Component</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">super</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span> <span class="na">hasError</span><span class="p">:</span> <span class="kc">false</span> <span class="p">};</span>
+  <span class="p">}</span>
+  <span class="kd">static</span> <span class="nx">getDerivedStateFromError</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="na">hasError</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">redirect</span><span class="p">:</span> <span class="kc">false</span> <span class="p">};</span>
+  <span class="p">}</span>
+  <span class="nx">componentDidCatch</span><span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">info</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="dl">"</span><span class="s2">ErrorBoundary caught an error</span><span class="dl">"</span><span class="p">,</span> <span class="nx">error</span><span class="p">,</span> <span class="nx">info</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nx">componentDidUpdate</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">hasError</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">navigate</span><span class="p">(</span><span class="dl">"</span><span class="s2">/</span><span class="dl">"</span><span class="p">),</span> <span class="mi">5000</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">hasError</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="p">(</span>
+        <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span>
+          <span class="nx">There</span> <span class="nx">was</span> <span class="nx">an</span> <span class="nx">error</span> <span class="kd">with</span> <span class="k">this</span> <span class="nx">listing</span><span class="p">.</span> <span class="o">&lt;</span><span class="nx">Link</span> <span class="nx">to</span><span class="o">=</span><span class="dl">"</span><span class="s2">/</span><span class="dl">"</span><span class="o">&gt;</span><span class="nx">Click</span> <span class="nx">here</span><span class="o">&lt;</span><span class="sr">/Link&gt;{" "</span><span class="err">}
+</span>          <span class="nx">to</span> <span class="nx">go</span> <span class="nx">back</span> <span class="nx">to</span> <span class="nx">the</span> <span class="nx">home</span> <span class="nx">page</span> <span class="nx">or</span> <span class="nx">wait</span> <span class="nx">five</span> <span class="nx">seconds</span><span class="p">.</span>
+        <span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>      <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">children</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">ErrorBoundary</span><span class="p">;</span></code></pre></figure>
+
+<p>We added some imports to the React Router, <code class="language-plaintext highlighter-rouge">Redirect</code> (not needed if using <code class="language-plaintext highlighter-rouge">navigate</code>) and <code class="language-plaintext highlighter-rouge">navigate</code>. I could not get the Redirect to work by using <code class="language-plaintext highlighter-rouge">setState</code>, but it did work fine using <code class="language-plaintext highlighter-rouge">navigate</code>. The Redirect with <code class="language-plaintext highlighter-rouge">setState</code> looks like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">componentDidUpdate</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">hasError</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span> <span class="na">redirect</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}),</span> <span class="mi">5000</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="c1">//...</span>
+<span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">redirect</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="o">&lt;</span><span class="nx">Redirect</span> <span class="nx">to</span><span class="o">=</span><span class="dl">"</span><span class="s2">/</span><span class="dl">"</span> <span class="o">/&gt;</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="c1">//...</span></code></pre></figure>
+
 <h3 id="lifecycle-methods--error-boundary-qa">Lifecycle Methods &amp; Error Boundary Q&amp;A</h3>
 
 <h2 id="context-1">Context</h2>
