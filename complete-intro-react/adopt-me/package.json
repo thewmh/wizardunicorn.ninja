@@ -40,6 +40,5 @@
   },
   "browserslist": [
     "last 2 Chrome versions"
-  ],
-  "PUBLIC_URL": "https://wizardunicorn.ninja/frontend-masters/complete-intro-react/"
+  ]
 }

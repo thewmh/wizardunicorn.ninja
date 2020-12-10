@@ -10,7 +10,7 @@ layout: page
 
 [Link to Course Notes](https://bit.ly/react-v5)
 
-[Link to Completed Workshop Project](complete-intro-react/index.html)
+[Link to Completed Workshop Project](complete-intro-react/)
 
 ## Introduction
 
@@ -1991,8 +1991,195 @@ We added a new import of `Link` from Reach Router and updated the `<a href...>` 
 
 ### Modal Dialog with Portals
 
+Time to make a modal! Because it might be nice, in the case of this application we've been building, to make sure that when someone clicks 'Adopt ${pet.name}' that they actually do in fact want to do that before they continue. Open up the `src/index.html` file and add this:
+
+{% highlight html %}
+
+//...
+<body>
+    <div id="modal"></div>
+//...
+
+{% endhighlight %}
+
+Now, make a new file `Modal.js` and add this:
+
+{% highlight javascript %}
+
+import React, { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
+
+const Modal = ({ children }) => {
+  const elRef = useRef(null);
+  if (!elRef.current) {
+    const div = document.createElement("div");
+    elRef.current = div;
+  }
+
+  useEffect(() => {
+    const modalRoot = document.getElementById("modal");
+    modalRoot.appendChild(elRef.current);
+
+    return () => modalRoot.removeChild(elRef.current);
+  }, []);
+
+  return createPortal(<div>{children}</div>, elRef.current);
+};
+
+export default Modal;
+
+{% endhighlight %}
+
+Brian does not explain a lot of the first few lines of the above code, but we have a couple of imports for things that are being used in the component. Then, the component itself, `Modal`, which gets `children` passed in. `useRef` will allow us to 'clean up' the 'garbage' (Modal) that we will be creating in the DOM. If we did not clean up the markup after closing the modal, we would just keep creating new, additional, DOM elements, which is effectively a memory leak and we don't want those. The `if` statement checks if there is in fact an `elRef` before it creates an element and it will always point to the correct `<div>`, which is what we want.
+
+In the `useEffect` hook, we are defining `modalRoot` to equal the DOM element that we just placed in `src/index.html`, then appending `elRef.current` to it. Brian withheld from us the fact the `useEffect` has a special feature which is if you return a function, that is the 'clean up' function, which will run when the component unmounts. In our case, we are removing the `<div>` that we created. Garbage cleaned up! Oh and the `, []` is important to make `useEffect` only run once.
+
+In `createPortal`, we return the children and `elRef.current`, which Brian fails to explain 😞. But from the React docs: "Portals provide a first-class way to render children into a DOM node that exists outside the DOM hierarchy of the parent component." [Here's the link to the Portals documentation in the React docs](https://reactjs.org/docs/portals.html)
+
 ### Displaying the Modal
+
+Hop on over to `Details.js` and make it look like this:
+
+{% highlight javascript %}
+
+import React from "react";
+import pet from "@frontendmasters/pet";
+import { navigate } from "@reach/router";
+import Modal from "./Modal";
+import Carousel from "./Carousel";
+import ErrorBoundary from "./ErrorBoundary";
+import ThemeContext from "./ThemeContext";
+
+class Details extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { loading: true, showModal: false };
+  }
+  componentDidMount() {
+    pet
+      .animal(this.props.id)
+      .then(({ animal }) => {
+        this.setState({
+          url: animal.url,
+          name: animal.name,
+          animal: animal.type,
+          location: `${animal.contact.address.city}, ${animal.contact.address.state}`,
+          description: animal.description,
+          media: animal.photos,
+          breed: animal.breeds.primary,
+          loading: false,
+        });
+      })
+      .catch((e) => {
+        this.setState({
+          hasError: true,
+        });
+      });
+  }
+  toggleModal = () => this.setState({ showModal: !this.state.showModal });
+  adopt = () => navigate(this.state.url);
+  render() {
+    if (this.state.loading && !this.state.hasError) {
+      return <h1>loading ...</h1>;
+    }
+    const {
+      animal,
+      breed,
+      location,
+      description,
+      name,
+      media,
+      showModal,
+    } = this.state;
+
+    return (
+      <div className="details">
+        <Carousel media={media} />
+        <div>
+          <h1>{name}</h1>
+          <h2>{`${animal} - ${breed} - ${location}`}</h2>
+          <ThemeContext.Consumer>
+            {([theme]) => (
+              <button
+                onClick={this.toggleModal}
+                style={{ backgroundColor: theme }}
+              >
+                Adopt {name}
+              </button>
+            )}
+          </ThemeContext.Consumer>
+          <p>{description}</p>
+          {showModal ? (
+            <Modal>
+              <div>
+                <h1>Would you like to adopt {name}?</h1>
+                <div className="buttons">
+                  <button onClick={this.adopt}>Yes</button>
+                  <button onClick={this.toggleModal}>No, I'm a monster</button>
+                </div>
+              </div>
+            </Modal>
+          ) : null}
+        </div>
+      </div>
+    );
+  }
+}
+
+export default function DetailsWithErrorBoundary(props) {
+  return (
+    <ErrorBoundary>
+      <Details {...props} />
+    </ErrorBoundary>
+  );
+}
+
+{% endhighlight %}
+
+We added these 2 imports:
+
+{% highlight javascript %}
+
+import { navigate } from "@reach/router";
+import Modal from "./Modal";
+
+{% endhighlight %}
+
+Added `showModal: false` to `this.state`, which will be the boolean that we use to determine whether the modal should be shown or not. In the API call, we added `url: animal.url,` to capture the pets adoption url. 
+
+We added these 2 functions:
+
+{% highlight javascript %}
+
+toggleModal = () => this.setState({ showModal: !this.state.showModal });
+adopt = () => navigate(this.state.url);
+
+{% endhighlight %}
+
+`toggleModal` will toggle the `showModal` boolean. `adopt` uses `navigate` to update the url to that of the pet.
+
+We added the `onClick` event to the `Adopt {name}` button. Finally, we added this:
+
+{% highlight javascript %}
+
+{showModal ? (
+    <Modal>
+        <div>
+        <h1>Would you like to adopt {name}?</h1>
+        <div className="buttons">
+            <button onClick={this.adopt}>Yes</button>
+            <button onClick={this.toggleModal}>No, I'm a monster</button>
+        </div>
+        </div>
+    </Modal>
+) : null}
+
+{% endhighlight %}
+
+Using our friend the ternary operator, we will check the `showModal` piece of state, which if true, will display the modal, otherwise... nothing. And now you have a flexible modal that is able to 'appear' outside of #root, which is pretty funderful (I could see Brian using a word like that...).
 
 ## Wrapping Up
 
 ### Wrapping Up
+
+Congrats! You've learned about 95% of React! 🎉

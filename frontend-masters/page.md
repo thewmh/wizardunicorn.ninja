@@ -38,8 +38,4 @@ Organized by subject.
 
 ## React
 
-[//]: # ([)
-
-11/2020 **IN PROGRESS** Complete Intro to React, v5
-
-[//]: # (](complete-intro-react.md))
+[Complete Intro to React, v5](complete-intro-react.md))
