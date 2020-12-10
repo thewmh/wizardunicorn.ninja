@@ -55,7 +55,7 @@
 
 <p><a href="https://bit.ly/react-v5">Link to Course Notes</a></p>
 
-<p><a href="/frontend-masters/complete-intro-react/index.html">Link to Completed Workshop Project</a></p>
+<p><a href="complete-intro-react/">Link to Completed Workshop Project</a></p>
 
 <h2 id="introduction">Introduction</h2>
 
@@ -1762,11 +1762,174 @@ can spot the (default) corgi images.</p>
 
 <h3 id="modal-dialog-with-portals">Modal Dialog with Portals</h3>
 
+<p>Time to make a modal! Because it might be nice, in the case of this application we’ve been building, to make sure that when someone clicks ‘Adopt ${pet.name}’ that they actually do in fact want to do that before they continue. Open up the <code class="language-plaintext highlighter-rouge">src/index.html</code> file and add this:</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html">//...
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"modal"</span><span class="nt">&gt;&lt;/div&gt;</span>
+//...</code></pre></figure>
+
+<p>Now, make a new file <code class="language-plaintext highlighter-rouge">Modal.js</code> and add this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useEffect</span><span class="p">,</span> <span class="nx">useRef</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">createPortal</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-dom</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">Modal</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">children</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">elRef</span> <span class="o">=</span> <span class="nx">useRef</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">elRef</span><span class="p">.</span><span class="nx">current</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">div</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">div</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">elRef</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="nx">div</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nx">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">modalRoot</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">modal</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">modalRoot</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">elRef</span><span class="p">.</span><span class="nx">current</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">modalRoot</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nx">elRef</span><span class="p">.</span><span class="nx">current</span><span class="p">);</span>
+  <span class="p">},</span> <span class="p">[]);</span>
+
+  <span class="k">return</span> <span class="nx">createPortal</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">children</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/div&gt;, elRef.current</span><span class="se">)</span><span class="err">;
+</span><span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">Modal</span><span class="p">;</span></code></pre></figure>
+
+<p>Brian does not explain a lot of the first few lines of the above code, but we have a couple of imports for things that are being used in the component. Then, the component itself, <code class="language-plaintext highlighter-rouge">Modal</code>, which gets <code class="language-plaintext highlighter-rouge">children</code> passed in. <code class="language-plaintext highlighter-rouge">useRef</code> will allow us to ‘clean up’ the ‘garbage’ (Modal) that we will be creating in the DOM. If we did not clean up the markup after closing the modal, we would just keep creating new, additional, DOM elements, which is effectively a memory leak and we don’t want those. The <code class="language-plaintext highlighter-rouge">if</code> statement checks if there is in fact an <code class="language-plaintext highlighter-rouge">elRef</code> before it creates an element and it will always point to the correct <code class="language-plaintext highlighter-rouge">&lt;div&gt;</code>, which is what we want.</p>
+
+<p>In the <code class="language-plaintext highlighter-rouge">useEffect</code> hook, we are defining <code class="language-plaintext highlighter-rouge">modalRoot</code> to equal the DOM element that we just placed in <code class="language-plaintext highlighter-rouge">src/index.html</code>, then appending <code class="language-plaintext highlighter-rouge">elRef.current</code> to it. Brian withheld from us the fact the <code class="language-plaintext highlighter-rouge">useEffect</code> has a special feature which is if you return a function, that is the ‘clean up’ function, which will run when the component unmounts. In our case, we are removing the <code class="language-plaintext highlighter-rouge">&lt;div&gt;</code> that we created. Garbage cleaned up! Oh and the <code class="language-plaintext highlighter-rouge">, []</code> is important to make <code class="language-plaintext highlighter-rouge">useEffect</code> only run once.</p>
+
+<p>In <code class="language-plaintext highlighter-rouge">createPortal</code>, we return the children and <code class="language-plaintext highlighter-rouge">elRef.current</code>, which Brian fails to explain 😞. But from the React docs: “Portals provide a first-class way to render children into a DOM node that exists outside the DOM hierarchy of the parent component.” <a href="https://reactjs.org/docs/portals.html">Here’s the link to the Portals documentation in the React docs</a></p>
+
 <h3 id="displaying-the-modal">Displaying the Modal</h3>
+
+<p>Hop on over to <code class="language-plaintext highlighter-rouge">Details.js</code> and make it look like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">pet</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@frontendmasters/pet</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">navigate</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@reach/router</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Modal</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./Modal</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Carousel</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./Carousel</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">ErrorBoundary</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./ErrorBoundary</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">ThemeContext</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./ThemeContext</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nx">Details</span> <span class="kd">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">super</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span> <span class="na">loading</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">showModal</span><span class="p">:</span> <span class="kc">false</span> <span class="p">};</span>
+  <span class="p">}</span>
+  <span class="nx">componentDidMount</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">pet</span>
+      <span class="p">.</span><span class="nx">animal</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">then</span><span class="p">(({</span> <span class="nx">animal</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span>
+          <span class="na">url</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
+          <span class="na">name</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+          <span class="na">animal</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span>
+          <span class="na">location</span><span class="p">:</span> <span class="s2">`</span><span class="p">${</span><span class="nx">animal</span><span class="p">.</span><span class="nx">contact</span><span class="p">.</span><span class="nx">address</span><span class="p">.</span><span class="nx">city</span><span class="p">}</span><span class="s2">, </span><span class="p">${</span><span class="nx">animal</span><span class="p">.</span><span class="nx">contact</span><span class="p">.</span><span class="nx">address</span><span class="p">.</span><span class="nx">state</span><span class="p">}</span><span class="s2">`</span><span class="p">,</span>
+          <span class="na">description</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">description</span><span class="p">,</span>
+          <span class="na">media</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">photos</span><span class="p">,</span>
+          <span class="na">breed</span><span class="p">:</span> <span class="nx">animal</span><span class="p">.</span><span class="nx">breeds</span><span class="p">.</span><span class="nx">primary</span><span class="p">,</span>
+          <span class="na">loading</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="p">});</span>
+      <span class="p">})</span>
+      <span class="p">.</span><span class="k">catch</span><span class="p">((</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span>
+          <span class="na">hasError</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="p">});</span>
+      <span class="p">});</span>
+  <span class="p">}</span>
+  <span class="nx">toggleModal</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span> <span class="na">showModal</span><span class="p">:</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">showModal</span> <span class="p">});</span>
+  <span class="nx">adopt</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">navigate</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
+  <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">loading</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">hasError</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">loading</span> <span class="p">...</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span><span class="err">;
+</span>    <span class="p">}</span>
+    <span class="kd">const</span> <span class="p">{</span>
+      <span class="nx">animal</span><span class="p">,</span>
+      <span class="nx">breed</span><span class="p">,</span>
+      <span class="nx">location</span><span class="p">,</span>
+      <span class="nx">description</span><span class="p">,</span>
+      <span class="nx">name</span><span class="p">,</span>
+      <span class="nx">media</span><span class="p">,</span>
+      <span class="nx">showModal</span><span class="p">,</span>
+    <span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="p">(</span>
+      <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="dl">"</span><span class="s2">details</span><span class="dl">"</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">Carousel</span> <span class="nx">media</span><span class="o">=</span><span class="p">{</span><span class="nx">media</span><span class="p">}</span> <span class="sr">/</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+          <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="p">{</span><span class="s2">`</span><span class="p">${</span><span class="nx">animal</span><span class="p">}</span><span class="s2"> - </span><span class="p">${</span><span class="nx">breed</span><span class="p">}</span><span class="s2"> - </span><span class="p">${</span><span class="nx">location</span><span class="p">}</span><span class="s2">`</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/h2</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="nx">ThemeContext</span><span class="p">.</span><span class="nx">Consumer</span><span class="o">&gt;</span>
+            <span class="p">{([</span><span class="nx">theme</span><span class="p">])</span> <span class="o">=&gt;</span> <span class="p">(</span>
+              <span class="o">&lt;</span><span class="nx">button</span>
+                <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">toggleModal</span><span class="p">}</span>
+                <span class="nx">style</span><span class="o">=</span>
+              <span class="o">&gt;</span>
+                <span class="nx">Adopt</span> <span class="p">{</span><span class="nx">name</span><span class="p">}</span>
+              <span class="o">&lt;</span><span class="sr">/button</span><span class="err">&gt;
+</span>            <span class="p">)}</span>
+          <span class="o">&lt;</span><span class="sr">/ThemeContext.Consumer</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">description</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>          <span class="p">{</span><span class="nx">showModal</span> <span class="p">?</span> <span class="p">(</span>
+            <span class="o">&lt;</span><span class="nx">Modal</span><span class="o">&gt;</span>
+              <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">Would</span> <span class="nx">you</span> <span class="nx">like</span> <span class="nx">to</span> <span class="nx">adopt</span> <span class="p">{</span><span class="nx">name</span><span class="p">}?</span><span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>                <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="dl">"</span><span class="s2">buttons</span><span class="dl">"</span><span class="o">&gt;</span>
+                  <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">adopt</span><span class="p">}</span><span class="o">&gt;</span><span class="nx">Yes</span><span class="o">&lt;</span><span class="sr">/button</span><span class="err">&gt;
+</span>                  <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">toggleModal</span><span class="p">}</span><span class="o">&gt;</span><span class="nx">No</span><span class="p">,</span> <span class="nx">I</span><span class="dl">'</span><span class="s1">m a monster&lt;/button&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/Modal&gt;
+          ) : null}
+        &lt;/div&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+export default function DetailsWithErrorBoundary(props) {
+  return (
+    &lt;ErrorBoundary&gt;
+      &lt;Details {...props} /&gt;
+    &lt;/ErrorBoundary&gt;
+  );
+}</span></code></pre></figure>
+
+<p>We added these 2 imports:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="p">{</span> <span class="nx">navigate</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@reach/router</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Modal</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./Modal</span><span class="dl">"</span><span class="p">;</span></code></pre></figure>
+
+<p>Added <code class="language-plaintext highlighter-rouge">showModal: false</code> to <code class="language-plaintext highlighter-rouge">this.state</code>, which will be the boolean that we use to determine whether the modal should be shown or not. In the API call, we added <code class="language-plaintext highlighter-rouge">url: animal.url,</code> to capture the pets adoption url.</p>
+
+<p>We added these 2 functions:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">toggleModal</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span> <span class="na">showModal</span><span class="p">:</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">showModal</span> <span class="p">});</span>
+<span class="nx">adopt</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">navigate</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span></code></pre></figure>
+
+<p><code class="language-plaintext highlighter-rouge">toggleModal</code> will toggle the <code class="language-plaintext highlighter-rouge">showModal</code> boolean. <code class="language-plaintext highlighter-rouge">adopt</code> uses <code class="language-plaintext highlighter-rouge">navigate</code> to update the url to that of the pet.</p>
+
+<p>We added the <code class="language-plaintext highlighter-rouge">onClick</code> event to the <code class="language-plaintext highlighter-rouge">Adopt {name}</code> button. Finally, we added this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">{</span><span class="nx">showModal</span> <span class="p">?</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">Modal</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">Would</span> <span class="nx">you</span> <span class="nx">like</span> <span class="nx">to</span> <span class="nx">adopt</span> <span class="p">{</span><span class="nx">name</span><span class="p">}?</span><span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="dl">"</span><span class="s2">buttons</span><span class="dl">"</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">adopt</span><span class="p">}</span><span class="o">&gt;</span><span class="nx">Yes</span><span class="o">&lt;</span><span class="sr">/button</span><span class="err">&gt;
+</span>            <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">toggleModal</span><span class="p">}</span><span class="o">&gt;</span><span class="nx">No</span><span class="p">,</span> <span class="nx">I</span><span class="dl">'</span><span class="s1">m a monster&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/Modal&gt;
+) : null}</span></code></pre></figure>
+
+<p>Using our friend the ternary operator, we will check the <code class="language-plaintext highlighter-rouge">showModal</code> piece of state, which if true, will display the modal, otherwise… nothing. And now you have a flexible modal that is able to ‘appear’ outside of #root, which is pretty funderful (I could see Brian using a word like that…).</p>
 
 <h2 id="wrapping-up">Wrapping Up</h2>
 
 <h3 id="wrapping-up-1">Wrapping Up</h3>
+
+<p>Congrats! You’ve learned about 95% of React! 🎉</p>
 
 </div>
     </main><footer class="usa-footer usa-footer-medium" role="contentinfo"><div class="usa-grid usa-footer-return-to-top">
