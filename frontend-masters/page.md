@@ -22,32 +22,32 @@ Organized by subject.
 
 ## JavaScript
 
-[Javascript: From Fundamentals to Functional JS](javascript/fundamentals-functional-js)
+[Javascript: From Fundamentals to Functional JS](fundamentals-functional-js)
 
-[Javascript: The Hard Parts, v2](javascript/hard-parts-js)
+[Javascript: The Hard Parts, v2](hard-parts-js)
 
-[Deep Javascript Foundations, v3](javascript/deep-javascript-foundations)
+[Deep Javascript Foundations, v3](deep-javascript-foundations)
 
 [//]: # ([)
 
 12/2020 **IN PROGRESS** JavaScript: The Recent Parts
 
-[//]: # (](javascript/javascript-recent-parts))
+[//]: # (](javascript-recent-parts))
 
 ## Webpack
 
-[Webpack 4 Fundamentals](webpack/webpack-4-fundamentals)
+[Webpack 4 Fundamentals](webpack-4-fundamentals)
 
-[Web Performance with Webpack](webpack/web-performance-webpack)
+[Web Performance with Webpack](web-performance-webpack)
 
-[Webpack Plugins System](webpack/webpack-plugins-system)
+[Webpack Plugins System](webpack-plugins-system)
 
 ## React
 
-[Complete Intro to React, v5](react/complete-intro-react))
+[Complete Intro to React, v5](complete-intro-react)
 
 [//]: # ([)
 
 12/2020 **IN PROGRESS** Intermediate React, v2
 
-[//]: # (](react/intermediate-react))
+[//]: # (](intermediate-react))
