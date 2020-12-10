@@ -250,7 +250,7 @@ As a topic for this workshop, code splitting has been exhausted. Nothing more to
 
 ### Webpack Config Organization
 
-The Webpack config organization has already been discussed / built in the [Webpack 4 Fundamentals workshop]({% link frontend-masters/webpack-4-fundamentals.md %}), with something like:
+The Webpack config organization has already been discussed / built in the [Webpack 4 Fundamentals workshop]({% link frontend-masters/webpack/webpack-4-fundamentals.md %}), with something like:
 
 {% highlight javascript %}
 
