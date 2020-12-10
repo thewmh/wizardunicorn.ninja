@@ -12,11 +12,11 @@ const App = () => {
       <ThemeContext.Provider value={themeHook}>
         <div>
           <header>
-            <Link to="/">Adopt Me!</Link>
+            <Link to={`${match.url}`}>Adopt Me!</Link>
           </header>
           <Router>
-            <SearchParams path="/" />
-            <Details path="/details/:id" />
+            <SearchParams path={`${match.url}`} />
+            <Details path={`${match.url}/details/:id`} />
           </Router>
         </div>
       </ThemeContext.Provider>

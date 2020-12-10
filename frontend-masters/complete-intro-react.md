@@ -627,7 +627,7 @@ export default SearchParams;
 
 We're importing `useState` from React, updating the `const location` variable, and adding an `onChange` event with a wee little function to the input element (which takes an e(vent) and updates the input with the event.target.value). Now whenever something is typed in the input field, the `onChange` is triggered, which will then call `setLocation` to update `location` with whatever is in the input field. Check your page to verify that the change works. Here's how it works:
 
-* Typing in the input field triggers a re-render, `SearchParam` re-renders
+* Typing in the input field triggers a re-render, `SearchParams` re-renders
 * `[location, setLocation]` location is the current state of location, setLocation is an 'updater' for that piece of state
 * Every time the `onChange` event happens, `e` will represent the event which then calls `setLocation` with the value of what was typed in the input field
 * The state is updated and when another re-render occurs, the 'state' of location will be whatever it has been updated to ("Seattle, WA" is the default state of the input field)
@@ -1937,6 +1937,55 @@ const themeHook = useState({
 Then when you need to grab one of the color options from `theme`, instead of just using `theme`, you would use `theme.buttonColor`.
 
 ### Persisting State with Context Hooks
+
+We've seen how to implement a theme, but how can we update it?! Open `SearchParams.js`. We're going to make another dropdown. Add `setTheme` to the `const [theme]` array: `const [theme, setTheme] = useContext(ThemeContext);`. Underneath the `<BreedDropdown />` add this:
+
+{% highlight javascript %}
+
+<label htmlFor="theme">
+    Theme
+    <select
+    value={theme}
+    onChange={(e) => setTheme(e.target.value)}
+    onBlur={(e) => setTheme(e.target.value)}
+    >
+    <option value="lawngreen">Lawn Green</option>
+    <option value="rebeccapurple">Rebecca Purple</option>
+    <option value="chartreuse">Chartreuse</option>
+    <option value="aqua">Aqua</option>
+    </select>
+</label>
+
+{% endhighlight %}
+
+Check out the result in your browser. The home page should have a new dropdown with the options that we just added. If you change the theme and then search for pets, click a pet to go to its detail page, you will see that the theme setting does not persist. The problem is in `Pet.js`, we never updated the link to the pets detail page to use Reach Router. So... update `Pet.js` so that it looks like this:
+
+{% highlight javascript %}
+
+import React from "react";
+import { Link } from "@reach/router";
+
+export default function Pet({ name, animal, breed, media, location, id }) {
+  let hero = "http://placecorgi.com/300/300";
+  if (media.length) {
+    hero = media[0].small;
+  }
+  return (
+    <Link to={`/details/${id}`} className="pet">
+      <div className="image-container">
+        <img src={hero} alt={name} />
+      </div>
+      <div className="info">
+        <h1>{name}</h1>
+        <h2>{`${animal} - ${breed} - ${location}`}</h2>
+      </div>
+    </Link>
+  );
+}
+
+{% endhighlight %}
+
+We added a new import of `Link` from Reach Router and updated the `<a href...>` to `<Link to...>`. Now try to set the theme and navigate to a pet detail page. The theme state should persist. 
 
 ## Portals
 
