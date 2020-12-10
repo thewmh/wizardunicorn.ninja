@@ -579,7 +579,7 @@ coverage/
 <p>We’re importing <code class="language-plaintext highlighter-rouge">useState</code> from React, updating the <code class="language-plaintext highlighter-rouge">const location</code> variable, and adding an <code class="language-plaintext highlighter-rouge">onChange</code> event with a wee little function to the input element (which takes an e(vent) and updates the input with the event.target.value). Now whenever something is typed in the input field, the <code class="language-plaintext highlighter-rouge">onChange</code> is triggered, which will then call <code class="language-plaintext highlighter-rouge">setLocation</code> to update <code class="language-plaintext highlighter-rouge">location</code> with whatever is in the input field. Check your page to verify that the change works. Here’s how it works:</p>
 
 <ul>
-  <li>Typing in the input field triggers a re-render, <code class="language-plaintext highlighter-rouge">SearchParam</code> re-renders</li>
+  <li>Typing in the input field triggers a re-render, <code class="language-plaintext highlighter-rouge">SearchParams</code> re-renders</li>
   <li><code class="language-plaintext highlighter-rouge">[location, setLocation]</code> location is the current state of location, setLocation is an ‘updater’ for that piece of state</li>
   <li>Every time the <code class="language-plaintext highlighter-rouge">onChange</code> event happens, <code class="language-plaintext highlighter-rouge">e</code> will represent the event which then calls <code class="language-plaintext highlighter-rouge">setLocation</code> with the value of what was typed in the input field</li>
   <li>The state is updated and when another re-render occurs, the ‘state’ of location will be whatever it has been updated to (“Seattle, WA” is the default state of the input field)</li>
@@ -1716,6 +1716,47 @@ can spot the (default) corgi images.</p>
 <p>Then when you need to grab one of the color options from <code class="language-plaintext highlighter-rouge">theme</code>, instead of just using <code class="language-plaintext highlighter-rouge">theme</code>, you would use <code class="language-plaintext highlighter-rouge">theme.buttonColor</code>.</p>
 
 <h3 id="persisting-state-with-context-hooks">Persisting State with Context Hooks</h3>
+
+<p>We’ve seen how to implement a theme, but how can we update it?! Open <code class="language-plaintext highlighter-rouge">SearchParams.js</code>. We’re going to make another dropdown. Add <code class="language-plaintext highlighter-rouge">setTheme</code> to the <code class="language-plaintext highlighter-rouge">const [theme]</code> array: <code class="language-plaintext highlighter-rouge">const [theme, setTheme] = useContext(ThemeContext);</code>. Underneath the <code class="language-plaintext highlighter-rouge">&lt;BreedDropdown /&gt;</code> add this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">&lt;</span><span class="nx">label</span> <span class="nx">htmlFor</span><span class="o">=</span><span class="dl">"</span><span class="s2">theme</span><span class="dl">"</span><span class="o">&gt;</span>
+    <span class="nx">Theme</span>
+    <span class="o">&lt;</span><span class="nx">select</span>
+    <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">theme</span><span class="p">}</span>
+    <span class="nx">onChange</span><span class="o">=</span><span class="p">{(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">setTheme</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">)}</span>
+    <span class="nx">onBlur</span><span class="o">=</span><span class="p">{(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">setTheme</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">)}</span>
+    <span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">option</span> <span class="nx">value</span><span class="o">=</span><span class="dl">"</span><span class="s2">lawngreen</span><span class="dl">"</span><span class="o">&gt;</span><span class="nx">Lawn</span> <span class="nx">Green</span><span class="o">&lt;</span><span class="sr">/option</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">option</span> <span class="nx">value</span><span class="o">=</span><span class="dl">"</span><span class="s2">rebeccapurple</span><span class="dl">"</span><span class="o">&gt;</span><span class="nx">Rebecca</span> <span class="nx">Purple</span><span class="o">&lt;</span><span class="sr">/option</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">option</span> <span class="nx">value</span><span class="o">=</span><span class="dl">"</span><span class="s2">chartreuse</span><span class="dl">"</span><span class="o">&gt;</span><span class="nx">Chartreuse</span><span class="o">&lt;</span><span class="sr">/option</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">option</span> <span class="nx">value</span><span class="o">=</span><span class="dl">"</span><span class="s2">aqua</span><span class="dl">"</span><span class="o">&gt;</span><span class="nx">Aqua</span><span class="o">&lt;</span><span class="sr">/option</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/select</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="sr">/label&gt;</span></code></pre></figure>
+
+<p>Check out the result in your browser. The home page should have a new dropdown with the options that we just added. If you change the theme and then search for pets, click a pet to go to its detail page, you will see that the theme setting does not persist. The problem is in <code class="language-plaintext highlighter-rouge">Pet.js</code>, we never updated the link to the pets detail page to use Reach Router. So… update <code class="language-plaintext highlighter-rouge">Pet.js</code> so that it looks like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Link</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@reach/router</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">Pet</span><span class="p">({</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">animal</span><span class="p">,</span> <span class="nx">breed</span><span class="p">,</span> <span class="nx">media</span><span class="p">,</span> <span class="nx">location</span><span class="p">,</span> <span class="nx">id</span> <span class="p">})</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">hero</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">http://placecorgi.com/300/300</span><span class="dl">"</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">media</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">hero</span> <span class="o">=</span> <span class="nx">media</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">small</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">Link</span> <span class="nx">to</span><span class="o">=</span><span class="p">{</span><span class="s2">`/details/</span><span class="p">${</span><span class="nx">id</span><span class="p">}</span><span class="s2">`</span><span class="p">}</span> <span class="nx">className</span><span class="o">=</span><span class="dl">"</span><span class="s2">pet</span><span class="dl">"</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="dl">"</span><span class="s2">image-container</span><span class="dl">"</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">img</span> <span class="nx">src</span><span class="o">=</span><span class="p">{</span><span class="nx">hero</span><span class="p">}</span> <span class="nx">alt</span><span class="o">=</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span> <span class="sr">/</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="dl">"</span><span class="s2">info</span><span class="dl">"</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="p">{</span><span class="s2">`</span><span class="p">${</span><span class="nx">animal</span><span class="p">}</span><span class="s2"> - </span><span class="p">${</span><span class="nx">breed</span><span class="p">}</span><span class="s2"> - </span><span class="p">${</span><span class="nx">location</span><span class="p">}</span><span class="s2">`</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/h2</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/Link</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>We added a new import of <code class="language-plaintext highlighter-rouge">Link</code> from Reach Router and updated the <code class="language-plaintext highlighter-rouge">&lt;a href...&gt;</code> to <code class="language-plaintext highlighter-rouge">&lt;Link to...&gt;</code>. Now try to set the theme and navigate to a pet detail page. The theme state should persist.</p>
 
 <h2 id="portals">Portals</h2>
 
