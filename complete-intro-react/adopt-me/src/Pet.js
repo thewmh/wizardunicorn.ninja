@@ -7,7 +7,10 @@ export default function Pet({ name, animal, breed, media, location, id }) {
     hero = media[0].small;
   }
   return (
-    <Link to={`/details/${id}`} className="pet">
+    <Link
+      to={`/frontend-masters/complete-intro-react/details/${id}`}
+      className="pet"
+    >
       <div className="image-container">
         <img src={hero} alt={name} />
       </div>
