@@ -68,7 +68,7 @@ The best way of learning how to write Webpack plugins is to look at their source
 
 ### Creating a Webpack Plugin
 
-In its most basic form, a plugin is just a class that has an apply method. Continuing in the repo from the [Webpack 4 Fundamentals workshop]({% link frontend-masters/webpack-4-fundamentals.md %}) or if you are only reading this document, [grab the repo here](https://github.com/TheLarkInn/webpack-workshop-2018/tree/feature/0504-webpack-prefetch-preload), create a new file in the `build-utils` folder called `MyFirstWebpackPlugin.js` (`...WebpackPlugin...` is a naming convention that Webpack follows). In that `MyFirstWebpackPlugin.js` file, add the following: 
+In its most basic form, a plugin is just a class that has an apply method. Continuing in the repo from the [Webpack 4 Fundamentals workshop]({% link frontend-masters/webpack/webpack-4-fundamentals.md %}) or if you are only reading this document, [grab the repo here](https://github.com/TheLarkInn/webpack-workshop-2018/tree/feature/0504-webpack-prefetch-preload), create a new file in the `build-utils` folder called `MyFirstWebpackPlugin.js` (`...WebpackPlugin...` is a naming convention that Webpack follows). In that `MyFirstWebpackPlugin.js` file, add the following: 
 
 {% highlight javascript %}
 
