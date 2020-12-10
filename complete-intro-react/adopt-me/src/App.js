@@ -14,7 +14,7 @@ const App = () => {
       <ThemeContext.Provider value={themeHook}>
         <div>
           <header>
-            <Link to={`${basepath}`}>Adopt Me!</Link>
+            <Link to={`${basepath}/`}>Adopt Me!</Link>
           </header>
           <Router>
             <SearchParams path="/" />
