@@ -1546,13 +1546,174 @@ can spot the (default) corgi images.</p>
 
 <h3 id="lifecycle-methods--error-boundary-qa">Lifecycle Methods &amp; Error Boundary Q&amp;A</h3>
 
+<p>Q: Can you talk a bit about the <code class="language-plaintext highlighter-rouge">componentDidUpdate</code> lifecycle method?</p>
+
+<p>A: <code class="language-plaintext highlighter-rouge">componentDidUpdate</code> is going to get called when state or props change, similar to <code class="language-plaintext highlighter-rouge">useEffect</code>.</p>
+
+<p>Q: Could you talk more about <code class="language-plaintext highlighter-rouge">getDerivedStateFromError</code>? How does that get called, how does React know to run that function?</p>
+
+<p>A: <code class="language-plaintext highlighter-rouge">getDerivedStateFromError</code> gets called whenever there is an error… Because it is a static method, it can call it on the class and not on the instance.</p>
+
+<p>Q: If there’s an error in production that has not been handled, what does React do?</p>
+
+<p>A: It unmounts and takes the entire thing (component) out of the DOM.</p>
+
+<p>Q: Can Error Boundaries be used with functional hooks?</p>
+
+<p>A: No, because <code class="language-plaintext highlighter-rouge">getDerivedStateFromError</code> has no equivalent with a hook.</p>
+
 <h2 id="context-1">Context</h2>
 
 <h3 id="react-context">React Context</h3>
 
+<p>Sometimes you have global application state, an example of which would be user login information. As you navigate from route to route, each view is going to use that data. So far, we’ve not really seen how to do this, but we could pass props from parent to child to child to child until the component that requires those props has them. This is kind of an annoying pattern, enter context. Previously, this level of state management has been handled with Redux, <a href="https://redux.js.org/">check out the Redux docs here</a>. Redux is hard, and often overkill for basic applications. Again, enter context… <a href="https://reactjs.org/docs/context.html">Read the Context docs here</a>. Let’s actually see how to work with Context. Make a new file, <code class="language-plaintext highlighter-rouge">ThemeContext.js</code> and drop in the following code (you can pick your favorite CSS color, I chose <code class="language-plaintext highlighter-rouge">lawngreen</code>):</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="p">{</span> <span class="nx">createContext</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">ThemeContext</span> <span class="o">=</span> <span class="nx">createContext</span><span class="p">([</span><span class="dl">"</span><span class="s2">lawngreen</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{}]);</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">ThemeContext</span><span class="p">;</span></code></pre></figure>
+
+<p><code class="language-plaintext highlighter-rouge">createContext</code> has a hook-like structure to it, <a href="https://reactjs.org/docs/context.html#reactcreatecontext">read more about <code class="language-plaintext highlighter-rouge">createContext</code> in the React docs</a>. Let’s use this now, inside of <code class="language-plaintext highlighter-rouge">App.js</code> import <code class="language-plaintext highlighter-rouge">ThemeContext</code> and update <code class="language-plaintext highlighter-rouge">App.js</code> like so:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">render</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-dom</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Router</span><span class="p">,</span> <span class="nx">Link</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@reach/router</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">SearchParams</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./SearchParams</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Details</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./Details</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">ThemeContext</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./ThemeContext</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">themeHook</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="dl">"</span><span class="s2">orange</span><span class="dl">"</span><span class="p">);</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">React</span><span class="p">.</span><span class="nx">StrictMode</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">ThemeContext</span><span class="p">.</span><span class="nx">Provider</span> <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">themeHook</span><span class="p">}</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+          <span class="o">&lt;</span><span class="nx">header</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="nx">Link</span> <span class="nx">to</span><span class="o">=</span><span class="dl">"</span><span class="s2">/</span><span class="dl">"</span><span class="o">&gt;</span><span class="nx">Adopt</span> <span class="nx">Me</span><span class="o">!&lt;</span><span class="sr">/Link</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="sr">/header</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="nx">Router</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="nx">SearchParams</span> <span class="nx">path</span><span class="o">=</span><span class="dl">"</span><span class="s2">/</span><span class="dl">"</span> <span class="o">/&gt;</span>
+            <span class="o">&lt;</span><span class="nx">Details</span> <span class="nx">path</span><span class="o">=</span><span class="dl">"</span><span class="s2">/details/:id</span><span class="dl">"</span> <span class="o">/&gt;</span>
+          <span class="o">&lt;</span><span class="sr">/Router</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/ThemeContext.Provider</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/React.StrictMode</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">render</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">App</span> <span class="o">/&gt;</span><span class="p">,</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">root</span><span class="dl">"</span><span class="p">));</span></code></pre></figure>
+
+<p>In addition to importing <code class="language-plaintext highlighter-rouge">ThemeContext.js</code>, we’ve also made a new <code class="language-plaintext highlighter-rouge">setState</code> hook for it (and added that to the import statement from react). Then, we’ve created the <code class="language-plaintext highlighter-rouge">themeHook</code> variable which instead of an array with specified values, we are just using the entire array, whatever its contents may be. Finally, we’ve wrapped all of <code class="language-plaintext highlighter-rouge">App</code> with <code class="language-plaintext highlighter-rouge">&lt;ThemeContext.Provider value={themeHook}&gt;...&lt;/ThemeContext.Provider&gt;</code>. This will allow all of <code class="language-plaintext highlighter-rouge">App</code> to have access to the state from <code class="language-plaintext highlighter-rouge">ThemeContext</code>.</p>
+
 <h3 id="context-with-hooks">Context with Hooks</h3>
 
+<p>Now, let’s actually use the <code class="language-plaintext highlighter-rouge">ThemeContext</code>. Open up <code class="language-plaintext highlighter-rouge">SearchParams.js</code> and update it to look like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span><span class="p">,</span> <span class="nx">useEffect</span><span class="p">,</span> <span class="nx">useContext</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">pet</span><span class="p">,</span> <span class="p">{</span> <span class="nx">ANIMALS</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@frontendmasters/pet</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Results</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./Results</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">useDropdown</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./useDropdown</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">ThemeContext</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./ThemeContext</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">SearchParams</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">location</span><span class="p">,</span> <span class="nx">setLocation</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="dl">"</span><span class="s2">Seattle, WA</span><span class="dl">"</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">breeds</span><span class="p">,</span> <span class="nx">setBreeds</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">([]);</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">animal</span><span class="p">,</span> <span class="nx">AnimalDropdown</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useDropdown</span><span class="p">(</span><span class="dl">"</span><span class="s2">Animal</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">dog</span><span class="dl">"</span><span class="p">,</span> <span class="nx">ANIMALS</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">breed</span><span class="p">,</span> <span class="nx">BreedDropdown</span><span class="p">,</span> <span class="nx">setBreed</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useDropdown</span><span class="p">(</span><span class="dl">"</span><span class="s2">Breed</span><span class="dl">"</span><span class="p">,</span> <span class="dl">""</span><span class="p">,</span> <span class="nx">breeds</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">pets</span><span class="p">,</span> <span class="nx">setPets</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">([]);</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">theme</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">ThemeContext</span><span class="p">);</span>
+
+  <span class="k">async</span> <span class="kd">function</span> <span class="nx">requestPets</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="p">{</span> <span class="nx">animals</span> <span class="p">}</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">pet</span><span class="p">.</span><span class="nx">animals</span><span class="p">({</span>
+      <span class="nx">location</span><span class="p">,</span>
+      <span class="nx">breed</span><span class="p">,</span>
+      <span class="na">type</span><span class="p">:</span> <span class="nx">animal</span><span class="p">,</span>
+    <span class="p">});</span>
+
+    <span class="nx">setPets</span><span class="p">(</span><span class="nx">animals</span> <span class="o">||</span> <span class="p">[]);</span>
+  <span class="p">}</span>
+
+  <span class="nx">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">setBreeds</span><span class="p">([]);</span>
+    <span class="nx">setBreed</span><span class="p">(</span><span class="dl">""</span><span class="p">);</span>
+
+    <span class="nx">pet</span><span class="p">.</span><span class="nx">breeds</span><span class="p">(</span><span class="nx">animal</span><span class="p">).</span><span class="nx">then</span><span class="p">(({</span> <span class="nx">breeds</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="kd">const</span> <span class="nx">breedStrings</span> <span class="o">=</span> <span class="nx">breeds</span><span class="p">.</span><span class="nx">map</span><span class="p">(({</span> <span class="nx">name</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="nx">name</span><span class="p">);</span>
+      <span class="nx">setBreeds</span><span class="p">(</span><span class="nx">breedStrings</span><span class="p">);</span>
+    <span class="p">},</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">);</span>
+  <span class="p">},</span> <span class="p">[</span><span class="nx">animal</span><span class="p">,</span> <span class="nx">setBreed</span><span class="p">,</span> <span class="nx">setBreeds</span><span class="p">]);</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="dl">"</span><span class="s2">search-params</span><span class="dl">"</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">form</span>
+        <span class="nx">onSubmit</span><span class="o">=</span><span class="p">{(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+          <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+          <span class="nx">requestPets</span><span class="p">();</span>
+        <span class="p">}}</span>
+      <span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">label</span> <span class="nx">htmlFor</span><span class="o">=</span><span class="dl">"</span><span class="s2">location</span><span class="dl">"</span><span class="o">&gt;</span>
+          <span class="nx">Location</span>
+          <span class="o">&lt;</span><span class="nx">input</span>
+            <span class="nx">id</span><span class="o">=</span><span class="dl">"</span><span class="s2">location</span><span class="dl">"</span>
+            <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">location</span><span class="p">}</span>
+            <span class="nx">placeholder</span><span class="o">=</span><span class="dl">"</span><span class="s2">Location</span><span class="dl">"</span>
+            <span class="nx">onChange</span><span class="o">=</span><span class="p">{(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">setLocation</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">)}</span>
+          <span class="sr">/</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="sr">/label</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="nx">AnimalDropdown</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="nx">BreedDropdown</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">style</span><span class="o">=&gt;</span><span class="nx">Submit</span><span class="o">&lt;</span><span class="sr">/button</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/form</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="nx">Results</span> <span class="nx">pets</span><span class="o">=</span><span class="p">{</span><span class="nx">pets</span><span class="p">}</span> <span class="sr">/</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">SearchParams</span><span class="p">;</span></code></pre></figure>
+
+<p>What changed? We added <code class="language-plaintext highlighter-rouge">useContext</code> to the React imports, imported <code class="language-plaintext highlighter-rouge">ThemeContext</code>, added a new variable; <code class="language-plaintext highlighter-rouge">const [theme] = useContext(ThemeContext);</code>, and updated the button to use the new variable with an inline style declaration. This is pretty powerful behavior and much easier than having to pass props down to child components! If you have React Dev Tools installed, you can check out all the things that Reach Router is doing to our application and notice that they use a ton of Context throughout the implementation of their router. BTW, in case you were wondering, <code class="language-plaintext highlighter-rouge">useContext</code> is a hook!</p>
+
+<p><a href="https://reactjs.org/docs/hooks-reference.html#usecontext">Read more about the <code class="language-plaintext highlighter-rouge">useContext</code> hook here in the React docs</a></p>
+
+<p>Q: To use the <code class="language-plaintext highlighter-rouge">useContext</code> hook, the Provider has to be a parent?</p>
+
+<p>A: Yep.</p>
+
 <h3 id="context-with-classes">Context with Classes</h3>
+
+<p>Let’s try out our <code class="language-plaintext highlighter-rouge">ThemeContext</code> in <code class="language-plaintext highlighter-rouge">Details.js</code>. Open up <code class="language-plaintext highlighter-rouge">Details.js</code>. But wait… <code class="language-plaintext highlighter-rouge">Details</code> is a class and we can’t use hooks with classes 😞. Anyway, import <code class="language-plaintext highlighter-rouge">ThemeContext</code> in <code class="language-plaintext highlighter-rouge">Details</code>: <code class="language-plaintext highlighter-rouge">import ThemeContext from "./ThemeContext";</code> and update the button like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">&lt;</span><span class="nx">ThemeContext</span><span class="p">.</span><span class="nx">Consumer</span><span class="o">&gt;</span>
+    <span class="p">{(</span><span class="nx">themeHook</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span>
+        <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">style</span><span class="o">=&gt;</span>
+        <span class="nx">Adopt</span> <span class="p">{</span><span class="nx">name</span><span class="p">}</span>
+        <span class="o">&lt;</span><span class="sr">/button</span><span class="err">&gt;
+</span>    <span class="p">)}</span>
+<span class="o">&lt;</span><span class="sr">/ThemeContext.Consumer&gt;</span></code></pre></figure>
+
+<p>Keep in mind that any function that returns markup is a React component. So in the above code, we’re essentially just creating a small component inside of the <code class="language-plaintext highlighter-rouge">&lt;ThemeContext.Consumer&gt;...&lt;/ThemeContext.Consumer&gt;</code>. <code class="language-plaintext highlighter-rouge">themeHook[0]</code> might seem weird, so we can destructure that like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">&lt;</span><span class="nx">ThemeContext</span><span class="p">.</span><span class="nx">Consumer</span><span class="o">&gt;</span>
+    <span class="p">{([</span><span class="nx">theme</span><span class="p">])</span> <span class="o">=&gt;</span> <span class="p">(</span>
+        <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">style</span><span class="o">=&gt;</span>
+        <span class="nx">Adopt</span> <span class="p">{</span><span class="nx">name</span><span class="p">}</span>
+        <span class="o">&lt;</span><span class="sr">/button</span><span class="err">&gt;
+</span>    <span class="p">)}</span>
+<span class="o">&lt;</span><span class="sr">/ThemeContext.Consumer&gt;</span></code></pre></figure>
+
+<p>Now if you need to change the color of your button elements, you can update the state in <code class="language-plaintext highlighter-rouge">App.js</code> and see the changes reflected in your application!</p>
+
+<p>Q: How can you pass multiple parameters to <code class="language-plaintext highlighter-rouge">useContext</code>?</p>
+
+<p>A: Use an object! Something like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">themeHook</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">({</span>
+    <span class="na">buttonColor</span><span class="p">:</span> <span class="dl">"</span><span class="s2">orange</span><span class="dl">"</span><span class="p">,</span>
+    <span class="na">linkColor</span><span class="p">:</span> <span class="dl">"</span><span class="s2">yellow</span><span class="dl">"</span>
+<span class="p">});</span></code></pre></figure>
+
+<p>Then when you need to grab one of the color options from <code class="language-plaintext highlighter-rouge">theme</code>, instead of just using <code class="language-plaintext highlighter-rouge">theme</code>, you would use <code class="language-plaintext highlighter-rouge">theme.buttonColor</code>.</p>
 
 <h3 id="persisting-state-with-context-hooks">Persisting State with Context Hooks</h3>
 
