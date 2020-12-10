@@ -1743,13 +1743,198 @@ if (this.state.redirect) {
 
 ### Lifecycle Methods & Error Boundary Q&A
 
+Q: Can you talk a bit about the `componentDidUpdate` lifecycle method?
+
+A: `componentDidUpdate` is going to get called when state or props change, similar to `useEffect`.
+
+Q: Could you talk more about `getDerivedStateFromError`? How does that get called, how does React know to run that function?
+
+A: `getDerivedStateFromError` gets called whenever there is an error... Because it is a static method, it can call it on the class and not on the instance.
+
+Q: If there's an error in production that has not been handled, what does React do?
+
+A: It unmounts and takes the entire thing (component) out of the DOM.
+
+Q: Can Error Boundaries be used with functional hooks?
+
+A: No, because `getDerivedStateFromError` has no equivalent with a hook.
+
 ## Context
 
 ### React Context
 
+Sometimes you have global application state, an example of which would be user login information. As you navigate from route to route, each view is going to use that data. So far, we've not really seen how to do this, but we could pass props from parent to child to child to child until the component that requires those props has them. This is kind of an annoying pattern, enter context. Previously, this level of state management has been handled with Redux, [check out the Redux docs here](https://redux.js.org/). Redux is hard, and often overkill for basic applications. Again, enter context... [Read the Context docs here](https://reactjs.org/docs/context.html). Let's actually see how to work with Context. Make a new file, `ThemeContext.js` and drop in the following code (you can pick your favorite CSS color, I chose `lawngreen`):
+
+{% highlight javascript %}
+
+import { createContext } from "react";
+
+const ThemeContext = createContext(["lawngreen", () => {}]);
+
+export default ThemeContext;
+
+{% endhighlight %}
+
+`createContext` has a hook-like structure to it, [read more about `createContext` in the React docs](https://reactjs.org/docs/context.html#reactcreatecontext). Let's use this now, inside of `App.js` import `ThemeContext` and update `App.js` like so:
+
+{% highlight javascript %}
+
+import React, { useState } from "react";
+import { render } from "react-dom";
+import { Router, Link } from "@reach/router";
+import SearchParams from "./SearchParams";
+import Details from "./Details";
+import ThemeContext from "./ThemeContext";
+
+const App = () => {
+  const themeHook = useState("orange");
+  return (
+    <React.StrictMode>
+      <ThemeContext.Provider value={themeHook}>
+        <div>
+          <header>
+            <Link to="/">Adopt Me!</Link>
+          </header>
+          <Router>
+            <SearchParams path="/" />
+            <Details path="/details/:id" />
+          </Router>
+        </div>
+      </ThemeContext.Provider>
+    </React.StrictMode>
+  );
+};
+
+render(<App />, document.getElementById("root"));
+
+{% endhighlight %}
+
+In addition to importing `ThemeContext.js`, we've also made a new `setState` hook for it (and added that to the import statement from react). Then, we've created the `themeHook` variable which instead of an array with specified values, we are just using the entire array, whatever its contents may be. Finally, we've wrapped all of `App` with `<ThemeContext.Provider value={themeHook}>...</ThemeContext.Provider>`. This will allow all of `App` to have access to the state from `ThemeContext`.
+
 ### Context with Hooks
 
+Now, let's actually use the `ThemeContext`. Open up `SearchParams.js` and update it to look like this:
+
+{% highlight javascript %}
+
+import React, { useState, useEffect, useContext } from "react";
+import pet, { ANIMALS } from "@frontendmasters/pet";
+import Results from "./Results";
+import useDropdown from "./useDropdown";
+import ThemeContext from "./ThemeContext";
+
+const SearchParams = () => {
+  const [location, setLocation] = useState("Seattle, WA");
+  const [breeds, setBreeds] = useState([]);
+  const [animal, AnimalDropdown] = useDropdown("Animal", "dog", ANIMALS);
+  const [breed, BreedDropdown, setBreed] = useDropdown("Breed", "", breeds);
+  const [pets, setPets] = useState([]);
+  const [theme] = useContext(ThemeContext);
+
+  async function requestPets() {
+    const { animals } = await pet.animals({
+      location,
+      breed,
+      type: animal,
+    });
+
+    setPets(animals || []);
+  }
+
+  useEffect(() => {
+    setBreeds([]);
+    setBreed("");
+
+    pet.breeds(animal).then(({ breeds }) => {
+      const breedStrings = breeds.map(({ name }) => name);
+      setBreeds(breedStrings);
+    }, console.error);
+  }, [animal, setBreed, setBreeds]);
+
+  return (
+    <div className="search-params">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          requestPets();
+        }}
+      >
+        <label htmlFor="location">
+          Location
+          <input
+            id="location"
+            value={location}
+            placeholder="Location"
+            onChange={(e) => setLocation(e.target.value)}
+          />
+        </label>
+        <AnimalDropdown />
+        <BreedDropdown />
+        <button style={{ backgroundColor: theme }}>Submit</button>
+      </form>
+      <Results pets={pets} />
+    </div>
+  );
+};
+
+export default SearchParams;
+
+{% endhighlight %}
+
+What changed? We added `useContext` to the React imports, imported `ThemeContext`, added a new variable; `const [theme] = useContext(ThemeContext);`, and updated the button to use the new variable with an inline style declaration. This is pretty powerful behavior and much easier than having to pass props down to child components! If you have React Dev Tools installed, you can check out all the things that Reach Router is doing to our application and notice that they use a ton of Context throughout the implementation of their router. BTW, in case you were wondering, `useContext` is a hook!
+
+[Read more about the `useContext` hook here in the React docs](https://reactjs.org/docs/hooks-reference.html#usecontext)
+
+Q: To use the `useContext` hook, the Provider has to be a parent?
+
+A: Yep.
+
 ### Context with Classes
+
+Let's try out our `ThemeContext` in `Details.js`. Open up `Details.js`. But wait... `Details` is a class and we can't use hooks with classes 😞. Anyway, import `ThemeContext` in `Details`: `import ThemeContext from "./ThemeContext";` and update the button like this:
+
+{% highlight javascript %}
+
+<ThemeContext.Consumer>
+    {(themeHook) => (
+        <button style={{ backgroundColor: themeHook[0] }}>
+        Adopt {name}
+        </button>
+    )}
+</ThemeContext.Consumer>
+
+{% endhighlight %}
+
+Keep in mind that any function that returns markup is a React component. So in the above code, we're essentially just creating a small component inside of the `<ThemeContext.Consumer>...</ThemeContext.Consumer>`. `themeHook[0]` might seem weird, so we can destructure that like this:
+
+{% highlight javascript %}
+
+<ThemeContext.Consumer>
+    {([theme]) => (
+        <button style={{ backgroundColor: theme }}>
+        Adopt {name}
+        </button>
+    )}
+</ThemeContext.Consumer>
+
+{% endhighlight %}
+
+Now if you need to change the color of your button elements, you can update the state in `App.js` and see the changes reflected in your application!
+
+Q: How can you pass multiple parameters to `useContext`?
+
+A: Use an object! Something like this:
+
+{% highlight javascript %}
+
+const themeHook = useState({
+    buttonColor: "orange",
+    linkColor: "yellow"
+});
+
+{% endhighlight %}
+
+Then when you need to grab one of the color options from `theme`, instead of just using `theme`, you would use `theme.buttonColor`.
 
 ### Persisting State with Context Hooks
 
