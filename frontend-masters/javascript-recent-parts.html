@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>JavaScript: The Recent Parts • Wizard Unicorn Ninja</title><meta name="description" content="These are notes from the 'JavaScript':' The Recent Parts' course on Frontend Masters."><link rel="shortcut icon" type="image/ico"href=""><link rel="icon" type="image/png"href="/assets/uswds/img/favicons/favicon.png"><link rel="icon" type="image/png"sizes="192x192"href="/assets/uswds/img/favicons/favicon-192.png"><link rel="apple-touch-icon-precomposed" type=""href="/assets/uswds/img/favicons/favicon-57.png"><link rel="apple-touch-icon-precomposed" type=""sizes="72x72"href="/assets/uswds/img/favicons/favicon-72.png"><link rel="apple-touch-icon-precomposed" type=""sizes="114x114"href="/assets/uswds/img/favicons/favicon-114.png"><link rel="apple-touch-icon-precomposed" type=""sizes="144x144"href="/assets/uswds/img/favicons/favicon-144.png"><link rel="stylesheet"
+  href="/assets/css/main.css"
+  media="screen"><!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-183755378-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'UA-183755378-1', { 'anonymize_ip': true, 'forceSSL': true });
+</script></head>
+  <body class=" "><a class="usa-skipnav" href="#main-content">Skip to main content</a>
+<header class="usa-header usa-header-extended" role="banner" id="usa-header"><div class="usa-navbar">
+      <button class="usa-menu-btn">Menu</button>
+      <div class="usa-logo" id="extended-mega-logo">
+        <a href="/" title="Wizard Unicorn Ninja"><img class="usa-logo-img" src="/assets/img/hztl-wm.svg" alt="Wizard Unicorn Ninja Logo"><em class="usa-logo-text">
+            Wizard Unicorn Ninja
+          </em>
+        </a>
+      </div>
+    </div>
+
+    <nav role="navigation" class="usa-nav">
+      <div class="usa-nav-inner">
+        <button class="usa-nav-close">
+          <img src="/assets/uswds/img/close.svg" alt="close">
+        </button><ul class="usa-nav-primary usa-accordion"><li><a class="usa-nav-link" href="/resources/" title="Resources" alt="Resources">
+                <span>Resources</span>
+              </a></li><li><a class="usa-nav-link" href="/frontend-masters/" title="Frontend Masters Workshop Notes" alt="Frontend Masters Workshop Notes">
+                <span>Frontend Masters Workshop Notes</span>
+              </a></li><li><button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-3" alt="Sitecore Workshop Notes" title="Sitecore Workshop Notes">
+              <span>Sitecore Workshop Notes</span>
+            </button><ul id="nav-3" class="usa-nav-submenu" aria-hidden="true"><li>
+                  <a href="/sitecore/jss" title="Sitecore JSS Fundamentals" alt="Sitecore JSS Fundamentals">Sitecore JSS Fundamentals</a>
+                </li></ul></li></ul><div class="usa-nav-secondary"><ul class="usa-unstyled-list usa-nav-secondary-links"><li>
+                  <a href="">
+                    
+                  </a>
+                </li></ul>
+          </div></div>
+      </div>
+    </nav><div class="main-top">
+      <div class="progress-container">
+        <div class="progress-bar" id="progress"></div>
+      </div>
+    </div>
+  </header>
+  <div class="usa-overlay"></div><main id="main-content"class="usa-grid usa-section usa-content usa-layout-docs">
+          <div class="usa-layout-docs-main_content"><h1>JavaScript: The Recent Parts</h1><h2 id="introduction">Introduction</h2>
+
+<h3 id="javascript-new-feature-process">JavaScript New Feature Process</h3>
+
+<h3 id="declarative-javascript">Declarative JavaScript</h3>
+
+<h3 id="browser-support--transpilers">Browser Support &amp; Transpilers</h3>
+
+<h3 id="course-overview">Course Overview</h3>
+
+<h2 id="strings">Strings</h2>
+
+<h3 id="template-strings">Template Strings</h3>
+
+<h3 id="tagged-templates">Tagged Templates</h3>
+
+<h3 id="applying-tagged-templates">Applying Tagged Templates</h3>
+
+<h3 id="tagged-template-exercise">Tagged Template Exercise</h3>
+
+<h3 id="tagged-template-solution">Tagged Template Solution</h3>
+
+<h3 id="padding--trimming">Padding &amp; Trimming</h3>
+
+<h2 id="array-destructuring">Array Destructuring</h2>
+
+<h3 id="destructuring">Destructuring</h3>
+
+<h3 id="refactoring-code-using-destructuring">Refactoring Code Using Destructuring</h3>
+
+<h3 id="spread-operator--declaring-destructured-arrays">Spread Operator &amp; Declaring Destructured Arrays</h3>
+
+<h3 id="declaration--assignment">Declaration &amp; Assignment</h3>
+
+<h3 id="comma-separation">Comma Separation</h3>
+
+<h3 id="parameter-arrays">Parameter Arrays</h3>
+
+<h3 id="nested-array-destructuring">Nested Array Destructuring</h3>
+
+<h2 id="object-destructuring">Object Destructuring</h2>
+
+<h3 id="object-destructuring-1">Object Destructuring</h3>
+
+<h3 id="object-assignment-destructuring">Object Assignment Destructuring</h3>
+
+<h3 id="object-default-assignment">Object Default Assignment</h3>
+
+<h3 id="nested-object-destructuring">Nested Object Destructuring</h3>
+
+<h3 id="default-assignment-q--a">Default Assignment Q &amp; A</h3>
+
+<h3 id="parameter-objects">Parameter Objects</h3>
+
+<h3 id="nested-object--array-destructuring">Nested Object &amp; Array Destructuring</h3>
+
+<h2 id="further-destructuring">Further Destructuring</h2>
+
+<h3 id="named-arguments">Named Arguments</h3>
+
+<h3 id="destructuring--restructuring">Destructuring &amp; Restructuring</h3>
+
+<h3 id="destructuring-exercise">Destructuring Exercise</h3>
+
+<h3 id="destructuring-solution">Destructuring Solution</h3>
+
+<h2 id="array-methods">Array Methods</h2>
+
+<h3 id="find-findindex--includes">find, findIndex, &amp; includes</h3>
+
+<h3 id="flat--flatmap">flat &amp; flatMap</h3>
+
+<h2 id="iterators--generators">Iterators &amp; Generators</h2>
+
+<h3 id="iterators">Iterators</h3>
+
+<h3 id="declarative-iterators">Declarative Iterators</h3>
+
+<h3 id="data-structure-without-iterators">Data Structure without Iterators</h3>
+
+<h3 id="generators">Generators</h3>
+
+<h3 id="iterator--generator-exercise">Iterator &amp; Generator Exercise</h3>
+
+<h3 id="iterator--generator-solution">Iterator &amp; Generator Solution</h3>
+
+<h2 id="regular-expressions">Regular Expressions</h2>
+
+<h3 id="look-ahead--behind">Look Ahead &amp; Behind</h3>
+
+<h3 id="named-capture-groups">Named Capture Groups</h3>
+
+<h3 id="dotall-mode">dotall Mode</h3>
+
+<h3 id="regex-exercise">Regex Exercise</h3>
+
+<h3 id="regex-solution">Regex Solution</h3>
+
+<h2 id="async-await">Async Await</h2>
+
+<h3 id="async-functions">Async Functions</h3>
+
+<h3 id="async-await-exercise">Async Await Exercise</h3>
+
+<h3 id="async-await-solution">Async Await Solution</h3>
+
+<h3 id="async-iteration">Async Iteration</h3>
+
+<h3 id="async-function-problems">Async Function Problems</h3>
+
+<h3 id="async-generators-with-yield">Async Generators with yield</h3>
+
+<h3 id="async-generators-iteration">Async Generators Iteration</h3>
+
+<h2 id="wrap-up">Wrap-Up</h2>
+
+<h3 id="wrap-up-1">Wrap-Up</h3>
+
+</div>
+    </main><footer class="usa-footer usa-footer-medium" role="contentinfo"><div class="usa-grid usa-footer-return-to-top">
+      <a href="#">Return to top</a>
+    </div><div class="usa-footer-secondary_section">
+    <div class="usa-grid">
+      <div class="usa-footer-logo"><img class="usa-footer-logo-img" src="/assets/img/hztl-wm.svg" alt="HZTL-WM"><p>William has consumed <span class="la-croix"></span> cans of <a href="/la-croix" title="See all the cans of La Croix" alt="See all the cans of La Croix"><span class="la-croix-logo"></span></a> since Sept. 3rd, 2019.<br/><em class="lighten-up"> * cans of delicious, bubbly, essenced water consumed accurate by ±50%</em></p></div><div class="usa-footer-contact-links usa-width-one-half"></div>
+    </div>
+  </div></footer><script src="/assets/uswds/js/uswds.min.js"async></script><script src="/assets/js/la-croix.js"></script><script src="/assets/js/scroll-watch.js"></script></body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>Intermediate React, v2 • Wizard Unicorn Ninja</title><meta name="description" content="These are notes from the 'Intermediate React, v2' course on Frontend Masters."><link rel="shortcut icon" type="image/ico"href=""><link rel="icon" type="image/png"href="/assets/uswds/img/favicons/favicon.png"><link rel="icon" type="image/png"sizes="192x192"href="/assets/uswds/img/favicons/favicon-192.png"><link rel="apple-touch-icon-precomposed" type=""href="/assets/uswds/img/favicons/favicon-57.png"><link rel="apple-touch-icon-precomposed" type=""sizes="72x72"href="/assets/uswds/img/favicons/favicon-72.png"><link rel="apple-touch-icon-precomposed" type=""sizes="114x114"href="/assets/uswds/img/favicons/favicon-114.png"><link rel="apple-touch-icon-precomposed" type=""sizes="144x144"href="/assets/uswds/img/favicons/favicon-144.png"><link rel="stylesheet"
+  href="/assets/css/main.css"
+  media="screen"><!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-183755378-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'UA-183755378-1', { 'anonymize_ip': true, 'forceSSL': true });
+</script></head>
+  <body class=" "><a class="usa-skipnav" href="#main-content">Skip to main content</a>
+<header class="usa-header usa-header-extended" role="banner" id="usa-header"><div class="usa-navbar">
+      <button class="usa-menu-btn">Menu</button>
+      <div class="usa-logo" id="extended-mega-logo">
+        <a href="/" title="Wizard Unicorn Ninja"><img class="usa-logo-img" src="/assets/img/hztl-wm.svg" alt="Wizard Unicorn Ninja Logo"><em class="usa-logo-text">
+            Wizard Unicorn Ninja
+          </em>
+        </a>
+      </div>
+    </div>
+
+    <nav role="navigation" class="usa-nav">
+      <div class="usa-nav-inner">
+        <button class="usa-nav-close">
+          <img src="/assets/uswds/img/close.svg" alt="close">
+        </button><ul class="usa-nav-primary usa-accordion"><li><a class="usa-nav-link" href="/resources/" title="Resources" alt="Resources">
+                <span>Resources</span>
+              </a></li><li><a class="usa-nav-link" href="/frontend-masters/" title="Frontend Masters Workshop Notes" alt="Frontend Masters Workshop Notes">
+                <span>Frontend Masters Workshop Notes</span>
+              </a></li><li><button class="usa-accordion-button usa-nav-link" aria-expanded="false" aria-controls="nav-3" alt="Sitecore Workshop Notes" title="Sitecore Workshop Notes">
+              <span>Sitecore Workshop Notes</span>
+            </button><ul id="nav-3" class="usa-nav-submenu" aria-hidden="true"><li>
+                  <a href="/sitecore/jss" title="Sitecore JSS Fundamentals" alt="Sitecore JSS Fundamentals">Sitecore JSS Fundamentals</a>
+                </li></ul></li></ul><div class="usa-nav-secondary"><ul class="usa-unstyled-list usa-nav-secondary-links"><li>
+                  <a href="">
+                    
+                  </a>
+                </li></ul>
+          </div></div>
+      </div>
+    </nav><div class="main-top">
+      <div class="progress-container">
+        <div class="progress-bar" id="progress"></div>
+      </div>
+    </div>
+  </header>
+  <div class="usa-overlay"></div><main id="main-content"class="usa-grid usa-section usa-content usa-layout-docs">
+          <div class="usa-layout-docs-main_content"><h1>Intermediate React, v2</h1><p><a href="">Link to Course Github Repository</a></p>
+
+<p><a href="">Link to Course Notes</a></p>
+
+<p><a href="">Link to Completed Workshop Project</a></p>
+
+<h2 id="introduction">Introduction</h2>
+
+<h3 id="introduction-1">Introduction</h3>
+
+<h3 id="course-repository-tour">Course Repository Tour</h3>
+
+<h2 id="basic-hooks">Basic Hooks</h2>
+
+<h3 id="usestate">useState</h3>
+
+<h3 id="useeffect">useEffect</h3>
+
+<h3 id="usecontext">useContext</h3>
+
+<h2 id="hooks-in-depth">Hooks In-Depth</h2>
+
+<h3 id="useref">useRef</h3>
+
+<h3 id="usereducer">useReducer</h3>
+
+<h3 id="usememo">useMemo</h3>
+
+<h3 id="usecallback">useCallback</h3>
+
+<h3 id="uselayouteffect">useLayoutEffect</h3>
+
+<h3 id="useimperativehandle">useImperativeHandle</h3>
+
+<h2 id="css-in-js">CSS in JS</h2>
+
+<h3 id="emotion-setup--nav-bar">Emotion Setup &amp; Nav Bar</h3>
+
+<h3 id="template-literals--hooks">Template Literals &amp; Hooks</h3>
+
+<h3 id="design-systems--compound-selectors">Design Systems &amp; Compound Selectors</h3>
+
+<h3 id="animations">Animations</h3>
+
+<h2 id="code-splitting">Code Splitting</h2>
+
+<h3 id="code-splitting-routes">Code Splitting Routes</h3>
+
+<h3 id="code-splitting-libraries--child-components">Code Splitting Libraries &amp; Child Components</h3>
+
+<h3 id="code-splitting-review-and-qa">Code Splitting Review and Q&amp;A</h3>
+
+<h2 id="server-side-rendering">Server Side Rendering</h2>
+
+<h3 id="ssr-rationale--initial-setup">SSR Rationale &amp; Initial Setup</h3>
+
+<h3 id="server-side-rendering-to-strings">Server Side Rendering to Strings</h3>
+
+<h3 id="server-side-rendering-to-node-stream">Server Side Rendering to Node Stream</h3>
+
+<h2 id="typescript-with-react">TypeScript with React</h2>
+
+<h3 id="typescript-introduction">TypeScript Introduction</h3>
+
+<h3 id="typescript-configuration-for-react">TypeScript Configuration for React</h3>
+
+<h3 id="typing-the-modal-component">Typing the Modal Component</h3>
+
+<h3 id="migrating-to-tslint">Migrating to TSLint</h3>
+
+<h3 id="typing-context">Typing Context</h3>
+
+<h3 id="typing-a-class-component">Typing a Class Component</h3>
+
+<h3 id="typing-an-error-boundary">Typing an Error Boundary</h3>
+
+<h3 id="props--state-interfaces">Props &amp; State Interfaces</h3>
+
+<h3 id="heterogenous-arrays--hooks">Heterogenous Arrays &amp; Hooks</h3>
+
+<h3 id="typescript-review-and-qa">TypeScript Review and Q&amp;A</h3>
+
+<h2 id="redux">Redux</h2>
+
+<h3 id="redux-introduction">Redux Introduction</h3>
+
+<h3 id="creating-a-store">Creating a Store</h3>
+
+<h3 id="creating-a-reducer">Creating a Reducer</h3>
+
+<h3 id="creating-actions">Creating Actions</h3>
+
+<h3 id="connecting-redux-to-the-application">Connecting Redux to the Application</h3>
+
+<h3 id="redux-devtools">Redux Devtools</h3>
+
+<h3 id="completing-the-redux-wiring">Completing the Redux Wiring</h3>
+
+<h2 id="testing-react">Testing React</h2>
+
+<h3 id="jest--react-testing-library">Jest &amp; React Testing Library</h3>
+
+<h3 id="api-hooks">API Hooks</h3>
+
+<h3 id="component-tests">Component Tests</h3>
+
+<h3 id="snapshots-watch-mode--test-coverage">Snapshots, Watch Mode, &amp; Test Coverage</h3>
+
+</div>
+    </main><footer class="usa-footer usa-footer-medium" role="contentinfo"><div class="usa-grid usa-footer-return-to-top">
+      <a href="#">Return to top</a>
+    </div><div class="usa-footer-secondary_section">
+    <div class="usa-grid">
+      <div class="usa-footer-logo"><img class="usa-footer-logo-img" src="/assets/img/hztl-wm.svg" alt="HZTL-WM"><p>William has consumed <span class="la-croix"></span> cans of <a href="/la-croix" title="See all the cans of La Croix" alt="See all the cans of La Croix"><span class="la-croix-logo"></span></a> since Sept. 3rd, 2019.<br/><em class="lighten-up"> * cans of delicious, bubbly, essenced water consumed accurate by ±50%</em></p></div><div class="usa-footer-contact-links usa-width-one-half"></div>
+    </div>
+  </div></footer><script src="/assets/uswds/js/uswds.min.js"async></script><script src="/assets/js/la-croix.js"></script><script src="/assets/js/scroll-watch.js"></script></body>
+</html>
