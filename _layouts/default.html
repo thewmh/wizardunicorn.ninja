@@ -12,7 +12,7 @@
   <body class="{{ layout.class }} {{ page.class }} {%- if site.site_width -%}site-{{ site.site_width }}{%- endif -%}">
 
     {%- include skipnav.html -%}
-    {%- include header.html -%}
+    <!-- {%- include header.html -%} -->
 
     {%- assign hero = page.hero -%}
     {%- include components/hero.html -%}
@@ -44,7 +44,7 @@
       {{ _graphics }}
     {%- endif -%}
     
-    {%- include footer.html -%}
+    <!-- {%- include footer.html -%} -->
     
     {%- include scripts.html -%}
     <script src="/assets/js/la-croix.js"></script>
