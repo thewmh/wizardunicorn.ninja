@@ -24,3 +24,5 @@ kramdown:
 
 plugins:
   - jekyll-postcss
+
+exclude: [build]
