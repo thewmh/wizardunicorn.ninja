@@ -3,7 +3,7 @@ const plugin = require('tailwindcss/plugin')
 
 module.exports = {
   purge: {
-      enabled: false,
+      enabled: true,
       content: ['./_site/**/*.html']
     },
   darkMode: 'class', // or 'media' or 'class'
