@@ -3,7 +3,7 @@ title: Frontend Masters Workshop Notes
 description: These are the links to notes from the Frontend Masters workshops I have taken.
 permalink: /frontend-masters/
 
-layout: page
+layout: default
 # sidenav: frontend-masters-workshop-notes
 # subnav:
 #   - text: JavaScript

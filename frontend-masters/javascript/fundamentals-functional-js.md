@@ -3,7 +3,7 @@ title: "Javascript: From Fundamentals to Functional JS"
 description: These are notes from the 'From Fundamentals to Functional JS' course on Frontend Masters.
 permalink: /frontend-masters/fundamentals-functional-js
 
-layout: page
+layout: default
 ---
 
 ## Introduction

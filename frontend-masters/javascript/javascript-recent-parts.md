@@ -3,7 +3,7 @@ title: "JavaScript: The Recent Parts"
 description: These are notes from the 'JavaScript':' The Recent Parts' course on Frontend Masters.
 permalink: /frontend-masters/javascript-recent-parts
 
-layout: page
+layout: default
 ---
 
 ## Introduction

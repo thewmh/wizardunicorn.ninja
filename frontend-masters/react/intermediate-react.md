@@ -3,7 +3,7 @@ title: "Intermediate React, v2"
 description: These are notes from the 'Intermediate React, v2' course on Frontend Masters.
 permalink: /frontend-masters/intermediate-react
 
-layout: page
+layout: default
 ---
 
 [Link to Course Github Repository]()

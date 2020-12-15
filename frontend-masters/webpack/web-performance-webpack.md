@@ -3,7 +3,7 @@ title: "Web Performance with Webpack"
 description: These are notes from the 'Web Performance with Webpack' course on Frontend Masters.
 permalink: /frontend-masters/web-performance-webpack
 
-layout: page
+layout: default
 ---
 
 ## Web Performance

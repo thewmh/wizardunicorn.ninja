@@ -1,56 +1,32 @@
----
----
 <!DOCTYPE html>
-<html lang="{{ page.lang | default: site.lang | default: 'en-US' }}">
+<html lang="{{ site.lang | default: "en-US" }}" class="min-h-full">
   <head>
     {%- include meta.html -%}
-    {%- include styles.html -%}
-    {%- if site.google_analytics_ua or site.dap_agency -%}
+    <link rel="stylesheet" href="{{ "/assets/css/main.css" | relative_url }}">
+    {%- if site.google_analytics_ua -%}
       {%- include analytics.html -%}
     {%- endif -%}
   </head>
-  <body class="{{ layout.class }} {{ page.class }} {%- if site.site_width -%}site-{{ site.site_width }}{%- endif -%}">
-
-    {%- include skipnav.html -%}
-    <!-- {%- include header.html -%} -->
-    {%- include components/progress.html -%}
-    {%- assign hero = page.hero -%}
-    {%- include components/hero.html -%}
-
-    {%- if page.tagline and page.intro -%}
-    <section class="usa-grid usa-section">
-      <div class="usa-width-one-third">
-        <h2>{{ page.tagline }}</h2>
-      </div>
-      <div class="usa-width-two-thirds">
-        {{ page.intro | markdownify }}
-      </div>
-    </section>
-    {%- endif -%}
-
-    {%- capture _graphics -%}
-      {%- include graphic-list.html graphics=page.graphics -%}
-    {%- endcapture -%}
-
-    {%- if page.graphics_position != 'after' -%}
-      {{ _graphics }}
-    {%- endif -%}
-
-    <main id="main-content"{%- for _attr in layout.main -%} {{ _attr[0] }}="{{ _attr[1] }}"{%- endfor -%}>
-          {{ content }}
-    </main>
-
-    {%- if page.graphics_position == 'after' -%}
-      {{ _graphics }}
-    {%- endif -%}
-    
-    <!-- {%- include footer.html -%} -->
-    
-    {%- include scripts.html -%}
-    <script src="/assets/js/la-croix.js"></script>
-    {%- if page.url != "/" -%}
-    <script src="/assets/js/scroll-watch.js"></script>
-    {%- endif -%}
-
+  <body class="text-blueGray-700 bg-gray-50 dark:text-blueGray-50 unicorn:text-purple-700 dark:bg-blueGray-700 bg-gradient-to-br unicorn:from-purple-400 unicorn:via-pink-500 unicorn:to-red-500">
+    {%- include progress.html -%}
+    <div class="lg:container lg:mx-auto lg:max-w-screen-lg lg:px-10">
+    {%- include header.html -%}
+    </div>
+    <div class="container mx-auto px-10 pb-4 max-w-screen-lg">
+        {%- if page.url == "/about/" -%}
+        <article class="mx-auto mt-8 dark:text-blueGray-50 unicorn:text-purple-700 break-words about">
+        {%- else -%}
+        <article class="mx-auto mt-8 dark:text-blueGray-50 unicorn:text-purple-700 break-words">
+        {%- if page.title -%}
+            <h1 class="text-5xl lg:text-8xl font-semibold">{{ page.title }}</h1>
+        {%- endif -%}
+        {%- endif -%}
+            {{ content}}
+        </article>
+    </div>
+    <div class="lg:container lg:mx-auto lg:max-w-screen-lg lg:px-10 text-center text-4xl mt-28 mb-14 font-semibold">
+        {%- include footer.html -%}
+    </div>
   </body>
+  {%- include scripts.html -%}
 </html>

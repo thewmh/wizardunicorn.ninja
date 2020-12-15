@@ -3,7 +3,7 @@ title: "Webpack Plugins System"
 description: These are notes from the 'Webpack Plugins System' course on Frontend Masters.
 permalink: /frontend-masters/webpack-plugins-system
 
-layout: page
+layout: default
 ---
 
 [Slide Deck for this workshop](https://docs.google.com/presentation/d/1P5f-cK4jlhGQIfPQ_vaYFRWV464kBb5UaUBkfRjBp4Y/edit)

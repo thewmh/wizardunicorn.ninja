@@ -3,14 +3,14 @@ title: "Complete Intro to React, v5"
 description: These are notes from the 'Complete Intro to React, v5' course on Frontend Masters.
 permalink: /frontend-masters/complete-intro-react
 
-layout: page
+layout: default
 ---
 
 [Link to Course Github Repository](https://github.com/btholt/complete-intro-to-react-v5)
 
 [Link to Course Notes](https://bit.ly/react-v5)
 
-[Link to Completed Workshop Project](complete-intro-react/)
+<!-- [Link to Completed Workshop Project](complete-intro-react/) -->
 
 ## Introduction
 

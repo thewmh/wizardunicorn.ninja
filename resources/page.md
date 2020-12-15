@@ -3,28 +3,18 @@ title: Resources
 description: This is the frontend development resources page.
 permalink: /resources/
 
-layout: post
-sidenav: resources
-subnav:
-  - text: SXA
-    href: '#sxa'
-  - text: Random Junk & Garbage
-    href: '#random-junk--garbage' 
-  - text: SVG
-    href: '#svg'
-  - text: JavaScript
-    href: '#javascript'
+layout: default
 ---
 
 ## SXA
 
-[Custom Component Build - Part 1 - Introduction](https://www.nishtechinc.com/en/Blog/2018/November/Nuptial-Experiment-Introduction)
+<!-- [Custom Component Build - Part 1 - Introduction](https://www.nishtechinc.com/en/Blog/2018/November/Nuptial-Experiment-Introduction)
 
 [Custom Component Build - Part 2 - Milestone 1](https://www.nishtechinc.com/en/Blog/2018/November/Nuptial-Experiment-Part-2)
 
 [Custom Component Build - Part 3 - Milestones 2 & 3](https://www.nishtechinc.com/en/Blog/2018/November/Nuptial-Experiment-Part-3)
 
-[Custom Component Build - Part 4 - Final Thoughts](https://www.nishtechinc.com/en/Blog/2018/November/Nuptial-Experiment-Final-Thoughts)
+[Custom Component Build - Part 4 - Final Thoughts](https://www.nishtechinc.com/en/Blog/2018/November/Nuptial-Experiment-Final-Thoughts) -->
 
 [SXA Overview Part 1](https://www.velir.com/blog/2017/10/16/tour-sitecore-experience-accelerator-sxa-part-1)
 

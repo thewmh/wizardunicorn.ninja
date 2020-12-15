@@ -1,93 +1,145 @@
 ---
 ---
-// This file should not be modified unless by an advanced user.
 
+@import "main";
 
-// U.S. Web Design System setup
-$font-path: '../uswds/fonts';
-$image-path: '../uswds/img';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-// Typography
-{% if site.data.theme.fonts.sans %}$font-sans: {{ site.data.theme.fonts.sans }};{% endif %}
-{% if site.data.theme.fonts.serif %}$font-serif: {{ site.data.theme.fonts.serif }};{% endif %}
-{% if site.data.theme.fonts.normal %}$font-normal: {{ site.data.theme.fonts.normal }};{% endif %}
-{% if site.data.theme.fonts.bold %}$font-bold: {{ site.data.theme.fonts.bold }};{% endif %}
+@layer base {
 
-// Color - USA banner
-{% if site.data.theme.colors.usa-banner.usa-banner-bg %}$usa-banner-bg: {{ site.data.theme.colors.usa-banner.usa-banner-bg }};{% endif %}
-{% if site.data.theme.colors.usa-banner.usa-banner-text %}$usa-banner-text: {{ site.data.theme.colors.usa-banner.usa-banner-text }};{% endif %}
-{% if site.data.theme.colors.usa-banner.usa-banner-link %}$usa-banner-link: {{ site.data.theme.colors.usa-banner.usa-banner-link }};{% endif %}
-{% if site.data.theme.colors.usa-banner.usa-banner-link-hover %}$usa-banner-link-hover: {{ site.data.theme.colors.usa-banner.usa-banner-link-hover }};{% endif %}
+    h1, h2, h3, h4, h5, h6 {
+        @apply mt-6 mb-2 font-semibold;
+    }
 
-// Header colors
-{% if site.data.theme.colors.header.header-bg %}$header-bg: {{ site.data.theme.colors.header.header-bg }};{% endif %}
-{% if site.data.theme.colors.header.header-title %}$header-title: {{ site.data.theme.colors.header.header-title }};{% endif %}
-{% if site.data.theme.colors.header.header-link %}$header-link: {{ site.data.theme.colors.header.header-link }};{% endif %}
-{% if site.data.theme.colors.header.header-link-hover %}$header-link-hover: {{ site.data.theme.colors.header.header-link-hover }};{% endif %}
+    h1 {
+        @apply text-5xl;
+    }
 
-// Color - Primary
-{% if site.data.theme.colors.primary %}$color-primary: {{ site.data.theme.colors.primary }};{% endif %}
-{% if site.data.theme.colors.primary-darker %}$color-primary-darker: {{ site.data.theme.colors.primary-darker }};{% endif %}
+    h2 {
+        @apply text-4xl;
+    }
 
-// Color - Text and links
-{% if site.data.theme.colors.base %}$color-base: {{ site.data.theme.colors.base }};{% endif %}
-{% if site.data.theme.colors.visited %}$color-visited: {{ site.data.theme.colors.visited }};{% endif %}
+    h3 {
+        @apply text-3xl;
+    }
 
-// Color - Additional variables
-{% if site.data.theme.colors.color-gray-lightest %}$color-gray-lightest: {{ site.data.theme.colors.color-gray-lightest }};{% endif %}
+    h4 {
+        @apply text-2xl;
+    }
 
-// Color - Navigation
-// Top nav
-{% if site.data.theme.colors.top-navigation.top-nav-bg %}$top-nav-bg: {{ site.data.theme.colors.top-navigation.top-nav-bg }};{% endif %}
-{% if site.data.theme.colors.top-navigation.top-nav-link %}$top-nav-link: {{ site.data.theme.colors.top-navigation.top-nav-link }};{% endif %}
-{% if site.data.theme.colors.top-navigation.top-nav-link-hover %}$top-nav-link-hover: {{ site.data.theme.colors.top-navigation.top-nav-link-hover }};{% endif %}
-{% if site.data.theme.colors.top-navigation.top-nav-link-hover-bg %}$top-nav-link-hover-bg: {{ site.data.theme.colors.top-navigation.top-nav-link-hover-bg }};{% endif %}
-{% if site.data.theme.colors.top-navigation.top-nav-link-current %}$top-nav-link-current: {{ site.data.theme.colors.top-navigation.top-nav-link-current }};{% endif %}
-{% if site.data.theme.colors.top-navigation.top-nav-dropdown-bg %}$top-nav-dropdown-bg: {{ site.data.theme.colors.top-navigation.top-nav-dropdown-bg }};{% endif %}
-{% if site.data.theme.colors.top-navigation.top-nav-dropdown-link %}$top-nav-dropdown-link: {{ site.data.theme.colors.top-navigation.top-nav-dropdown-link }};{% endif %}
-{% if site.data.theme.colors.top-navigation.top-nav-dropdown-link-hover-bg %}$top-nav-dropdown-link-hover-bg: {{ site.data.theme.colors.top-navigation.top-nav-dropdown-link-hover-bg }};{% endif %}
+    figure {
+        @apply w-11/12 mx-auto my-8 p-8;
+    }
 
-// Side nav
-{% if site.data.theme.colors.side-navigation.side-nav-bg %}$side-nav-bg: {{ site.data.theme.colors.side-navigation.side-nav-bg }};{% endif %}
-{% if site.data.theme.colors.side-navigation.side-nav-link %}$side-nav-link: {{ site.data.theme.colors.side-navigation.side-nav-link }};{% endif %}
-{% if site.data.theme.colors.side-navigation.side-nav-link-hover %}$side-nav-link-hover: {{ site.data.theme.colors.side-navigation.side-nav-link-hover }};{% endif %}
-{% if site.data.theme.colors.side-navigation.side-nav-link-hover-bg %}$side-nav-link-hover-bg: {{ site.data.theme.colors.side-navigation.side-nav-link-hover-bg }};{% endif %}
-{% if site.data.theme.colors.side-navigation.side-nav-link-current %}$side-nav-link-current: {{ site.data.theme.colors.side-navigation.side-nav-link-current }};{% endif %}
+    code {
+        @apply whitespace-pre-wrap;
+    }
 
-// Color - Hero
-{% if site.data.theme.colors.hero.hero-bg %}$hero-bg: {{ site.data.theme.colors.hero.hero-bg }};{% endif %}
-{% if site.data.theme.colors.hero.hero-header-alt %}$hero-header-alt: {{ site.data.theme.colors.hero.hero-header-alt }};{% endif %}
-{% if site.data.theme.colors.hero.hero-header %}$hero-header: {{ site.data.theme.colors.hero.hero-header }};{% endif %}
-{% if site.data.theme.colors.hero.hero-text %}$hero-text: {{ site.data.theme.colors.hero.hero-text }};{% endif %}
-{% if site.data.theme.colors.hero.hero-link %}$hero-link: {{ site.data.theme.colors.hero.hero-link }};{% endif %}
-{% if site.data.theme.colors.hero.hero-button-bg %}$hero-button-bg: {{ site.data.theme.colors.hero.hero-button-bg }};{% endif %}
-{% if site.data.theme.colors.hero.hero-button-text %}$hero-button-text: {{ site.data.theme.colors.hero.hero-button-text }};{% endif %}
+    p {
+        @apply my-2;
+    }
 
-// Color - Alt section
-{% if site.data.theme.colors.alt-section.bg-color %}$alt-section-bg: {{ site.data.theme.colors.alt-section.bg-color }};{% endif %}
-{% if site.data.theme.colors.alt-section.header-color %}$alt-section-header: {{ site.data.theme.colors.alt-section.header-color }};{% endif %}
-{% if site.data.theme.colors.alt-section.text-color %}$alt-section-text: {{ site.data.theme.colors.alt-section.text-color }};{% endif %}
-{% if site.data.theme.colors.alt-section.link-color %}$alt-section-link: {{ site.data.theme.colors.alt-section.link-color }};{% endif %}
-{% if site.data.theme.colors.alt-section.link-hover-color %}$alt-section-link-hover: {{ site.data.theme.colors.alt-section.link-hover-color }};{% endif %}
+    article {
+        @apply text-lg;
 
-// Color - Footer
-{% if site.data.theme.colors.footer.primary-footer-bg %}$primary-footer-bg: {{ site.data.theme.colors.footer.primary-footer-bg }};{% endif %}
-{% if site.data.theme.colors.footer.primary-footer-link %}$primary-footer-link: {{ site.data.theme.colors.footer.primary-footer-link }};{% endif %}
-{% if site.data.theme.colors.footer.footer-bg %}$footer-bg: {{ site.data.theme.colors.footer.footer-bg }};{% endif %}
-{% if site.data.theme.colors.footer.footer-text %}$footer-text: {{ site.data.theme.colors.footer.footer-text }};{% endif %}
-{% if site.data.theme.colors.footer.footer-link %}$footer-link: {{ site.data.theme.colors.footer.footer-link }};{% endif %}
+        a {
+            @apply relative no-underline bg-gradient-to-t from-current to-current bg-x-100-y-60 bg-no-repeat bg-0%-20% inline transition-background-size duration-300 bg-blue-300 px-2;
+    
+            &:hover  {
+                @apply no-underline bg-x-0-y-60 bg-100%-20%;
+            }
+        }
+    }
 
-@import 'uswds/all';
-@import 'components/all';
+    #la-croix-logo {
+        @apply text-base h-9 inline;
+    }
 
-{% for item in site.data.navigation.primary %}
-  {% if item.class %}
-    @import 'components/nav-buttons';
-  {% break %}
-  {% endif %}
-{% endfor %}
+    .la-croix-logo {
+        @apply fill-current text-blueGray-700;
+    }
 
-// Setting site width
-{% if site.site_width %}
-  @import 'components/site-width';
-{% endif %}
+    .la-croix-can {
+        @apply inline-block h-28 bg-la-croix bg-12 w-16 bg-no-repeat transform;
+
+        &:nth-of-type(2n) {
+            @apply rotate-12;
+        }
+    
+        &:nth-of-type(3n) {
+            @apply -rotate-12;
+        }
+    
+        &:nth-of-type(5n) {
+            @apply rotate-180;
+        }
+    
+        &:hover {
+            @apply transform-none;
+        }
+    }
+}
+
+@variants {
+
+    .unicorn {
+
+        figure {
+            @apply bg-cyan-300;
+        }
+
+        article {
+            a {
+                @apply bg-cyan-300;
+            }
+        }
+
+        .la-croix-logo {
+            @apply text-purple-700;
+        }
+    }
+
+    .dark {
+
+        figure {
+            @apply bg-blueGray-900 text-lime-300;
+        }
+
+        article {
+            a {
+                @apply bg-lime-300 text-blueGray-700;
+            }
+        }
+
+        .la-croix-logo {
+            @apply text-blueGray-50;
+        }
+    }
+
+    .about {
+
+        h1 {
+            @apply text-5xl lg:text-8xl font-semibold;
+        }
+    }
+
+    .theme-buttons {
+        @apply border-b text-right font-serif;
+
+        button {
+            @apply italic font-semibold p-2;
+        }
+    }
+}
+
+@variants hover {
+
+    .unicorn {
+    nav {
+        a {
+            @apply hover:text-purple-900;
+        }
+    }}
+}

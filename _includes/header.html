@@ -1,7 +1,31 @@
 {%- assign header = site.data.header -%}
-
-{%- if header.usa_banner -%}
-  {%- include components/banner.html -%}
-{%- endif -%}
-
-{%- include components/header.html -%}
+<header class="bg-gray-50 bg-gradient-to-br unicorn:from-emerald-200 unicorn:to-purple-400 dark:bg-blueGray-700">
+    {%- assign _theme = header.theme.buttons -%}
+    {%- assign theme_buttons = site.data.theme[_theme] | default: _theme -%}
+    {%- if theme_buttons -%}
+    <div class="theme-buttons">
+        {%- for _button in theme_buttons -%}
+        <button class="focus:ring-0 focus:outline-none {% if _button.hover.gradient %} hover:{{ _button.hover.gradient }}{% endif %}{% if _button.hover.background %} hover:{{ _button.hover.background }}{% endif %}{% if _button.hover.text %} hover:{{ _button.hover.text }}{% endif %} underline" onClick="toggleColorMode(this)" id="{{ _button.id }}">
+            {{ _button.text }}
+        </button>
+        {%- endfor -%}
+    </div>
+    {%- endif -%}
+    <nav role="navigation" class="">
+        <div class="">
+          {%- assign _primary = header.primary.links -%}
+          {%- assign primary_links = site.data.navigation[_primary] | default: _primary -%}
+          {%- if primary_links -%}
+          <ul class="text-center">
+            {%- for _section in primary_links -%}
+            <a class="text-blueGray-700 hover:text-blueGray-900 dark:text-blueGray-50 unicorn:text-purple-700 unicorn:hover:text-pink-300 dark:hover:text-blueGray-300 {% if _section.href == page.permalink %} current text-blueGray-700{%- endif -%}" href="{%- if _section.external -%}{{ _section.href }}{%- else -%}{{ _section.href | relative_url }}{%- endif -%}" title="{{ _section.text }}" alt="{{ _section.text }}">
+            <li class="py-2 border-b transform hover:rotate-1">
+                  <span>{{ _section.text }}</span>
+                </li>
+            </a>
+            {%- endfor -%}
+          </ul>
+          {%- endif -%}
+          </div>
+      </nav>
+</header>

@@ -3,7 +3,7 @@ title: Frontend Concern Separation
 description: After finishing up a project, these are some thoughts on the separation of concerns from a frontend perspective.
 permalink: /frontend-concern-separation
 
-layout: page
+layout: default
 ---
 
 ### TLDR; Uniquely, and in a sensible manner, name your components and containers, know your project well or be able to identify a person who does, avoid working on the same things another developer is working on at the same time as them. Doing these things will make your projects for great success.

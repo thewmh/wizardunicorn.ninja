@@ -3,7 +3,7 @@ title: "Deep JavaScript Foundations, v3"
 description: These are notes from the 'Deep JavaScript Foundations, v3' course on Frontend Masters.
 permalink: /frontend-masters/deep-javascript-foundations
 
-layout: page
+layout: default
 ---
 
 ## Introduction

@@ -3,7 +3,7 @@ title: "Javascript: The Hard Parts, v2"
 description: These are notes from the 'Javascript':' The Hard Parts, v2' course on Frontend Masters.
 permalink: /frontend-masters/hard-parts-js
 
-layout: page
+layout: default
 ---
 
 ## Introduction
