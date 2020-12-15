@@ -9,40 +9,26 @@ jobs:
   github-pages:
     runs-on: ubuntu-16.04
     steps:
-      - uses: actions/checkout@v2
-        with:
-          path: main
-
-      - uses: actions/checkout@v2
-        with:
-          ref: prod
-          path: build
+      - name: Checkout main branch ✅
+        uses: actions/checkout@v2
 
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: '2.6'
-
-      - uses: actions/cache@v2
-        with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gems-
+          bundler-cache: true
+          
       - name: Bundle install
-        working-directory: main
         run: |
           gem install bundler --no-document
           bundle config path vendor/bundle
           bundle install --jobs 4 --retry 3
       - name: Jekyll Build
-        working-directory: main
         run: JEKYLL_ENV=production bundle exec jekyll build --trace
 
       - name: Commit and push changes to master
-        working-directory: build
         run: |
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
           git add .
           git commit -m "Update GitHub pages from Jekyll build for commit ${GITHUB_SHA}"
-          git push origin master
+          git push origin prod
