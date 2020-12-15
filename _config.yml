@@ -25,4 +25,7 @@ kramdown:
 plugins:
   - jekyll-postcss
 
+sass:
+  sass_dir: _sass
+
 exclude: [build, vendor, node_modules]
