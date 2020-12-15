@@ -50,7 +50,6 @@ module.exports = {
     }
   },
   plugins: [
-      require('@tailwindcss/typography'),
       plugin(function({ addVariant, e }) {
         addVariant('unicorn', ({ modifySelectors, separator }) => {
           modifySelectors(({ className }) => {
