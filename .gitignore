@@ -1,6 +1,6 @@
 .jekyll-cache
 .vscode
-_site
+# _site
 node_modules
 # .github
 vendor
