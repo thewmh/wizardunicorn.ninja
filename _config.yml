@@ -25,4 +25,4 @@ kramdown:
 plugins:
   - jekyll-postcss
 
-exclude: [build]
+exclude: [build, vendor, node_modules]
