@@ -36,7 +36,7 @@ jobs:
           bundle install --jobs 4 --retry 3
       - name: Jekyll Build
         working-directory: main
-        run: JEKYLL_ENV=production bundle exec jekyll build -d ../build
+        run: JEKYLL_ENV=production bundle exec jekyll build -d ../build --trace
 
       - name: Commit and push changes to master
         working-directory: build
