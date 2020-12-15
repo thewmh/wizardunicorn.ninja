@@ -1870,7 +1870,7 @@ const SearchParams = () => {
         </label>
         <AnimalDropdown />
         <BreedDropdown />
-        <button style={{ backgroundColor: theme }}>Submit</button>
+        <button style={ { backgroundColor: theme } }>Submit</button>
       </form>
       <Results pets={pets} />
     </div>
@@ -1897,7 +1897,7 @@ Let's try out our `ThemeContext` in `Details.js`. Open up `Details.js`. But wait
 
 <ThemeContext.Consumer>
     {(themeHook) => (
-        <button style={{ backgroundColor: themeHook[0] }}>
+        <button style={ { backgroundColor: themeHook[0] } }>
         Adopt {name}
         </button>
     )}
@@ -1911,7 +1911,7 @@ Keep in mind that any function that returns markup is a React component. So in t
 
 <ThemeContext.Consumer>
     {([theme]) => (
-        <button style={{ backgroundColor: theme }}>
+        <button style={ { backgroundColor: theme } }>
         Adopt {name}
         </button>
     )}
@@ -2102,7 +2102,7 @@ class Details extends React.Component {
             {([theme]) => (
               <button
                 onClick={this.toggleModal}
-                style={{ backgroundColor: theme }}
+                style={ { backgroundColor: theme } }
               >
                 Adopt {name}
               </button>
