@@ -1,6 +1,7 @@
 #!/bin/sh
 echo '👍 ENTRYPOINT HAS STARTED—INSTALLING THE GEM BUNDLE'
 gem install bundler
+bundle config path vendor/bundle
 bundle install
 bundle list | grep "jekyll ("
 echo '👍 BUNDLE INSTALLED—BUILDING THE SITE'
