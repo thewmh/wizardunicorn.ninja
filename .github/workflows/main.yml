@@ -1,4 +1,4 @@
-name: Build and deploy Jekyll site to GitHub Pages
+name: Build and deploy Jekyll to GitHub Pages
 
 on:
   push:
@@ -6,34 +6,44 @@ on:
       - main
 
 jobs:
-  github-pages:
+  jekyll:
     runs-on: ubuntu-16.04
+
     steps:
       - name: Checkout main branch ✅
         uses: actions/checkout@v2
-
-      - uses: actions/setup-ruby@v1
+      # Install Ruby to be able to build the site using Jekyll
+      - name: Setup Ruby 💎
+        uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.6'
-      
-      - uses: actions/cache@v2
+          ruby-version: 2.6.3
+          bundler-cache: true
+      # Install Node
+      - name: Setup Node 🖥
+        uses: actions/setup-node@v1
         with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gems-
-          
-      - name: Bundle install
-        run: |
-          gem install bundler --no-document
-          bundle install --jobs 4 --retry 3
-      - name: Jekyll Build
+          node-version: 'v12.12.0'
+      # Install Node Modules for React Workshop Project Build React
+      - name: Install Node Modules for React Workshop Project
+        run: npm install -f
+        working-directory: complete-intro-react/adopt-me
+      # Build React
+      - name: Build React
+        run: npm run prod
+        working-directory: complete-intro-react/adopt-me
+      # Build site & Run PurgeCSS
+      - name: Build Jekyll & Run PurgeCSS
         run: JEKYLL_ENV=production bundle exec jekyll build --trace
-
-      - name: Commit and push changes to master
-        run: |
-          git config user.name "${GITHUB_ACTOR}"
-          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-          git add .
-          git commit -m "Update GitHub pages from Jekyll build for commit ${GITHUB_SHA}"
-          git push origin prod
+      # Make CNAME record for Github Deployment to custom domain
+      - name: Make CNAME File 📄
+        uses: finnp/create-file-action@master
+        env:
+          FILE_NAME: "./CNAME"
+          FILE_DATA: "wizardunicorn.ninja"
+      # Push the compiled _site-folder as (dev) branch into your GitHub repository
+      - name: Deploy to GitHub Pages 🐣
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          publish_branch: dev
