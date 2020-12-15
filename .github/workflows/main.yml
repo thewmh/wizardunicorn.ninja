@@ -25,12 +25,7 @@ jobs:
           node-version: 'v12.12.0'
       # Install Node Modules for React Workshop Project Build React
       - name: Install Node Modules for React Workshop Project
-        run: npm install -f
-        working-directory: complete-intro-react/adopt-me
-      # Build React
-      - name: Build React
-        run: npm run prod
-        working-directory: complete-intro-react/adopt-me
+        run: npm install
       # Build site & Run PurgeCSS
       - name: Build Jekyll & Run PurgeCSS
         run: JEKYLL_ENV=production bundle exec jekyll build --trace
