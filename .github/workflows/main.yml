@@ -24,12 +24,11 @@ jobs:
 
       - uses: actions/cache@v2
         with:
-          path: main/vendor/bundle
+          path: vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-gems-
       - name: Bundle install
-        working-directory: main
         run: |
           gem install bundler --no-document
           bundle config path vendor/bundle

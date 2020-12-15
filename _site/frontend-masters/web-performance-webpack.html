@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en-US" class="min-h-full">
+  <head><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>Web Performance with Webpack • Wizard Unicorn Ninja</title><meta name="description" content="These are notes from the 'Web Performance with Webpack' course on Frontend Masters."><link rel="shortcut icon" type="image/ico"href="/assets/img/favicons/favicon.ico"><link rel="icon" type="image/png"href="/assets/img/favicons/favicon.png"><link rel="icon" type="image/png"sizes="192x192"href="/assets/img/favicons/favicon-192.png"><link rel="apple-touch-icon-precomposed" type=""href="/assets/img/favicons/favicon-57.png"><link rel="apple-touch-icon-precomposed" type=""sizes="72x72"href="/assets/img/favicons/favicon-72.png"><link rel="apple-touch-icon-precomposed" type=""sizes="114x114"href="/assets/img/favicons/favicon-114.png"><link rel="apple-touch-icon-precomposed" type=""sizes="144x144"href="/assets/img/favicons/favicon-144.png"><link rel="stylesheet" href="/assets/css/main.css"><!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-183755378-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'UA-183755378-1', { 'anonymize_ip': true, 'forceSSL': true });
+</script></head>
+  <body class="text-blueGray-700 bg-gray-50 dark:text-blueGray-50 unicorn:text-purple-700 dark:bg-blueGray-700 bg-gradient-to-br unicorn:from-purple-400 unicorn:via-pink-500 unicorn:to-red-500"><div class="main-top">
+    <div class="progress-container">
+        <div class="h-1 bg-gray-900 unicorn:bg-cyan-300 dark:bg-blueGray-50 fixed top-0" id="progress"></div>
+    </div>
+</div><div class="lg:container lg:mx-auto lg:max-w-screen-lg lg:px-10"><header class="bg-gray-50 bg-gradient-to-br unicorn:from-emerald-200 unicorn:to-purple-400 dark:bg-blueGray-700"><div class="theme-buttons"><button class="focus:ring-0 focus:outline-none  hover:bg-gray-50 hover:text-gray-900 underline" onClick="toggleColorMode(this)" id="wizard">
+            wizard
+        </button><button class="focus:ring-0 focus:outline-none  hover:bg-gradient-to-tl hover:from-purple-400 hover:via-pink-500 hover:to-red-500 hover:text-blueGray-50 underline" onClick="toggleColorMode(this)" id="unicorn">
+            unicorn
+        </button><button class="focus:ring-0 focus:outline-none  hover:bg-blueGray-700 hover:text-blueGray-50 underline" onClick="toggleColorMode(this)" id="ninja">
+            ninja
+        </button></div><nav role="navigation" class="">
+        <div class=""><ul class="text-center"><a class="text-blueGray-700 hover:text-blueGray-900 dark:text-blueGray-50 unicorn:text-purple-700 unicorn:hover:text-pink-300 dark:hover:text-blueGray-300 " href="/" title="Home" alt="Home">
+            <li class="py-2 border-b transform hover:rotate-1">
+                  <span>Home</span>
+                </li>
+            </a><a class="text-blueGray-700 hover:text-blueGray-900 dark:text-blueGray-50 unicorn:text-purple-700 unicorn:hover:text-pink-300 dark:hover:text-blueGray-300 " href="/resources/" title="Resources" alt="Resources">
+            <li class="py-2 border-b transform hover:rotate-1">
+                  <span>Resources</span>
+                </li>
+            </a><a class="text-blueGray-700 hover:text-blueGray-900 dark:text-blueGray-50 unicorn:text-purple-700 unicorn:hover:text-pink-300 dark:hover:text-blueGray-300 " href="/frontend-masters/" title="Frontend Masters Workshop Notes" alt="Frontend Masters Workshop Notes">
+            <li class="py-2 border-b transform hover:rotate-1">
+                  <span>Frontend Masters Workshop Notes</span>
+                </li>
+            </a><a class="text-blueGray-700 hover:text-blueGray-900 dark:text-blueGray-50 unicorn:text-purple-700 unicorn:hover:text-pink-300 dark:hover:text-blueGray-300 " href="/about/" title="What?" alt="What?">
+            <li class="py-2 border-b transform hover:rotate-1">
+                  <span>What?</span>
+                </li>
+            </a></ul></div>
+      </nav>
+</header></div>
+    <div class="container mx-auto px-10 pb-4 max-w-screen-lg"><article class="mx-auto mt-8 dark:text-blueGray-50 unicorn:text-purple-700 break-words"><h1 class="text-5xl lg:text-8xl font-semibold">Web Performance with Webpack</h1><h2 id="web-performance">Web Performance</h2>
+
+<h3 id="top-performance-issues">Top Performance Issues</h3>
+
+<p>What are the top three causes of web performance issues?</p>
+
+<ul>
+  <li>Amount of JavaScript for initial download</li>
+  <li>Amount of CSS for initial download</li>
+  <li>Amount of Network Requests on initial download</li>
+</ul>
+
+<h3 id="performance-goals">Performance Goals</h3>
+
+<ul>
+  <li>&lt;= 200KB (uncompressed) initial JavaScript [total]</li>
+  <li>&lt;= 100KB (uncompressed) initial CSS [total]</li>
+  <li>HTTP: &lt;= 6 initial network calls</li>
+  <li>HTTP/2 &lt;= 20 initial network calls</li>
+  <li>90% code coverage (only 10% code unused)</li>
+</ul>
+
+<p>The above performance goals will ensure that you have a fast loading website / application across all user experiences, even in emerging markets.</p>
+
+<h3 id="code-coverage">Code Coverage</h3>
+
+<p>How can you determine your code coverage? Google’s Chrome browser has a feature in its Dev Tools that lets you look at code coverage. With Dev Tools open, press <code class="language-plaintext highlighter-rouge">Shift+⌘+P</code> and type <code class="language-plaintext highlighter-rouge">coverage</code>, then select the first option and click the reload icon. You will then see all of the files and what their code coverage is. This approach to looking at code coverage is a little time consuming, but is currently the only way to check code coverage. It is important to establish performance as a first class citizen, to make performance a priority amongst your team(s). At the bottom of the code coverage view, you can see the total code coverage for all of your files.</p>
+
+<h3 id="code-splitting">Code Splitting</h3>
+
+<p>Google Web Toolkit first introduced the concept of code splitting. They allowed asynchronous code to be loaded dynamically, so (for example) if you had a piece of code that was only needed when a button was clicked, that code could then be imported and run. Code splitting is the process of splitting pieces of your code into async chunks [at build time]. Code splitting [according to Webpack] is arguably one of the most important considerations to undertake when enabling performance in web applications.</p>
+
+<p>How does it work? Webpack, under the hood, takes your entry point and passes it to a resolver where you must make sure the file exists [if it doesn’t exist, you cannot parse and read it]. Webpack then reads the source code, looks for dependency statements like imports, requires, Common JS, AMD syntax, etc… And then Webpack puts object models called dependencies on them. This information is then leveraged to separate everything in the graph into a separate bundle, flatten it, and create it.</p>
+
+<h2 id="code-splitting-1">Code Splitting</h2>
+
+<h3 id="types-of-code-splitting">Types of Code Splitting</h3>
+
+<p>The future of web is mobile, the average mobile website takes 14 seconds to get interactive, loading less code =&gt; interactive faster.</p>
+
+<p>In the context of Webpack, when referring to ‘dynamic imports’, this <code class="language-plaintext highlighter-rouge">import();</code> is the syntax it refers to. This would allow you to, at runtime, dynamically fetch any piece of JavaScript and use it like a module. There are some issues with this though; you cannot optimize anything that you are doing dynamically, there are some security concerns, and there is no complete browser interoperability on the syntax.</p>
+
+<p>The two types of code splitting are static and “dynamic”. Static code splitting is useful to use whenever you have a “heavy” JavaScript library that you need to use, but you might not need it up front, anything temporal (i.e. anything that is not there at load, but can appear at some point… modal, tooltip, dialog box), routes; anytime you have routes set up (especially client-side routes), you can split the code for those routes so the user is only loading the relevant code for the route that they are on.</p>
+
+<h3 id="code-splitting-demonstration">Code Splitting Demonstration</h3>
+
+<p>Take a look at the following pseudo code for an example of code splitting:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">Listener</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./listeners.js</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">getModal</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="dl">'</span><span class="s1">./src/modal.js</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">Listener</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">didSomethingToWarrantModalBeingLoaded</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// Async fetching modal code from a separate chunk</span>
+    <span class="nx">getModal</span><span class="p">().</span><span class="nx">then</span><span class="p">((</span><span class="nx">module</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">modalTarget</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">Modal</span><span class="dl">'</span><span class="p">);</span>
+        <span class="nx">module</span><span class="p">.</span><span class="nx">initModal</span><span class="p">(</span><span class="nx">modalTarget</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">});</span></code></pre></figure>
+
+<p>Walking through the above code, we are first importing <code class="language-plaintext highlighter-rouge">Listener</code>, then assigning a function that returns a dynamic import statement and a path to a module. Finally, when an event occurs, the above code is returning a promise that will, on promise fulfillment, perform the functionality. In the <a href="/frontend-masters/webpack-4-fundamentals">Webpack 4 Fundamentals workshop</a> [see the bottom of the page, “Q&amp;A Section”], this was shown when clicking on a button and then loading the footer code. If you are lazy… here’s the code example:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// from index.js in the workshop repo</span>
+<span class="c1">//..</span>
+<span class="kd">const</span> <span class="nx">loadFooter</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="dl">'</span><span class="s1">./footer</span><span class="dl">'</span><span class="p">);</span>
+<span class="c1">//..</span>
+
+<span class="nx">button</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">click</span><span class="dl">"</span><span class="p">,</span> <span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">loadFooter</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">m</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">footer</span><span class="p">)</span> <span class="c1">// moved from below</span>
+    <span class="p">});</span>
+<span class="p">});</span></code></pre></figure>
+
+<p>The above is code splitting. Nothing else is code splitting. If the event that triggers the asynchronous dynamic loading of JavaScript is re-triggered, it will not re-fetch the asset, but look into the cache for the code.</p>
+
+<h3 id="webpack-code-splitting-under-the-hood">Webpack Code Splitting Under the Hood</h3>
+
+<p><a href="https://github.com/TheLarkInn/webpack-workshop-2018/tree/feature/0500-code-splitting-example">Checkout this branch</a> and set the mode in the webpack.config.js file to none; i.e. <code class="language-plaintext highlighter-rouge">mode: "none"</code>, then run <code class="language-plaintext highlighter-rouge">npm run webpack</code>. In the <code class="language-plaintext highlighter-rouge">dist</code> folder you should see a couple of bundle files. Take a look at them to get a sense of what Webpack is doing in terms of code splitting under the hood. For my code, since I started this workshop after the Webpack  Fundamentals workshop, there are 2 bundle files in my <code class="language-plaintext highlighter-rouge">dist</code> folder; <code class="language-plaintext highlighter-rouge">1.bundle.js</code> and <code class="language-plaintext highlighter-rouge">bundle.js</code>. Webpack ‘cares’ about code coverage, so the multiple bundle files are an effort to reduce your code to only what is needed at runtime.</p>
+
+<p>The most important piece of the bundle code is the <code class="language-plaintext highlighter-rouge">__webpack_require__e</code> function <a href="https://dev.to/jenhsuan/day-8-of-100daysofcode-the-relationship-between-bundle-chunk-and-modules-for-webpack-3hni">more details about the function here</a>.</p>
+
+<p>The basic premise of code splitting it that Webpack creates bundles (based on your code) that handle asynchronous loading of files. And you do not have to control any of the on demand loading, it’s part of your code. All you are doing is using that function, using that dynamic import. When anyone talks about code splitting or lazy loading bundles, this is what they are talking about. Now that you have some understanding of code splitting, maybe you can take a look at a website you are working on an check out the code coverage of it and then strategize how to split up the code so that unused code is bundled differently and served only when needed! A lot of the time, the unused code is coming from another library or module.</p>
+
+<h3 id="load-a-heavy-module-asynchronously">Load a Heavy Module Asynchronously</h3>
+
+<p>The example here is using GSAP. Immediately, the bundle size increased dramatically and the code coverage dropped significantly. Just by importing GSAP, you are instantly not using about 80% of the library (because it is in the global scope). Lazy loading to the rescue! Just by using a dynamic import, you can immediately remove unused code from being initially loaded at runtime.</p>
+
+<h3 id="code-splitting-in-vue-react--frameworks">Code Splitting in Vue, React, &amp; Frameworks</h3>
+
+<p>There are some frameworks and libraries that disregarded Webpack as an important tool that people use 😢 and therefore missed the opportunity to make lazy loading a first class citizen for them. Vue (at the time of the workshop) is the only framework that has code splitting built in to it. <a href="https://reactjs.org/docs/code-splitting.html">React has some documentation about code splitting as well</a>.</p>
+
+<h3 id="code-splitting-named-exports">Code Splitting Named Exports</h3>
+
+<p>As of Webpack 4, code splitting named exports was not supported, there are some ideas around how they could approach it, but the example used was to import a single feature of a utility library i.e. lodash-es</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">getLodashUniq</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="dl">"</span><span class="s2">lodash-es/uniq</span><span class="dl">"</span><span class="p">);</span></code></pre></figure>
+
+<h3 id="vendor-bundles-are-an-anti-pattern">Vendor Bundles are an Anti Pattern</h3>
+
+<p>Optimizing for caching is not the preferred method for saving load time. Pay attention to code coverage for the greatest savings at page load. Only when you get your bundle down to a very small size should you concern yourself with caching.</p>
+
+<h3 id="dynamic-code-splitting">Dynamic Code Splitting</h3>
+
+<p>Anytime you use an import statement i.e. <code class="language-plaintext highlighter-rouge">import('./thing.js')</code>, it’s always returning a promise and its creating and putting the modules that you dynamically imported into a separate file. “Dynamic” code splitting in Webpack is not truly dynamic. Consider the following code example:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">getTheme</span> <span class="o">=</span> <span class="p">(</span><span class="nx">themeName</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="s2">`./src/themes/</span><span class="p">${</span><span class="nx">themeName</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+
+<span class="c1">// Using `import()` 'dynamically'</span>
+<span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">feeling</span><span class="p">.</span><span class="nx">stylish</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">getTheme</span><span class="p">(</span><span class="dl">"</span><span class="s2">stylish</span><span class="dl">"</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">module</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">module</span><span class="p">.</span><span class="nx">applyTheme</span><span class="p">();</span>
+    <span class="p">});</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">feeling</span><span class="p">.</span><span class="nx">trendy</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">getTheme</span><span class="p">(</span><span class="dl">"</span><span class="s2">trendy</span><span class="dl">"</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">module</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">module</span><span class="p">.</span><span class="nx">applyTheme</span><span class="p">();</span>
+    <span class="p">});</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The above import statement should be familiar, assigning a variable to a function that returns a dynamic import, but in this case the path is not fully static. If you were actually using the above code, you can see that you can actually access global conditions at runtime to choose when to dynamically load something. You can use runtime conditions to choose when to load something lazily. In Webpack terms, this is considered to be a <code class="language-plaintext highlighter-rouge">Context Module</code>. The above code would tell Webpack to find all of the modules that are in the partial path <code class="language-plaintext highlighter-rouge">./src/themes/</code> and create a bundle for each of them. Ultimately, there is no real dynamic code splitting happening because all of the assets will be produced as static assets at build time, but you can dynamically serve them. Potential use cases include; A/B Testing, Theming, and Convenience.</p>
+
+<h3 id="dynamic-code-splitting-walkthrough">Dynamic Code Splitting Walkthrough</h3>
+
+<p>For this example, first make sure your <code class="language-plaintext highlighter-rouge">index.js</code> file looks like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">getFooter</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="dl">"</span><span class="s2">./footer</span><span class="dl">"</span><span class="p">);</span>
+<span class="k">import</span> <span class="nx">makeButton</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./button</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">makeColorStyle</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./button-styles</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">"</span><span class="s2">./footer.scss</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">setButtonStyle</span> <span class="o">=</span> <span class="p">(</span><span class="nx">color</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="s2">`./button-styles/</span><span class="p">${</span><span class="nx">color</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">button</span> <span class="o">=</span> <span class="nx">makeButton</span><span class="p">(</span><span class="dl">'</span><span class="s1">I am a button</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">button</span><span class="p">.</span><span class="nx">style</span> <span class="o">=</span> <span class="nx">makeColorStyle</span><span class="p">(</span><span class="dl">"</span><span class="s2">cyan</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">button</span><span class="p">);</span>
+
+<span class="nx">button</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">click</span><span class="dl">"</span><span class="p">,</span> <span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">getFooter</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">module</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">module</span><span class="p">.</span><span class="nx">footer</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="nx">setButtonStyle</span><span class="p">(</span><span class="dl">"</span><span class="s2">red</span><span class="dl">"</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">styleStr</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">button</span><span class="p">.</span><span class="nx">style</span> <span class="o">=</span> <span class="nx">styleStr</span><span class="p">.</span><span class="k">default</span><span class="p">;</span>
+    <span class="p">});</span>
+<span class="p">});</span></code></pre></figure>
+
+<p>And your <code class="language-plaintext highlighter-rouge">button.js</code> file looks like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">makeButton</span> <span class="o">=</span> <span class="nx">buttonName</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">buttonLabel</span> <span class="o">=</span>  <span class="s2">`Button: </span><span class="p">${</span><span class="nx">buttonName</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+
+  <span class="kd">const</span> <span class="nx">button</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">button</span><span class="dl">"</span><span class="p">);</span>
+  <span class="nx">button</span><span class="p">.</span><span class="nx">innerText</span> <span class="o">=</span> <span class="nx">buttonLabel</span><span class="p">;</span>
+
+  <span class="k">return</span> <span class="nx">button</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">makeButton</span><span class="p">;</span></code></pre></figure>
+
+<p>Once your files match the above, make a new folder in your <code class="language-plaintext highlighter-rouge">src</code> directory named <code class="language-plaintext highlighter-rouge">button-styles</code>. In the <code class="language-plaintext highlighter-rouge">button-styles</code> folder add <code class="language-plaintext highlighter-rouge">red.js blue.js green.js yellow.js</code> files. Each of those files should look like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">export</span> <span class="k">default</span> <span class="dl">"</span><span class="s2">color: colorFromFileName;</span><span class="dl">"</span> <span class="c1">// i.e. blue.js would be "color: blue;"</span></code></pre></figure>
+
+<p>If you now run <code class="language-plaintext highlighter-rouge">npm run dev</code>, you should find new bundle files, 1 for each file in the <code class="language-plaintext highlighter-rouge">button-styles</code> folder, output in the <code class="language-plaintext highlighter-rouge">dist</code> folder. Following the button example, try to think of some other examples where you might want to structure your components so that the code for them is only downloaded when needed, perhaps based on an event trigger? If you had additional files in the <code class="language-plaintext highlighter-rouge">button-styles</code> folder, that maybe you did not want to include, you can specify in the <code class="language-plaintext highlighter-rouge">index.js</code> file (or wherever you have defined the import) that you only want that specific file type by adding the extension i.e. <code class="language-plaintext highlighter-rouge">...import(</code>./button-styles/${color}.js<code class="language-plaintext highlighter-rouge">)</code>.</p>
+
+<h2 id="module-methods--magic-comments">Module Methods &amp; Magic Comments</h2>
+
+<h3 id="introducing-magic-comments">Introducing Magic Comments</h3>
+
+<p>When you are using code splitting as a technique, there is no name that is created when you add the bundle. This is because it is not an entry-point so it cannot be given an assigned name. When you look at the <code class="language-plaintext highlighter-rouge">dist</code> folder after a build, you will find a number of bundles there, but they are not named in a way that is immediately understandable. Enter <a href="https://webpack.js.org/api/module-methods/#magic-comments">Magic Comments</a>! One of the things that Magic Comments allow you to do is name your bundles. This could prove valuable when you are debugging or if you are trying to keep track of which files generate their own bundles. In <code class="language-plaintext highlighter-rouge">index.js</code> add a <code class="language-plaintext highlighter-rouge">webpackChunkName</code> to the footer import:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">getFooter</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="cm">/* webpackChunkName: "footer" */</span><span class="dl">"</span><span class="s2">./footer</span><span class="dl">"</span><span class="p">);</span></code></pre></figure>
+
+<p>To get the name to appear as part of the bundle name, update the <code class="language-plaintext highlighter-rouge">webpack.config.js</code> file like so:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+
+<span class="nx">output</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nl">filename</span><span class="p">:</span> <span class="dl">"</span><span class="s2">bundle.js</span><span class="dl">"</span><span class="p">,</span>
+        <span class="nx">chunkFilename</span><span class="p">:</span> <span class="dl">"</span><span class="s2">[name].lazy-chunk.js</span><span class="dl">"</span> <span class="c1">// you can just use [name], the instructor prefers to add the .lazy-chunk</span>
+    <span class="p">},</span>
+
+<span class="c1">//...</span></code></pre></figure>
+
+<p>This may be useful to include as part of a base configuration, depending on your requirements maybe only the dev configuration?</p>
+
+<h3 id="webpack-modes">Webpack Modes</h3>
+
+<p>Also a part of Magic Comments is a feature called <code class="language-plaintext highlighter-rouge">webpackMode</code>. With this you can further control how code splitting happens, with four different settings. In the instance of the button styles, <code class="language-plaintext highlighter-rouge">/* webpaackMode: "lazy-once" */</code> would generate a single bundle, which can save build time. Pushing this further and continuing to define different build configurations, you could add this to the <code class="language-plaintext highlighter-rouge">index.js</code> file:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">development</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">setButtonStyle</span> <span class="o">=</span> <span class="p">(</span><span class="nx">color</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="cm">/* webpackMode: "lazy-once" */</span> <span class="s2">`./button-styles/</span><span class="p">${</span><span class="nx">color</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">setButtonStyle</span> <span class="o">=</span> <span class="p">(</span><span class="nx">color</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="s2">`./button-styles/</span><span class="p">${</span><span class="nx">color</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Webpack, by default, injects a macro replacement to the <code class="language-plaintext highlighter-rouge">process.ev.NODE_ENV</code> variable. When you set the mode to <code class="language-plaintext highlighter-rouge">development</code>, the macro converts to development and by default, Webpack can convert the above code and evaluate the if/else statement. You probably care less about performance optimizations in your dev code, but while in dev would like faster build times, this is useful for that.</p>
+
+<h3 id="webpack-prefetch--preload">Webpack Prefetch &amp; Preload</h3>
+
+<p><em>Insert shameless plug to subscribe to the Webpack Medium account and <a href="https://medium.com/webpack/link-rel-prefetch-preload-in-webpack-51a52358f84c">this article</a></em></p>
+
+<p>One of the trade-offs when code splitting is either having a smaller initial download or having additional network requests, both have their performance trade-offs. Two additional Webpack Magic Comments are <code class="language-plaintext highlighter-rouge">/* webpackPrefetch /*</code> and <code class="language-plaintext highlighter-rouge">/* webpackPreload /*</code> both of which use <code class="language-plaintext highlighter-rouge">&lt;link rel"pre[fetch/load]"&gt;</code> respectively. <a href="https://webpack.js.org/guides/code-splitting/#prefetchingpreloading-modules">More info about prefetch and preload in the Webpack documentation</a> Similar to the previous Magic Comments, try adding a <code class="language-plaintext highlighter-rouge">/* webpackPrefetch /*</code> or <code class="language-plaintext highlighter-rouge">/* webpackPreload /*</code> to one of the ‘lazy loaded’ bundles. Run <code class="language-plaintext highlighter-rouge">npm run dev</code> again and when you look at the source code on your dev server, you should see a <code class="language-plaintext highlighter-rouge">&lt;link&gt;</code> with <code class="language-plaintext highlighter-rouge">rel="preload"</code> or <code class="language-plaintext highlighter-rouge">rel="prefetch"</code> depending on which one you chose.</p>
+
+<h3 id="wrapping-up-code-splitting">Wrapping Up Code Splitting</h3>
+
+<p>As a topic for this workshop, code splitting has been exhausted. Nothing more to see here. But… Code splitting literally exists to solve the issue of load time as it relates to how much JavaScript you ship with the initial experience.</p>
+
+<h3 id="webpack-config-organization">Webpack Config Organization</h3>
+
+<p>The Webpack config organization has already been discussed / built in the <a href="/frontend-masters/webpack-4-fundamentals">Webpack 4 Fundamentals workshop</a>, with something like:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">-</span> <span class="nx">build</span><span class="o">-</span><span class="nx">utils</span>
+    <span class="o">-</span> <span class="nx">presets</span>
+        <span class="nx">webpack</span><span class="p">.</span><span class="nx">analyze</span><span class="p">.</span><span class="nx">js</span>
+        <span class="nx">webpack</span><span class="p">.</span><span class="nx">compress</span><span class="p">.</span><span class="nx">js</span>
+    <span class="nx">loadPresets</span><span class="p">.</span><span class="nx">js</span>
+    <span class="nx">webpack</span><span class="p">.</span><span class="nx">development</span><span class="p">.</span><span class="nx">js</span>
+    <span class="nx">webpack</span><span class="p">.</span><span class="nx">production</span><span class="p">.</span><span class="nx">js</span>
+<span class="o">-</span> <span class="nx">dist</span>
+<span class="o">-</span> <span class="nx">node_modules</span>
+<span class="o">-</span> <span class="nx">src</span>
+<span class="p">.</span><span class="nx">gitignore</span>
+<span class="nx">LICENSE</span>
+<span class="kr">package</span><span class="p">.</span><span class="nx">json</span>
+<span class="nx">README</span><span class="p">.</span><span class="nx">md</span>
+<span class="nx">TODO</span><span class="p">.</span><span class="nx">md</span>
+<span class="nx">webpack</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">js</span></code></pre></figure>
+
+<p>The idea with presets is not that you only test out a single piece of functionality, like analyze or compress, but that you can build out entire sets of isolated functionality that allows you to experiment, test, or any other reason that you can just add on with a flag or add on with an extra script. The above configuration is enough to get started with the most complex piece of it being the <code class="language-plaintext highlighter-rouge">loadPresets.js</code> file, which is basically just flattening presets and making sure that if there is not a preset that it doesn’t fail. Best practice is, don’t hide your Webpack config, keep it at the root level of your project.</p>
+
+<h3 id="building-your-library-with-webpack">Building Your Library with Webpack</h3>
+
+<p>Q: Should you build your library with Webpack?</p>
+
+<p>A: The only time you should consider it is if you were going to ship something that could be loaded with a script tag, like a UMD (Universal Module Definition) bundle. If you yourself are using Webpack don’t use anything else that has been built with Webpack. You lose out on being able to tree shake, scope hoist, or any of the other optimizations.</p>
+
+        </article>
+    </div>
+    <div class="lg:container lg:mx-auto lg:max-w-screen-lg lg:px-10 text-center text-4xl mt-28 mb-14 font-semibold"><footer><p>Powered by <span class="la-croix"></span> cans of <a href="/la-croix" title="See all the cans of La Croix" alt="See all the cans of La Croix"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36.9 18" id="la-croix-logo"><path class="la-croix-logo" d="M5.9,0.1c0.1,0,0.1,0,0.2,0c0.2,0,0.3,0.2,0.3,0.4c0,0.2-0.1,0.4-0.2,0.6C6.1,1.4,5.8,1.8,5.6,2.2 C5.3,2.9,5,3.6,4.6,4.3c0,0,0,0.1,0,0.1c0.1,0.2-0.1,0.3-0.1,0.5C4.5,5.1,4.4,5.3,4.4,5.5c0,0.1,0,0.2-0.2,0.2 C4.3,6,4.3,6.2,4.1,6.2c0,0,0-0.1,0-0.1c0,0,0-0.1-0.1-0.1c0,0-0.1,0-0.1,0c0,0.1,0,0.2,0,0.2c0,0,0.1,0.1,0.1,0.1 c0-0.1,0-0.1,0-0.2c0,0,0,0,0,0c0,0.1,0,0.1,0,0.2C4,7.3,3.8,8.1,3.7,8.9c0,0,0,0.1,0,0.1c0.1,0.1,0,0.2,0,0.3 c-0.1,0.3-0.2,0.6-0.2,0.9c-0.1,0.2-0.1,0.4-0.2,0.6c0,0,0,0.1,0,0.1c0,0.2,0,0.3,0.2,0.3c0.3,0,0.6-0.1,0.9-0.1 c0.8-0.1,1.6-0.1,2.4-0.1c0.3,0,0.7,0,1,0c0.1,0,0.3,0,0.4-0.2c0,0,0.1,0,0.1,0c0.2,0,0.3,0,0.5,0c0.1,0,0.1,0,0.2,0.1 c0,0,0.1,0,0.1,0c0.2-0.1,0.3,0,0.4,0c0,0.1,0,0.1-0.1,0.2c0.4-0.1,0.8-0.2,1.3-0.1c0.1,0,0.2,0,0.2-0.2c0.2-0.8,0.5-1.5,0.9-2.2 c0.2-0.4,0.4-0.8,0.6-1.2c0.3-0.6,0.7-1.3,1.1-1.9c0.4-0.8,0.8-1.5,1.2-2.3c0.3-0.5,0.6-1.1,1-1.5c0.2-0.3,0.5-0.5,0.9-0.7 c0.2-0.1,0.4-0.2,0.6-0.2c0.2,0,0.4,0,0.6,0.1c0.4,0.2,0.8,0.5,1.1,0.9c0,0.1,0.1,0.1,0.2,0.1c0.2,0,0.4,0.2,0.3,0.4 c-0.1,0.3,0,0.7-0.1,1c-0.1,0.3-0.2,0.6-0.3,0.8c-0.2,0.3-0.3,0.6-0.3,0.9c0,0.1,0,0.2-0.1,0.3c0,0.1-0.1,0.3-0.1,0.4 c-0.1,0.5-0.4,0.7-0.9,0.9c-0.2,0.1-0.4,0-0.6-0.2c0,0-0.1-0.2,0-0.2c0.2-0.7,0.4-1.3,0.6-2c0.1-0.3,0.2-0.6,0.3-0.9 c0-0.1,0-0.2-0.1-0.3c0,0-0.1-0.1-0.1-0.1c0-0.3-0.3-0.5-0.5-0.7c-0.1-0.1-0.3-0.1-0.4,0c0,0-0.1,0.1-0.1,0.1 c-0.3,0.4-0.7,0.8-0.8,1.2c-0.1,0.3-0.2,0.5-0.5,0.8c-0.2,0.2-0.2,0.4-0.4,0.6c-0.4,0.6-0.7,1.3-1.1,1.9c-0.1,0.2-0.2,0.4-0.4,0.6 c-0.2,0.2-0.2,0.5-0.5,0.6C13,8,13,8.1,13,8.1c-0.2,0.4-0.4,0.8-0.5,1.1c-0.1,0.2-0.1,0.4-0.2,0.6c-0.1,0.2-0.2,0.5-0.3,0.7 c0,0.1,0,0.2,0,0.4c0.4,0,0.7,0.2,1,0.3c0,0.1-0.1,0.1-0.1,0.2c0.1,0.1,0.2,0.2,0.3,0.3c0,0-0.1,0-0.1,0.1c0,0,0,0,0,0 c0.3,0,0.5,0,0.8,0c0.2,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.1,0.3,0c0-0.1,0.1-0.1,0.2-0.1c0.1-0.1,0.1,0.1,0.2,0.1 c0,0,0.1,0.1,0.2,0.1c0,0,0,0,0,0c0,0,0-0.1-0.1-0.2c0.1,0,0.2,0,0.2,0c0.1,0,0.2,0.1,0.3,0.2c0.1,0.1,0.2,0.1,0.3,0 c0.2-0.1,0.3-0.1,0.5-0.2c0.1,0,0.2,0,0.3,0.1c0,0.1-0.1,0.1-0.1,0.2c0.1,0,0.2,0.1,0.3,0.1c-0.2,0.2,0,0.3,0.1,0.4 c0.1,0.1,0.2,0.1,0.3,0.2c0,0,0.1,0,0.1,0c0,0,0,0.1,0,0.1c0,0-0.1,0-0.1,0c-0.1,0-0.2,0-0.3,0c-0.1,0.1-0.2,0.3-0.3,0.4 c0.2-0.1,0.4-0.2,0.6,0c0,0-0.1,0.1-0.1,0.1c0.1,0,0.1-0.1,0.2-0.1c0.1,0,0.2,0,0.2,0c0.1,0.1,0.1,0.1,0.2,0c0,0,0-0.1,0.1-0.1 c0,0.1,0.1,0.1,0.1,0.2c0.1,0.1,0.1,0.1,0.2,0.1c0.1,0,0.2,0.1,0.2,0.2c0,0,0.1,0,0.1,0c0,0,0,0,0,0c-0.1,0-0.1,0.1-0.2,0.1 c0.2,0.1,0.4,0.2,0.6,0.2c0.1,0,0.2,0,0.3-0.1c0,0,0.1,0,0.2,0c0,0.1-0.3,0.2-0.1,0.4c0.1-0.1,0.2-0.1,0.3-0.2 c-0.1,0.2,0,0.3,0.2,0.4c0.4,0.1,0.9,0.1,1.3,0.2c0.4,0.1,0.8,0.1,1.2,0c0,0,0.1,0,0.2,0c0.2,0.2,0.5,0.1,0.8,0.1 c0.5,0,1-0.2,1.5-0.2c0.1,0,0.2,0.1,0.3,0.1c0.1,0,0.1,0,0.2,0c0.1,0,0.3,0,0.4,0c0,0,0.1,0,0.1,0c0.4-0.2,0.9-0.2,1.3-0.1 c0.3,0,0.6,0,0.8,0c0.1,0,0.1,0,0.2,0c-0.2,0.3-0.5,0.4-0.7,0.5c-0.3,0.1-0.6,0.2-0.9,0.1c-0.1,0-0.2,0-0.3,0 c-0.1,0-0.2,0.1-0.3,0.1c-0.4,0-0.7,0-1.1,0c-0.1,0-0.2,0-0.3,0c0.1,0.1,0.1,0.1,0.2,0.1c-0.1,0-0.2,0.1-0.3,0.1c-0.6,0-1.3,0-1.9,0 c-0.5,0-1,0-1.5,0c0,0-0.1,0-0.1,0c-0.2-0.1-0.3-0.1-0.5,0c-0.1,0-0.1,0-0.2-0.1c0,0-0.1-0.1-0.2-0.1c-0.3-0.1-0.5-0.1-0.8-0.2 c0,0-0.1,0-0.1,0c-0.2,0.1-0.3,0-0.5,0c-0.2-0.1-0.4-0.1-0.7-0.2c0,0.1,0,0.1,0.1,0.2c-0.4-0.1-0.7-0.2-1.1-0.4 c-0.4-0.2-0.8-0.3-1.3-0.5c-0.1,0-0.2,0-0.2,0c-0.6,0.5-1.3,0.9-2.1,1.2c-0.2,0.1-0.5,0.2-0.7,0.2c-0.1,0-0.2,0-0.3,0 c-0.5-0.1-1-0.2-1.3-0.5c-0.2-0.2-0.3-0.4-0.4-0.7c-0.2-0.4-0.2-0.9-0.1-1.3c0-0.1,0-0.2-0.1-0.3c-0.3-0.2-0.6-0.3-0.9-0.5 c-0.1-0.1-0.2-0.1-0.3-0.2c0,0.2-0.2,0.2-0.3,0.1c-0.3-0.2-0.7-0.2-1-0.2c-0.3,0-0.5-0.1-0.8-0.1c-0.1,0-0.2,0-0.3,0.1 c-0.1,0-0.1,0.1-0.2,0c-0.1-0.1-0.1-0.1-0.2,0c0.5,0.4,1,0.7,1.6,0.6c0.5-0.1,0.6,0,0.8,0.5c0.1,0.2,0.2,0.3,0.1,0.5 c0,0.1-0.1,0.2-0.2,0.2c-0.4,0-0.7,0-1.1-0.1c-0.2,0-0.5-0.2-0.7-0.3c-0.3-0.1-0.6-0.3-0.9-0.5c-0.3-0.2-0.6-0.3-0.9-0.5 c-0.2-0.1-0.3-0.3-0.5-0.4c-0.1,0-0.2,0-0.3,0c-0.2,0-0.3,0.1-0.5,0.1c0,0-0.1,0-0.1,0c-0.1,0-0.1-0.1-0.2-0.1 c0,0.1-0.1,0.1-0.1,0.1c-0.1,0.1-0.2,0.1-0.2,0c-0.1-0.1-0.2-0.1-0.2,0c-0.1,0.3-0.2,0.6-0.2,0.9c0,0.2,0,0.3,0.2,0.4 C2.8,13.8,2.9,13.9,3,14c0.1,0.1,0.1,0.2,0,0.3c-0.3,0.2-0.7,0.4-1.1,0.3c-0.2-0.1-0.4-0.2-0.4-0.5c0-0.2-0.1-0.3-0.2-0.3 c-0.4-0.1-0.7-0.4-0.9-0.7C0.2,12.8,0,12.6,0,12.2c0-0.2,0.1-0.5,0.3-0.6c0.3-0.2,0.6-0.3,1-0.4c0.2,0,0.4,0,0.6,0 c0.1,0,0.2,0,0.2-0.2c0.2-0.5,0.3-0.9,0.4-1.4c0-0.2,0-0.4,0.1-0.7c0,0,0-0.1,0-0.1c0.1-0.1,0.1-0.2,0.2-0.4C2.8,8.1,2.9,7.8,3,7.4 c0,0,0-0.1,0-0.1c0-0.2,0.1-0.4,0.1-0.5c0.1-0.4,0.2-0.8,0.3-1.2C3.6,4.7,3.9,4,4.2,3.3c0.3-0.8,0.5-1.6,0.6-2.4 c0-0.2,0.1-0.3,0.2-0.3c0.3-0.2,0.5-0.3,0.8-0.5C5.8,0.1,5.8,0.1,5.9,0.1z M11.4,13.6C11.4,13.6,11.4,13.6,11.4,13.6 c-0.1,0.1-0.2,0.3-0.2,0.5c-0.1,0.2,0,0.3,0,0.4c0.1,0.3,0.4,0.5,0.7,0.6c0.3,0.1,0.6,0.1,0.9,0.1c0.2,0,0.4,0,0.6-0.1 c0.4-0.2,0.7-0.4,1.1-0.6c0.1,0,0.2-0.1,0.2-0.2c-0.5-0.2-0.9-0.4-1.4-0.5c-0.4-0.1-0.8-0.1-1.1-0.3c-0.1,0-0.2-0.1-0.3,0 c-0.2,0-0.4,0.1-0.6,0.1C11.4,13.5,11.4,13.5,11.4,13.6z M1.5,11.7C1.5,11.7,1.5,11.7,1.5,11.7c-0.2,0-0.4,0-0.5,0 c-0.2,0-0.2,0.1-0.2,0.3c0,0.3,0.1,0.5,0.2,0.7c0.1,0.2,0.2,0.2,0.3,0.1c0.2-0.1,0.4-0.4,0.4-0.6c0-0.1,0-0.2-0.1-0.1 c-0.1,0-0.2,0.1-0.4,0.1c-0.1,0-0.2,0-0.3,0.1c0,0,0,0,0,0C1,12.1,1.1,12,1.2,11.9C1.3,11.8,1.4,11.8,1.5,11.7z M22.3,17.9 c0.2,0,0.4-0.1,0.6-0.1c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0c0.2-0.2,0.5,0,0.7-0.1c0,0,0.1,0,0.1,0c0.3,0.1,0.7,0,1,0.1 c0,0,0,0,0.1,0c0.1,0,0.3,0,0.4,0c0.2,0,0.3,0.1,0.4,0c0.1-0.1,0.3,0.1,0.4-0.1c0,0,0.1,0,0.2,0c0.1,0,0.2,0.1,0.3,0.1 c0.2,0,0.4-0.1,0.6-0.2c0.1-0.1,0.2-0.1,0.3,0c0.1,0,0.2,0.1,0.4,0.1c0,0,0.1,0,0.1,0c0.1,0,0.2-0.1,0.3-0.1c0.7,0,1.3,0,2-0.2 c0.2-0.1,0.3-0.2,0.5-0.3c0,0,0-0.1,0-0.1c-0.1,0-0.1,0-0.2,0c-0.2,0.1-0.4,0.1-0.6,0.2c-0.1,0-0.2,0-0.2,0c-0.2,0-0.4-0.1-0.6,0 c-0.2,0.1-0.5,0-0.7-0.1c-0.2-0.1-0.4-0.1-0.6-0.1c-0.2,0-0.5,0.1-0.7,0.1c-0.2,0-0.4,0-0.5,0.1c0,0,0,0,0,0c0.1,0,0.3,0,0.2-0.2 c0.1,0,0.3-0.1,0.4-0.1c0,0,0,0,0,0c-0.3-0.1-1.2,0-1.3,0.1c0.2,0,0.3,0.1,0.5,0.1c-0.2,0-0.4,0.1-0.6,0.1c-0.4,0-0.8,0-1.2,0 c-0.2,0-0.4,0-0.6,0.1c-0.1,0-0.2,0-0.2-0.2c-0.1,0-0.1,0.1-0.2,0.1c0-0.1,0-0.1,0-0.2c-0.2,0.1-0.5,0.1-0.7,0c0,0,0-0.1,0-0.1 c0-0.1-0.1-0.1-0.1-0.1c-0.1,0-0.2,0-0.3-0.2c0,0.1-0.1,0.1-0.1,0.1c-0.3,0-0.5,0-0.8,0c0.1-0.1,0.2-0.2,0.3-0.3 c-0.1-0.1-0.2-0.2-0.3-0.3c0,0,0,0,0-0.1c-0.2,0-0.4-0.1-0.5,0c-0.2,0-0.3,0.1-0.5,0c-0.1,0-0.2,0-0.2,0.1c-0.1,0-0.2-0.1-0.2-0.1 c-0.1,0-0.1,0.1-0.2,0.2c-0.2-0.1-0.3-0.1-0.4-0.2c-0.2,0-0.3,0.1-0.5,0.1c0-0.1-0.1-0.1-0.1-0.1c0-0.1-0.1-0.1-0.1-0.1 c0,0,0-0.1-0.1-0.1c-0.1,0-0.3-0.1-0.4,0c0,0-0.1,0-0.1,0c-0.3,0-0.5,0-0.8,0c-0.3,0-0.6,0.1-0.9,0.2c0,0-0.1-0.1-0.1-0.1 c-0.1,0-0.2,0-0.2,0c-0.2,0-0.3,0-0.5,0c0,0-0.1,0-0.1,0.1c-0.1,0.2-0.3,0.2-0.5,0.2c-0.6,0-1.2-0.1-1.8-0.2c-0.1,0-0.3,0-0.4,0 c-0.2,0-0.4,0-0.7,0.1c-0.2,0-0.4,0-0.6,0c-0.2,0-0.3-0.1-0.5-0.2c0-0.1-0.1-0.1-0.2-0.1c-0.1,0-0.3-0.1-0.4-0.1 c-0.4-0.1-0.8-0.2-1.2-0.4c-0.1-0.1-0.3-0.1-0.4-0.2c0,0,0,0,0,0c0.2,0.1,0.3,0.2,0.4,0.4c0.1,0.1,0.2,0.2,0.2,0.3 c0.1,0.1,0.2,0.2,0.3,0.2c0,0,0.1,0.1,0.1,0.1c0.1-0.2,0.2-0.2,0.5-0.1c0,0,0,0.1-0.1,0.1c0.1,0.1,0.2,0.1,0.2,0.2c0,0,0.1,0,0.1,0 c0.2-0.1,0.3,0,0.5,0.1c0.2,0.1,0.4,0.2,0.6,0.2c0.1,0,0.2,0.1,0.1,0.2c0.1,0,0.1,0,0.2,0c0,0.3,0.3,0.1,0.3,0.3 c-0.1,0-0.1,0.1-0.2,0.1c0.2,0.1,0.3,0,0.5-0.1c0.2-0.1,0.3-0.1,0.5,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0.1c0.1,0,0.1,0.1,0.2,0 c0.5-0.2,1-0.2,1.5-0.2c0,0,0.1,0,0.1,0c0.2,0.1,0.3,0.2,0.5,0.2c0.1,0,0.2,0.1,0.3-0.1c0,0,0.1,0,0.1,0c0.2,0,0.3-0.1,0.5-0.1 c0.1,0,0.3,0,0.4,0c0,0,0.1,0,0.1,0c0.2-0.1,0.3-0.1,0.4,0.1c0.1,0,0.1,0.1,0.2,0.1c0,0,0,0,0,0c0,0,0-0.1,0-0.1 c0.3,0.1,0.7,0.3,1,0.3c0.7,0.1,1.5,0.2,2.2,0.2c0.2,0,0.3,0.1,0.5,0.1C22.1,17.9,22.2,17.9,22.3,17.9z M36.9,10.3 C36.8,10.4,36.8,10.4,36.9,10.3c-0.1-0.1-0.1-0.2,0-0.3c0,0,0-0.1,0-0.1c-0.2-0.1-0.1-0.2-0.1-0.3c-0.2-0.1-0.2-0.1-0.2-0.4 c0,0,0-0.1-0.1-0.1c-0.1,0-0.2-0.1-0.2-0.2c-0.1-0.1-0.3-0.3-0.4-0.4c-0.3-0.2-0.7-0.3-1.1-0.4c-0.2-0.1-0.4,0-0.5,0.2 c0.1,0,0.1,0,0.2,0c0.1,0,0.2,0,0.2,0.1c0.1,0.1,0.2,0.2,0.4,0.3c0,0,0,0,0.1,0c0.2,0.1,0.4,0.1,0.5,0.2c0,0,0,0,0.1,0 c0.1,0,0.2,0.1,0.2,0.2c0,0.1,0.1,0.2,0.1,0.4c0.1,0.1,0.1,0.2-0.1,0.2c0.1,0.2,0,0.3-0.2,0.4c0,0,0.1,0.1,0.1,0.1 c-0.1,0.1-0.1,0.1-0.2,0.2c-0.1,0-0.2-0.1-0.3-0.1c0,0.1-0.3,0-0.2,0.2c0,0.1,0.1,0.2,0.2,0.3c0,0-0.1,0-0.2,0c0,0.1,0,0.1,0.1,0.1 c0,0,0,0-0.1,0c-0.2-0.1-0.3-0.1-0.4,0.1c0,0.1-0.1,0.2-0.2,0.3c-0.2,0-0.2,0.1-0.3,0.3c0,0-0.1,0.1-0.1,0.1 c-0.1,0.1-0.2,0.2-0.4,0.2c-0.1,0.1-0.3,0.2-0.4,0.3c-0.1,0.1-0.2,0.1-0.3,0.2c0,0-0.1,0.1,0,0.2c0.1,0.1,0,0.1-0.1,0.2 c0,0-0.1,0.1-0.1,0.1c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0.1,0.3-0.1c0,0,0,0,0.1,0c0.3-0.1,0.6-0.1,0.9-0.2c0,0,0.1,0,0.1,0 c0.1,0,0.1-0.1,0.2-0.1c0.1,0,0.2-0.2,0.4-0.1c0,0,0,0,0,0c0.1,0,0.1-0.1,0.2-0.1c0.1,0,0.3,0,0.4,0c0-0.3,0.2-0.1,0.3-0.1 c0-0.1,0-0.3,0-0.3c0.1-0.1,0.2-0.3,0.3-0.4c0.1-0.2,0.3-0.5,0.4-0.7C36.8,10.7,36.8,10.6,36.9,10.3C36.9,10.4,36.9,10.4,36.9,10.3z  M34.4,10.9c0.4-0.2,0.7-0.6,0.9-0.9c0.1-0.2,0.2-0.4,0.3-0.6c0-0.1,0-0.2-0.1-0.3c0,0-0.1-0.1-0.2,0c0,0,0,0.1-0.1,0.1 c0,0,0,0.1,0,0.1c-0.2,0.3-0.3,0.7-0.7,0.9c-0.5,0.4-1.1,0.5-1.8,0.5c-0.3,0-0.7,0-1-0.2c-0.1-0.1-0.3-0.2-0.4-0.3 c-0.2-0.2-0.4-0.4-0.6-0.6c-0.2-0.1-0.2-0.2,0-0.4c0.2-0.2,0.4-0.4,0.6-0.6c0.2-0.2,0.4-0.5,0.7-0.5c0.9-0.2,1.6-0.7,2.3-1.4 c0.2-0.2,0.4-0.5,0.4-0.8c0-0.2-0.1-0.3-0.3-0.3c-0.2-0.1-0.5,0-0.7,0.1c-0.6,0.2-1,0.6-1.4,1c-0.6,0.6-1.2,1.2-1.8,1.9 c-0.2,0.2-0.2,0.1-0.3-0.1c-0.1-0.3-0.1-0.7,0-1c0.1-0.3,0-0.5-0.2-0.6c0,0-0.1-0.1-0.1-0.1c0-0.2,0-0.4,0-0.6 c0-0.2,0.1-0.3,0.1-0.5c0-0.1-0.1-0.2-0.1-0.2c0,0-0.1,0-0.2,0.1c-0.3,0.2-0.4,0.5-0.5,0.7c-0.1,0.1-0.1,0.2-0.1,0.3 c0,0.4,0,0.7,0,1.1c0,0.2,0.1,0.3,0.1,0.5c0,0.1,0,0.1,0,0.2c0,0.3,0,0.6,0.1,0.8c0.1,0.2,0.1,0.4,0,0.6c-0.2,0.2-0.4,0.4-0.5,0.7 c-0.2,0.4-0.5,0.7-0.8,1.1c-0.6,0.6-1.1,1.2-1.8,1.7c-0.3,0.2-0.5,0.4-0.8,0.6c-0.2,0.2-0.3,0.5-0.2,0.6c0.1,0.2,0.4,0.3,0.6,0.3 c0.1,0,0.1,0,0.2,0c0.3,0,0.6-0.1,0.7-0.4c0.3-0.6,0.6-1.1,1-1.6c0.3-0.4,0.7-0.8,1-1.2c0.3-0.4,0.6-0.7,0.9-1.1 c0.1-0.1,0.1-0.1,0.2,0c0.4,0.2,0.7,0.4,1.1,0.6c0.5,0.2,1,0.3,1.5,0.4C33.3,11.3,33.9,11.2,34.4,10.9z M10.8,9.3 c0.1-0.1,0.1-0.2,0.1-0.3c0-0.1-0.2-0.1-0.3,0C10.4,9,10.2,9.1,10,9.1C9.6,9.2,9.4,9,9.3,8.6c0-0.2,0-0.3,0-0.5 C9.5,7.6,9.5,7,9.8,6.5c0,0,0,0,0,0c0-0.1,0-0.2-0.1-0.2c-0.2,0-0.4,0.1-0.5,0.1C8.9,6.7,8.7,6.9,8.5,7.3C8.1,8,7.6,8.6,7.1,9.3 C7,9.4,6.8,9.6,6.6,9.6c-0.2,0.1-0.4,0-0.3-0.3c0.1-0.5,0.3-1,0.5-1.4C6.8,7.7,7,7.6,7.3,7.6c0.1,0,0.2,0,0.3-0.1 C7.7,7.5,7.8,7.4,8,7.3C8.4,7,8.5,6.5,8.6,6.1c0-0.3-0.1-0.4-0.4-0.3c-0.1,0-0.1,0-0.2,0.1C7.3,6.2,6.7,6.7,6.3,7.4 C5.9,8.2,5.6,8.9,5.2,9.7C5.1,9.8,5.1,10,5.1,10.2c0,0.3,0.1,0.5,0.4,0.5c0.2,0,0.3,0,0.5-0.1c0.4-0.1,0.7-0.4,1-0.6 c0.3-0.2,0.5-0.5,0.8-0.7C7.9,9.1,8,9.1,8,9.3c0.2,0.6,0.5,0.8,1,0.8C9.5,10.1,10.6,9.7,10.8,9.3z M24,8.8c0,0.5-0.1,0.9-0.3,1.3 c-0.2,0.4-0.3,0.7-0.5,1.1c-0.3,0.5-0.7,0.8-1.2,1c-0.7,0.2-1.3-0.2-1.3-1c0-0.5,0.1-1,0.2-1.4c0-0.1,0.1-0.2,0.1-0.2 c0.3-0.1,0.4-0.4,0.6-0.6c0.2-0.2,0.5-0.4,0.7-0.6c0.2-0.2,0.5-0.3,0.8-0.4c0.2-0.1,0.4-0.1,0.6,0.1C23.9,8.3,24,8.6,24,8.8z  M22,9.9C22,9.9,22,9.9,22,9.9c0,0.2-0.1,0.5-0.1,0.7c0,0.1-0.1,0.2-0.1,0.4c0,0.2,0.1,0.3,0.3,0.3c0.2,0,0.2-0.1,0.3-0.2 c0.1-0.1,0.2-0.3,0.3-0.4c0.2-0.2,0.4-0.5,0.4-0.8c0-0.2-0.1-0.5-0.3-0.5c-0.2-0.1-0.3-0.1-0.5-0.1c-0.2,0-0.4,0.1-0.4,0.4 C21.9,9.7,22,9.8,22,9.9z M19.6,11.4c0.1-0.1,0.1-0.1,0-0.2c-0.2-0.3-0.2-0.5-0.1-0.8c0.1-0.3,0.3-0.6,0.4-0.8 c0.1-0.3,0.3-0.6,0.4-0.9c0.1-0.2,0.1-0.4-0.1-0.6c-0.1-0.3-0.4-0.4-0.6-0.5c-0.2-0.1-0.3-0.2-0.2-0.4c0.1-0.2,0-0.3-0.3-0.3 c-0.1,0-0.1,0-0.2,0.1c-0.3,0.1-0.5,0.3-0.8,0.4c-0.2,0.1-0.3,0.2-0.1,0.4c0.1,0.2,0.1,0.3,0.1,0.5c-0.3,0.7-0.7,1.3-1.3,1.7 c-0.1,0.1-0.3,0.2-0.4,0.3c-0.1,0.1-0.1,0.2-0.1,0.3c0.1,0.1,0.2,0,0.2,0c0.3-0.3,0.7-0.5,1-0.8c0.4-0.4,0.8-0.8,1.1-1.3 c0.1-0.2,0.3-0.2,0.4,0c0.1,0.2,0.2,0.3,0.1,0.5C19.1,9.3,19,9.7,18.8,10c-0.2,0.4-0.3,0.7-0.4,1.1c0,0.1,0,0.1,0,0.2 c0,0.3,0.2,0.5,0.5,0.5C19.1,11.8,19.3,11.6,19.6,11.4z M36,13.8c0,0,0,0.1,0,0.1c-0.2,0.2-0.3,0.4-0.5,0.6c0,0-0.1,0-0.2,0 c0,0-0.1,0-0.1,0c0,0-0.1,0.1-0.1,0.1c-0.2-0.1-0.4,0-0.5,0c0,0-0.1-0.1-0.1-0.1c0-0.1,0-0.1,0-0.1c0-0.1-0.1-0.2-0.1-0.3 c-0.2,0.1-0.3,0.3-0.5,0.4c-0.1,0-0.2,0-0.2,0.1c0,0.1-0.1,0.1-0.2,0.1c0,0-0.1-0.1-0.1-0.1c0-0.1,0-0.1,0.1-0.2 c-0.1,0-0.2,0.1-0.3,0.3c0,0.2-0.2,0.3-0.3,0.2c-0.2-0.1-0.2,0-0.3,0.1c0,0.1-0.1,0.2-0.2,0.2c-0.6,0.1-1.1,0.3-1.7,0.5 c-0.1,0.1-0.2,0.2-0.3,0.3c0.1,0,0.2,0,0.3,0.1c0.1,0.1,0.2,0.1,0.2,0.1c0.2,0,0.3,0,0.5,0c0.1,0,0.1,0.1,0.2,0.1 c-0.1,0.1-0.1,0.1-0.1,0.1c0,0.1,0,0.1-0.1,0.2c0.1,0,0.2,0,0.2,0c0,0,0-0.1,0.1-0.1c0,0,0.1-0.1,0.1-0.1c0.2,0,0.3-0.2,0.5-0.2 c0,0,0,0,0,0c0.1-0.1,0.2-0.2,0.4-0.2c0,0,0,0,0.1,0c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0.1,0.3,0.1c0.2,0.1,0.3,0,0.4,0 c0.1-0.1,0.2-0.1,0.3-0.2c0.2-0.1,0.4-0.1,0.6-0.2c0.2,0,0.4,0,0.6-0.1c0.1,0,0.3-0.1,0.3-0.3c0,0,0.1-0.1,0.2-0.1 c0.2,0,0.2,0,0.2-0.1c0.1-0.1,0.3-0.2,0.3-0.3c0.2-0.3,0.3-0.6,0.4-0.9c0-0.1,0.1-0.2,0.1-0.3c0-0.2,0-0.4,0-0.6 c0-0.1-0.1-0.3-0.1-0.4c0-0.1-0.1-0.1-0.2-0.2c0,0,0,0,0,0c0,0.2-0.1,0.4,0,0.6c0,0,0,0.1,0,0.1c-0.2,0.1-0.1,0.3-0.1,0.5 C36.1,13.7,36.1,13.8,36,13.8L36,13.8z M23.7,11.6c0.1-0.1,0.2-0.1,0.3-0.2c0.3-0.2,0.6-0.4,0.9-0.5c0.4-0.2,0.5-0.1,0.5,0.3 c0,0.5,0.2,0.7,0.7,0.7c0.5,0,1-0.2,1.4-0.6c0.1-0.1,0.2-0.2,0.2-0.4c0-0.1,0-0.2-0.2-0.1c-0.1,0-0.2,0.1-0.3,0.2 c-0.1,0.1-0.3,0.2-0.4,0.2c-0.2,0.1-0.3,0-0.3-0.2c0-0.6,0-1.2,0.3-1.8C26.9,9,27,8.7,27.1,8.5c0.1-0.1,0-0.3-0.2-0.2 c-0.4,0.1-0.8,0.2-1.1,0.6c-0.2,0.2-0.3,0.5-0.5,0.8c-0.1,0.1-0.1,0.2-0.2,0.2c-0.5,0.5-0.9,1-1.4,1.5 C23.7,11.4,23.7,11.5,23.7,11.6C23.7,11.5,23.7,11.5,23.7,11.6z M28.8,5.5c-0.2,0-0.3,0-0.5,0c-0.2,0-0.3,0.1-0.5,0.1 c-0.4,0.1-0.8,0.3-1.1,0.6c-0.2,0.2-0.1,0.5,0.1,0.6c0.1,0.1,0.3,0.1,0.4,0c0.3-0.2,0.6-0.4,0.9-0.6C28.4,5.9,28.6,5.7,28.8,5.5 C28.8,5.5,28.8,5.5,28.8,5.5z M32.6,11.6c0.3,0,0.6,0.3,0.6,0.6c0,0.3-0.3,0.6-0.6,0.6c-0.3,0-0.6-0.3-0.6-0.6 C32,11.9,32.3,11.6,32.6,11.6z M33,12.5c0.2-0.2,0.2-0.5,0-0.7c-0.2-0.2-0.5-0.2-0.7,0c-0.2,0.2-0.2,0.5,0,0.7 C32.5,12.7,32.7,12.7,33,12.5c-0.2,0-0.3-0.1-0.4-0.3c0,0.1,0,0.1,0,0.2c0,0-0.1,0.1-0.1,0.1c0,0-0.1-0.1-0.1-0.1c0-0.1,0-0.3,0-0.4 c0,0,0-0.1,0.1-0.1c0.1,0,0.3,0,0.4,0c0.1,0,0.1,0.2,0,0.3C32.7,12.3,32.9,12.4,33,12.5z M32.8,12.1C32.8,12,32.7,12,32.7,12 c0,0-0.1,0.1-0.1,0.1c0,0,0.1,0.1,0.1,0.1C32.7,12.1,32.8,12.1,32.8,12.1z M30.4,14.1c-0.4,0.1-0.8,0.1-1.3,0.2c-0.1,0-0.1,0-0.2,0 c-0.1,0-0.1,0-0.1,0.1c0,0.1,0,0.1,0.1,0.1c0.1,0,0.1,0,0.2-0.1c0.1,0,0.2-0.1,0.2,0.1c0,0,0,0,0.1,0c0.2,0,0.4-0.1,0.6-0.1 c0.2,0,0.3-0.3,0.5-0.4C30.4,14.1,30.4,14.1,30.4,14.1z M22.3,14.7C22.3,14.7,22.3,14.7,22.3,14.7c0,0.1-0.1,0.1-0.1,0.2 c0,0,0,0,0,0.1c0.2-0.1,0.4-0.2,0.6-0.2c-0.5-0.3-1.1-0.4-1.7-0.1C21.5,14.7,21.9,14.7,22.3,14.7z M17.7,12.8c0.1,0,0.3,0.1,0.4,0.1 c0.1,0,0.2,0.1,0.2,0c0,0,0.1-0.1,0.1-0.1c0.1,0,0.2,0,0.3-0.1c0.1,0,0.1-0.1,0-0.1c-0.2,0-0.4-0.1-0.7-0.1c-0.2,0-0.4,0-0.6,0 c0,0-0.1,0-0.1,0c0,0,0,0.1,0,0.1c0,0,0.1,0,0.1,0C17.6,12.7,17.7,12.7,17.7,12.8L17.7,12.8z M32.6,16.6c0,0,0-0.1,0-0.1 c-0.1,0-0.2,0-0.3,0.1c-0.1,0-0.1,0.1-0.2,0.2C32.3,16.8,32.4,16.8,32.6,16.6z M23.1,14.5C23.1,14.4,23.1,14.4,23.1,14.5 c0-0.1,0-0.2-0.1-0.2c-0.2-0.1-0.3,0-0.4,0.2C22.8,14.4,22.9,14.4,23.1,14.5z M14.6,11.5c0.1,0.1,0.2,0.1,0.2,0.2 c0.1,0.1,0.2,0.1,0.3,0.1C14.9,11.5,14.7,11.4,14.6,11.5z M29.3,14.8c0,0-0.1-0.1-0.1-0.1c-0.1,0-0.1,0-0.2,0c0,0-0.1,0.1,0,0.1 c0,0,0.1,0.1,0.2,0.1C29.2,14.8,29.2,14.8,29.3,14.8z M36,13.8c0-0.1-0.1-0.2-0.1-0.4c0,0,0,0.1-0.1,0.1 C35.7,13.9,35.7,13.9,36,13.8C36,13.8,36,13.8,36,13.8z M17.7,12.8C17.7,12.8,17.6,12.8,17.7,12.8c-0.1,0-0.2,0.1-0.2,0.1 c0,0,0.1,0.1,0.1,0.1c0.1,0,0.2,0,0.2,0c0,0,0,0,0,0C17.8,12.9,17.8,12.8,17.7,12.8C17.7,12.8,17.7,12.8,17.7,12.8z M31.8,14.7 c-0.1,0-0.2-0.1-0.2,0c-0.1,0.1-0.1,0.2,0,0.3C31.7,14.8,31.7,14.7,31.8,14.7z M35.1,9.3C35.1,9.3,35.1,9.3,35.1,9.3 c-0.2-0.1-0.3-0.1-0.4-0.1c0,0.1,0.1,0.2,0.1,0.3C34.9,9.3,35,9.3,35.1,9.3C35.1,9.4,35.1,9.4,35.1,9.3z M27.9,15.1 c0.1-0.1,0.2-0.1,0.4-0.2C28,14.8,27.9,14.9,27.9,15.1z M35.9,13c-0.1,0-0.2,0-0.2,0c0,0.1,0,0.2,0,0.2c0,0,0,0,0,0 C35.8,13.2,35.9,13.1,35.9,13C35.9,13,35.9,13,35.9,13z M30.9,14.1c-0.1-0.1-0.2-0.1-0.4,0C30.7,14.1,30.8,14.1,30.9,14.1 C30.9,14.1,30.9,14.1,30.9,14.1z M15.9,15.9c-0.1,0-0.1,0-0.2,0c0,0-0.1,0-0.1,0.1c0,0,0.1,0.1,0.1,0.1C15.8,16.1,15.8,16,15.9,15.9 C15.9,16,15.9,16,15.9,15.9z M28,16.3c-0.1,0-0.1,0.1-0.2,0.1c0,0,0.1,0.1,0.1,0.1c0,0,0.1,0,0.2-0.1C28.1,16.4,28.1,16.3,28,16.3z  M9.8,10.7c-0.1,0-0.1,0-0.2,0c0,0-0.1,0.1-0.1,0.1c0,0,0.1,0.1,0.1,0.1C9.6,10.8,9.7,10.8,9.8,10.7C9.8,10.8,9.8,10.7,9.8,10.7z  M16.4,15.5c0,0,0.1,0.1,0.1,0.1c0.1,0,0.1-0.1,0.1-0.2C16.5,15.4,16.4,15.5,16.4,15.5z M28.8,14.7C28.8,14.7,28.7,14.7,28.8,14.7 c-0.1,0-0.2,0-0.2,0c0,0,0.1,0.1,0.1,0.1C28.7,14.9,28.8,14.8,28.8,14.7C28.8,14.8,28.8,14.8,28.8,14.7z M33.7,16.1 c0.2,0.1,0.3,0.1,0.3-0.1C34,16.1,33.9,16.1,33.7,16.1z M9.7,10.4c-0.1,0-0.1,0.1-0.2,0.1c0,0,0,0,0,0.1c0.1,0,0.1,0,0.2,0 C9.7,10.6,9.7,10.5,9.7,10.4C9.7,10.4,9.7,10.4,9.7,10.4z M33.5,14.4c0.1-0.1,0.2-0.1,0.3-0.2C33.6,14.2,33.6,14.2,33.5,14.4z  M13.1,11.1c0,0-0.1-0.1-0.1-0.1c0,0-0.1,0.1-0.1,0.1c0,0,0.1,0.1,0.1,0.1C13.1,11.2,13.1,11.1,13.1,11.1z M32.5,14.7 c0,0.1,0.1,0.1,0.1,0.2c0,0,0,0,0.1,0c0-0.1-0.1-0.1-0.1-0.3C32.6,14.6,32.5,14.7,32.5,14.7z M27.4,16.6 C27.4,16.6,27.4,16.6,27.4,16.6c0,0.1,0,0.1,0,0.2c0,0,0.1,0,0.1-0.1C27.5,16.6,27.5,16.6,27.4,16.6z M31.8,16.9 C31.7,16.9,31.7,16.9,31.8,16.9c-0.1,0.1,0,0.2,0,0.2c0,0,0.1,0,0.2-0.1C31.8,16.9,31.8,16.9,31.8,16.9z M8.8,10.6 c0-0.1,0-0.1,0.1-0.2c0,0-0.1,0-0.1,0C8.7,10.5,8.7,10.5,8.8,10.6C8.7,10.6,8.8,10.6,8.8,10.6z"/></svg></a> since Sept. 3rd, 2019</p></footer></div>
+  </body><script src="/assets/js/toggleColorMode.js" type="text/javascript"></script><script src="/assets/js/laCroix.js" type="text/javascript"></script><script src="/assets/js/scrollWatch.js" type="text/javascript"></script></html>
