@@ -23,6 +23,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 'v12.12.0'
+      # Install Node Modules
+      - name: Install Node Modules
+        run: npm install -f
       # Build Jekyll
       - name: Build Jekyll
         run: |
