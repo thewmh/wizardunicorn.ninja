@@ -4,7 +4,7 @@ const plugin = require('tailwindcss/plugin')
 module.exports = {
   purge: {
       enabled: true,
-      layers: ['comopnents', 'utilities'],
+      layers: ['comopnents'],
       preserveHtmlElements: false,
       content: [
           './docs/**/*.html',
