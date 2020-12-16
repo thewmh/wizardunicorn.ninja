@@ -56,6 +56,48 @@ The last three items in this course point to the maturation of the language in r
 
 ### Template Strings
 
+Template Strings, aka Interpolated Literals, aka "Interpoliterals" (yeah right). Initially, Kyle do not like them, but over time, he do like them, interpoliterals may be one of the most important and useful features released in ES6! Ah, so Interpolated Literals is Kyle's mental model for Template Strings, because a template implies that you can reuse or re-render something over and over again, which is what Template Strings are not... Stick with calling them Template Strings so that people understand what you are talking about, but if you want to sound smart about them, use one of the above terms which no one will understand.
+
+Anywho... what problem are template strings trying to solve? Consider this primitive looking code:
+
+{% highlight javascript %}
+
+var name = "Your Name";
+var email = "youremail@domainaddress.com";
+var title = "Your Title";
+
+var msg = "Welcome to the things! Your " + title + " is " + name + ", contact: " + email + ".";
+
+// Welcome to the things! Your Your Title is Your Name, contact: youremail@domainaddress.com.
+
+{% endhighlight %}
+
+Awful 🤦🏻‍♂️, but concatenation, am I right? Ok... so string concatenation with data is actually called interpolation, Kyle's terminology is starting to look less crazy CS guy-ish. The above code is fine, it will work as intended, but as an imperative approach to implementing a string interpolated with data, it can be cumbersome to wrap your head around what the final output would be, well at least harder than using a Template String. Here's that same code, but implemented with a template sting:
+
+{% highlight javascript %}
+
+var name = "Your Name";
+var email = "youremail@domainaddress.com";
+var title = "Your Title";
+
+var msg = `Welcome to the things! Your ${title} is ${name}, contact: ${email}.`;
+
+// Welcome to the things! Your Your Title is Your Name, contact: youremail@domainaddress.com.
+
+{% endhighlight %}
+
+Way more better! Inside of the `${...}` can be an entire JavaScript program if you like, but it will often just be a variable. Kyle thinks the best mental model for thinking about template strings is to consider them like an IIFE, an immediately invoked function expression, i.e. you describe what string you want and JavaScript immediately goes and constructs and builds that string and drops it in (to your program).
+
+The result of a template string is an [actual] primitive string! Side note: Kyle is frustrated with JavaScript's implementation of template strings because he wrote his You Don't Know JS book series in Markdown and in Markdown if you want to highlight code, it is hard to show a template string because backticks is how Markdown delimits a code block.
+
+I think Kyle should build his book with Jekyll or figure out how to do something like:
+
+`{% highlight javascript %}{% endhighlight %}`
+
+End side note for Kyle's side note 🙃
+
+Template strings will allow you to enter a return / line break without a special character! 
+
 ### Tagged Templates
 
 ### Applying Tagged Templates
