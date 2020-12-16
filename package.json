@@ -4,13 +4,16 @@
   "description": "",
   "main": "postcss.config.js",
   "dependencies": {
-    "autoprefixer": "^10.1.0",
+    "autoprefixer": "^9.0.0",
+    "parcel-bundler": "^1.12.4",
     "postcss": "^8.2.1",
     "tailwindcss": "^2.0.2"
   },
   "devDependencies": {},
   "scripts": {
-    "build": "bundle exec jekyll build",
+    "build": "npm run build:jekyll && npm run build:parcel",
+    "build:parcel": "parcel build --out-dir _site/assets --no-source-maps --no-cache _site/assets/js/*js production",
+    "build:jekyll": "JEKYLL_ENV=production bundle exec jekyll b",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
