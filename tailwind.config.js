@@ -4,11 +4,12 @@ const plugin = require('tailwindcss/plugin')
 module.exports = {
   purge: {
       enabled: true,
-      layers: ['comopnents'],
-      preserveHtmlElements: false,
+      layers: ['components', 'utilities'],
       content: [
-          './docs/**/*.html',
-          './docs/**/*.js'
+          '_includes/*.html',
+          '_layouts/*.html',
+          'pages/*.md',
+          '_site/**/*.js'
         ]
     },
   darkMode: 'class', // or 'media' or 'class'
