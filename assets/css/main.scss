@@ -53,17 +53,21 @@
         }
     }
 
+}
+
+@variants {
+    
     #la-croix-logo {
         @apply text-base h-9 inline;
     }
-
+    
     .la-croix-logo {
         @apply fill-current text-blueGray-700;
     }
-
+    
     .la-croix-can {
         @apply inline-block h-28 bg-la-croix bg-12 w-16 bg-no-repeat transform;
-
+    
         &:nth-of-type(2n) {
             @apply rotate-12;
         }
@@ -80,9 +84,6 @@
             @apply transform-none;
         }
     }
-}
-
-@variants {
 
     .unicorn {
 
