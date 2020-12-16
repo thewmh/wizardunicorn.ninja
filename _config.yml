@@ -28,4 +28,4 @@ plugins:
 sass:
   sass_dir: _sass
 
-exclude: [build, vendor, node_modules]
+exclude: [build, vendor, node_modules, dist]

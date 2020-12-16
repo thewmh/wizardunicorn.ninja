@@ -26,9 +26,9 @@ jobs:
       # Install Node Modules for React Workshop Project Build React
       - name: Install Node Modules for React Workshop Project
         run: npm install
-      # Build site & Run PurgeCSS
-      - name: Build Jekyll & Run PurgeCSS
-        run: JEKYLL_ENV=production bundle exec jekyll build --trace
+      # Build Jekyll
+      - name: Build Jekyll
+        run: npm run build
       # Make CNAME record for Github Deployment to custom domain
       - name: Make CNAME File 📄
         uses: finnp/create-file-action@master

@@ -8,7 +8,7 @@ layout: default
 
 ## Introduction
 
-[The link to the course slideshow is here](http://slides.com/bgando/f2f-final-day-1#/)
+[The link to the course slideshow is here](http://slides.com/bgando/f2f-final-day-1)
 
 [The link to the course on FrontEnd Masters is here](https://frontendmasters.com/courses/js-fundamentals-functional-v2)
 
@@ -168,7 +168,7 @@ Why would you even use dot notation? Because it is less characters than bracket 
 
 ### ES6 Destructuring
 
-[Destructuring slide]('http://slides.com/bgando/f2f-final-day-1#/1/26')
+[Destructuring slide]('http://slides.com/bgando/f2f-final-day-1/1/26')
 
 Destructuring is a simplified way of defining variables and taking them outside of an object or an array.
 
@@ -748,7 +748,7 @@ _.filter(videoData, function(suspectObject) {
 
 How exactly does our code execute.
 
-[Check out the anatomy of a function](http://slides.com/bgando/f2f-final-day-1#/7/1)
+[Check out the anatomy of a function](http://slides.com/bgando/f2f-final-day-1/7/1)
 
 {% highlight javascript %}
 
@@ -768,7 +768,7 @@ Parameters of a function hold no value, their value is determined by the argumen
 
 ### Function Scavenger Exercise
 
-[Find the things!](http://slides.com/bgando/f2f-final-day-1#/7/2)
+[Find the things!](http://slides.com/bgando/f2f-final-day-1/7/2)
 
 ### Function Scavenger Solution
 
