@@ -96,6 +96,40 @@
 
 <h3 id="template-strings">Template Strings</h3>
 
+<p>Template Strings, aka Interpolated Literals, aka “Interpoliterals” (yeah right). Initially, Kyle do not like them, but over time, he do like them, interpoliterals may be one of the most important and useful features released in ES6! Ah, so Interpolated Literals is Kyle’s mental model for Template Strings, because a template implies that you can reuse or re-render something over and over again, which is what Template Strings are not… Stick with calling them Template Strings so that people understand what you are talking about, but if you want to sound smart about them, use one of the above terms which no one will understand.</p>
+
+<p>Anywho… what problem are template strings trying to solve? Consider this primitive looking code:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Your Name</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">email</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">youremail@domainaddress.com</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">title</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Your Title</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Welcome to the things! Your </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">title</span> <span class="o">+</span> <span class="dl">"</span><span class="s2"> is </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">name</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">, contact: </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">email</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">.</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="c1">// Welcome to the things! Your Your Title is Your Name, contact: youremail@domainaddress.com.</span></code></pre></figure>
+
+<p>Awful 🤦🏻‍♂️, but concatenation, am I right? Ok… so string concatenation with data is actually called interpolation, Kyle’s terminology is starting to look less crazy CS guy-ish. The above code is fine, it will work as intended, but as an imperative approach to implementing a string interpolated with data, it can be cumbersome to wrap your head around what the final output would be, well at least harder than using a Template String. Here’s that same code, but implemented with a template sting:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Your Name</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">email</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">youremail@domainaddress.com</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">title</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Your Title</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="s2">`Welcome to the things! Your </span><span class="p">${</span><span class="nx">title</span><span class="p">}</span><span class="s2"> is </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">, contact: </span><span class="p">${</span><span class="nx">email</span><span class="p">}</span><span class="s2">.`</span><span class="p">;</span>
+
+<span class="c1">// Welcome to the things! Your Your Title is Your Name, contact: youremail@domainaddress.com.</span></code></pre></figure>
+
+<p>Way more better! Inside of the <code class="language-plaintext highlighter-rouge">${...}</code> can be an entire JavaScript program if you like, but it will often just be a variable. Kyle thinks the best mental model for thinking about template strings is to consider them like an IIFE, an immediately invoked function expression, i.e. you describe what string you want and JavaScript immediately goes and constructs and builds that string and drops it in (to your program).</p>
+
+<p>The result of a template string is an [actual] primitive string! Side note: Kyle is frustrated with JavaScript’s implementation of template strings because he wrote his You Don’t Know JS book series in Markdown and in Markdown if you want to highlight code, it is hard to show a template string because backticks is how Markdown delimits a code block.</p>
+
+<p>I think Kyle should build his book with Jekyll or figure out how to do something like:</p>
+
+<p>``</p>
+
+<p>End side note for Kyle’s side note 🙃</p>
+
+<p>Template strings will allow you to enter a return / line break without a special character!</p>
+
 <h3 id="tagged-templates">Tagged Templates</h3>
 
 <h3 id="applying-tagged-templates">Applying Tagged Templates</h3>
