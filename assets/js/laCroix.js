@@ -1,3 +1,21 @@
-parcelRequire=function(e,r,t,n){var i,o="function"==typeof parcelRequire&&parcelRequire,u="function"==typeof require&&require;function f(t,n){if(!r[t]){if(!e[t]){var i="function"==typeof parcelRequire&&parcelRequire;if(!n&&i)return i(t,!0);if(o)return o(t,!0);if(u&&"string"==typeof t)return u(t);var c=new Error("Cannot find module '"+t+"'");throw c.code="MODULE_NOT_FOUND",c}p.resolve=function(r){return e[t][1][r]||r},p.cache={};var l=r[t]=new f.Module(t);e[t][0].call(l.exports,p,l,l.exports,this)}return r[t].exports;function p(e){return f(p.resolve(e))}}f.isParcelRequire=!0,f.Module=function(e){this.id=e,this.bundle=f,this.exports={}},f.modules=e,f.cache=r,f.parent=o,f.register=function(r,t){e[r]=[function(e,r){r.exports=t},{}]};for(var c=0;c<t.length;c++)try{f(t[c])}catch(e){i||(i=e)}if(t.length){var l=f(t[t.length-1]);"object"==typeof exports&&"undefined"!=typeof module?module.exports=l:"function"==typeof define&&define.amd?define(function(){return l}):n&&(this[n]=l)}if(parcelRequire=f,i)throw i;return f}({"OZwu":[function(require,module,exports) {
-var e=new Date("Sept 03, 2019 00:00:00"),a=(Math.round((new Date).getTime()-e.getTime())/864e5).toFixed(0),r=2*(a/7).toFixed(0),n=a-r,t=2*n,o=document.querySelectorAll(".la-croix"),i=document.querySelector("#la-croix-cans");if(o)for(var c=0;c<o.length;c++)o[c].append(t);if(i)for(var l=0;l<t;l++)i.innerHTML+='<span id="'+l+'" class="la-croix-can"></span>';
-},{}]},{},["OZwu"], null)
+let start_date = new Date("Sept 03, 2019 00:00:00");
+let day_diff = (Math.round(new Date().getTime() - start_date.getTime()) / 86400000).toFixed(0);
+let weekends = ((day_diff / 7).toFixed(0))*2;
+let work_days = day_diff - weekends;
+let la_croix_consumed = work_days * 2;
+let la_croix_count = document.querySelectorAll('.la-croix');
+let la_croix_cans = document.querySelector("#la-croix-cans");
+
+if(la_croix_count) {
+    
+    for(let i = 0; i < la_croix_count.length; i++) {
+        la_croix_count[i].append(la_croix_consumed);
+    }
+}
+
+if(la_croix_cans) {
+    
+    for(let i = 0; i < la_croix_consumed; i++) {
+        la_croix_cans.innerHTML += '<span id="'+i+'" class="la-croix-can"></span>';
+    }
+}
