@@ -5,7 +5,7 @@ module.exports = {
   purge: {
       enabled: true,
       content: [
-          '_site/**/*'
+          './**/*'
         ]
     },
   darkMode: 'class', // or 'media' or 'class'
