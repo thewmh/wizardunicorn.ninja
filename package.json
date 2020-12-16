@@ -12,7 +12,7 @@
   "devDependencies": {},
   "scripts": {
     "build": "npm run build:jekyll && npm run build:parcel",
-    "build:parcel": "parcel build --out-dir _site/assets --no-source-maps --no-cache _site/assets/js/*js production",
+    "build:parcel": "parcel build --out-dir _site/assets/js --no-source-maps --no-cache _site/assets/js/*js production",
     "build:jekyll": "JEKYLL_ENV=production bundle exec jekyll b",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
