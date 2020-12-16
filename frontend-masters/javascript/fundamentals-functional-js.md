@@ -8,7 +8,7 @@ layout: default
 
 ## Introduction
 
-[The link to the course slideshow is here](http://slides.com/bgando/f2f-final-day-1)
+[The link to the course slideshow is here](https://slides.com/bgando/f2f-final-day-1)
 
 [The link to the course on FrontEnd Masters is here](https://frontendmasters.com/courses/js-fundamentals-functional-v2)
 
@@ -168,7 +168,7 @@ Why would you even use dot notation? Because it is less characters than bracket 
 
 ### ES6 Destructuring
 
-[Destructuring slide]('http://slides.com/bgando/f2f-final-day-1/1/26')
+[Destructuring slide](https://slides.com/bgando/f2f-final-day-1/1/26)
 
 Destructuring is a simplified way of defining variables and taking them outside of an object or an array.
 
@@ -188,7 +188,7 @@ const [thing1, thing2] = [true, false];
 
 ```const``` is used when you want the value of the variable to remain constant
 
-const will not apply to the properties of the object unless you explicitly 'freeze' them using [Object.freeze]('https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze')
+const will not apply to the properties of the object unless you explicitly 'freeze' them using [Object.freeze](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)
 
 ```let``` is used when you want to restrict a variable to a certain scope
 
@@ -471,9 +471,13 @@ _.each(rooms, logger);
 
 {% endhighlight %}
 
-```observatory
-ballroom
-library```
+{% highlight javascript %}
+
+// observatory
+// ballroom
+// library
+
+{% endhighlight %}
 
 ### forEach and _.each Exercises
 
@@ -746,9 +750,9 @@ _.filter(videoData, function(suspectObject) {
 
 ### Anatomy of a Function
 
-How exactly does our code execute.
+How exactly does our code execute?
 
-[Check out the anatomy of a function](http://slides.com/bgando/f2f-final-day-1/7/1)
+[Check out the anatomy of a function](https://slides.com/bgando/f2f-final-day-1/7/1)
 
 {% highlight javascript %}
 
@@ -768,7 +772,7 @@ Parameters of a function hold no value, their value is determined by the argumen
 
 ### Function Scavenger Exercise
 
-[Find the things!](http://slides.com/bgando/f2f-final-day-1/7/2)
+[Find the things!](https://slides.com/bgando/f2f-final-day-1/7/2)
 
 ### Function Scavenger Solution
 
@@ -1321,7 +1325,7 @@ With the above function, you can create separate execution contexts by declaring
 
 ### Closure Recipe
 
-[Here is the slide for the closure recipe](http://slides.com/bgando/f2f-final-day-2#/3/7)
+[Here is the slide for the closure recipe](https://slides.com/bgando/f2f-final-day-2#/3/7)
 
 A closure is when a function is inside of another function and it creates scope isolation. This can be acheived by returning a function from within a function which allows the function to retain access to its parent scope even after it has been executed.
 

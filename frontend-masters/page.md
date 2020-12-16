@@ -22,11 +22,11 @@ Organized by subject.
 
 ## JavaScript
 
-[Javascript: From Fundamentals to Functional JS](fundamentals-functional-js)
+[Javascript: From Fundamentals to Functional JS](/frontend-masters/javascript/fundamentals-functional-js)
 
-[Javascript: The Hard Parts, v2](hard-parts-js)
+[Javascript: The Hard Parts, v2](/frontend-masters/javascript/hard-parts-js)
 
-[Deep Javascript Foundations, v3](deep-javascript-foundations)
+[Deep Javascript Foundations, v3](/frontend-masters/javascript/deep-javascript-foundations)
 
 [//]: # ([)
 
@@ -36,15 +36,15 @@ Organized by subject.
 
 ## Webpack
 
-[Webpack 4 Fundamentals](webpack-4-fundamentals)
+[Webpack 4 Fundamentals](/frontend-masters/webpack/webpack-4-fundamentals)
 
-[Web Performance with Webpack](web-performance-webpack)
+[Web Performance with Webpack](/frontend-masters/webpack/web-performance-webpack)
 
-[Webpack Plugins System](webpack-plugins-system)
+[Webpack Plugins System](/frontend-masters/webpack/webpack-plugins-system)
 
 ## React
 
-[Complete Intro to React, v5](complete-intro-react)
+[Complete Intro to React, v5](/frontend-masters/react/complete-intro-react)
 
 [//]: # ([)
 

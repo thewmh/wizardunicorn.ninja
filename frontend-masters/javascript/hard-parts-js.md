@@ -430,7 +430,7 @@ Benefits:
 
 * Super explicit once you understand how it works under-the-hood
 
-[Exercises](csbin.io/async)
+[Exercises](https://csbin.io/async)
 
 ## Promises
 
