@@ -92,7 +92,7 @@ The result of a template string is an [actual] primitive string! Side note: Kyle
 
 I think Kyle should build his book with Jekyll or figure out how to do something like:
 
-`{% highlight javascript %}{% endhighlight %}`
+`{% highlight liquid %}{% highlight javascript %}{% endhighlight %}{% endhighlight %}`
 
 End side note for Kyle's side note 🙃
 
