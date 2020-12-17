@@ -10,14 +10,14 @@
   type: image/png
   sizes: 192x192
   href: /assets/img/favicons/favicon-192.png
-- rel: apple-touch-icon-precomposed
+- rel: apple-touch-icon
   href: /assets/img/favicons/favicon-57.png
-- rel: apple-touch-icon-precomposed
+- rel: apple-touch-icon
   sizes: 72x72
   href: /assets/img/favicons/favicon-72.png
-- rel: apple-touch-icon-precomposed
+- rel: apple-touch-icon
   sizes: 114x114
   href: /assets/img/favicons/favicon-114.png
-- rel: apple-touch-icon-precomposed
+- rel: apple-touch-icon
   sizes: 144x144
   href: /assets/img/favicons/favicon-144.png
