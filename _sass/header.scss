@@ -1,0 +1,48 @@
+@variants {
+
+    header {
+        @apply bg-gray-50 bg-gradient-to-br unicorn:from-emerald-200 unicorn:to-purple-400 dark:bg-blueGray-700;
+    }
+
+    .theme-buttons {
+        @apply border-b text-right font-serif;
+
+        button {
+            @apply italic font-semibold p-2;
+        }
+    }
+
+    nav {
+
+        ul {
+            @apply text-center;
+
+            li {
+                @apply py-2 border-b transform hover:rotate-1;
+
+                a {
+                    @apply text-blueGray-700 hover:text-blueGray-900 dark:text-blueGray-50 unicorn:text-purple-700  dark:hover:text-blueGray-300;
+                }
+            }
+        }
+    }
+}
+
+@variants hover {
+
+    .unicorn {
+
+        nav {
+    
+            ul {
+                
+                li {
+    
+                    a {
+                        @apply hover:text-pink-300
+                    }
+                }
+            }
+        }
+    }
+}

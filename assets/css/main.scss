@@ -1,7 +1,8 @@
 ---
 ---
 
-@import "main";
+@import "/_sass/main.scss";
+@import "/_sass/header.scss";
 
 @tailwind base;
 @tailwind components;
@@ -118,14 +119,6 @@
 
         h1 {
             @apply text-5xl lg:text-8xl font-semibold;
-        }
-    }
-
-    .theme-buttons {
-        @apply border-b text-right font-serif;
-
-        button {
-            @apply italic font-semibold p-2;
         }
     }
 }
