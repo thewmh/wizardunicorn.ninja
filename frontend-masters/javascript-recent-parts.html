@@ -140,15 +140,23 @@
 
 <p>The result of a template string is an [actual] primitive string! Side note: Kyle is frustrated with JavaScript’s implementation of template strings because he wrote his You Don’t Know JS book series in Markdown and in Markdown if you want to highlight code, it is hard to show a template string because backticks is how Markdown delimits a code block.</p>
 
-<p>I think Kyle should build his book with Jekyll or figure out how to do something like:</p>
-
-<p>``</p>
-
-<p>End side note for Kyle’s side note 🙃</p>
-
 <p>Template strings will allow you to enter a return / line break without a special character!</p>
 
 <h3 id="tagged-templates">Tagged Templates</h3>
+
+<p>Template strings have a feature that allows you to more fully control their pre-processing, with something called a tagged literal. Here is an example of that in action:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">amount</span> <span class="o">=</span> <span class="mf">12.3</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> 
+    <span class="nx">formatCurrency</span>
+<span class="s2">`The total for your
+order is </span><span class="p">${</span><span class="nx">amount</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+
+<span class="c1">// The total for your</span>
+<span class="c1">// order is $12.30</span></code></pre></figure>
+
+<p><code class="language-plaintext highlighter-rouge">formatCurrency</code> is actually a function call, called a tagged template string.</p>
 
 <h3 id="applying-tagged-templates">Applying Tagged Templates</h3>
 
