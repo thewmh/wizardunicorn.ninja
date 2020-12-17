@@ -29,3 +29,7 @@ sass:
   sass_dir: _sass
 
 exclude: [build, vendor, node_modules, dist, package-lock.json, package.json, postcss.config.js, tailwind.config.js, _posts, wizard]
+
+webrick:
+  headers:
+    Cache-Control: max-age=31536000
