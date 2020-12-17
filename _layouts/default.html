@@ -2,7 +2,8 @@
 <html lang="{{ site.lang | default: "en-US" }}" class="min-h-full">
   <head>
     {%- include meta.html -%}
-    <link rel="stylesheet" href="{{ "/assets/css/main.css" | relative_url }}">
+    <link rel="preload" href="{{ "/assets/css/main.css" | relative_url }}"  as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/assets/css/main.css"></noscript>
     {%- if site.google_analytics_ua -%}
       {%- include analytics.html -%}
     {%- endif -%}
