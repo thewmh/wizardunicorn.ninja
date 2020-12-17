@@ -50,4 +50,4 @@ return {
 
 }());
 
-colorMode.toggle(window.localStorage.getItem('colorMode'));
+colorMode.toggle(window.localStorage.getItem('colorMode') || 'wizard');
