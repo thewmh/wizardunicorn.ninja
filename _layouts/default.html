@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ site.lang | default: "en-US" }}" class="min-h-full">
   <head>
+    <link rel="manifest" href="{{ '/manifest.json' | relative_url }}">
     {%- include meta.html -%}
     <link rel="preload" href="{{ "/assets/css/main.css" | relative_url }}"  as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="/assets/css/main.css"></noscript>
