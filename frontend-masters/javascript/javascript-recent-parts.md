@@ -90,15 +90,27 @@ Way more better! Inside of the `${...}` can be an entire JavaScript program if y
 
 The result of a template string is an [actual] primitive string! Side note: Kyle is frustrated with JavaScript's implementation of template strings because he wrote his You Don't Know JS book series in Markdown and in Markdown if you want to highlight code, it is hard to show a template string because backticks is how Markdown delimits a code block.
 
-I think Kyle should build his book with Jekyll or figure out how to do something like:
-
-`{% highlight liquid %}{% highlight javascript %}{% endhighlight %}{% endhighlight %}`
-
-End side note for Kyle's side note 🙃
-
 Template strings will allow you to enter a return / line break without a special character! 
 
 ### Tagged Templates
+
+Template strings have a feature that allows you to more fully control their pre-processing, with something called a tagged literal. Here is an example of that in action:
+
+{% highlight javascript %}
+
+var amount = 12.3;
+
+var msg = 
+    formatCurrency
+`The total for your
+order is ${amount}`;
+
+// The total for your
+// order is $12.30
+
+{% endhighlight %}
+
+`formatCurrency` is actually a function call, called a tagged template string. 
 
 ### Applying Tagged Templates
 
