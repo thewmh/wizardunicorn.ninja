@@ -36,6 +36,46 @@ nav ul li .dark a:hover { --tw-text-opacity:1; color: rgba(203, 213, 225, var(--
 
 .hover\:unicorn:hover nav ul li a:hover { --tw-text-opacity:1; color: rgba(249, 168, 212, var(--tw-text-opacity)); }
 
+.highlight { --tw-bg-opacity:1; background-color: rgba(51, 65, 85, var(--tw-bg-opacity)); }
+
+.highlight .c, .highlight .c1, .highlight .cm, .highlight .cp, .highlight .cs, .highlight .gp, .highlight .sd { --tw-text-opacity:1; color: rgba(148, 163, 184, var(--tw-text-opacity)); }
+
+.highlight .err, .highlight .gd, .highlight .ne, .highlight .no, .highlight .nv, .highlight .vc, .highlight .vg, .highlight .vi { --tw-text-opacity:1; color: rgba(239, 68, 68, var(--tw-text-opacity)); }
+
+.highlight .k, .highlight .kc, .highlight .kd, .highlight .kp, .highlight .kr { --tw-text-opacity:1; color: rgba(147, 197, 253, var(--tw-text-opacity)); }
+
+.highlight .bp, .highlight .gh, .highlight .h, .highlight .il, .highlight .l, .highlight .m, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .mo, .highlight .n, .highlight .nb, .highlight .ni, .highlight .nl, .highlight .p, .highlight .py, .highlight .sc, .highlight .se, .highlight .si, .highlight .w { --tw-text-opacity:1; color: rgba(216, 180, 254, var(--tw-text-opacity)); }
+
+.highlight .gu, .highlight .kn, .highlight .nd, .highlight .nt, .highlight .o, .highlight .ow { --tw-text-opacity:1; color: rgba(167, 243, 208, var(--tw-text-opacity)); }
+
+.highlight .ge { font-style: italic; }
+
+.highlight .gh, .highlight .gs, .highlight .gu { font-weight: 700; }
+
+.highlight .dl, .highlight .gi, .highlight .ld, .highlight .s, .highlight .s1, .highlight .s2, .highlight .sb, .highlight .sh, .highlight .sr, .highlight .ss, .highlight .sx { color: #b5bd68; }
+
+.highlight .kt, .highlight .nc, .highlight .nn { color: #f0c674; }
+
+.highlight .na, .highlight .nf, .highlight .nx { --tw-text-opacity:1; color: rgba(250, 250, 250, var(--tw-text-opacity)); }
+
+.unicorn .highlight .c, .unicorn .highlight .c1, .unicorn .highlight .cm, .unicorn .highlight .cp, .unicorn .highlight .cs, .unicorn .highlight .gp, .unicorn .highlight .sd { color: #969896; }
+
+.unicorn .highlight .err, .unicorn .highlight .gd, .unicorn .highlight .ne, .unicorn .highlight .no, .unicorn .highlight .nv, .unicorn .highlight .vc, .unicorn .highlight .vg, .unicorn .highlight .vi { color: #c66; }
+
+.unicorn .highlight .k, .unicorn .highlight .kc, .unicorn .highlight .kd, .unicorn .highlight .kp, .unicorn .highlight .kr { color: #b294bb; }
+
+.unicorn .highlight .il, .unicorn .highlight .l, .unicorn .highlight .m, .unicorn .highlight .mf, .unicorn .highlight .mh, .unicorn .highlight .mi, .unicorn .highlight .mo, .unicorn .highlight .se, .unicorn .highlight .si { color: #de935f; }
+
+.unicorn .highlight .bp, .unicorn .highlight .gh, .unicorn .highlight .h, .unicorn .highlight .n, .unicorn .highlight .nb, .unicorn .highlight .ni, .unicorn .highlight .nl, .unicorn .highlight .p, .unicorn .highlight .py, .unicorn .highlight .sc, .unicorn .highlight .w { color: #fff; }
+
+.unicorn .highlight .gu, .unicorn .highlight .kn, .unicorn .highlight .nd, .unicorn .highlight .nt, .unicorn .highlight .o, .unicorn .highlight .ow { color: #8abeb7; }
+
+.unicorn .highlight .dl, .unicorn .highlight .gi, .unicorn .highlight .ld, .unicorn .highlight .s, .unicorn .highlight .s1, .unicorn .highlight .s2, .unicorn .highlight .sb, .unicorn .highlight .sh, .unicorn .highlight .sr, .unicorn .highlight .ss, .unicorn .highlight .sx { color: #b5bd68; }
+
+.unicorn .highlight .kt, .unicorn .highlight .nc, .unicorn .highlight .nn { color: #f0c674; }
+
+.unicorn .highlight .na, .unicorn .highlight .nf, .unicorn .highlight .nx { color: #81a2be; }
+
 /*! modern-normalize v1.0.0 | MIT License | https://github.com/sindresorhus/modern-normalize */
 :root { -moz-tab-size: 4; -o-tab-size: 4; tab-size: 4; }
 
