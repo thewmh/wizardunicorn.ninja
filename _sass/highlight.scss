@@ -118,8 +118,10 @@
 
         .highlight {
 
+            @apply bg-gradient-to-br from-purple-500 to-purple-700;
+
             .c, .cm, .cp, .c1, .cs, .gp, .sd { 
-                color: #969896;
+                @apply text-lime-200;
             }
 
             .err, .gd, .no, .ne, .nv, .vc, .vg, .vi {
@@ -127,23 +129,23 @@
             }
 
             .k, .kc, .kd, .kp, .kr { 
-                color: #b294bb;
+                @apply text-pink-400;
             }
 
             .l, .m, .mf, .mh, .mi, .mo, .se, .si, .il {
-                color: #de935f;
+                @apply text-red-400;
             }
 
             .n, .h, .p, .nb, .ni, .nl, .py, .w, .sc, .bp, .gh {
-                color: #ffffff;
+                @apply text-pink-200;
             }
 
             .o, .gu, .kn, .nd, .nt, .ow {
-                color: #8abeb7;
+                @apply text-lime-400;
             }
 
             .gi, .ld, .s, .sb, .dl, .s2, .sh, .sx, .sr, .s1, .ss {
-                color: #b5bd68;
+                @apply text-lime-200;
             }
 
             .kt, .nc, .nn { 
@@ -151,7 +153,7 @@
             }
 
             .na, .nf, .nx {
-                color: #81a2be;
+                @apply text-cyan-300;
             }
         }
     }

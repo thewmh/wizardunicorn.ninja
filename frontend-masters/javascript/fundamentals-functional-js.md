@@ -139,7 +139,8 @@ var game = {}; // initialize an object literal
 
 game.murderer = "??"; // initialize a property
 
-game['weapons'] = ['laser', 'angry cat', 'dish soap'] // why would you choose an array vs an object? If you have a list of something that is all falling under the same category, an array makes more sense vs an object
+game['weapons'] = ['laser', 'angry cat', 'dish soap']
+// why would you choose an array vs an object? If you have a list of something that is all falling under the same category, an array makes more sense vs an object
 
 {% endhighlight %}
 
