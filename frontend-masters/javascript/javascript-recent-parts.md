@@ -6,6 +6,8 @@ permalink: /frontend-masters/javascript-recent-parts
 layout: default
 ---
 
+[Link to the workshop exercise files](https://static.frontendmasters.com/resources/2019-03-09-js-recent-parts/js-recent-parts.zip)
+
 ## Introduction
 
 ### JavaScript New Feature Process
@@ -110,13 +112,85 @@ order is ${amount}`;
 
 {% endhighlight %}
 
-`formatCurrency` is actually a function call, called a tagged template string. 
+`formatCurrency` is actually a function call, called a tagged template literal. The `formatCurrency` function looks like this:
+
+{% highlight javascript %}
+
+function formatCurrency(strings, ...values) {
+    var str = "";
+    for (let i = 0; i < strings.length; i++) {
+        if (i > 0) {
+            if(typeof values[i-1] == "number") {
+                str += `$${values[i-1].toFixed(2)}`;
+            }
+            else {
+                str += values[i-1];
+            }
+        }
+        str += strings[i]
+    }
+    return str;
+}
+
+{% endhighlight %}
+
+The above is a function that Kyle wrote for this workshop. `strings` will provide an array of all the individual strings in and then all the values that you've interpolated in another array. So then you will have 2 separate arrays and it is up to you to decide how you put them together. JavaScript will always provide an additional position in the strings array to guarantee that when you interpolate your two arrays together that there is no conflict, that they interpolate as expected. Some other use-cases for a tag function could  be; internationalization, preventing cross-site scripting, and escaping of characters. You don't even necessarily have to write these functions because there are tons of them available already written.
+
+[Here's an example of some tag functions that I found on GitHub](https://github.com/zspecza/common-tags)
 
 ### Applying Tagged Templates
 
+Kyle has written his own tag function for objects and error logging. Instead of `console.log` writing `[object, object]`, Kyle's tag function will stringify the object and print it to the console, he's also written in a way to log his errors so that he can see the stack trace 🔥. A tag function doesn't have to return a string. Another useful tag function is one for RegEx which allows you to have a multi-line regular expression with comments. The RegEx tag function will parse the template string and return an actual regular expression, not a string. It's almost as if you can write an entire language inside of a template literal and have a tag function interpret it. Actually, you can do exactly that. There are tag functions for JSX which allows you to write JSX and include whatever variables you want and the return or output is actual DOM elements, just like JSX, but in JavaScript!
+
 ### Tagged Template Exercise
 
+In this exercise we are going to be building out own tagged function called `upper`, the purpose of which is to uppercase the values. The goal is to write `upper` and get the `console.log` statement to print `true`. 
+
+{% highlight javascript %}
+
+function upper(strings,...values) {}
+
+var name = "kyle",
+	twitter = "getify",
+	topic = "JS Recent Parts";
+
+console.log(
+	`Hello ____ (@____), welcome to ____!` ===
+	"Hello KYLE (@GETIFY), welcome to JS RECENT PARTS!"
+);
+
+{% endhighlight %}
+
 ### Tagged Template Solution
+
+{% capture summary %}Click to view the solution{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+function upper(strings,...values) {
+    var str = "";
+    for (let i = 0; i < strings.length; i++) {
+        if (i > 0) {
+                str += `${values[i-1].toUpperCase()}`;
+            }
+        str += strings[i];
+        }
+    return str;
+}
+
+var name = "kyle",
+	twitter = "getify",
+	topic = "JS Recent Parts";
+
+console.log(
+	upper `Hello ${name} (@${twitter}), welcome to ${topic}!` ===
+	"Hello KYLE (@GETIFY), welcome to JS RECENT PARTS!"
+);
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %} 
+
+
 
 ### Padding & Trimming
 
