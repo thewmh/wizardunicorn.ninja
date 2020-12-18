@@ -134,13 +134,18 @@ var clue = {
 ### Game Characters Solution
 
 {% highlight javascript %}
+
 var game = {}; // initialize an object literal
 
 game.murderer = "??"; // initialize a property
 
 game['weapons'] = ['laser', 'angry cat', 'dish soap'] // why would you choose an array vs an object? If you have a list of something that is all falling under the same category, an array makes more sense vs an object
 
-If you took the above array and made it into an object, it might look something like this
+{% endhighlight %}
+
+If you took the above array and made it into an object, it might look something like this:
+
+{% highlight javascript %}
 
 game['weapons'] = [ // an object(s) 'key' should be the same for each 'value', so that it is predictable.
     {type: 'laser', location: 'lab'},
@@ -152,6 +157,7 @@ game.name = []; initialize an array literal
 
 game.name[0] = 'Miss Scarlet';
 game.name.push('Mr. Green')
+
 {% endhighlight %}
 
 ### Object Review

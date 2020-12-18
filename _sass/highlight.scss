@@ -1,0 +1,158 @@
+@variants {
+
+    .highlight {
+        @apply bg-blueGray-700;
+
+        /* Comment
+        Comment.Multiline
+        Comment.Preproc
+        Comment.Single
+        Comment.Special
+        Generic.Prompt
+        Literal.String.Doc */
+        .c, .cm, .cp, .c1, .cs, .gp, .sd { 
+            @apply text-blueGray-400;
+        }
+
+        /* Error
+        Generic.Deleted
+        Name.Constant
+        Name.Exception
+        Name.Variable
+        Name.Variable.Class
+        Name.Variable.Global
+        Name.Variable.Instance */
+        .err, .gd, .no, .ne, .nv, .vc, .vg, .vi {
+            @apply text-red-500;
+        }
+
+        /* Keyword
+        Keyword.Constant
+        Keyword.Declaration
+        Keyword.Pseudo
+        Keyword.Reserved */
+        .k, .kc, .kd, .kp, .kr { 
+            @apply text-blue-300;
+        }
+
+        /* Literal
+        Literal.Number
+        Literal.Number.Float
+        Literal.Number.Hex
+        Literal.Number.Integer
+        Literal.Number.Oct
+        Literal.String.Escape
+        Literal.String.Interpol
+        Literal.Number.Integer.Long */
+        .l, .m, .mf, .mh, .mi, .mo, .se, .si, .il {
+            @apply text-purple-300;
+        }
+
+        /* Name
+        Punctuation
+        Name.Builtin
+        Name.Entity
+        Name.Label
+        Name.Property
+        Text.Whitespace
+        Literal.String.Char
+        Name.Builtin.Pseudo
+        Generic.Heading */
+        .n, .h, .p, .nb, .ni, .nl, .py, .w, .sc, .bp, .gh {
+            @apply text-purple-300;
+        }
+
+        /* Operator
+        Generic.Subheading
+        Keyword.Namespace
+        Name.Decorator
+        Name.Tag
+        Operator.Word */
+        .o, .gu, .kn, .nd, .nt, .ow {
+            @apply text-emerald-200;
+        }
+
+        /* Generic.Emph */
+        .ge {
+            @apply italic;
+        }
+
+        /* Generic.Heading
+        Generic.Strong
+        Generic.Subheading */
+        .gh, .gs, .gu {
+            @apply font-bold;
+        }
+
+        /* Generic.Inserted
+        Literal.Date
+        Literal.String
+        Literal.String.Backtick
+        Literal.String.Delimiter
+        Literal.String.Double
+        Literal.String.Heredoc
+        Literal.String.Other
+        Literal.String.Regex
+        Literal.String.Single
+        Literal.String.Symbol */
+        .gi, .ld, .s, .sb, .dl, .s2, .sh, .sx, .sr, .s1, .ss {
+            color: #b5bd68;
+        }
+
+        /* Keyword.Type
+        Name.Class
+        Name.Namespace */
+        .kt, .nc, .nn { 
+            color: #f0c674;
+        }
+
+        /* Name.Attribute
+        Name.Function
+        Name.Other */
+        .na, .nf, .nx {
+            @apply text-gray-50;
+        }
+    }
+
+    .unicorn {
+
+        .highlight {
+
+            .c, .cm, .cp, .c1, .cs, .gp, .sd { 
+                color: #969896;
+            }
+
+            .err, .gd, .no, .ne, .nv, .vc, .vg, .vi {
+                color: #cc6666;
+            }
+
+            .k, .kc, .kd, .kp, .kr { 
+                color: #b294bb;
+            }
+
+            .l, .m, .mf, .mh, .mi, .mo, .se, .si, .il {
+                color: #de935f;
+            }
+
+            .n, .h, .p, .nb, .ni, .nl, .py, .w, .sc, .bp, .gh {
+                color: #ffffff;
+            }
+
+            .o, .gu, .kn, .nd, .nt, .ow {
+                color: #8abeb7;
+            }
+
+            .gi, .ld, .s, .sb, .dl, .s2, .sh, .sx, .sr, .s1, .ss {
+                color: #b5bd68;
+            }
+
+            .kt, .nc, .nn { 
+                color: #f0c674;
+            }
+
+            .na, .nf, .nx {
+                color: #81a2be;
+            }
+        }
+    }
+}
