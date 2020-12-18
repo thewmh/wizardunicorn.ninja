@@ -190,8 +190,6 @@ console.log(
 {% endhighlight %}
 {% endcapture %}{% include details.html %} 
 
-We made it!
-
 ### Padding & Trimming
 
 ## Array Destructuring
