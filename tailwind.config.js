@@ -31,6 +31,9 @@ module.exports = {
         transitionProperty: {
             'background-size': 'background-size'
         },
+        rotate: {
+            'neg-1/8': '-.125deg'
+        },
         backgroundSize: {
             '0%-20%': '0% 20%',
             '100%-20%': '100% 20%',

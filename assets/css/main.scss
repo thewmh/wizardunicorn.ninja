@@ -58,6 +58,10 @@
         }
     }
 
+    blockquote {
+        @apply ml-4 pl-4 inline-block transform rotate-neg-1/8 border-l-4 border-current;
+    }
+
     #la-croix-logo {
         @apply text-base h-9 inline;
     }
