@@ -171,7 +171,7 @@ function upper(strings,...values) {
     var str = "";
     for (let i = 0; i < strings.length; i++) {
         if (i > 0) {
-                str += `${values[i-1].toUpperCase()}`;
+                str += String(values[i-1]).toUpperCase();
             }
         str += strings[i];
         }
@@ -192,9 +192,42 @@ console.log(
 
 ### Padding & Trimming
 
+Kyle says that it's almost a rite of passage for developers learning JavaScript to have to learn how to write some sort of small function to add or remove characters from strings. No more! The string prototype has padding and trimming built into it. Padding was released with ES2017 and trimming with ES2019. But when thinking about padding or trimming, from which side of the string are we performing the action? From left to right or from right to left? To think in terms of left or right is inappropriate for internationalization purposes (think languages that read right to left). So what did we end up with then?
+
+`padStart` - takes 2 arguments, the first is required, the second is optional. The first argument tells it to what length you would like to 'pad to'. Here's a few examples showing how `padStart` works:
+
+{% highlight javascript %}
+
+var str = "Hello";
+
+str.padStart(5);
+// "Hello"
+
+str.padStart(8);
+// "   Hello"
+
+str.padStart(8, "*");
+// "***Hello"
+
+str.padStart(8, "12345");
+// "123Hello"
+
+str.padStart(8, "ab");
+// "abaHello"
+
+{% endhighlight %}
+
+As you can see from the above examples, if your string is already 5 characters long and you supply 5 as the argument to `padStart`, nothing happens. If you supply 8, `padStart` adds 3 spaces. If you supply '*' as the second argument to `padStart`, 3 asterisks will be 'padded' to the string. In the last two examples, you can see what happens when you supply multiple characters as the second argument, where either the list of characters is not entirely used or starts to get repeated if needed. Similar to `padStart` is `padEnd`. I'm not going to show you the example here because it is literally the same as `padStart`, but instead of padding the start of the string, `padEnd` pads the end of the string according to the supplied arguments. BTW, padding methods do detect whether the language is LTR or RTL, but the second argument always uses the provided characters LTR.
+
+Similar to padding, there are `trimStart` and `trimEnd`, but also a plain `trim` method exists. `trim` trims both sides of a string and `trimStart` / `trimEnd` trim either the start or end of a string. All 3 trim methods only trim white space from the sides of the string and they take no arguments. 
+
 ## Array Destructuring
 
 ### Destructuring
+
+Destructuring
+
+>  **de**composing a **structure** into its individual Parts
 
 ### Refactoring Code Using Destructuring
 
