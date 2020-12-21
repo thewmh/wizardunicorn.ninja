@@ -19,7 +19,7 @@
     }
     
     h2 {
-        @apply text-4xl;
+        @apply text-4xl relative inline-block p-4 transform rotate-1 font-black text-blueGray-50 bg-blueGray-700;
     }
     
     h3 {
@@ -88,6 +88,10 @@
             a {
                 @apply bg-cyan-300;
             }
+
+            h2 {
+                @apply text-cyan-300 bg-purple-700;
+            }
         }
 
         .la-croix-logo {
@@ -104,6 +108,10 @@
         article {
             a {
                 @apply bg-lime-300 text-blueGray-700;
+            }
+
+            h2 {
+                @apply text-blueGray-700 bg-blue-gray-50;
             }
         }
 
