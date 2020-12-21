@@ -19,7 +19,7 @@
     }
     
     h2 {
-        @apply text-4xl relative inline-block p-4 transform rotate-1 font-black text-blueGray-50 bg-blueGray-700;
+        @apply text-4xl;
     }
     
     h3 {
@@ -51,6 +51,10 @@
             &:hover  {
                 @apply no-underline bg-x-0-y-60 bg-100%-20%;
             }
+        }
+
+        h2 {
+            @apply relative inline-block p-4 transform rotate-1 font-black text-blueGray-50 bg-blueGray-700;
         }
     }
 
