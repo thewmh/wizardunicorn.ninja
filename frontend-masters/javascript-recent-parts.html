@@ -209,7 +209,7 @@ order is </span><span class="p">${</span><span class="nx">amount</span><span cla
     <span class="kd">var</span> <span class="nx">str</span> <span class="o">=</span> <span class="dl">""</span><span class="p">;</span>
     <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">strings</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">str</span> <span class="o">+=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">values</span><span class="p">[</span><span class="nx">i</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">toUpperCase</span><span class="p">()}</span><span class="s2">`</span><span class="p">;</span>
+                <span class="nx">str</span> <span class="o">+=</span> <span class="nb">String</span><span class="p">(</span><span class="nx">values</span><span class="p">[</span><span class="nx">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]).</span><span class="nx">toUpperCase</span><span class="p">();</span>
             <span class="p">}</span>
         <span class="nx">str</span> <span class="o">+=</span> <span class="nx">strings</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
         <span class="p">}</span>
@@ -230,9 +230,40 @@ order is </span><span class="p">${</span><span class="nx">amount</span><span cla
 
 <h3 id="padding--trimming">Padding &amp; Trimming</h3>
 
+<p>Kyle says that it’s almost a rite of passage for developers learning JavaScript to have to learn how to write some sort of small function to add or remove characters from strings. No more! The string prototype has padding and trimming built into it. Padding was released with ES2017 and trimming with ES2019. But when thinking about padding or trimming, from which side of the string are we performing the action? From left to right or from right to left? To think in terms of left or right is inappropriate for internationalization purposes (think languages that read right to left). So what did we end up with then?</p>
+
+<p><code class="language-plaintext highlighter-rouge">padStart</code> - takes 2 arguments, the first is required, the second is optional. The first argument tells it to what length you would like to ‘pad to’. Here’s a few examples showing how <code class="language-plaintext highlighter-rouge">padStart</code> works:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">str</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="nx">str</span><span class="p">.</span><span class="nx">padStart</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="c1">// "Hello"</span>
+
+<span class="nx">str</span><span class="p">.</span><span class="nx">padStart</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+<span class="c1">// "   Hello"</span>
+
+<span class="nx">str</span><span class="p">.</span><span class="nx">padStart</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="dl">"</span><span class="s2">*</span><span class="dl">"</span><span class="p">);</span>
+<span class="c1">// "***Hello"</span>
+
+<span class="nx">str</span><span class="p">.</span><span class="nx">padStart</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="dl">"</span><span class="s2">12345</span><span class="dl">"</span><span class="p">);</span>
+<span class="c1">// "123Hello"</span>
+
+<span class="nx">str</span><span class="p">.</span><span class="nx">padStart</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="dl">"</span><span class="s2">ab</span><span class="dl">"</span><span class="p">);</span>
+<span class="c1">// "abaHello"</span></code></pre></figure>
+
+<p>As you can see from the above examples, if your string is already 5 characters long and you supply 5 as the argument to <code class="language-plaintext highlighter-rouge">padStart</code>, nothing happens. If you supply 8, <code class="language-plaintext highlighter-rouge">padStart</code> adds 3 spaces. If you supply ‘*’ as the second argument to <code class="language-plaintext highlighter-rouge">padStart</code>, 3 asterisks will be ‘padded’ to the string. In the last two examples, you can see what happens when you supply multiple characters as the second argument, where either the list of characters is not entirely used or starts to get repeated if needed. Similar to <code class="language-plaintext highlighter-rouge">padStart</code> is <code class="language-plaintext highlighter-rouge">padEnd</code>. I’m not going to show you the example here because it is literally the same as <code class="language-plaintext highlighter-rouge">padStart</code>, but instead of padding the start of the string, <code class="language-plaintext highlighter-rouge">padEnd</code> pads the end of the string according to the supplied arguments. BTW, padding methods do detect whether the language is LTR or RTL, but the second argument always uses the provided characters LTR.</p>
+
+<p>Similar to padding, there are <code class="language-plaintext highlighter-rouge">trimStart</code> and <code class="language-plaintext highlighter-rouge">trimEnd</code>, but also a plain <code class="language-plaintext highlighter-rouge">trim</code> method exists. <code class="language-plaintext highlighter-rouge">trim</code> trims both sides of a string and <code class="language-plaintext highlighter-rouge">trimStart</code> / <code class="language-plaintext highlighter-rouge">trimEnd</code> trim either the start or end of a string. All 3 trim methods only trim white space from the sides of the string and they take no arguments.</p>
+
 <h2 id="array-destructuring">Array Destructuring</h2>
 
 <h3 id="destructuring">Destructuring</h3>
+
+<p>Destructuring</p>
+
+<blockquote>
+  <p><strong>de</strong>composing a <strong>structure</strong> into its individual Parts</p>
+</blockquote>
 
 <h3 id="refactoring-code-using-destructuring">Refactoring Code Using Destructuring</h3>
 
