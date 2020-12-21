@@ -673,7 +673,7 @@ Yes? Your Webpack space complexity will be linear in terms of how many modules y
 It would be more manageable if styles were out of the JavaScript right?! Like maybe in their own CSS/SCSS file? Yep. Go ahead and make a new stylesheet for your `footer.js` file. Call it `footer.css` or something clever like that (I
 'm actually using SASS, so if you'd like to do that as well, run `npm install sass sass-loader` to get support for that filetype). I added classes and an import for the SCSS file to my `footer.js` file like so:
 
-{% highlight javasript %}
+{% highlight javascript %}
 
 import "./footer.scss";
 import { red, blue } from "./button-styles";
