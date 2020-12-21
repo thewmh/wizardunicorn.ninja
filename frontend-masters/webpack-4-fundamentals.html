@@ -638,20 +638,20 @@
 <p>It would be more manageable if styles were out of the JavaScript right?! Like maybe in their own CSS/SCSS file? Yep. Go ahead and make a new stylesheet for your <code class="language-plaintext highlighter-rouge">footer.js</code> file. Call it <code class="language-plaintext highlighter-rouge">footer.css</code> or something clever like that (I
 ‘m actually using SASS, so if you’d like to do that as well, run <code class="language-plaintext highlighter-rouge">npm install sass sass-loader</code> to get support for that filetype). I added classes and an import for the SCSS file to my <code class="language-plaintext highlighter-rouge">footer.js</code> file like so:</p>
 
-<figure class="highlight"><pre><code class="language-javasript" data-lang="javasript">import "./footer.scss";
-import { red, blue } from "./button-styles";
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="dl">"</span><span class="s2">./footer.scss</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">red</span><span class="p">,</span> <span class="nx">blue</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./button-styles</span><span class="dl">"</span><span class="p">;</span>
 
-const top = document.createElement("div");
-top.className = "footer--top";
-top.innerText = "Top of Footer";
-const bottom = document.createElement("div");
-bottom.innerText = "Bottom of Footer";
-bottom.className = "footer--bottom";
-const footer = document.createElement("footer");
-footer.appendChild(top);
-footer.appendChild(bottom);
+<span class="kd">const</span> <span class="nx">top</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">div</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">top</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">footer--top</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">top</span><span class="p">.</span><span class="nx">innerText</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Top of Footer</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">bottom</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">div</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">bottom</span><span class="p">.</span><span class="nx">innerText</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Bottom of Footer</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">bottom</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">footer--bottom</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">footer</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">footer</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">footer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">top</span><span class="p">);</span>
+<span class="nx">footer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">bottom</span><span class="p">);</span>
 
-export { top, bottom, footer };</code></pre></figure>
+<span class="k">export</span> <span class="p">{</span> <span class="nx">top</span><span class="p">,</span> <span class="nx">bottom</span><span class="p">,</span> <span class="nx">footer</span> <span class="p">};</span></code></pre></figure>
 
 <p>In your new <code class="language-plaintext highlighter-rouge">footer.css</code> (or <code class="language-plaintext highlighter-rouge">footer.scss</code>) file, add some styling like so:</p>
 
