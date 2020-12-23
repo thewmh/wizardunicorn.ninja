@@ -78,6 +78,54 @@ nav ul li .dark a:hover { --tw-text-opacity:1; color: rgba(203, 213, 225, var(--
 
 .unicorn .highlight .na, .unicorn .highlight .nf, .unicorn .highlight .nx { --tw-text-opacity:1; color: rgba(103, 232, 249, var(--tw-text-opacity)); }
 
+.workshop-nav { overflow: scroll; position: -webkit-sticky; position: sticky; right: 0; left: 0; top: .25rem; z-index: 1; }
+
+@media (min-width: 1024px) { .workshop-nav { width: 100%; } }
+
+@media (min-width: 1024px) and (min-width: 640px) { .workshop-nav { max-width: 640px; } }
+
+@media (min-width: 1024px) and (min-width: 768px) { .workshop-nav { max-width: 768px; } }
+
+@media (min-width: 1024px) and (min-width: 1024px) { .workshop-nav { max-width: 1024px; } }
+
+@media (min-width: 1024px) and (min-width: 1280px) { .workshop-nav { max-width: 1280px; } }
+
+@media (min-width: 1024px) and (min-width: 1536px) { .workshop-nav { max-width: 1536px; } }
+
+@media (min-width: 1024px) { .workshop-nav { margin-left: auto; margin-right: auto; max-width: 1024px; padding-left: 2.5rem; padding-right: 2.5rem; } }
+
+.workshop-nav { -ms-overflow-style: none; scrollbar-width: none; }
+
+.workshop-nav::-webkit-scrollbar { display: none; }
+
+.workshop-nav li { padding-top: .5rem; padding-bottom: .5rem; }
+
+.workshop-nav .workshop-nav--title { font-weight: 700; margin: 0; text-align: center; }
+
+.workshop-nav .workshop-nav--item { display: inline; }
+
+.workshop-nav .workshop-nav--link { --tw-bg-opacity:1; background-color: rgba(147, 197, 253, var(--tw-bg-opacity)); background-image: linear-gradient(0deg, var(--tw-gradient-stops)); --tw-gradient-from:currentColor; --tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to,hsla(0,0%,100%,0)); --tw-gradient-to:currentColor; background-position: 100% 60%; background-repeat: no-repeat; background-size: 0 20%; display: inline; padding-left: .5rem; padding-right: .5rem; position: relative; --tw-text-opacity:1; color: rgba(51, 65, 85, var(--tw-text-opacity)); transition-property: background-size; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: .15s; transition-duration: .3s; }
+
+.workshop-nav .workshop-nav--link:hover { background-position: 0 60%; background-size: 100% 20%; }
+
+.unicorn .workshop-nav--title { --tw-text-opacity:1; color: rgba(103, 232, 249, var(--tw-text-opacity)); }
+
+.unicorn .workshop-nav--link { --tw-bg-opacity:1; background-color: rgba(103, 232, 249, var(--tw-bg-opacity)); --tw-text-opacity:1; color: rgba(126, 34, 206, var(--tw-text-opacity)); }
+
+.dark .workshop-nav--link { --tw-bg-opacity:1; background-color: rgba(190, 242, 100, var(--tw-bg-opacity)); --tw-text-opacity:1; color: rgba(51, 65, 85, var(--tw-text-opacity)); }
+
+.workshop-nav--div { --tw-bg-opacity:1; background-color: rgba(51, 65, 85, var(--tw-bg-opacity)); }
+
+.dark .workshop-nav--div { --tw-bg-opacity:1; background-color: rgba(248, 250, 252, var(--tw-bg-opacity)); }
+
+.workshop-nav--div { padding: .5rem; --tw-text-opacity:1; color: rgba(248, 250, 252, var(--tw-text-opacity)); }
+
+.dark .workshop-nav--div { --tw-text-opacity:1; color: rgba(51, 65, 85, var(--tw-text-opacity)); }
+
+@media (min-width: 1024px) { .workshop-nav--div { padding-top: .5rem; padding-bottom: .5rem; } }
+
+.unicorn .workshop-nav--div { --tw-bg-opacity:1; background-color: rgba(126, 34, 206, var(--tw-bg-opacity)); }
+
 /*! modern-normalize v1.0.0 | MIT License | https://github.com/sindresorhus/modern-normalize */
 :root { -moz-tab-size: 4; -o-tab-size: 4; tab-size: 4; }
 
@@ -217,7 +265,7 @@ img, video { max-width: 100%; height: auto; }
 
 .bg-blueGray-50 { --tw-bg-opacity:1; background-color: rgba(248, 250, 252, var(--tw-bg-opacity)); }
 
-.bg-gray-900 { --tw-bg-opacity:1; background-color: rgba(24, 24, 27, var(--tw-bg-opacity)); }
+.bg-blueGray-700 { --tw-bg-opacity:1; background-color: rgba(51, 65, 85, var(--tw-bg-opacity)); }
 
 .unicorn .unicorn\:bg-cyan-300 { --tw-bg-opacity:1; background-color: rgba(103, 232, 249, var(--tw-bg-opacity)); }
 
@@ -475,10 +523,6 @@ img, video { max-width: 100%; height: auto; }
 
 .mt-8 { margin-top: 2rem; }
 
-.mb-14 { margin-bottom: 3.5rem; }
-
-.mt-28 { margin-top: 7rem; }
-
 .max-w-screen-lg { max-width: 1024px; }
 
 .min-h-full { min-height: 100%; }
@@ -542,6 +586,10 @@ img, video { max-width: 100%; height: auto; }
 .px-10 { padding-left: 2.5rem; padding-right: 2.5rem; }
 
 .pb-4 { padding-bottom: 1rem; }
+
+.pb-14 { padding-bottom: 3.5rem; }
+
+.pt-28 { padding-top: 7rem; }
 
 .pointer-events-none { pointer-events: none; }
 
