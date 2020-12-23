@@ -4,6 +4,26 @@ description: These are notes from the 'JavaScript':' The Recent Parts' course on
 permalink: /frontend-masters/javascript-recent-parts
 
 layout: default
+  - name: Introduction
+    href: introduction
+  - name: Strings
+    href: strings
+  - name: Array Destructuring
+    href: array-destructuring
+  - name: Object Destructuring
+    href: object-destructuring
+  - name: Further Destructuring
+    href: further-destructuring
+  - name: Array Methods
+    href: array-methods
+  - name: Iterators & Generators
+    href: iterators--generators
+  - name: Regular Expressions
+    href: regular-expressions
+  - name: Async Await
+    href: async-await
+  - name: Wrap-Up
+    href: wrap-up
 ---
 
 [Link to the workshop exercise files](https://static.frontendmasters.com/resources/2019-03-09-js-recent-parts/js-recent-parts.zip)
@@ -235,9 +255,50 @@ When it comes to destructuring, there are certainly a lot of nuances, but it is 
 
 [here's a link to the Mozilla Developer Network's documentation on destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
 
-First and foremost, you should understand that the purpose of destructuring as a feature, is to assign individual parts from a larger structure. Assign to individual variables, assign to individual properties, etc... 
+First and foremost, you should understand that the purpose of destructuring as a feature, is to assign individual parts from a larger structure. Assign to individual variables, assign to individual properties, etc... Imagine you are pulling in a large JSON object from an API, and it looks something like this:
+
+{% highlight javascript %}
+
+var tmp = getSomeRecords();
+// imaginary API call
+
+var first = tmp[0];
+var second = tmp[1];
+
+var firstName = first.name;
+var firstEmail = first.email !== undefined ?
+    first.email : "nobody@none.tld";
+
+var secondName = second.name;
+var secondEmail = second.email !== undefined ?
+    second.email : "nobody@none.tld";
+
+{% endhighlight %}
+
+The above may look familiar, maybe you've even written something similar while getting some data from an API? The above is functional, in the sense that it mechanically works, but it is far from ideal in terms of communicating what is happening. Without knowing exactly what the above does at first glance, it still takes a considerable amount of effort to figure out the code. It is fairly common that one would provide a large set of comments to explain what is expected to be returned from the API as well as what the code is actually doing. Comments are useful, but the problem with code comments is that they get out of date; either the API changes or the code changes, but your comments do not change, it can be misleading. Fear not! This is **the** use case, this is why destructuring was created. Destructuring this imaginary JSON object that was returned from an API call is the more declarative way to approach the 'problem'. We'll dig deeper into exactly how all of this works, but for now, take a look at the same code that utilized destructuring to accomplish the same thing:
+
+{% highlight javascript %}
+
+var [
+    {
+        name: firstName,
+        email: firstEmail = "nobody@none.tld"
+    },
+    {
+        name: secondName,
+        email: secondEmail = "nobody@none.tld"
+    }
+] = getSomeRecords();
+
+{% endhighlight %}
+
+Notice in the above code that on the left-hand side of the `=` sign that we have what essentially looks like a JSON object. That is not what it is... It is not an array of objects. Because it's on the left-hand side of the `=` sign, it is not a value at all. It's actually a 'pattern'. It is a syntax that is describing the value that is expected from the right-hand side, where the `getSomeRecords` function is called. A pattern to describe what kind of value we are expecting to get, the purpose of which is not just to describe it, but to assign the individual values as needed; i.e. `name: firstName,` 'describes' that we want to assign the value of the property `name` from the first object in the array of objects returned from the `getSomeRecords` API call to the `firstName` variable. The same 'description' happens for `firstEmail`, `secondName`, and `secondEmail`, but the email(s) are unique in that they are using what is called a 'default value expression' which will set the value to `"nobody@none.tld"` if there is no property for `email` returned from the API call.
+
+The destructuring pattern you write does not have to account for the entirety of the value. The pattern only has to account for the part of the value that you care about at whatever point you need it. The other takeaway here is that this code is essentially self-documenting because of it's declarative nature. Because in a sense, we are documenting with syntax what we can expect the value returned from the API call to be. Next, we'll be doing some (as promised) 'live-coding', so get your code editor open and type the things you're reading here because that's about how interactive we can get! 👀
 
 ### Refactoring Code Using Destructuring
+
+
 
 ### Spread Operator & Declaring Destructured Arrays
 
