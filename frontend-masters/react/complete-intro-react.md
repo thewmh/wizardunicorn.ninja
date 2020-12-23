@@ -4,6 +4,33 @@ description: These are notes from the 'Complete Intro to React, v5' course on Fr
 permalink: /frontend-masters/complete-intro-react
 
 layout: default
+pagenav:
+  - name: Introduction
+    href: introduction
+  - name: Pure React
+    href: pure-react
+  - name: Tools
+    href: tools
+  - name: JSX
+    href: jsx
+  - name: Hooks
+    href: hooks
+  - name: Effects
+    href: effects
+  - name: Dev Tools
+    href: dev-tools
+  - name: Async & Routing
+    href: async--routing
+  - name: Class Components
+    href: class-components
+  - name: Error Boundaries
+    href: error-boundaries
+  - name: Context
+    href: context
+  - name: Portals
+    href: portals
+  - name: Wrapping Up
+    href: wrapping-up
 ---
 
 [Link to Course Github Repository](https://github.com/btholt/complete-intro-to-react-v5)

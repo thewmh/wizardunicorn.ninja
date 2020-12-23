@@ -4,6 +4,13 @@ description: These are notes from the 'Web Performance with Webpack' course on F
 permalink: /frontend-masters/web-performance-webpack
 
 layout: default
+pagenav:
+  - name: Web Performance
+    href: web-performance
+  - name: Code Splitting
+    href: code-splitting
+  - name: Module Methods & Magic Comments
+    href: module-methods--magic-comments
 ---
 
 ## Web Performance

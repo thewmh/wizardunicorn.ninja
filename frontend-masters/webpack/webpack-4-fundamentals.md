@@ -4,6 +4,17 @@ description: These are notes from the 'Webpack 4 Fundamentals' course on Fronten
 permalink: /frontend-masters/webpack-4-fundamentals
 
 layout: default
+pagenav:
+  - name: Introduction
+    href: introduction
+  - name: Webpack from Scratch
+    href: webpack-from-scratch
+  - name: Webpack Core Concepts
+    href: webpack-core-concepts
+  - name: Using Plugins
+    href: using-plugins
+  - name: Wrapping Up
+    href: wrapping-up
 ---
 
 ## Introduction

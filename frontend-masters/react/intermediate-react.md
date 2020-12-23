@@ -4,6 +4,25 @@ description: These are notes from the 'Intermediate React, v2' course on Fronten
 permalink: /frontend-masters/intermediate-react
 
 layout: default
+pagenav:
+  - name: Introduction
+    href: introduction
+  - name: Basic Hooks
+    href: basic-hooks
+  - name: Hooks In-Depth
+    href: hooks-in-depth
+  - name: CSS in JS
+    href: css-in-js
+  - name: Code Splitting
+    href: code-splitting
+  - name: Server Side Rendering
+    href: server-side-rendering
+  - name: TypeScript with React
+    href: typeScript-with-react
+  - name: Redux
+    href: redux
+  - name: Testing React
+    href: testing-react
 ---
 
 [Link to Course Github Repository]()

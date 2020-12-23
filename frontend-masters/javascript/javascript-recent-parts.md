@@ -4,6 +4,7 @@ description: These are notes from the 'JavaScript':' The Recent Parts' course on
 permalink: /frontend-masters/javascript-recent-parts
 
 layout: default
+pagenav:
   - name: Introduction
     href: introduction
   - name: Strings

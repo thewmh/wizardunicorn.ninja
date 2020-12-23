@@ -4,6 +4,13 @@ description: These are notes from the 'Webpack Plugins System' course on Fronten
 permalink: /frontend-masters/webpack-plugins-system
 
 layout: default
+pagenav:
+  - name: Plugin System
+    href: plugin-system
+  - name: Creating Plugins
+    href: creating-plugins
+  - name: Config, Loaders, & Babel
+    href: config-loaders--babel
 ---
 
 [Slide Deck for this workshop](https://docs.google.com/presentation/d/1P5f-cK4jlhGQIfPQ_vaYFRWV464kBb5UaUBkfRjBp4Y/edit)
