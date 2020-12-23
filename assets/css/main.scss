@@ -4,6 +4,7 @@
 @import "/_sass/main.scss";
 @import "/_sass/header.scss";
 @import "/_sass/highlight.scss";
+@import "/_sass/page-nav.scss";
 
 @tailwind base;
 @tailwind components;
@@ -139,9 +140,10 @@
 @variants hover {
 
     .unicorn {
-    nav {
-        a {
-            @apply hover:text-purple-900;
+        nav {
+            a {
+                @apply hover:text-purple-900;
+            }
         }
-    }}
+    }
 }

@@ -1,0 +1,61 @@
+@variants {
+
+    .workshop-nav {
+        @apply sticky top-1 z-1 lg:container lg:mx-auto lg:max-w-screen-lg lg:px-10 overflow-scroll left-0 right-0;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            @apply hidden;
+        }
+
+        li {
+            @apply py-2;
+        }
+
+        .workshop-nav--title {
+            @apply m-0 font-bold text-center;
+        }
+
+        .workshop-nav--item {
+            @apply inline;
+        }
+
+        .workshop-nav--link {
+            @apply relative no-underline bg-gradient-to-t from-current to-current bg-x-100-y-60 bg-no-repeat bg-0%-20% inline transition-background-size duration-300 bg-blue-300 text-blueGray-700 px-2;
+    
+            &:hover  {
+                @apply no-underline bg-x-0-y-60 bg-100%-20%;
+            }
+        }
+    }
+
+    .unicorn {
+
+        .workshop-nav--title {
+            @apply text-cyan-300;
+        }
+
+        .workshop-nav--link {
+            @apply bg-cyan-300 text-purple-700;
+        }
+    }
+
+    .dark {
+
+        .workshop-nav--link {
+            @apply bg-lime-300 text-blueGray-700;
+        }
+    }
+
+    .workshop-nav--div {
+        @apply bg-blueGray-700 text-blueGray-50 dark:bg-blueGray-50 dark:text-blueGray-700 lg:py-2 p-2;
+    }
+
+    .unicorn {
+        
+        .workshop-nav--div {
+            @apply bg-purple-700;
+        }
+    }
+}

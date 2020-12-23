@@ -4,6 +4,23 @@ description: These are notes from the 'Javascript':' The Hard Parts, v2' course 
 permalink: /frontend-masters/hard-parts-js
 
 layout: default
+pagenav:
+  - name: Introduction
+    href: introduction
+  - name: JavaScript Principles
+    href: javascript-principles
+  - name: Functions & Callbacks
+    href: functions--callbacks
+  - name: Closure
+    href: closure
+  - name: Asynchronous JavaScript
+    href: asynchronous-javascript
+  - name: Promises
+    href: promises
+  - name: Classes & Prototypes
+    href: classes--prototypes
+  - name: Wrapping Up
+    href: wrapping-up
 ---
 
 ## Introduction

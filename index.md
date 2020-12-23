@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "Wizard Unicorn Ninja"
+include-title: false
 ---
 # 👋 I'm William Harrison
 

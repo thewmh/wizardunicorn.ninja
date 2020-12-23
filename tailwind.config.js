@@ -34,6 +34,9 @@ module.exports = {
         rotate: {
             'neg-1/8': '-.125deg'
         },
+        zIndex: {
+            '1': '1'
+        },
         backgroundSize: {
             '0%-20%': '0% 20%',
             '100%-20%': '100% 20%',
@@ -45,15 +48,16 @@ module.exports = {
         },
         backgroundImage: theme => ({
             'la-croix': "url('/assets/img/la-croix.png')"
-        })
+        }),
     },
-  },
-  variants: {
-      extend: {
+},
+variants: {
+    extend: {
         textColor: ['unicorn'],
         backgroundColor: ['unicorn'],
         gradientColorStops: ['unicorn'],
-        backgroundImage: ['hover']
+        backgroundImage: ['hover'],
+        fontWeight: ['hover']
     }
   },
   plugins: [

@@ -229,6 +229,14 @@ Destructuring
 
 >  **de**composing a **structure** into its individual Parts
 
+This next section is going to be pretty heavy on the typing, so it's a good thing that I am watching a recording that I can pause frequently, so that you can read along at your own pace.
+
+When it comes to destructuring, there are certainly a lot of nuances, but it is not some sort of black box that you will never understand. It will take some time, but you (and I) **can** do it! These next sections that focus on destructuring should be super helpful in your code, this is why they were included in this workshop.
+
+[here's a link to the Mozilla Developer Network's documentation on destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
+
+First and foremost, you should understand that the purpose of destructuring as a feature, is to assign individual parts from a larger structure. Assign to individual variables, assign to individual properties, etc... 
+
 ### Refactoring Code Using Destructuring
 
 ### Spread Operator & Declaring Destructured Arrays

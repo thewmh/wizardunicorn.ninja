@@ -14,19 +14,25 @@
     <div class="lg:container lg:mx-auto lg:max-w-screen-lg lg:px-10">
     {%- include header.html -%}
     </div>
+    {%- if page.pagenav -%}
+    {%- include pagenav.html -%}
+    {%- endif -%}
     <div class="container mx-auto px-10 pb-4 max-w-screen-lg">
         {%- if page.url == "/about/" -%}
         <article class="mx-auto mt-8 dark:text-blueGray-50 unicorn:text-purple-700 break-words about">
         {%- else -%}
         <article class="mx-auto mt-8 dark:text-blueGray-50 unicorn:text-purple-700 break-words">
+        {%- if page.include-title == false -%}
+        {%- else -%}
         {%- if page.title -%}
             <h1 class="text-5xl lg:text-8xl font-semibold">{{ page.title }}</h1>
         {%- endif -%}
         {%- endif -%}
-            {{ content}}
+        {%- endif -%}
+            {{ content }}
         </article>
     </div>
-    <div class="lg:container lg:mx-auto lg:max-w-screen-lg lg:px-10 text-center text-4xl mt-28 mb-14 font-semibold">
+    <div class="lg:container lg:mx-auto lg:max-w-screen-lg lg:px-10 text-center text-4xl pt-28 pb-14 font-semibold">
         {%- include footer.html -%}
     </div>
   </body>

@@ -1,5 +1,6 @@
 ---
 title: What?
+include-title: false
 description: I have no idea what this is about.
 permalink: /about/
 

@@ -4,6 +4,33 @@ description: These are notes from the 'Deep JavaScript Foundations, v3' course o
 permalink: /frontend-masters/deep-javascript-foundations
 
 layout: default
+pagenav:
+  - name: Introduction
+    href: introduction
+  - name: Types
+    href: types
+  - name: Coercion
+    href: coercion
+  - name: Philosophy of Coercion
+    href: philosophy-of-coercion
+  - name: Equality
+    href: equality
+  - name: Static Typing
+    href: static-typing
+  - name: Scope
+    href: scope
+  - name: Scope & Function Expressions
+    href: scope--function-expressions
+  - name: Advanced Scope
+    href: advanced-scope
+  - name: Closure
+    href: closure
+  - name: Objects
+    href: objects
+  - name: Prototypes
+    href: prototypes
+  - name: Wrapping Up
+    href: wrapping-up
 ---
 
 ## Introduction

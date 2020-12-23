@@ -4,6 +4,31 @@ description: These are notes from the 'From Fundamentals to Functional JS' cours
 permalink: /frontend-masters/fundamentals-functional-js
 
 layout: default
+pagenav:
+  - name: Introduction
+    href: introduction 
+  - name: Objects
+    href: objects
+  - name: List Transformations
+    href: list-transformations
+  - name: .forEach() Function
+    href: foreach-function
+  - name: .map() Function
+    href: map-function
+  - name: .filter() Function
+    href: filter-function
+  - name: Functions In-Depth
+    href: functions-in-depth
+  - name: Scope
+    href: scope
+  - name: Callbacks
+    href: callbacks
+  - name: Functional Utilities
+    href: functional-utilities
+  - name: "Advanced Scope: Closure"
+    href: advanced-scope-closure
+  - name: "Wrapping Up JavaScript: From Fundamentals to Functional JS" 
+    href: wrapping-up-javascript-from-fundamentals-to-functional-js
 ---
 
 ## Introduction

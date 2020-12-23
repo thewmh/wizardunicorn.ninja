@@ -1,0 +1,12 @@
+<div class="workshop-nav">
+    <div class="workshop-nav--div">
+        <p class="workshop-nav--title">{{ page.title }} Navigation</p>
+        <ul class="workshop-nav--list hidden">
+            {%- for navitem in page.pagenav -%}
+            <li class="workshop-nav--item">
+                <a class="workshop-nav--link" href="#{{navitem.href}}">{{navitem.name}}</a>
+            </li>
+            {%- endfor -%}
+        </ul>
+    </div>
+</div>
