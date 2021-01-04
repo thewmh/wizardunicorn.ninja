@@ -299,13 +299,154 @@ The destructuring pattern you write does not have to account for the entirety of
 
 ### Refactoring Code Using Destructuring
 
+Destructuring has a processing model to it and the goal of looking at pre-destructured code alongside destructured code is to solidify the mental model. Since we're not actually 'live-coding' here, I will place the final code, both non-destructured and destructured, for you to compare. Hopefully, both examples should be enough to help you compare the differences, but if not, hit me up! Starting pretty basic here, but here is an example of some code that could benefit from destructuring:
 
+{% highlight javascript %}
+
+function data() {
+    return [1,2,3];
+}
+
+var tmp = data();
+var first = tmp[0];
+var second = tmp[1];
+var third = tmp[2];
+
+{% endhighlight %}
+
+Kyle admittedly says that the `tmp` variable was probably not even necessary, but whatever... Here's the same thing, but using destructuring:
+
+{% highlight javascript %}
+
+function data() {
+    return [1,2,3];
+}
+
+var [
+    first,
+    second,
+    third
+] = data();
+
+{% endhighlight %}
+
+Again, as we've seen with destructuring in the intro, there is a pattern to the left-hand side of the `=`, which is essentially the same as the imperative approach, but now implemented declaratively! What happens, to either example, if you reference a value that does not exist? The variable would have `undefined` assigned to it. How about if your 'data' has an extra value that you do not use, what happens? If you do not use that additional value, nothing happens... What happens if a value in your 'data' is already `undefined`? If you reference it, whatever variable that value was assigned to will have a value of... `undefined`. But what if a value is `undefined` and you don't actually want any of your variables to be undefined, what would you do then? The imperative approach would be to use a ternary operator, like this:
+
+{% highlight javascript %}
+
+//..
+var second = tmp[1] !== undefined ? tmp[1] : 10;
+//..
+
+{% endhighlight %}
+
+Using destructuring, the equivalent of the ternary operator is the 'default value expression', which looks like this:
+
+{% highlight javascript %}
+
+//..
+    second = 10,
+//..
+
+{% endhighlight %}
+
+You can use a 'default value expression' for any of the element positions in your destructuring. A 'default value expression' will only be applied when the value is `undefined`. What if you have an unknown amount of data that you want to collect into an array? How would you do that?
+
+Imperatively:
+
+{% highlight javascript %}
+
+//..
+    return [1,2,3,4,5];
+//..
+var fourth = tmp.slice(3);
+//..
+
+{% endhighlight %}
+
+Destructuring:
+
+{% highlight javascript %}
+
+//..
+    return [1,2,3,4,5];
+//..
+...fourth
+//..
+
+{% endhighlight %}
+
+Imperatively, using `.slice(3)` will grab everything according to the 'array' position specified, while using `...` in destructuring will 'bundle' all of the remaining data after the last declaration.
 
 ### Spread Operator & Declaring Destructured Arrays
 
+In the final examples of the previous section, what would `.slice(3)` or `...` return, or what would you expect it to return, if no value existed? `.slice` should return an array no matter what, and the 'spread operator' should do the same. In destructuring, the 'spread operator' needs to be at the end of your 'pattern', because it gathers all remaining values. I suppose if you were dealing with nested arrays you could probably use it within a nested pattern to retrieve and assign that data, but it would still appear at the end of each segment? There is one fundamental difference between the imperative and destructured approach that we've not looked at yet which is the `tmp` declaration. How could we get the same result, a variable that holds the entire set of data, using destructuring? Like this:
+
+{% highlight javascript %}
+
+//..
+var [
+//..
+] = tmp = data();
+
+{% endhighlight %}
+
+At the end of the declarations for `first`, `second`, `third`... we've added another equals sign and `tmp`. `tmp` will now equal whatever `data()` returns!
+
 ### Declaration & Assignment
 
+Destructuring is about the value assignment to a variable, not the declaration. i.e. you could have declared all of the variables ahead of time. **Any valid left-hand side target** can have a value assigned to it. This could be an object, an array, etc. The point again being that destructuring is just the assignment, not the declaration. 
+
 ### Comma Separation
+
+What if you would like to ignore a value while using destructuring on an array? Imperatively, it would look like this:
+
+{% highlight javascript %}
+
+just don't declare it!
+// var second = tmp[1];
+
+{% endhighlight %}
+
+Using destructuring:
+
+{% highlight javascript %}
+
+//..
+first,
+,
+third,
+//..
+
+{% endhighlight %}
+
+Above, adding an additional comma will effectively 'skip' over a value in the array, so if the array were `[1,2,3]`, we'd get `[1,,3]`. It's recommended that if you are going to destructure an array and skip values using commas that you put each value, whether skipped or used, on it's own line for readability sake.
+
+Have you ever needed to swap the values of two variables before and perhaps wrote something like this?
+
+{% highlight javascript %}
+
+var x = 10;
+var y = 20;
+
+{
+    let tmp = x;
+    x = y;
+    y = tmp;
+}
+
+{% endhighlight %}
+
+With destructuring, we can do that same swap with shortened syntax:
+
+{% highlight javascript %}
+
+var x = 10;
+var y = 20;
+
+[y,x] = [x,y];
+
+{% endhighlight %}
 
 ### Parameter Arrays
 
