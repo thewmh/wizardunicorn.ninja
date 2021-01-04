@@ -330,11 +330,110 @@ order is </span><span class="p">${</span><span class="nx">amount</span><span cla
 
 <h3 id="refactoring-code-using-destructuring">Refactoring Code Using Destructuring</h3>
 
+<p>Destructuring has a processing model to it and the goal of looking at pre-destructured code alongside destructured code is to solidify the mental model. Since we’re not actually ‘live-coding’ here, I will place the final code, both non-destructured and destructured, for you to compare. Hopefully, both examples should be enough to help you compare the differences, but if not, hit me up! Starting pretty basic here, but here is an example of some code that could benefit from destructuring:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">tmp</span> <span class="o">=</span> <span class="nx">data</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">first</span> <span class="o">=</span> <span class="nx">tmp</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">second</span> <span class="o">=</span> <span class="nx">tmp</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">third</span> <span class="o">=</span> <span class="nx">tmp</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span></code></pre></figure>
+
+<p>Kyle admittedly says that the <code class="language-plaintext highlighter-rouge">tmp</code> variable was probably not even necessary, but whatever… Here’s the same thing, but using destructuring:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="p">[</span>
+    <span class="nx">first</span><span class="p">,</span>
+    <span class="nx">second</span><span class="p">,</span>
+    <span class="nx">third</span>
+<span class="p">]</span> <span class="o">=</span> <span class="nx">data</span><span class="p">();</span></code></pre></figure>
+
+<p>Again, as we’ve seen with destructuring in the intro, there is a pattern to the left-hand side of the <code class="language-plaintext highlighter-rouge">=</code>, which is essentially the same as the imperative approach, but now implemented declaratively! What happens, to either example, if you reference a value that does not exist? The variable would have <code class="language-plaintext highlighter-rouge">undefined</code> assigned to it. How about if your ‘data’ has an extra value that you do not use, what happens? If you do not use that additional value, nothing happens… What happens if a value in your ‘data’ is already <code class="language-plaintext highlighter-rouge">undefined</code>? If you reference it, whatever variable that value was assigned to will have a value of… <code class="language-plaintext highlighter-rouge">undefined</code>. But what if a value is <code class="language-plaintext highlighter-rouge">undefined</code> and you don’t actually want any of your variables to be undefined, what would you do then? The imperative approach would be to use a ternary operator, like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//..</span>
+<span class="kd">var</span> <span class="nx">second</span> <span class="o">=</span> <span class="nx">tmp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!==</span> <span class="kc">undefined</span> <span class="p">?</span><span class="err"> </span><span class="nx">tmp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">:</span> <span class="mi">10</span><span class="p">;</span>
+<span class="c1">//..</span></code></pre></figure>
+
+<p>Using destructuring, the equivalent of the ternary operator is the ‘default value expression’, which looks like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//..</span>
+    <span class="nx">second</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+<span class="c1">//..</span></code></pre></figure>
+
+<p>You can use a ‘default value expression’ for any of the element positions in your destructuring. A ‘default value expression’ will only be applied when the value is <code class="language-plaintext highlighter-rouge">undefined</code>. What if you have an unknown amount of data that you want to collect into an array? How would you do that?</p>
+
+<p>Imperatively:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//..</span>
+    <span class="k">return</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">];</span>
+<span class="c1">//..</span>
+<span class="kd">var</span> <span class="nx">fourth</span> <span class="o">=</span> <span class="nx">tmp</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="c1">//..</span></code></pre></figure>
+
+<p>Destructuring:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//..</span>
+    <span class="k">return</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">];</span>
+<span class="c1">//..</span>
+<span class="p">...</span><span class="nx">fourth</span>
+<span class="c1">//..</span></code></pre></figure>
+
+<p>Imperatively, using <code class="language-plaintext highlighter-rouge">.slice(3)</code> will grab everything according to the ‘array’ position specified, while using <code class="language-plaintext highlighter-rouge">...</code> in destructuring will ‘bundle’ all of the remaining data after the last declaration.</p>
+
 <h3 id="spread-operator--declaring-destructured-arrays">Spread Operator &amp; Declaring Destructured Arrays</h3>
+
+<p>In the final examples of the previous section, what would <code class="language-plaintext highlighter-rouge">.slice(3)</code> or <code class="language-plaintext highlighter-rouge">...</code> return, or what would you expect it to return, if no value existed? <code class="language-plaintext highlighter-rouge">.slice</code> should return an array no matter what, and the ‘spread operator’ should do the same. In destructuring, the ‘spread operator’ needs to be at the end of your ‘pattern’, because it gathers all remaining values. I suppose if you were dealing with nested arrays you could probably use it within a nested pattern to retrieve and assign that data, but it would still appear at the end of each segment? There is one fundamental difference between the imperative and destructured approach that we’ve not looked at yet which is the <code class="language-plaintext highlighter-rouge">tmp</code> declaration. How could we get the same result, a variable that holds the entire set of data, using destructuring? Like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//..</span>
+<span class="kd">var</span> <span class="p">[</span>
+<span class="c1">//..</span>
+<span class="p">]</span> <span class="o">=</span> <span class="nx">tmp</span> <span class="o">=</span> <span class="nx">data</span><span class="p">();</span></code></pre></figure>
+
+<p>At the end of the declarations for <code class="language-plaintext highlighter-rouge">first</code>, <code class="language-plaintext highlighter-rouge">second</code>, <code class="language-plaintext highlighter-rouge">third</code>… we’ve added another equals sign and <code class="language-plaintext highlighter-rouge">tmp</code>. <code class="language-plaintext highlighter-rouge">tmp</code> will now equal whatever <code class="language-plaintext highlighter-rouge">data()</code> returns!</p>
 
 <h3 id="declaration--assignment">Declaration &amp; Assignment</h3>
 
+<p>Destructuring is about the value assignment to a variable, not the declaration. i.e. you could have declared all of the variables ahead of time. <strong>Any valid left-hand side target</strong> can have a value assigned to it. This could be an object, an array, etc. The point again being that destructuring is just the assignment, not the declaration.</p>
+
 <h3 id="comma-separation">Comma Separation</h3>
+
+<p>What if you would like to ignore a value while using destructuring on an array? Imperatively, it would look like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">just</span> <span class="nx">don</span><span class="dl">'</span><span class="s1">t declare it!
+// var second = tmp[1];</span></code></pre></figure>
+
+<p>Using destructuring:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//..</span>
+<span class="nx">first</span><span class="p">,</span>
+<span class="p">,</span>
+<span class="nx">third</span><span class="p">,</span>
+<span class="c1">//..</span></code></pre></figure>
+
+<p>Above, adding an additional comma will effectively ‘skip’ over a value in the array, so if the array were <code class="language-plaintext highlighter-rouge">[1,2,3]</code>, we’d get <code class="language-plaintext highlighter-rouge">[1,,3]</code>. It’s recommended that if you are going to destructure an array and skip values using commas that you put each value, whether skipped or used, on it’s own line for readability sake.</p>
+
+<p>Have you ever needed to swap the values of two variables before and perhaps wrote something like this?</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+
+<span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">tmp</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
+    <span class="nx">x</span> <span class="o">=</span> <span class="nx">y</span><span class="p">;</span>
+    <span class="nx">y</span> <span class="o">=</span> <span class="nx">tmp</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>With destructuring, we can do that same swap with shortened syntax:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+
+<span class="p">[</span><span class="nx">y</span><span class="p">,</span><span class="nx">x</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">];</span></code></pre></figure>
 
 <h3 id="parameter-arrays">Parameter Arrays</h3>
 
