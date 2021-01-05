@@ -542,17 +542,276 @@ Doing the above, will provide graceful fallback for your variables. ❤️
 
 ### Object Destructuring
 
+More destructuring! This may look pretty similar to the array destructuring that was just covered, but read on just in case there are some hidden 💎s (hint: there will be). Look at the following:
+
+{% highlight javascript %}
+
+function data() {
+    return { a: 1, b: 2, c: 3};
+}
+
+var tmp = data();
+var first = tmp.a;
+var second = tmp.b;
+var third = tmp.c;
+
+{% endhighlight %}
+
+Here is its destructured equivalent:
+
+{% highlight javascript %}
+
+function data() {
+    return { a: 1, b: 2, c: 3};
+}
+
+var {
+    a: first,
+    b: second,
+    c: third
+} = data();
+
+{% endhighlight %}
+
+Notice the destructuring pattern for an object is `source: variableName`, this already looks a little different than array destructuring! And since we are working with an object, which requires the source, the order of assignment is whatever you like; i.e. you could order your destructuring pattern backwards `c: third, b: second, a: first` and the result would be the same.
+
+Similar to working with arrays, if you attempt to assign a variable a value which does not exist, it will be assigned `undefined`. Also similar to what we saw with arrays, if there is anything extra that is not used, it is basically ignored. Dissimilar to working with arrays, if you want to gather up the remaining values from an object, it is not as simple as using `.slice()`, but looping over the object using `object.keys` and finding the things you are already capturing, ignoring them, and bundling the rest up in a new object... at least in an imperative approach. With destructuring, use 'object rest'! Object rest is exactly the same as we have seen with array destructuring, `...variableName` will capture any remaining unaccounted for values from the object you are destructuring and place them into a new object for you.
+
+Another similarity to array destructuring, if we need to have default values for variables in the case that a specific parameter does not exist, in object destructuring you can set a default like this:
+
+{% highlight javascript %}
+
+//..
+a: first = 42,
+//..
+
+{% endhighlight %}
+
+Of course w/ an imperative approach, we'd still be using the long-in-the-tooth ternary operator (re-read the array destructuring for an example of that).
+
+Kyle goes on to explain how he had trouble understanding object destructuring at first, because of the `source: target = default` format, and then explains how it now makes sense to him which did not make any sense whatsoever to me, so I ran off to MDN and found their explanation, I recommended reading it: [Mozilla Developer Network - Object destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Object_destructuring)
+
 ### Object Assignment Destructuring
+
+Another non-surprise, but if you have already declared your vars, you do not need to redeclare them when destructuring, or when not destructuring for that matter. However, if you have no declarator, JavaScript will view your object as a block and not an object. This is not your fault, it is JavaScript's. Fear not, wrap everything in parenthesis and you'll be destructuring objects using already declared vars in no time! Here's an example:
+
+{% highlight javascript %}
+
+function data() {
+    return { b: 2, c: 3, d: 4};
+}
+
+var first, second;
+
+({
+    b: second,
+    a: first
+} = data());
+
+{% endhighlight %}
+
+Notice how the entire statement is wrapped, not just the pattern. Another approach, which we technically covered w/ arrays but I may have conveniently glossed over / left out... is if you need to store all of whatever would be returned from `data()`, say `var tmp = data();`, with destructuring, we could do something like this:
+
+{% highlight javascript %}
+
+//..
+var tmp;
+//..
+tmp = {
+    b: second,
+    a: first
+} = data();
+
+{% endhighlight %}
+
+Now that we've included `tmp =...`, there is no way that JavaScript could confuse our 'undeclared' object as anything other than a destructuring pattern.
 
 ### Object Default Assignment
 
+Similar to array destructuring, if what gets returned does not exist, aka returns null or undefined, we can set a default assignment:
+
+{% highlight javascript %}
+
+function data() {
+    return;
+}
+
+var {
+    b: second,
+    a: first
+} = data() || {};
+
+{% endhighlight %}
+
+Additionally, (and unrelated?) if the target and source are the same name, you only need to list it once, like this:
+
+{% highlight javascript %}
+
+function data() {
+    return;
+}
+
+var {
+    a,
+    b
+} = data() || {};
+
+{% endhighlight %}
+
 ### Nested Object Destructuring
+
+Consider this:
+
+{% highlight javascript %}
+
+function data() {
+    return {
+        a: 1,
+        b: {
+            c: 3,
+            d: 4
+        }
+    };
+}
+
+var tmp = data() || {};
+var a = tmp.a;
+var b = tmp.b;
+var c = b.c;
+var d = b.d;
+
+{% endhighlight %}
+
+And using destructuring:
+
+{% highlight javascript %}
+
+function data() {
+    return {
+        a: 1,
+        b: {
+            c: 3,
+            d: 4
+        }
+    };
+}
+
+var {
+    a,
+    b: {
+        c,
+        d
+    } = {}
+} = data() || {};
+
+{% endhighlight %}
+
+Pretty similar to nested array destructuring? Yeah... I went ahead and threw in the default value for `b` for the event that it doesn't exist, it will be set to an empty object `{}`. Kyle admits that it is extremely difficult to remember to set defaults, especially in nested destructuring patterns, so he recommends to use a linter, surprisingly, ESLint, which in a previous course of his, he was quite strongly against and was so against that he was making his own. It is dead now... use ESLint!
 
 ### Default Assignment Q & A
 
+Q: I've seen people use a placeholder like 'default object' that includes the entire 'tree' instead of an empty object, is that overkill?
+
+A: Yes. It is recommended to place the default values inside of the destructuring pattern and **only** use an empty object `{}` for the fallback.
+
 ### Parameter Objects
 
+Don't do this:
+
+{% highlight javascript %}
+
+function data(tmp = {}) {
+    var {
+        a,
+        b
+    } = tmp;
+    //..
+}
+
+{% endhighlight %}
+
+Do this!
+
+{% highlight javascript %}
+
+function data({
+    a,
+    b
+} = {}) {
+    //..
+}
+
+{% endhighlight %}
+
+That is to say... If you do not need access to the entire object, the proper way to destructure a parameter object is shown in the second example. Otherwise, you should probably stick with the imperative approach and destructure off of `tmp` inside of the function.
+
 ### Nested Object & Array Destructuring
+
+Something unique about object destructuring over array destructuring is that we have access to the objects properties and can use them more than once in a destructuring pattern, whereas with array destructuring, we cannot. 😞 Check it out!
+
+{% highlight javascript %}
+
+var obj = {
+    a: 1,
+    b: 2,
+    c: 3
+};
+
+var {
+    a,
+    b: b,
+    b: w,
+    c
+} = obj;
+
+{% endhighlight %}
+
+The above is especially useful when dealing with nested objects. i.e. if you wanted to capture the entirety of `b` and then capture a nested property, something like:
+
+{% highlight javascript %}
+
+var obj = {
+    a: 1,
+    b: {
+        x: 2
+    },
+    c: 3
+};
+
+var {
+    a,
+    b: b,
+    b: {
+        x: w
+    },
+    c
+} = obj;
+
+{% endhighlight %}
+
+You can also have arrays nested within objects, and destructure them...
+
+{% highlight javascript %}
+
+var obj = {
+    a: 1,
+    b: [42, 187],
+    c: 3
+};
+
+var {
+    a,
+    b: b,
+    b: [
+        W,
+        X
+    ] = [],
+    c
+} = obj;
+
+{% endhighlight %}
+
+You can effectively have any [nested] combination of arrays and objects and destructure them. Don't forget your defaults!
 
 ## Further Destructuring
 
