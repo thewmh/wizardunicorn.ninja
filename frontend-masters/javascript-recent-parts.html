@@ -732,7 +732,94 @@ order is </span><span class="p">${</span><span class="nx">amount</span><span cla
 
 <h3 id="named-arguments">Named Arguments</h3>
 
+<p>Reading this set of notes about this workshop is not enough to be like, “oh yeah! I know destructuring”, you will need to practice destructuring to really get the hang of and truly understand it. So don’t feel bad if you’re using your favorite search engine frequently to brush up on it, unless you are destructuring daily… then you’ve got problems. But to help you become even more familiar with destructuring, here is another example to look at:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">lookupRecord</span><span class="p">(</span><span class="nx">store</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">person-records</span><span class="dl">"</span><span class="p">,</span> <span class="nx">id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">//..</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">lookupRecord</span><span class="p">({</span>
+    <span class="nx">store</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">person-records</span><span class="dl">"</span><span class="p">,</span>
+    <span class="nx">id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="p">})</span> <span class="p">{</span>
+    <span class="c1">//..</span>
+<span class="p">}</span>
+
+<span class="nx">lookupRecord</span><span class="p">(</span> <span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="mi">42</span><span class="p">}</span> <span class="p">);</span></code></pre></figure>
+
+<p>In the first instance of the <code class="language-plaintext highlighter-rouge">lookupRecord</code> function, there is no way to ‘supply’ arguments to the function other than the order that they are defined; ie. store, id. But if we instead define the argument as an object, we have effectively created named arguments for our function which we can now pass to it as you can see in the second instance of the <code class="language-plaintext highlighter-rouge">lookupRecord</code> function and finally at the call-site (the last line of the code snippet above). It is recommended that whenever you have a function that takes 3 or more inputs / arguments to use object destructuring as seen above. Don’t run off and refactor all your things, but use it moving forward.</p>
+
+<p>Furthermore, if you are going to start using named arguments as recommended, you may run into the issue that you now have to remember the precise name of the argument… it is for this reason, needing to remember the name of the named argument, that you should come up with some sort of convention that you always use for specific types of arguments; i.e. if you are always passing in a callback, perhaps you would name the named argument <code class="language-plaintext highlighter-rouge">cbreezy</code> or something more formal if needed. Named arguments is a very popular idiom in JavaScript. Learn it, use it.</p>
+
 <h3 id="destructuring--restructuring">Destructuring &amp; Restructuring</h3>
+
+<p>Here’s a bit more sophisticated of an example, but one that many have likely ran into at some point. Check out this code, then I’ll try to explain it after:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// most common approach, using extend(..)</span>
+
+<span class="kd">var</span> <span class="nx">defaults</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">url</span><span class="p">:</span> <span class="dl">"</span><span class="s2">http:/some.base.url/api</span><span class="dl">"</span><span class="p">,</span>
+    <span class="na">method</span><span class="p">:</span> <span class="dl">"</span><span class="s2">post</span><span class="dl">"</span><span class="p">,</span>
+    <span class="na">headers</span><span class="p">:</span> <span class="p">[</span>
+        <span class="dl">"</span><span class="s2">Content-Type: text/plain</span><span class="dl">"</span>
+    <span class="p">]</span>
+<span class="p">};</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">defaults</span><span class="p">);</span>
+
+<span class="c1">// *************************</span>
+
+<span class="kd">var</span> <span class="nx">settings</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">url</span><span class="p">:</span> <span class="dl">"</span><span class="s2">http://some.other.url/</span><span class="dl">"</span><span class="p">,</span>
+    <span class="na">data</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
+    <span class="na">callback</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">resp</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* .. */</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// underscore extend(..)</span>
+<span class="nx">ajax</span><span class="p">(</span> <span class="nx">_</span><span class="p">.</span><span class="nx">extend</span><span class="p">({},</span> <span class="nx">defaults</span><span class="p">,</span> <span class="nx">settings</span><span class="p">)</span> <span class="p">);</span>
+
+<span class="c1">// or: ajax( Object.assign({}, defaults, settings) );</span></code></pre></figure>
+
+<p>The above is essentially a couple sets of setting objects (default and settings) that should be ‘mixed together’ at the call-site for an AJAX call. For example, in the case of the <code class="language-plaintext highlighter-rouge">url</code> property, the one in the <code class="language-plaintext highlighter-rouge">settings</code> object should override the <code class="language-plaintext highlighter-rouge">url</code> property of the <code class="language-plaintext highlighter-rouge">default</code> object. Underscore’s <code class="language-plaintext highlighter-rouge">.extend</code> will copy <code class="language-plaintext highlighter-rouge">defaults</code> into the provided empty object, then it will copy <code class="language-plaintext highlighter-rouge">settings</code> into that same object, overriding any same properties that exist with whatever was brought in last. Fine… but all that is the imperative approach and Kyle don’t like that. Let’s use destructuring to make it more better, with something he calls: Destructuring &amp; Restructuring:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">ajaxOptions</span><span class="p">({</span>
+    <span class="nx">url</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">http://some.base.url/api</span><span class="dl">"</span><span class="p">,</span>
+    <span class="nx">method</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">post</span><span class="dl">"</span><span class="p">,</span>
+    <span class="nx">data</span><span class="p">,</span>
+    <span class="nx">callback</span><span class="p">,</span>
+    <span class="na">headers</span><span class="p">:</span> <span class="p">[</span>
+        <span class="nx">headers0</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Content-Type: text/plain</span><span class="dl">"</span><span class="p">,</span>
+        <span class="p">...</span><span class="nx">otherHeaders</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="p">}</span> <span class="o">=</span> <span class="p">{})</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="nx">url</span><span class="p">,</span> <span class="nx">method</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">callback</span><span class="p">,</span>
+        <span class="na">headers</span><span class="p">:</span> <span class="p">[</span>
+            <span class="nx">headers0</span><span class="p">,</span>
+            <span class="p">...</span><span class="nx">otherHeaders</span>
+        <span class="p">]</span>
+    <span class="p">};</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Great. Now we have an <code class="language-plaintext highlighter-rouge">ajaxOptions</code> function that has a bunch of named arguments. This is pretty useful! As you can see, anywhere there is an applicable default value (url, method…), it has been defined. Then, in the return statement is where the ‘restructuring’ happens. The parameters are destructured, then restructured in the return. This is definitely a more declarative approach to defining a function without having to rely on a third-party library. Here is an example of how to use the <code class="language-plaintext highlighter-rouge">ajaxOptions</code>:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// with no arguments, returns the defaults</span>
+<span class="c1">// as an object if necessary</span>
+<span class="kd">var</span> <span class="nx">defaults</span> <span class="o">=</span> <span class="nx">ajaxOptions</span><span class="p">();</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">defaults</span><span class="p">);</span>
+
+<span class="c1">// *************************</span>
+
+<span class="kd">var</span> <span class="nx">settings</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">url</span><span class="p">:</span> <span class="dl">"</span><span class="s2">http://some.other.url/</span><span class="dl">"</span><span class="p">,</span>
+    <span class="na">data</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
+    <span class="na">callback</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">resp</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* .. */</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// with an argument, mixes in the settings</span>
+<span class="c1">// with the defaults</span>
+<span class="nx">ajax</span><span class="p">(</span> <span class="nx">ajaxOptions</span><span class="p">(</span> <span class="nx">settings</span> <span class="p">)</span> <span class="p">);</span></code></pre></figure>
 
 <h3 id="destructuring-exercise">Destructuring Exercise</h3>
 
