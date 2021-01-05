@@ -2,6 +2,7 @@
 layout: default
 title: "Wizard Unicorn Ninja"
 include-title: false
+permalink: /
 ---
 # 👋 I'm William Harrison
 
