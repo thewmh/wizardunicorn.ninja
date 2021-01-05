@@ -20,7 +20,7 @@ Organized by subject.
 
 [Deep Javascript Foundations, v3](deep-javascript-foundations)
 
-12/2020 **IN PROGRESS** JavaScript: The Recent Parts [🤫](javascript-recent-parts)
+01/2021 **IN PROGRESS** JavaScript: The Recent Parts [🤫](javascript-recent-parts)
 
 ## Webpack
 
@@ -34,4 +34,4 @@ Organized by subject.
 
 [Complete Intro to React, v5](complete-intro-react)
 
-12/2020 **IN PROGRESS** Intermediate React, v2 [🤫](intermediate-react)
+01/2021 **IN PROGRESS** Intermediate React, v2 [🤫](intermediate-react)

@@ -450,7 +450,93 @@ var y = 20;
 
 ### Parameter Arrays
 
+If we can do array destructuring on our assignment list, we can also do [destructuring] in parameter positions. For example, you could do something like this:
+
+{% highlight javascript %}
+
+function data(tmp) {
+    var [
+        first,
+        second,
+        third
+    ] = tmp;
+}
+
+{% endhighlight %}
+
+Or, you could actually destructure the `tmp` parameter, like this:
+
+{% highlight javascript %}
+
+function data([
+    first,
+    second,
+    third
+]) {
+    //..
+}
+
+{% endhighlight %}
+
+The above (beyond the data being an array) cares less about what is being passed in and more about naming the first three index positions of the array as: first, second, third. The multiline formatting of the function signature is for readability. Do it.
+
+What would happen if the `data()` function had a return value of `null`? Whether using destructuring or not, you would end up with a 'type error'. The point being that destructuring is essentially syntactic sugar for the imperative approach, meaning that it is the same as the imperative approach, but potentially more declarative and readable. So, how could we 'build-in' a fallback for the variables so they end up `undefined` rather than `null` or as an empty array? By providing an empty array as the fallback! Imperatively: `var tmp = data() || [];`, using destructuring: `//.. ] = tmp = data() || [];`... the two are essentially the same...
+
+What about when it is a parameter that we are passing in? How do we make sure that there is a default value for a parameter being passed into a function? By using a 'default parameter value'! Like so:
+
+Imperatively: `function data(tmp = []) {...`
+
+Destructuring: `function data([//..] = []) {//..}`
+
+It is recommended to get in the habit of providing default values so that your destructuring patterns fallback to undefined rather than throwing a type error. AND, you may also want your variables to have default values... define them; i.e. `first = 10, second = 20, third = 30...` or whatever you may need them to be.
+
 ### Nested Array Destructuring
+
+How do you pull the values out of nested arrays? Here's how that could look with an imperative approach:
+
+{% highlight javascript %}
+
+function data(){
+    return [1, [2, 3], 4];
+}
+
+var tmp = data() || [];
+
+var first = tmp[0];
+var tmp2 = tmp[1];
+var second = tmp2[0];
+var third = tmp2[1];
+var fourth = tmp[2];
+
+{% endhighlight %}
+
+😞 Kind of not enjoyable, but that is how it is done. How about with destructuring?
+
+{% highlight javascript %}
+
+function data() {
+    return [1, [2, 3], 4];
+}
+
+var tmp;
+var [
+    first,
+    [
+        second,
+        third
+    ],
+    fourth
+] = tmp = data() || [];
+
+{% endhighlight %}
+
+But what if the value in index position 1 of the array is actually `undefined`? How can you provide a default value so that your things do not explode?! Like this:
+
+Imperatively: `var tmp2 = tmp[1] || [];`
+
+Destructured: `//.. [ second, third ] = [], //..`
+
+Doing the above, will provide graceful fallback for your variables. ❤️
 
 ## Object Destructuring
 
