@@ -513,17 +513,220 @@ order is </span><span class="p">${</span><span class="nx">amount</span><span cla
 
 <h3 id="object-destructuring-1">Object Destructuring</h3>
 
+<p>More destructuring! This may look pretty similar to the array destructuring that was just covered, but read on just in case there are some hidden 💎s (hint: there will be). Look at the following:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="na">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">b</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="na">c</span><span class="p">:</span> <span class="mi">3</span><span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">tmp</span> <span class="o">=</span> <span class="nx">data</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">first</span> <span class="o">=</span> <span class="nx">tmp</span><span class="p">.</span><span class="nx">a</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">second</span> <span class="o">=</span> <span class="nx">tmp</span><span class="p">.</span><span class="nx">b</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">third</span> <span class="o">=</span> <span class="nx">tmp</span><span class="p">.</span><span class="nx">c</span><span class="p">;</span></code></pre></figure>
+
+<p>Here is its destructured equivalent:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="na">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">b</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="na">c</span><span class="p">:</span> <span class="mi">3</span><span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="p">{</span>
+    <span class="na">a</span><span class="p">:</span> <span class="nx">first</span><span class="p">,</span>
+    <span class="na">b</span><span class="p">:</span> <span class="nx">second</span><span class="p">,</span>
+    <span class="na">c</span><span class="p">:</span> <span class="nx">third</span>
+<span class="p">}</span> <span class="o">=</span> <span class="nx">data</span><span class="p">();</span></code></pre></figure>
+
+<p>Notice the destructuring pattern for an object is <code class="language-plaintext highlighter-rouge">source: variableName</code>, this already looks a little different than array destructuring! And since we are working with an object, which requires the source, the order of assignment is whatever you like; i.e. you could order your destructuring pattern backwards <code class="language-plaintext highlighter-rouge">c: third, b: second, a: first</code> and the result would be the same.</p>
+
+<p>Similar to working with arrays, if you attempt to assign a variable a value which does not exist, it will be assigned <code class="language-plaintext highlighter-rouge">undefined</code>. Also similar to what we saw with arrays, if there is anything extra that is not used, it is basically ignored. Dissimilar to working with arrays, if you want to gather up the remaining values from an object, it is not as simple as using <code class="language-plaintext highlighter-rouge">.slice()</code>, but looping over the object using <code class="language-plaintext highlighter-rouge">object.keys</code> and finding the things you are already capturing, ignoring them, and bundling the rest up in a new object… at least in an imperative approach. With destructuring, use ‘object rest’! Object rest is exactly the same as we have seen with array destructuring, <code class="language-plaintext highlighter-rouge">...variableName</code> will capture any remaining unaccounted for values from the object you are destructuring and place them into a new object for you.</p>
+
+<p>Another similarity to array destructuring, if we need to have default values for variables in the case that a specific parameter does not exist, in object destructuring you can set a default like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//..</span>
+<span class="nx">a</span><span class="p">:</span> <span class="nx">first</span> <span class="o">=</span> <span class="mi">42</span><span class="p">,</span>
+<span class="c1">//..</span></code></pre></figure>
+
+<p>Of course w/ an imperative approach, we’d still be using the long-in-the-tooth ternary operator (re-read the array destructuring for an example of that).</p>
+
+<p>Kyle goes on to explain how he had trouble understanding object destructuring at first, because of the <code class="language-plaintext highlighter-rouge">source: target = default</code> format, and then explains how it now makes sense to him which did not make any sense whatsoever to me, so I ran off to MDN and found their explanation, I recommended reading it: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Object_destructuring">Mozilla Developer Network - Object destructuring</a></p>
+
 <h3 id="object-assignment-destructuring">Object Assignment Destructuring</h3>
+
+<p>Another non-surprise, but if you have already declared your vars, you do not need to redeclare them when destructuring, or when not destructuring for that matter. However, if you have no declarator, JavaScript will view your object as a block and not an object. This is not your fault, it is JavaScript’s. Fear not, wrap everything in parenthesis and you’ll be destructuring objects using already declared vars in no time! Here’s an example:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="na">b</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="na">c</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="na">d</span><span class="p">:</span> <span class="mi">4</span><span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">first</span><span class="p">,</span> <span class="nx">second</span><span class="p">;</span>
+
+<span class="p">({</span>
+    <span class="na">b</span><span class="p">:</span> <span class="nx">second</span><span class="p">,</span>
+    <span class="na">a</span><span class="p">:</span> <span class="nx">first</span>
+<span class="p">}</span> <span class="o">=</span> <span class="nx">data</span><span class="p">());</span></code></pre></figure>
+
+<p>Notice how the entire statement is wrapped, not just the pattern. Another approach, which we technically covered w/ arrays but I may have conveniently glossed over / left out… is if you need to store all of whatever would be returned from <code class="language-plaintext highlighter-rouge">data()</code>, say <code class="language-plaintext highlighter-rouge">var tmp = data();</code>, with destructuring, we could do something like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//..</span>
+<span class="kd">var</span> <span class="nx">tmp</span><span class="p">;</span>
+<span class="c1">//..</span>
+<span class="nx">tmp</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">b</span><span class="p">:</span> <span class="nx">second</span><span class="p">,</span>
+    <span class="na">a</span><span class="p">:</span> <span class="nx">first</span>
+<span class="p">}</span> <span class="o">=</span> <span class="nx">data</span><span class="p">();</span></code></pre></figure>
+
+<p>Now that we’ve included <code class="language-plaintext highlighter-rouge">tmp =...</code>, there is no way that JavaScript could confuse our ‘undeclared’ object as anything other than a destructuring pattern.</p>
 
 <h3 id="object-default-assignment">Object Default Assignment</h3>
 
+<p>Similar to array destructuring, if what gets returned does not exist, aka returns null or undefined, we can set a default assignment:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="p">{</span>
+    <span class="na">b</span><span class="p">:</span> <span class="nx">second</span><span class="p">,</span>
+    <span class="na">a</span><span class="p">:</span> <span class="nx">first</span>
+<span class="p">}</span> <span class="o">=</span> <span class="nx">data</span><span class="p">()</span> <span class="o">||</span> <span class="p">{};</span></code></pre></figure>
+
+<p>Additionally, (and unrelated?) if the target and source are the same name, you only need to list it once, like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="p">{</span>
+    <span class="nx">a</span><span class="p">,</span>
+    <span class="nx">b</span>
+<span class="p">}</span> <span class="o">=</span> <span class="nx">data</span><span class="p">()</span> <span class="o">||</span> <span class="p">{};</span></code></pre></figure>
+
 <h3 id="nested-object-destructuring">Nested Object Destructuring</h3>
+
+<p>Consider this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="na">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="na">b</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">c</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="na">d</span><span class="p">:</span> <span class="mi">4</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">tmp</span> <span class="o">=</span> <span class="nx">data</span><span class="p">()</span> <span class="o">||</span> <span class="p">{};</span>
+<span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="nx">tmp</span><span class="p">.</span><span class="nx">a</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="nx">tmp</span><span class="p">.</span><span class="nx">b</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">b</span><span class="p">.</span><span class="nx">c</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="nx">b</span><span class="p">.</span><span class="nx">d</span><span class="p">;</span></code></pre></figure>
+
+<p>And using destructuring:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="na">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="na">b</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">c</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="na">d</span><span class="p">:</span> <span class="mi">4</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="p">{</span>
+    <span class="nx">a</span><span class="p">,</span>
+    <span class="na">b</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nx">c</span><span class="p">,</span>
+        <span class="nx">d</span>
+    <span class="p">}</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="p">}</span> <span class="o">=</span> <span class="nx">data</span><span class="p">()</span> <span class="o">||</span> <span class="p">{};</span></code></pre></figure>
+
+<p>Pretty similar to nested array destructuring? Yeah… I went ahead and threw in the default value for <code class="language-plaintext highlighter-rouge">b</code> for the event that it doesn’t exist, it will be set to an empty object <code class="language-plaintext highlighter-rouge">{}</code>. Kyle admits that it is extremely difficult to remember to set defaults, especially in nested destructuring patterns, so he recommends to use a linter, surprisingly, ESLint, which in a previous course of his, he was quite strongly against and was so against that he was making his own. It is dead now… use ESLint!</p>
 
 <h3 id="default-assignment-q--a">Default Assignment Q &amp; A</h3>
 
+<p>Q: I’ve seen people use a placeholder like ‘default object’ that includes the entire ‘tree’ instead of an empty object, is that overkill?</p>
+
+<p>A: Yes. It is recommended to place the default values inside of the destructuring pattern and <strong>only</strong> use an empty object <code class="language-plaintext highlighter-rouge">{}</code> for the fallback.</p>
+
 <h3 id="parameter-objects">Parameter Objects</h3>
 
+<p>Don’t do this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">data</span><span class="p">(</span><span class="nx">tmp</span> <span class="o">=</span> <span class="p">{})</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="p">{</span>
+        <span class="nx">a</span><span class="p">,</span>
+        <span class="nx">b</span>
+    <span class="p">}</span> <span class="o">=</span> <span class="nx">tmp</span><span class="p">;</span>
+    <span class="c1">//..</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Do this!</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">data</span><span class="p">({</span>
+    <span class="nx">a</span><span class="p">,</span>
+    <span class="nx">b</span>
+<span class="p">}</span> <span class="o">=</span> <span class="p">{})</span> <span class="p">{</span>
+    <span class="c1">//..</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>That is to say… If you do not need access to the entire object, the proper way to destructure a parameter object is shown in the second example. Otherwise, you should probably stick with the imperative approach and destructure off of <code class="language-plaintext highlighter-rouge">tmp</code> inside of the function.</p>
+
 <h3 id="nested-object--array-destructuring">Nested Object &amp; Array Destructuring</h3>
+
+<p>Something unique about object destructuring over array destructuring is that we have access to the objects properties and can use them more than once in a destructuring pattern, whereas with array destructuring, we cannot. 😞 Check it out!</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="na">b</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="na">c</span><span class="p">:</span> <span class="mi">3</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="p">{</span>
+    <span class="nx">a</span><span class="p">,</span>
+    <span class="na">b</span><span class="p">:</span> <span class="nx">b</span><span class="p">,</span>
+    <span class="na">b</span><span class="p">:</span> <span class="nx">w</span><span class="p">,</span>
+    <span class="nx">c</span>
+<span class="p">}</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">;</span></code></pre></figure>
+
+<p>The above is especially useful when dealing with nested objects. i.e. if you wanted to capture the entirety of <code class="language-plaintext highlighter-rouge">b</code> and then capture a nested property, something like:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="na">b</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">x</span><span class="p">:</span> <span class="mi">2</span>
+    <span class="p">},</span>
+    <span class="na">c</span><span class="p">:</span> <span class="mi">3</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="p">{</span>
+    <span class="nx">a</span><span class="p">,</span>
+    <span class="na">b</span><span class="p">:</span> <span class="nx">b</span><span class="p">,</span>
+    <span class="na">b</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">x</span><span class="p">:</span> <span class="nx">w</span>
+    <span class="p">},</span>
+    <span class="nx">c</span>
+<span class="p">}</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">;</span></code></pre></figure>
+
+<p>You can also have arrays nested within objects, and destructure them…</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="na">b</span><span class="p">:</span> <span class="p">[</span><span class="mi">42</span><span class="p">,</span> <span class="mi">187</span><span class="p">],</span>
+    <span class="na">c</span><span class="p">:</span> <span class="mi">3</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="p">{</span>
+    <span class="nx">a</span><span class="p">,</span>
+    <span class="na">b</span><span class="p">:</span> <span class="nx">b</span><span class="p">,</span>
+    <span class="na">b</span><span class="p">:</span> <span class="p">[</span>
+        <span class="nx">W</span><span class="p">,</span>
+        <span class="nx">X</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="nx">c</span>
+<span class="p">}</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">;</span></code></pre></figure>
+
+<p>You can effectively have any [nested] combination of arrays and objects and destructure them. Don’t forget your defaults!</p>
 
 <h2 id="further-destructuring">Further Destructuring</h2>
 
