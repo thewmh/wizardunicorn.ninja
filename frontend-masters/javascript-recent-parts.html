@@ -437,7 +437,77 @@ order is </span><span class="p">${</span><span class="nx">amount</span><span cla
 
 <h3 id="parameter-arrays">Parameter Arrays</h3>
 
+<p>If we can do array destructuring on our assignment list, we can also do [destructuring] in parameter positions. For example, you could do something like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">data</span><span class="p">(</span><span class="nx">tmp</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="p">[</span>
+        <span class="nx">first</span><span class="p">,</span>
+        <span class="nx">second</span><span class="p">,</span>
+        <span class="nx">third</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="nx">tmp</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Or, you could actually destructure the <code class="language-plaintext highlighter-rouge">tmp</code> parameter, like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">data</span><span class="p">([</span>
+    <span class="nx">first</span><span class="p">,</span>
+    <span class="nx">second</span><span class="p">,</span>
+    <span class="nx">third</span>
+<span class="p">])</span> <span class="p">{</span>
+    <span class="c1">//..</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The above (beyond the data being an array) cares less about what is being passed in and more about naming the first three index positions of the array as: first, second, third. The multiline formatting of the function signature is for readability. Do it.</p>
+
+<p>What would happen if the <code class="language-plaintext highlighter-rouge">data()</code> function had a return value of <code class="language-plaintext highlighter-rouge">null</code>? Whether using destructuring or not, you would end up with a ‘type error’. The point being that destructuring is essentially syntactic sugar for the imperative approach, meaning that it is the same as the imperative approach, but potentially more declarative and readable. So, how could we ‘build-in’ a fallback for the variables so they end up <code class="language-plaintext highlighter-rouge">undefined</code> rather than <code class="language-plaintext highlighter-rouge">null</code> or as an empty array? By providing an empty array as the fallback! Imperatively: <code class="language-plaintext highlighter-rouge">var tmp = data() || [];</code>, using destructuring: <code class="language-plaintext highlighter-rouge">//.. ] = tmp = data() || [];</code>… the two are essentially the same…</p>
+
+<p>What about when it is a parameter that we are passing in? How do we make sure that there is a default value for a parameter being passed into a function? By using a ‘default parameter value’! Like so:</p>
+
+<p>Imperatively: <code class="language-plaintext highlighter-rouge">function data(tmp = []) {...</code></p>
+
+<p>Destructuring: <code class="language-plaintext highlighter-rouge">function data([//..] = []) {//..}</code></p>
+
+<p>It is recommended to get in the habit of providing default values so that your destructuring patterns fallback to undefined rather than throwing a type error. AND, you may also want your variables to have default values… define them; i.e. <code class="language-plaintext highlighter-rouge">first = 10, second = 20, third = 30...</code> or whatever you may need them to be.</p>
+
 <h3 id="nested-array-destructuring">Nested Array Destructuring</h3>
+
+<p>How do you pull the values out of nested arrays? Here’s how that could look with an imperative approach:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">data</span><span class="p">(){</span>
+    <span class="k">return</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="mi">4</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">tmp</span> <span class="o">=</span> <span class="nx">data</span><span class="p">()</span> <span class="o">||</span> <span class="p">[];</span>
+
+<span class="kd">var</span> <span class="nx">first</span> <span class="o">=</span> <span class="nx">tmp</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">tmp2</span> <span class="o">=</span> <span class="nx">tmp</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">second</span> <span class="o">=</span> <span class="nx">tmp2</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">third</span> <span class="o">=</span> <span class="nx">tmp2</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">fourth</span> <span class="o">=</span> <span class="nx">tmp</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span></code></pre></figure>
+
+<p>😞 Kind of not enjoyable, but that is how it is done. How about with destructuring?</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="mi">4</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">tmp</span><span class="p">;</span>
+<span class="kd">var</span> <span class="p">[</span>
+    <span class="nx">first</span><span class="p">,</span>
+    <span class="p">[</span>
+        <span class="nx">second</span><span class="p">,</span>
+        <span class="nx">third</span>
+    <span class="p">],</span>
+    <span class="nx">fourth</span>
+<span class="p">]</span> <span class="o">=</span> <span class="nx">tmp</span> <span class="o">=</span> <span class="nx">data</span><span class="p">()</span> <span class="o">||</span> <span class="p">[];</span></code></pre></figure>
+
+<p>But what if the value in index position 1 of the array is actually <code class="language-plaintext highlighter-rouge">undefined</code>? How can you provide a default value so that your things do not explode?! Like this:</p>
+
+<p>Imperatively: <code class="language-plaintext highlighter-rouge">var tmp2 = tmp[1] || [];</code></p>
+
+<p>Destructured: <code class="language-plaintext highlighter-rouge">//.. [ second, third ] = [], //..</code></p>
+
+<p>Doing the above, will provide graceful fallback for your variables. ❤️</p>
 
 <h2 id="object-destructuring">Object Destructuring</h2>
 
