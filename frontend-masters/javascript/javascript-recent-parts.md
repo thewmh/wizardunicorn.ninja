@@ -817,7 +817,110 @@ You can effectively have any [nested] combination of arrays and objects and dest
 
 ### Named Arguments
 
+Reading this set of notes about this workshop is not enough to be like, "oh yeah! I know destructuring", you will need to practice destructuring to really get the hang of and truly understand it. So don't feel bad if you're using your favorite search engine frequently to brush up on it, unless you are destructuring daily... then you've got problems. But to help you become even more familiar with destructuring, here is another example to look at:
+
+{% highlight javascript %}
+
+function lookupRecord(store = "person-records", id = -1) {
+    //..
+}
+
+function lookupRecord({
+    store = "person-records",
+    id = -1
+}) {
+    //..
+}
+
+lookupRecord( { id: 42} );
+
+{% endhighlight %}
+
+In the first instance of the `lookupRecord` function, there is no way to 'supply' arguments to the function other than the order that they are defined; ie. store, id. But if we instead define the argument as an object, we have effectively created named arguments for our function which we can now pass to it as you can see in the second instance of the `lookupRecord` function and finally at the call-site (the last line of the code snippet above). It is recommended that whenever you have a function that takes 3 or more inputs / arguments to use object destructuring as seen above. Don't run off and refactor all your things, but use it moving forward.
+
+Furthermore, if you are going to start using named arguments as recommended, you may run into the issue that you now have to remember the precise name of the argument... it is for this reason, needing to remember the name of the named argument, that you should come up with some sort of convention that you always use for specific types of arguments; i.e. if you are always passing in a callback, perhaps you would name the named argument `cbreezy` or something more formal if needed. Named arguments is a very popular idiom in JavaScript. Learn it, use it.
+
 ### Destructuring & Restructuring
+
+Here's a bit more sophisticated of an example, but one that many have likely ran into at some point. Check out this code, then I'll try to explain it after:
+
+{% highlight javascript %}
+
+// most common approach, using extend(..)
+
+var defaults = {
+    url: "http:/some.base.url/api",
+    method: "post",
+    headers: [
+        "Content-Type: text/plain"
+    ]
+};
+
+console.log(defaults);
+
+// *************************
+
+var settings = {
+    url: "http://some.other.url/",
+    data: 42,
+    callback: function(resp) { /* .. */ }
+};
+
+// underscore extend(..)
+ajax( _.extend({}, defaults, settings) );
+
+// or: ajax( Object.assign({}, defaults, settings) );
+
+{% endhighlight %}
+
+The above is essentially a couple sets of setting objects (default and settings) that should be 'mixed together' at the call-site for an AJAX call. For example, in the case of the `url` property, the one in the `settings` object should override the `url` property of the `default` object. Underscore's `.extend` will copy `defaults` into the provided empty object, then it will copy `settings` into that same object, overriding any same properties that exist with whatever was brought in last. Fine... but all that is the imperative approach and Kyle don't like that. Let's use destructuring to make it more better, with something he calls: Destructuring & Restructuring:
+
+{% highlight javascript %}
+
+function ajaxOptions({
+    url = "http://some.base.url/api",
+    method = "post",
+    data,
+    callback,
+    headers: [
+        headers0 = "Content-Type: text/plain",
+        ...otherHeaders
+    ] = []
+} = {}) {
+    return {
+        url, method, data, callback,
+        headers: [
+            headers0,
+            ...otherHeaders
+        ]
+    };
+}
+
+{% endhighlight %}
+
+Great. Now we have an `ajaxOptions` function that has a bunch of named arguments. This is pretty useful! As you can see, anywhere there is an applicable default value (url, method...), it has been defined. Then, in the return statement is where the 'restructuring' happens. The parameters are destructured, then restructured in the return. This is definitely a more declarative approach to defining a function without having to rely on a third-party library. Here is an example of how to use the `ajaxOptions`:
+
+{% highlight javascript %}
+
+// with no arguments, returns the defaults
+// as an object if necessary
+var defaults = ajaxOptions();
+
+console.log(defaults);
+
+// *************************
+
+var settings = {
+    url: "http://some.other.url/",
+    data: 42,
+    callback: function(resp) { /* .. */ }
+};
+
+// with an argument, mixes in the settings
+// with the defaults
+ajax( ajaxOptions( settings ) );
+
+{% endhighlight %}
 
 ### Destructuring Exercise
 
