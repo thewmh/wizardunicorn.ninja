@@ -924,13 +924,182 @@ ajax( ajaxOptions( settings ) );
 
 ### Destructuring Exercise
 
+Following up the example we just saw (destructuring & restructuring), we will update the `handleResponse` function below. If you need any hints, look back at the last section, or skip ahead to the next section which has the actual solution.
+
+{% highlight javascript %}
+
+var defaults = {
+	topic: "JavaScript",
+	format: "Live",
+	slides: {
+		start: 0,
+		end: 100
+	}
+};
+
+fakeAjax("http://get-the-workshop.tld",handleResponse);
+
+// *******************************************************
+
+function handleResponse(/* destructuring here */) {
+
+	TestCase({
+		/* restructuring here */
+	});
+
+}
+
+function TestCase(data) {
+	console.log(
+		data.topic == "JS Recent Parts" &&
+		data.format == "Live" &&
+		data.slides.start === 0 &&
+		data.slides.end == 77
+	);
+}
+
+// *******************************************************
+
+function fakeAjax(url,cb) {
+	// fake ajax response:
+	cb({
+		topic: "JS Recent Parts",
+		slides: {
+			end: 77
+		}
+	});
+}
+
+{% endhighlight %}
+
 ### Destructuring Solution
+
+{% capture summary %}Click to view the solution{% endcapture %}
+{% capture details %}
+{% highlight javascript %}
+
+// var defaults = {
+// 	topic: "JavaScript",
+// 	format: "Live",
+// 	slides: {
+// 		start: 0,
+// 		end: 100
+// 	}
+// };
+
+fakeAjax("http://get-the-workshop.tld",handleResponse);
+
+// *******************************************************
+
+function handleResponse({
+    topic = "JavaScript",
+    format =  "Live",
+    slides: {
+        start = 0,
+        end = 100
+    }
+} = {}) {
+
+	TestCase({
+		topic, format, slides: {
+            start, end
+        }
+	});
+
+}
+
+function TestCase(data) {
+	console.log(
+		data.topic == "JS Recent Parts" &&
+		data.format == "Live" &&
+		data.slides.start === 0 &&
+		data.slides.end == 77
+	);
+}
+
+// *******************************************************
+
+function fakeAjax(url,cb) {
+	// fake ajax response:
+	cb({
+		topic: "JS Recent Parts",
+		slides: {
+			end: 77
+		}
+	});
+}
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %}
 
 ## Array Methods
 
 ### find, findIndex, & includes
 
+Take a look at this example for `arr.find`:
+
+{% highlight javascript %}
+
+var arr = [ { a: 1 }, { a: 2 } ];
+
+arr.find(function match(v){
+    return v && v.a > 1;
+});
+// { a: 2 }
+
+arr.find(function match(v){
+    return v && v.a > 10;
+});
+// undefined
+
+arr.findIndex(function match(v){
+    return v && v.a > 1;
+});
+// -1
+
+{% endhighlight %}
+
+If you have an array that holds values and maybe it's difficult to look for those values by their identity, in the case of objects? `.find` takes in a function callback and in the above example(s) you can see that if the return statement is `true`, the actual object will be returned, not `true`. This is similar to the array `.filter` method. If the value returned from the `.find` is `undefined` due to a `false` return value from the evaluated statement, it is indistinguishable from the array itself having a value which is `undefined`; i.e. [1, undefined, 2, 3] vs undefined... This is shown in the second example above. The solution to which is shown in the final example, using `.findIndex`. `.findIndex` will return `-1` if a value is not found (...undefined anyone?), so with that you know that the value definitely does not exist rather than having to guess or in some other way figure out whether your data / array has undefined as a value within it.
+
+Check out these `.indexOf` things and I'll explain after what they are:
+
+{% highlight javascript %}
+
+var arr = [10, 20, NaN, 30, 40, 50];
+
+arr.indexOf(30) != -1 // true
+
+~arr.indexOf(20); // -2 (truthy)
+
+~arr.indexOf(NaN); // -0 (falsy)
+
+{% endhighlight %}
+
+All of the above are examples of '`.indexOf` boolean hacking'. But as of ES2016, we have `.includes`, which looks like this:
+
+{% highlight javascript %}
+
+var arr = [10, 20, NaN, 30, 40, 50];
+
+arr.includes(20); // true
+
+arr.includes(60); // false
+
+arr.includes(20, 3); // false
+
+arr.includes(10, -2); // false
+
+arr.includes(40, -2); // true
+
+arr.includes(NaN); // true
+
+{% endhighlight %}
+
+`.includes` can provide a `true` or `false`, which was the purpose of '`.indexOf` boolean hacking', and it does so by checking the actual value instead of falsely checking the value as in the case of `===`. 
+
 ### flat & flatMap
+
+
 
 ## Iterators & Generators
 
