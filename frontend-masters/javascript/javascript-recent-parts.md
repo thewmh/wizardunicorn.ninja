@@ -1099,7 +1099,26 @@ arr.includes(NaN); // true
 
 ### flat & flatMap
 
+`.find` and `.includes` are good examples of helper methods that we would normally be bringing in from something like Lodash or another utility library, which are now being brought in to the JavaScript 'standard' library. Other examples of bringing in helper methods that you may commonly find in utility libraries are `.flat` and `.flatMap`. Both were added in ES2019.
 
+Here is an example of `.flat` in action:
+
+{% highlight javascript %}
+
+var nestedValues = [ 1, [ 2, 3, ], [[]], [4, [5] ], 6];
+
+nestedValues.flat(0);
+// [ 1, [ 2, 3, ], [[]], [4, [5] ], 6]
+
+nestedValues.flat(/*default: 1*/);
+// [ 1, 2, 3, [], 4, [5], 6]
+
+nestedValues.flat(2);
+// [ 1, 2, 3, 4, 5, 6]
+
+{% endhighlight %}
+
+In the above example(s), a flattening value of zero does nothing, the default value of 1 will remove a single level of nesting, and 2 will remove an additional level of nesting, in the example array provided, all nesting is flattened at level 2. 
 
 ## Iterators & Generators
 
