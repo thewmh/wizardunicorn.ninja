@@ -823,11 +823,162 @@ order is </span><span class="p">${</span><span class="nx">amount</span><span cla
 
 <h3 id="destructuring-exercise">Destructuring Exercise</h3>
 
+<p>Following up the example we just saw (destructuring &amp; restructuring), we will update the <code class="language-plaintext highlighter-rouge">handleResponse</code> function below. If you need any hints, look back at the last section, or skip ahead to the next section which has the actual solution.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">defaults</span> <span class="o">=</span> <span class="p">{</span>
+	<span class="na">topic</span><span class="p">:</span> <span class="dl">"</span><span class="s2">JavaScript</span><span class="dl">"</span><span class="p">,</span>
+	<span class="na">format</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Live</span><span class="dl">"</span><span class="p">,</span>
+	<span class="na">slides</span><span class="p">:</span> <span class="p">{</span>
+		<span class="na">start</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+		<span class="na">end</span><span class="p">:</span> <span class="mi">100</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">fakeAjax</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://get-the-workshop.tld</span><span class="dl">"</span><span class="p">,</span><span class="nx">handleResponse</span><span class="p">);</span>
+
+<span class="c1">// *******************************************************</span>
+
+<span class="kd">function</span> <span class="nx">handleResponse</span><span class="p">(</span><span class="cm">/* destructuring here */</span><span class="p">)</span> <span class="p">{</span>
+
+	<span class="nx">TestCase</span><span class="p">({</span>
+		<span class="cm">/* restructuring here */</span>
+	<span class="p">});</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">TestCase</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
+		<span class="nx">data</span><span class="p">.</span><span class="nx">topic</span> <span class="o">==</span> <span class="dl">"</span><span class="s2">JS Recent Parts</span><span class="dl">"</span> <span class="o">&amp;&amp;</span>
+		<span class="nx">data</span><span class="p">.</span><span class="nx">format</span> <span class="o">==</span> <span class="dl">"</span><span class="s2">Live</span><span class="dl">"</span> <span class="o">&amp;&amp;</span>
+		<span class="nx">data</span><span class="p">.</span><span class="nx">slides</span><span class="p">.</span><span class="nx">start</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+		<span class="nx">data</span><span class="p">.</span><span class="nx">slides</span><span class="p">.</span><span class="nx">end</span> <span class="o">==</span> <span class="mi">77</span>
+	<span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// *******************************************************</span>
+
+<span class="kd">function</span> <span class="nx">fakeAjax</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c1">// fake ajax response:</span>
+	<span class="nx">cb</span><span class="p">({</span>
+		<span class="na">topic</span><span class="p">:</span> <span class="dl">"</span><span class="s2">JS Recent Parts</span><span class="dl">"</span><span class="p">,</span>
+		<span class="na">slides</span><span class="p">:</span> <span class="p">{</span>
+			<span class="na">end</span><span class="p">:</span> <span class="mi">77</span>
+		<span class="p">}</span>
+	<span class="p">});</span>
+<span class="p">}</span></code></pre></figure>
+
 <h3 id="destructuring-solution">Destructuring Solution</h3>
+
+<details>
+    <summary>Click to view the solution
+</summary>
+    
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// var defaults = {</span>
+<span class="c1">// 	topic: "JavaScript",</span>
+<span class="c1">// 	format: "Live",</span>
+<span class="c1">// 	slides: {</span>
+<span class="c1">// 		start: 0,</span>
+<span class="c1">// 		end: 100</span>
+<span class="c1">// 	}</span>
+<span class="c1">// };</span>
+
+<span class="nx">fakeAjax</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://get-the-workshop.tld</span><span class="dl">"</span><span class="p">,</span><span class="nx">handleResponse</span><span class="p">);</span>
+
+<span class="c1">// *******************************************************</span>
+
+<span class="kd">function</span> <span class="nx">handleResponse</span><span class="p">({</span>
+    <span class="nx">topic</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">JavaScript</span><span class="dl">"</span><span class="p">,</span>
+    <span class="nx">format</span> <span class="o">=</span>  <span class="dl">"</span><span class="s2">Live</span><span class="dl">"</span><span class="p">,</span>
+    <span class="na">slides</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nx">start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="nx">end</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="p">}</span>
+<span class="p">}</span> <span class="o">=</span> <span class="p">{})</span> <span class="p">{</span>
+
+	<span class="nx">TestCase</span><span class="p">({</span>
+		<span class="nx">topic</span><span class="p">,</span> <span class="nx">format</span><span class="p">,</span> <span class="na">slides</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nx">start</span><span class="p">,</span> <span class="nx">end</span>
+        <span class="p">}</span>
+	<span class="p">});</span>
+
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">TestCase</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
+		<span class="nx">data</span><span class="p">.</span><span class="nx">topic</span> <span class="o">==</span> <span class="dl">"</span><span class="s2">JS Recent Parts</span><span class="dl">"</span> <span class="o">&amp;&amp;</span>
+		<span class="nx">data</span><span class="p">.</span><span class="nx">format</span> <span class="o">==</span> <span class="dl">"</span><span class="s2">Live</span><span class="dl">"</span> <span class="o">&amp;&amp;</span>
+		<span class="nx">data</span><span class="p">.</span><span class="nx">slides</span><span class="p">.</span><span class="nx">start</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+		<span class="nx">data</span><span class="p">.</span><span class="nx">slides</span><span class="p">.</span><span class="nx">end</span> <span class="o">==</span> <span class="mi">77</span>
+	<span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// *******************************************************</span>
+
+<span class="kd">function</span> <span class="nx">fakeAjax</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c1">// fake ajax response:</span>
+	<span class="nx">cb</span><span class="p">({</span>
+		<span class="na">topic</span><span class="p">:</span> <span class="dl">"</span><span class="s2">JS Recent Parts</span><span class="dl">"</span><span class="p">,</span>
+		<span class="na">slides</span><span class="p">:</span> <span class="p">{</span>
+			<span class="na">end</span><span class="p">:</span> <span class="mi">77</span>
+		<span class="p">}</span>
+	<span class="p">});</span>
+<span class="p">}</span></code></pre></figure>
+
+
+</details>
 
 <h2 id="array-methods">Array Methods</h2>
 
 <h3 id="find-findindex--includes">find, findIndex, &amp; includes</h3>
+
+<p>Take a look at this example for <code class="language-plaintext highlighter-rouge">arr.find</code>:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span> <span class="p">{</span> <span class="na">a</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span> <span class="p">{</span> <span class="na">a</span><span class="p">:</span> <span class="mi">2</span> <span class="p">}</span> <span class="p">];</span>
+
+<span class="nx">arr</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="kd">function</span> <span class="nx">match</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nx">v</span> <span class="o">&amp;&amp;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">a</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">});</span>
+<span class="c1">// { a: 2 }</span>
+
+<span class="nx">arr</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="kd">function</span> <span class="nx">match</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nx">v</span> <span class="o">&amp;&amp;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">a</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">;</span>
+<span class="p">});</span>
+<span class="c1">// undefined</span>
+
+<span class="nx">arr</span><span class="p">.</span><span class="nx">findIndex</span><span class="p">(</span><span class="kd">function</span> <span class="nx">match</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nx">v</span> <span class="o">&amp;&amp;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">a</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">});</span>
+<span class="c1">// -1</span></code></pre></figure>
+
+<p>If you have an array that holds values and maybe it’s difficult to look for those values by their identity, in the case of objects? <code class="language-plaintext highlighter-rouge">.find</code> takes in a function callback and in the above example(s) you can see that if the return statement is <code class="language-plaintext highlighter-rouge">true</code>, the actual object will be returned, not <code class="language-plaintext highlighter-rouge">true</code>. This is similar to the array <code class="language-plaintext highlighter-rouge">.filter</code> method. If the value returned from the <code class="language-plaintext highlighter-rouge">.find</code> is <code class="language-plaintext highlighter-rouge">undefined</code> due to a <code class="language-plaintext highlighter-rouge">false</code> return value from the evaluated statement, it is indistinguishable from the array itself having a value which is <code class="language-plaintext highlighter-rouge">undefined</code>; i.e. [1, undefined, 2, 3] vs undefined… This is shown in the second example above. The solution to which is shown in the final example, using <code class="language-plaintext highlighter-rouge">.findIndex</code>. <code class="language-plaintext highlighter-rouge">.findIndex</code> will return <code class="language-plaintext highlighter-rouge">-1</code> if a value is not found (…undefined anyone?), so with that you know that the value definitely does not exist rather than having to guess or in some other way figure out whether your data / array has undefined as a value within it.</p>
+
+<p>Check out these <code class="language-plaintext highlighter-rouge">.indexOf</code> things and I’ll explain after what they are:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="kc">NaN</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">];</span>
+
+<span class="nx">arr</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="c1">// true</span>
+
+<span class="o">~</span><span class="nx">arr</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span> <span class="c1">// -2 (truthy)</span>
+
+<span class="o">~</span><span class="nx">arr</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="kc">NaN</span><span class="p">);</span> <span class="c1">// -0 (falsy)</span></code></pre></figure>
+
+<p>All of the above are examples of ‘<code class="language-plaintext highlighter-rouge">.indexOf</code> boolean hacking’. But as of ES2016, we have <code class="language-plaintext highlighter-rouge">.includes</code>, which looks like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="kc">NaN</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">];</span>
+
+<span class="nx">arr</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span> <span class="c1">// true</span>
+
+<span class="nx">arr</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="mi">60</span><span class="p">);</span> <span class="c1">// false</span>
+
+<span class="nx">arr</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">// false</span>
+
+<span class="nx">arr</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">);</span> <span class="c1">// false</span>
+
+<span class="nx">arr</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">);</span> <span class="c1">// true</span>
+
+<span class="nx">arr</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="kc">NaN</span><span class="p">);</span> <span class="c1">// true</span></code></pre></figure>
+
+<p><code class="language-plaintext highlighter-rouge">.includes</code> can provide a <code class="language-plaintext highlighter-rouge">true</code> or <code class="language-plaintext highlighter-rouge">false</code>, which was the purpose of ‘<code class="language-plaintext highlighter-rouge">.indexOf</code> boolean hacking’, and it does so by checking the actual value instead of falsely checking the value as in the case of <code class="language-plaintext highlighter-rouge">===</code>.</p>
 
 <h3 id="flat--flatmap">flat &amp; flatMap</h3>
 
