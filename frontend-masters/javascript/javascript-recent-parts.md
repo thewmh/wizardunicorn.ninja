@@ -1118,7 +1118,15 @@ nestedValues.flat(2);
 
 {% endhighlight %}
 
-In the above example(s), a flattening value of zero does nothing, the default value of 1 will remove a single level of nesting, and 2 will remove an additional level of nesting, in the example array provided, all nesting is flattened at level 2. 
+In the above example(s), a flattening value of zero does nothing, the default value of 1 will remove a single level of nesting, and 2 will remove an additional level of nesting, in the example array provided, all nesting is flattened at level 2. If you want to have your array of arrays of arrays flattened and don't necessarily know how deeply nested the arrays are... give `.flat` a really big number.
+
+When a feature such as `.flat` lands in JavaScript, it is better to start to use it as it is built in to the language rather than continue to rely on third-party libraries. There is nothing wrong with third-party libraries, but we should always try to use anything that is built in to JavaScript before relying on anything else. `.flat` is great for flattening arrays, but what if you also want to map the array?! Fairly common in Functional Programming is the need to both flatten and map something at the 'same' time, enter `.flatMap`! Kyle doesn't get much into explaining Functional Programming or the necessity of using `.flatMap`, but here's some code to look at:
+
+{% highlight javascript %}
+
+
+
+{% endhighlight %}
 
 ## Iterators & Generators
 
