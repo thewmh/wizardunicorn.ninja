@@ -997,7 +997,9 @@ order is </span><span class="p">${</span><span class="nx">amount</span><span cla
 <span class="nx">nestedValues</span><span class="p">.</span><span class="nx">flat</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
 <span class="c1">// [ 1, 2, 3, 4, 5, 6]</span></code></pre></figure>
 
-<p>In the above example(s), a flattening value of zero does nothing, the default value of 1 will remove a single level of nesting, and 2 will remove an additional level of nesting, in the example array provided, all nesting is flattened at level 2.</p>
+<p>In the above example(s), a flattening value of zero does nothing, the default value of 1 will remove a single level of nesting, and 2 will remove an additional level of nesting, in the example array provided, all nesting is flattened at level 2. If you want to have your array of arrays of arrays flattened and don’t necessarily know how deeply nested the arrays are… give <code class="language-plaintext highlighter-rouge">.flat</code> a really big number.</p>
+
+<p>When a feature such as <code class="language-plaintext highlighter-rouge">.flat</code> lands in JavaScript, it is better to start to use it as it is built in to the language rather than continue to rely on third-party libraries. There is nothing wrong with third-party libraries, but we should always try to use anything that is built in to JavaScript before relying on anything else. <code class="language-plaintext highlighter-rouge">.flat</code> is great for flattening arrays, but what if you also want to map the array?! Fairly common in Functional Programming is the need to both flatten and map something at the ‘same’ time, enter <code class="language-plaintext highlighter-rouge">.flatMap</code>! Kyle doesn’t get much into explaining Functional Programming or the necessity of using <code class="language-plaintext highlighter-rouge">.flatMap</code>, but here’s some code to look at:</p>
 
 <h2 id="iterators--generators">Iterators &amp; Generators</h2>
 
