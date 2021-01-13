@@ -1124,13 +1124,67 @@ When a feature such as `.flat` lands in JavaScript, it is better to start to use
 
 {% highlight javascript %}
 
+[1, 2, 3].map(function tuples(v) {
+    return [ v * 2, String(v * 2) ];
+});
+// [ [2, "2"], [4, "4"], [6, "6"] ]
 
+[1, 2, 3].map(function tuples(v) {
+    return [ v * 2, String(v * 2) ];
+}).flat();
+// [ 2, "2", 4, "4", 6, "6" ]
+
+[1, 2, 3].flatMap(function all(v) {
+    return [ v * 2, String(v * 2) ];
+});
+// [ 2, "2", 4, "4", 6, "6" ]
 
 {% endhighlight %}
+
+Notice how the second and third example produce the same output. The second example uses `.map` then `.flat` whereas the third example uses `.flatMap`. `.flatMap` is basically 'flatten while you map' as opposed to 'map, then flatten'. Conceptually, they are the same, but from a performance and implementation perspective, the single utility function of `.flatMap` is more efficient and should also lend more clarity to the reader (of your code). The only shortcoming of `.flatMap` is that it assumes you are only flattening a single level and does not have the option to flatten more deeply. If you need to flatten and map an array that contains arrays that contain arrays... you'd have to `.map` then `.flat` it with a value specified to control how many 'levels' of your nested array get flattened. yuck... Something fun you can do with `.flatMap` is add additional elements to the returned array. Here's an example of exactly that:
+
+{% highlight javascript %}
+
+[1, 2, 3, 4, 5, 6].flatMap(function doubleEvens(v) {
+    if (v % 2 == 0) {
+        return [v, v * 2];
+    } else {
+        return [];
+    }
+});
+// [2, 4, 4, 8, 6, 12]
+
+{% endhighlight %}
+
+That's kinda cool... As of 2019, there were polyfills and transpilations available for these utility functions.
 
 ## Iterators & Generators
 
 ### Iterators
+
+Going back further in time to ES2015 🤦🏻‍♂️ (dear reader... unless you are completely new to JavaScript, please know this! JK... I don't even know it yet, we all gotta start somewhere), let's look at iterators and generators. What is an iterator you ask? An iterator is way to consume and view a data source's (whether it be an array directly in your code or something returned from an API) values one value at a time. Here's a code sample to illustrate the concept:
+
+{% highlight javascript %}
+
+var str = "Hello";
+var str2 = ["W", "o", "r", "l", "d"];
+
+var it1 = str[Symbol.iterator]();
+var it2 = str2[Symbol.iterator]();
+
+it1.next(); // { value: "H", done: false }
+it1.next(); // { value: "e", done: false }
+it1.next(); // { value: "l", done: false }
+it1.next(); // { value: "l", done: false }
+it1.next(); // { value: "o", done: false }
+it1.next(); // { value: undefined, done: true }
+
+it2.next(); // { value: "W", done: false }
+// ..
+
+{% endhighlight %}
+
+The above code is taking the iterable variables `str` and `str2` and then iterating over them using `.next`. Calling `.next` on `it1` or `it2` will return an 'iterator result' which is an object with two properties on it, a value property and a done property. The value is the value being iterated out and done is a boolean which tells you if there is anything more to iterate. When you hit the end of your iterable and get back `{ value: undefined, done: true }`, you will keep getting that value back if you continue to call `.next` on it. The iterator protocol does not support going backwards, but you could make an instance of an iterator that does. We'll look at that in a bit here.
 
 ### Declarative Iterators
 
