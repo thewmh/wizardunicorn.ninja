@@ -1001,9 +1001,57 @@ order is </span><span class="p">${</span><span class="nx">amount</span><span cla
 
 <p>When a feature such as <code class="language-plaintext highlighter-rouge">.flat</code> lands in JavaScript, it is better to start to use it as it is built in to the language rather than continue to rely on third-party libraries. There is nothing wrong with third-party libraries, but we should always try to use anything that is built in to JavaScript before relying on anything else. <code class="language-plaintext highlighter-rouge">.flat</code> is great for flattening arrays, but what if you also want to map the array?! Fairly common in Functional Programming is the need to both flatten and map something at the ‘same’ time, enter <code class="language-plaintext highlighter-rouge">.flatMap</code>! Kyle doesn’t get much into explaining Functional Programming or the necessity of using <code class="language-plaintext highlighter-rouge">.flatMap</code>, but here’s some code to look at:</p>
 
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">].</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="nx">tuples</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span> <span class="nx">v</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">String</span><span class="p">(</span><span class="nx">v</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="p">];</span>
+<span class="p">});</span>
+<span class="c1">// [ [2, "2"], [4, "4"], [6, "6"] ]</span>
+
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">].</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="nx">tuples</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span> <span class="nx">v</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">String</span><span class="p">(</span><span class="nx">v</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="p">];</span>
+<span class="p">}).</span><span class="nx">flat</span><span class="p">();</span>
+<span class="c1">// [ 2, "2", 4, "4", 6, "6" ]</span>
+
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">].</span><span class="nx">flatMap</span><span class="p">(</span><span class="kd">function</span> <span class="nx">all</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span> <span class="nx">v</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">String</span><span class="p">(</span><span class="nx">v</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="p">];</span>
+<span class="p">});</span>
+<span class="c1">// [ 2, "2", 4, "4", 6, "6" ]</span></code></pre></figure>
+
+<p>Notice how the second and third example produce the same output. The second example uses <code class="language-plaintext highlighter-rouge">.map</code> then <code class="language-plaintext highlighter-rouge">.flat</code> whereas the third example uses <code class="language-plaintext highlighter-rouge">.flatMap</code>. <code class="language-plaintext highlighter-rouge">.flatMap</code> is basically ‘flatten while you map’ as opposed to ‘map, then flatten’. Conceptually, they are the same, but from a performance and implementation perspective, the single utility function of <code class="language-plaintext highlighter-rouge">.flatMap</code> is more efficient and should also lend more clarity to the reader (of your code). The only shortcoming of <code class="language-plaintext highlighter-rouge">.flatMap</code> is that it assumes you are only flattening a single level and does not have the option to flatten more deeply. If you need to flatten and map an array that contains arrays that contain arrays… you’d have to <code class="language-plaintext highlighter-rouge">.map</code> then <code class="language-plaintext highlighter-rouge">.flat</code> it with a value specified to control how many ‘levels’ of your nested array get flattened. yuck… Something fun you can do with <code class="language-plaintext highlighter-rouge">.flatMap</code> is add additional elements to the returned array. Here’s an example of exactly that:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">].</span><span class="nx">flatMap</span><span class="p">(</span><span class="kd">function</span> <span class="nx">doubleEvens</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">v</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nx">v</span><span class="p">,</span> <span class="nx">v</span> <span class="o">*</span> <span class="mi">2</span><span class="p">];</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">[];</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+<span class="c1">// [2, 4, 4, 8, 6, 12]</span></code></pre></figure>
+
+<p>That’s kinda cool… As of 2019, there were polyfills and transpilations available for these utility functions.</p>
+
 <h2 id="iterators--generators">Iterators &amp; Generators</h2>
 
 <h3 id="iterators">Iterators</h3>
+
+<p>Going back further in time to ES2015 🤦🏻‍♂️ (dear reader… unless you are completely new to JavaScript, please know this! JK… I don’t even know it yet, we all gotta start somewhere), let’s look at iterators and generators. What is an iterator you ask? An iterator is way to consume and view a data source’s (whether it be an array directly in your code or something returned from an API) values one value at a time. Here’s a code sample to illustrate the concept:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">str</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">str2</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">W</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">o</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">r</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">l</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">d</span><span class="dl">"</span><span class="p">];</span>
+
+<span class="kd">var</span> <span class="nx">it1</span> <span class="o">=</span> <span class="nx">str</span><span class="p">[</span><span class="nb">Symbol</span><span class="p">.</span><span class="nx">iterator</span><span class="p">]();</span>
+<span class="kd">var</span> <span class="nx">it2</span> <span class="o">=</span> <span class="nx">str2</span><span class="p">[</span><span class="nb">Symbol</span><span class="p">.</span><span class="nx">iterator</span><span class="p">]();</span>
+
+<span class="nx">it1</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span> <span class="c1">// { value: "H", done: false }</span>
+<span class="nx">it1</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span> <span class="c1">// { value: "e", done: false }</span>
+<span class="nx">it1</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span> <span class="c1">// { value: "l", done: false }</span>
+<span class="nx">it1</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span> <span class="c1">// { value: "l", done: false }</span>
+<span class="nx">it1</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span> <span class="c1">// { value: "o", done: false }</span>
+<span class="nx">it1</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span> <span class="c1">// { value: undefined, done: true }</span>
+
+<span class="nx">it2</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span> <span class="c1">// { value: "W", done: false }</span>
+<span class="c1">// ..</span></code></pre></figure>
+
+<p>The above code is taking the iterable variables <code class="language-plaintext highlighter-rouge">str</code> and <code class="language-plaintext highlighter-rouge">str2</code> and then iterating over them using <code class="language-plaintext highlighter-rouge">.next</code>. Calling <code class="language-plaintext highlighter-rouge">.next</code> on <code class="language-plaintext highlighter-rouge">it1</code> or <code class="language-plaintext highlighter-rouge">it2</code> will return an ‘iterator result’ which is an object with two properties on it, a value property and a done property. The value is the value being iterated out and done is a boolean which tells you if there is anything more to iterate. When you hit the end of your iterable and get back <code class="language-plaintext highlighter-rouge">{ value: undefined, done: true }</code>, you will keep getting that value back if you continue to call <code class="language-plaintext highlighter-rouge">.next</code> on it. The iterator protocol does not support going backwards, but you could make an instance of an iterator that does. We’ll look at that in a bit here.</p>
 
 <h3 id="declarative-iterators">Declarative Iterators</h3>
 
