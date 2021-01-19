@@ -1492,7 +1492,7 @@ The `\k` is what makes the magic happen. The last two examples are showing a nam
 
 ### dotall Mode
 
-
+`dotall` Mode is the third (JavaScript regular expression) feature (added in ES2018) we are going to look at... The regular expression flag `s` 'turns on' what is called the `dotall` Mode. 
 
 ### Regex Exercise
 
