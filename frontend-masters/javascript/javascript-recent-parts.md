@@ -1331,11 +1331,64 @@ var obj = {
 
 {% endhighlight %}
 
-Well that's so wonderful. But we are only getting the values from the object... what about the keys? We could yield the keys, we could yield the keys and the values, there are plenty of interesting things you can do when iterating over an object. For keys and values at once, let's look at something called 'entries'. An entry is a tuple, and a tuple is just a two-element array, where the first element is the key, and the second element is the... value?! 
+Well that's so wonderful. But we are only getting the values from the object... what about the keys? We could yield the keys, we could yield the keys and the values, there are plenty of interesting things you can do when iterating over an object. For keys and values at once, let's look at something called 'entries'. An entry is a tuple, and a tuple is just a two-element array, where the first element is the key, and the second element is the... value?! We have `Object.values` to iterate over an object's values and `Object.keys` to iterate over an object's keys, and now we have `Object.entries` which gives us an array of the aforementioned key/value tuples. 
 
 ### Iterator & Generator Exercise
 
+Iterators and generators, a truly exciting topic to be sure, but difficult to wrap your brain around until you try to work with them! Let's do exactly that with this exercise. We're going to take the numbers object and make it iterable. The object itself won't have any data in it, but we do want to define a generator function that will 'spit out' the values 0 - 100. We are going to need to use a named expression, default values for a destructured object, and have the ability to call a function using named arguments. This exercise is pulling together a variety of things that have been covered thus far in this workshop. The final code should only be 5-8 lines of code, the real trick being how to pull all of the things we've covered together for this one exercise... start by defining the iterator; how do you pass it some inputs and iterate over it? Here's the starter code:
+
+{% highlight javascript %}
+
+var numbers = {
+	// ..
+};
+
+// should print 0..100 by 1s
+for (let num of numbers) {
+	console.log(num);
+}
+
+// should print 6..30 by 4s
+console.log("My lucky numbers are: ____");
+
+// Hint:
+//     [...numbers[Symbol.iterator]( ?? )]
+
+{% endhighlight %}
+
 ### Iterator & Generator Solution
+
+{% capture summary %}Click to view the solution{% endcapture %}
+{% capture details %}
+{% highlight javascript %}
+
+var numbers = {
+	*[Symbol.iterator]({
+        start = 0,
+        stop = 100,
+        step = 1,
+    } = {}) {
+        for( let num = start; num <= stop; num += step) {
+            yield num
+        }
+    }
+};
+
+for (let num of numbers) {
+	console.log(num);
+}
+
+console.log(
+    `My lucky numbers are: ${
+        [...numbers[Symbol.iterator]({
+        start: 6,
+        stop: 30,
+        step: 4
+    })]}`
+);
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %}
 
 ## Regular Expressions
 
