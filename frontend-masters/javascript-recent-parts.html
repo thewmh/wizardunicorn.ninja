@@ -1051,13 +1051,126 @@ order is </span><span class="p">${</span><span class="nx">amount</span><span cla
 <span class="nx">it2</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span> <span class="c1">// { value: "W", done: false }</span>
 <span class="c1">// ..</span></code></pre></figure>
 
-<p>The above code is taking the iterable variables <code class="language-plaintext highlighter-rouge">str</code> and <code class="language-plaintext highlighter-rouge">str2</code> and then iterating over them using <code class="language-plaintext highlighter-rouge">.next</code>. Calling <code class="language-plaintext highlighter-rouge">.next</code> on <code class="language-plaintext highlighter-rouge">it1</code> or <code class="language-plaintext highlighter-rouge">it2</code> will return an ‘iterator result’ which is an object with two properties on it, a value property and a done property. The value is the value being iterated out and done is a boolean which tells you if there is anything more to iterate. When you hit the end of your iterable and get back <code class="language-plaintext highlighter-rouge">{ value: undefined, done: true }</code>, you will keep getting that value back if you continue to call <code class="language-plaintext highlighter-rouge">.next</code> on it. The iterator protocol does not support going backwards, but you could make an instance of an iterator that does. We’ll look at that in a bit here.</p>
+<p>The above code is taking the iterable variables <code class="language-plaintext highlighter-rouge">str</code> and <code class="language-plaintext highlighter-rouge">str2</code> and then iterating over them using <code class="language-plaintext highlighter-rouge">.next</code>. Calling <code class="language-plaintext highlighter-rouge">.next</code> on <code class="language-plaintext highlighter-rouge">it1</code> or <code class="language-plaintext highlighter-rouge">it2</code> will return an ‘iterator result’ which is an object with two properties on it; a value property and a done property. The value is the value being iterated out and done is a boolean which tells you if there is anything more to iterate. When you hit the end of your iterable and get back <code class="language-plaintext highlighter-rouge">{ value: undefined, done: true }</code>, you will keep getting that value back if you continue to call <code class="language-plaintext highlighter-rouge">.next</code> on it. The iterator protocol does not support going backwards, but you could make an instance of an iterator that does. We’ll look at that in a bit here.</p>
 
 <h3 id="declarative-iterators">Declarative Iterators</h3>
 
+<p>If you wanted to iterate over a string programmatically, i.e. automatically in a sort of looping construct, instead of calling <code class="language-plaintext highlighter-rouge">.next</code> over and over again, you might come up with something like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">str</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">for</span> <span class="p">(</span>
+    <span class="kd">let</span> <span class="nx">it</span> <span class="o">=</span> <span class="nx">str</span><span class="p">[</span><span class="nb">Symbol</span><span class="p">.</span><span class="nx">iterator</span><span class="p">](),</span> <span class="nx">v</span><span class="p">,</span> <span class="nx">result</span><span class="p">;</span>
+    <span class="p">(</span><span class="nx">result</span> <span class="o">=</span> <span class="nx">it</span><span class="p">.</span><span class="nx">next</span><span class="p">())</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">result</span><span class="p">.</span><span class="nx">done</span> <span class="o">&amp;&amp;</span>
+    <span class="p">(</span><span class="nx">v</span> <span class="o">=</span> <span class="nx">result</span><span class="p">.</span><span class="nx">value</span> <span class="o">||</span> <span class="kc">true</span><span class="p">);</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// "H" "e" "l" "l" "o"</span></code></pre></figure>
+
+<p>The above works, but is a perfect example of where we could benefit from declarative syntax over the above very hard to understand / approach imperative code. And of course, in ES6 we also go the <code class="language-plaintext highlighter-rouge">for of</code> loop. The <code class="language-plaintext highlighter-rouge">for of</code> loop takes iterables, things that can be iterated over, iterates over them and gives you the value for each iteration. Take a look at this example:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">str</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">it</span> <span class="o">=</span> <span class="nx">str</span><span class="p">[</span><span class="nb">Symbol</span><span class="p">.</span><span class="nx">iterator</span><span class="p">]();</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">v</span> <span class="k">of</span> <span class="nx">it</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// "H" "e" "l" "l" "o"</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">v</span> <span class="k">of</span> <span class="nx">str</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// "H" "e" "l" "l" "o"</span></code></pre></figure>
+
+<p>Notice in the above code that either an iterator or an iterable is able to be iterated over. Another way to iterate over iterables is to use the <code class="language-plaintext highlighter-rouge">spread</code> operator: <code class="language-plaintext highlighter-rouge">...</code>.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">str</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">:</span>
+
+<span class="kd">var</span> <span class="nx">letters</span> <span class="o">=</span> <span class="p">[...</span><span class="nx">str</span><span class="p">];</span>
+<span class="nx">letters</span><span class="p">;</span>
+
+<span class="c1">// ["H", "e", "l", "l", "o"]</span></code></pre></figure>
+
+<p>The <code class="language-plaintext highlighter-rouge">spread</code> operator and <code class="language-plaintext highlighter-rouge">for of</code> loop are syntactic support for iterators which are now a first-class built-in citizen in JavaScript.</p>
+
 <h3 id="data-structure-without-iterators">Data Structure without Iterators</h3>
 
+<p>It’s great that iterable data structures are now supported in JavaScript, but what about data structures that do not have iterators? For example, objects are not iterable.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="na">b</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="na">c</span><span class="p">:</span> <span class="mi">3</span>
+<span class="p">};</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">v</span> <span class="k">of</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// TypeError!</span></code></pre></figure>
+
+<p>While it is frustrating that one of the most used data structures is not out-of-the-box iterable in JavaScript, it is possible to define our own. Here is an example of what that looks like:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="na">b</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="na">c</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="p">[</span><span class="nb">Symbol</span><span class="p">.</span><span class="nx">iterator</span><span class="p">]:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">keys</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="na">next</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span>
+                <span class="p">(</span><span class="nx">index</span> <span class="o">&lt;</span> <span class="nx">keys</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">?</span>
+                    <span class="p">{</span> <span class="na">done</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span> <span class="na">value</span><span class="p">:</span> <span class="k">this</span><span class="p">[</span><span class="nx">keys</span><span class="p">[</span><span class="nx">index</span><span class="o">++</span><span class="p">]]</span> <span class="p">}</span> <span class="p">:</span>
+                    <span class="p">{</span> <span class="na">done</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">value</span><span class="p">:</span> <span class="kc">undefined</span> <span class="p">}</span>
+        <span class="p">};</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="p">[...</span><span class="nx">obj</span><span class="p">];</span>
+<span class="c1">// [1, 2, 3]</span></code></pre></figure>
+
+<p>Notice that the <code class="language-plaintext highlighter-rouge">next</code> function inside of the object above is exactly like the <code class="language-plaintext highlighter-rouge">.next</code> we’ve seen before with iterables. And also notice the arrow function, here being a perfect example of when it is a good idea to use one, because in this case we want to get the lexical <code class="language-plaintext highlighter-rouge">this</code> from the parent scope of the (arrow) function.</p>
+
 <h3 id="generators">Generators</h3>
+
+<p>The code we just looked at to iterate over an object seems straightforward enough, but it is still an imperative approach… isn’t there a more declarative way to do this? There is! Generator functions. Here’s an example of one, notice the asterisk (*), this denotes a generator function:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="o">*</span><span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">yield</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">yield</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="k">yield</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">4</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">it</span> <span class="o">=</span> <span class="nx">main</span><span class="p">();</span>
+
+<span class="nx">it</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span> <span class="c1">// { value: 1, done: false }</span>
+<span class="nx">it</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span> <span class="c1">// { value: 2, done: false }</span>
+<span class="nx">it</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span> <span class="c1">// { value: 3, done: false }</span>
+<span class="nx">it</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span> <span class="c1">// { value: 4, done: true }</span>
+
+<span class="p">[...</span><span class="nx">main</span><span class="p">()];</span>
+<span class="c1">// [1, 2, 3]</span></code></pre></figure>
+
+<p>The generator function allows iteration, with the yield keyword ‘returning’ a value. Until the generator function hits the <code class="language-plaintext highlighter-rouge">return</code> value, <code class="language-plaintext highlighter-rouge">done</code> will be false, the <code class="language-plaintext highlighter-rouge">return</code> statement will return a <code class="language-plaintext highlighter-rouge">done</code> boolean of <code class="language-plaintext highlighter-rouge">true</code>. The only problem with using a <code class="language-plaintext highlighter-rouge">return</code> statement in a generator function is if you are using the <code class="language-plaintext highlighter-rouge">spread</code> operator… as soon as the <code class="language-plaintext highlighter-rouge">spread</code> operator sees a <code class="language-plaintext highlighter-rouge">return</code> statement, it stops and does not return whatever the <code class="language-plaintext highlighter-rouge">return</code> returns. So if you are going to use a generator function to <code class="language-plaintext highlighter-rouge">yield</code> values, make sure that it always <code class="language-plaintext highlighter-rouge">yield</code>(s) the values and never <code class="language-plaintext highlighter-rouge">return</code>(s) values. Now that we know we can <code class="language-plaintext highlighter-rouge">yield</code> values from a generator function, let’s take another look at iterating over the key/value pairs of an object using a more declarative approach:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="na">b</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="na">c</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">[</span><span class="nb">Symbol</span><span class="p">.</span><span class="nx">iterator</span><span class="p">]()</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">key</span> <span class="k">of</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="k">this</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">yield</span> <span class="k">this</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="p">[...</span><span class="nx">obj</span><span class="p">];</span>
+<span class="c1">// [1, 2, 3]</span></code></pre></figure>
+
+<p>Well that’s so wonderful. But we are only getting the values from the object… what about the keys? We could yield the keys, we could yield the keys and the values, there are plenty of interesting things you can do when iterating over an object. For keys and values at once, let’s look at something called ‘entries’. An entry is a tuple, and a tuple is just a two-element array, where the first element is the key, and the second element is the… value?!</p>
 
 <h3 id="iterator--generator-exercise">Iterator &amp; Generator Exercise</h3>
 
