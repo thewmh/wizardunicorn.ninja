@@ -1170,11 +1170,60 @@ order is </span><span class="p">${</span><span class="nx">amount</span><span cla
 <span class="p">[...</span><span class="nx">obj</span><span class="p">];</span>
 <span class="c1">// [1, 2, 3]</span></code></pre></figure>
 
-<p>Well that’s so wonderful. But we are only getting the values from the object… what about the keys? We could yield the keys, we could yield the keys and the values, there are plenty of interesting things you can do when iterating over an object. For keys and values at once, let’s look at something called ‘entries’. An entry is a tuple, and a tuple is just a two-element array, where the first element is the key, and the second element is the… value?!</p>
+<p>Well that’s so wonderful. But we are only getting the values from the object… what about the keys? We could yield the keys, we could yield the keys and the values, there are plenty of interesting things you can do when iterating over an object. For keys and values at once, let’s look at something called ‘entries’. An entry is a tuple, and a tuple is just a two-element array, where the first element is the key, and the second element is the… value?! We have <code class="language-plaintext highlighter-rouge">Object.values</code> to iterate over an object’s values and <code class="language-plaintext highlighter-rouge">Object.keys</code> to iterate over an object’s keys, and now we have <code class="language-plaintext highlighter-rouge">Object.entries</code> which gives us an array of the aforementioned key/value tuples.</p>
 
 <h3 id="iterator--generator-exercise">Iterator &amp; Generator Exercise</h3>
 
+<p>Iterators and generators, a truly exciting topic to be sure, but difficult to wrap your brain around until you try to work with them! Let’s do exactly that with this exercise. We’re going to take the numbers object and make it iterable. The object itself won’t have any data in it, but we do want to define a generator function that will ‘spit out’ the values 0 - 100. We are going to need to use a named expression, default values for a destructured object, and have the ability to call a function using named arguments. This exercise is pulling together a variety of things that have been covered thus far in this workshop. The final code should only be 5-8 lines of code, the real trick being how to pull all of the things we’ve covered together for this one exercise… start by defining the iterator; how do you pass it some inputs and iterate over it? Here’s the starter code:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">numbers</span> <span class="o">=</span> <span class="p">{</span>
+	<span class="c1">// ..</span>
+<span class="p">};</span>
+
+<span class="c1">// should print 0..100 by 1s</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">num</span> <span class="k">of</span> <span class="nx">numbers</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">num</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// should print 6..30 by 4s</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">My lucky numbers are: ____</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="c1">// Hint:</span>
+<span class="c1">//     [...numbers[Symbol.iterator]( ?? )]</span></code></pre></figure>
+
 <h3 id="iterator--generator-solution">Iterator &amp; Generator Solution</h3>
+
+<details>
+    <summary>Click to view the solution
+</summary>
+    
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">numbers</span> <span class="o">=</span> <span class="p">{</span>
+	<span class="o">*</span><span class="p">[</span><span class="nb">Symbol</span><span class="p">.</span><span class="nx">iterator</span><span class="p">]({</span>
+        <span class="nx">start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="nx">stop</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="nx">step</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">}</span> <span class="o">=</span> <span class="p">{})</span> <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span> <span class="kd">let</span> <span class="nx">num</span> <span class="o">=</span> <span class="nx">start</span><span class="p">;</span> <span class="nx">num</span> <span class="o">&lt;=</span> <span class="nx">stop</span><span class="p">;</span> <span class="nx">num</span> <span class="o">+=</span> <span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">yield</span> <span class="nx">num</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">num</span> <span class="k">of</span> <span class="nx">numbers</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">num</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
+    <span class="s2">`My lucky numbers are: </span><span class="p">${</span>
+        <span class="p">[...</span><span class="nx">numbers</span><span class="p">[</span><span class="nb">Symbol</span><span class="p">.</span><span class="nx">iterator</span><span class="p">]({</span>
+        <span class="na">start</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+        <span class="na">stop</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="na">step</span><span class="p">:</span> <span class="mi">4</span>
+    <span class="p">})]}</span><span class="s2">`</span>
+<span class="p">);</span></code></pre></figure>
+
+
+</details>
 
 <h2 id="regular-expressions">Regular Expressions</h2>
 
