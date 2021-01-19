@@ -1229,7 +1229,77 @@ order is </span><span class="p">${</span><span class="nx">amount</span><span cla
 
 <h3 id="look-ahead--behind">Look Ahead &amp; Behind</h3>
 
+<p>The regular expression improvements that we are going to cover have been long in the making for JavaScript. As of ES2018, a set of very helpful changes were added to JavaScript’s regular expressions. These are just the beginning, by the time of this writing there should already be more, but this is what had landed at the time this workshop was recorded. For a more up-to-date list, check out the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp">Mozilla Developer Network - Regular Expressions documentation</a>. The first of the ES2018 regular expressions we are going to look at is called a <code class="language-plaintext highlighter-rouge">look ahead</code>, the idea of which is essentially an assertion that says: When I match a thing, I want to look ahead and say that my match only happens if something immediately after this also matches. Here are some examples:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello World</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="nx">msg</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">l.</span><span class="se">)</span><span class="sr">/g</span><span class="p">);</span>
+<span class="c1">// ["ll", "ld"]</span>
+
+<span class="nx">msg</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">l.</span><span class="se">)</span><span class="sr">$/g</span><span class="p">);</span>
+<span class="c1">// ["ld"]</span>
+
+<span class="nx">msg</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">l.</span><span class="se">)(?=</span><span class="sr">o</span><span class="se">)</span><span class="sr">/g</span><span class="p">);</span>
+<span class="c1">// ["ll"]</span>
+
+<span class="nx">msg</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">l.</span><span class="se">)(?!</span><span class="sr">o</span><span class="se">)</span><span class="sr">/g</span><span class="p">);</span>
+<span class="c1">// ["lo", "ld"]</span></code></pre></figure>
+
+<p>Some assertions that you may be familiar with are the beginning of string character <code class="language-plaintext highlighter-rouge">^</code> and the end of string character <code class="language-plaintext highlighter-rouge">$</code>. The specific example above that are ‘look ahead’(s) are the third and fourth ones; <code class="language-plaintext highlighter-rouge">msg.match(/(l.)(?=o)/g);</code> (positive look ahead) and <code class="language-plaintext highlighter-rouge">msg.match(/(l.)(?!o)/g);</code> (negative look ahead). So if we can look ahead, it would make sense that we could also look behind, right? Well not until 2018, because until then JavaScript was like nope… But fear not reader of the future! You have access to look behinds and this is what they look like!</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello World</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="nx">msg</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(?&lt;</span><span class="sr">=e</span><span class="se">)(</span><span class="sr">l.</span><span class="se">)</span><span class="sr">/g</span><span class="p">);</span>
+<span class="c1">// ["ll"]</span>
+
+<span class="nx">msg</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(?&lt;</span><span class="sr">!e</span><span class="se">)(</span><span class="sr">l.</span><span class="se">)</span><span class="sr">/g</span><span class="p">);</span>
+<span class="c1">// ["lo", "ld"]</span></code></pre></figure>
+
+<p>Similar to the look ahead(s), with the look behind, there is a positive <code class="language-plaintext highlighter-rouge">=</code> and ` negative <code class="language-plaintext highlighter-rouge">!</code>.</p>
+
 <h3 id="named-capture-groups">Named Capture Groups</h3>
+
+<p>Another of the <del>new</del> regular expression features is named capture groups, but before you should know what that is, it probably makes sense to understand what a capture group is.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello World</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="nx">msg</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/.</span><span class="se">(</span><span class="sr">l.</span><span class="se">)</span><span class="sr">/</span><span class="p">);</span>
+<span class="c1">// ["ell", "ll"]</span>
+
+<span class="nx">msg</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">([</span><span class="sr">jkl</span><span class="se">])</span><span class="sr">o Worl</span><span class="se">\1</span><span class="sr">/</span><span class="p">);</span>
+<span class="c1">// ["lo Worl", "l"]</span>
+
+<span class="nx">msg</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(?&lt;</span><span class="sr">cap&gt;l.</span><span class="se">)</span><span class="sr">/</span><span class="p">).</span><span class="nx">groups</span><span class="p">;</span>
+<span class="c1">// {cap: "ll"}</span>
+
+<span class="nx">msg</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(?&lt;</span><span class="sr">cap&gt;</span><span class="se">[</span><span class="sr">jkl</span><span class="se">])</span><span class="sr">o Wor</span><span class="se">\k</span><span class="sr">&lt;cap&gt;/</span><span class="p">);</span>
+<span class="c1">// ["lo Worl", "l"]</span>
+
+<span class="nx">msg</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">(?&lt;</span><span class="sr">cap&gt;l.</span><span class="se">)</span><span class="sr">/g</span><span class="p">,</span><span class="dl">"</span><span class="s2">-$&lt;cap&gt;-</span><span class="dl">"</span><span class="p">);</span>
+<span class="c1">// "He-ll-o Wor-ld-"</span>
+
+<span class="nx">msg</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">(?&lt;</span><span class="sr">cap&gt;l.</span><span class="se">)</span><span class="sr">/g</span><span class="p">,</span><span class="kd">function</span> <span class="nx">re</span><span class="p">(...</span><span class="nx">args</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="p">[,,,,{</span> <span class="nx">cap</span> <span class="p">}]</span> <span class="o">=</span> <span class="nx">args</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">cap</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">();</span>
+<span class="p">});</span>
+<span class="c1">// "HeLLo WorLD"</span></code></pre></figure>
+
+<p>In regular expressions, parenthesis are not just grouping operators (although they do have that effect), they are also capturing operators. In the first example above, the <code class="language-plaintext highlighter-rouge">"ll"</code> is the capture group. A capture group is a way to have a sup-part of the (regular expression) pattern pulled out in a separate way. You can see this in a ‘back reference’ as in this example:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">msg</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">([</span><span class="sr">jkl</span><span class="se">])</span><span class="sr">o Worl</span><span class="se">\1</span><span class="sr">/</span><span class="p">);</span>
+<span class="c1">// ["lo Worl", "l"]</span></code></pre></figure>
+
+<p>The above says; whatever comes before the ‘o’ and the <code class="language-plaintext highlighter-rouge">\1</code> says; match that same thing later in the pattern. This was the ‘old’ way of doing regular expressions in JavaScript, now we have a better way, which you can see in the third example above, which happens to be the first named capture group:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">msg</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(?&lt;</span><span class="sr">cap&gt;l.</span><span class="se">)</span><span class="sr">/</span><span class="p">).</span><span class="nx">groups</span><span class="p">;</span>
+<span class="c1">// {cap: "ll"}</span></code></pre></figure>
+
+<p>The <code class="language-plaintext highlighter-rouge">?&lt;namedCaptureGroup&gt;</code> is what gives the set of parenthesis a name! And, in the above example, you may also have noticed that using <code class="language-plaintext highlighter-rouge">.groups</code> actually ‘spits out’ an object with the name of the capture group as the key and the matched result as its value. The following example is of using a named capture group as a back reference:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">msg</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(?&lt;</span><span class="sr">cap&gt;</span><span class="se">[</span><span class="sr">jkl</span><span class="se">])</span><span class="sr">o Wor</span><span class="se">\k</span><span class="sr">&lt;cap&gt;/</span><span class="p">);</span>
+<span class="c1">// ["lo Worl", "l"]</span></code></pre></figure>
+
+<p>The <code class="language-plaintext highlighter-rouge">\k</code> is what makes the magic happen. The last two examples are showing a named capture group being used with the <code class="language-plaintext highlighter-rouge">.replace</code> method, the second example being a bit more complicated using a function callback. Previously, before named capture groups existed, each set of parenthesis would be assigned a number, which may have been difficult to keep track of if your regular expression was quite long… but with named capture groups you can give each group in your regular expression a ‘name’ which is much more declarative in approach.</p>
 
 <h3 id="dotall-mode">dotall Mode</h3>
 
