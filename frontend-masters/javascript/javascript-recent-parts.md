@@ -1394,9 +1394,105 @@ console.log(
 
 ### Look Ahead & Behind
 
+The regular expression improvements that we are going to cover have been long in the making for JavaScript. As of ES2018, a set of very helpful changes were added to JavaScript's regular expressions. These are just the beginning, by the time of this writing there should already be more, but this is what had landed at the time this workshop was recorded. For a more up-to-date list, check out the [Mozilla Developer Network - Regular Expressions documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp). The first of the ES2018 regular expressions we are going to look at is called a `look ahead`, the idea of which is essentially an assertion that says: When I match a thing, I want to look ahead and say that my match only happens if something immediately after this also matches. Here are some examples:
+
+{% highlight javascript %}
+
+var msg = "Hello World";
+
+msg.match(/(l.)/g);
+// ["ll", "ld"]
+
+msg.match(/(l.)$/g);
+// ["ld"]
+
+msg.match(/(l.)(?=o)/g);
+// ["ll"]
+
+msg.match(/(l.)(?!o)/g);
+// ["lo", "ld"]
+
+{% endhighlight %}
+
+Some assertions that you may be familiar with are the beginning of string character `^` and the end of string character `$`. The specific example above that are 'look ahead'(s) are the third and fourth ones; `msg.match(/(l.)(?=o)/g);` (positive look ahead) and `msg.match(/(l.)(?!o)/g);` (negative look ahead). So if we can look ahead, it would make sense that we could also look behind, right? Well not until 2018, because until then JavaScript was like nope... But fear not reader of the future! You have access to look behinds and this is what they look like!
+
+{% highlight javascript %}
+
+var msg = "Hello World";
+
+msg.match(/(?<=e)(l.)/g);
+// ["ll"]
+
+msg.match(/(?<!e)(l.)/g);
+// ["lo", "ld"]
+
+{% endhighlight %}
+
+Similar to the look ahead(s), with the look behind, there is a positive `=` and ` negative `!`.
+
 ### Named Capture Groups
 
+Another of the ~~new~~ regular expression features is named capture groups, but before you should know what that is, it probably makes sense to understand what a capture group is. 
+
+{% highlight javascript %}
+
+var msg = "Hello World";
+
+msg.match(/.(l.)/);
+// ["ell", "ll"]
+
+msg.match(/([jkl])o Worl\1/);
+// ["lo Worl", "l"]
+
+msg.match(/(?<cap>l.)/).groups;
+// {cap: "ll"}
+
+msg.match(/(?<cap>[jkl])o Wor\k<cap>/);
+// ["lo Worl", "l"]
+
+msg.replace(/(?<cap>l.)/g,"-$<cap>-");
+// "He-ll-o Wor-ld-"
+
+msg.replace(/(?<cap>l.)/g,function re(...args){
+    var [,,,,{ cap }] = args;
+    return cap.toUpperCase();
+});
+// "HeLLo WorLD"
+
+{% endhighlight %}
+
+In regular expressions, parenthesis are not just grouping operators (although they do have that effect), they are also capturing operators. In the first example above, the `"ll"` is the capture group. A capture group is a way to have a sup-part of the (regular expression) pattern pulled out in a separate way. You can see this in a 'back reference' as in this example:
+
+{% highlight javascript %}
+
+msg.match(/([jkl])o Worl\1/);
+// ["lo Worl", "l"]
+
+{% endhighlight %}
+
+The above says; whatever comes before the 'o' and the `\1` says; match that same thing later in the pattern. This was the 'old' way of doing regular expressions in JavaScript, now we have a better way, which you can see in the third example above, which happens to be the first named capture group:
+
+{% highlight javascript %}
+
+msg.match(/(?<cap>l.)/).groups;
+// {cap: "ll"}
+
+{% endhighlight %}
+
+The `?<namedCaptureGroup>` is what gives the set of parenthesis a name! And, in the above example, you may also have noticed that using `.groups` actually 'spits out' an object with the name of the capture group as the key and the matched result as its value. The following example is of using a named capture group as a back reference:
+
+{% highlight javascript %}
+
+msg.match(/(?<cap>[jkl])o Wor\k<cap>/);
+// ["lo Worl", "l"]
+
+{% endhighlight %}
+
+The `\k` is what makes the magic happen. The last two examples are showing a named capture group being used with the `.replace` method, the second example being a bit more complicated using a function callback. Previously, before named capture groups existed, each set of parenthesis would be assigned a number, which may have been difficult to keep track of if your regular expression was quite long... but with named capture groups you can give each group in your regular expression a 'name' which is much more declarative in approach.
+
 ### dotall Mode
+
+
 
 ### Regex Exercise
 
