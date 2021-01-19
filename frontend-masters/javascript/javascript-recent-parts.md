@@ -1184,13 +1184,154 @@ it2.next(); // { value: "W", done: false }
 
 {% endhighlight %}
 
-The above code is taking the iterable variables `str` and `str2` and then iterating over them using `.next`. Calling `.next` on `it1` or `it2` will return an 'iterator result' which is an object with two properties on it, a value property and a done property. The value is the value being iterated out and done is a boolean which tells you if there is anything more to iterate. When you hit the end of your iterable and get back `{ value: undefined, done: true }`, you will keep getting that value back if you continue to call `.next` on it. The iterator protocol does not support going backwards, but you could make an instance of an iterator that does. We'll look at that in a bit here.
+The above code is taking the iterable variables `str` and `str2` and then iterating over them using `.next`. Calling `.next` on `it1` or `it2` will return an 'iterator result' which is an object with two properties on it; a value property and a done property. The value is the value being iterated out and done is a boolean which tells you if there is anything more to iterate. When you hit the end of your iterable and get back `{ value: undefined, done: true }`, you will keep getting that value back if you continue to call `.next` on it. The iterator protocol does not support going backwards, but you could make an instance of an iterator that does. We'll look at that in a bit here.
 
 ### Declarative Iterators
 
+If you wanted to iterate over a string programmatically, i.e. automatically in a sort of looping construct, instead of calling `.next` over and over again, you might come up with something like this:
+
+{% highlight javascript %}
+
+var str = "Hello";
+
+for (
+    let it = str[Symbol.iterator](), v, result;
+    (result = it.next()) && !result.done &&
+    (v = result.value || true);
+) {
+    console.log(v);
+}
+// "H" "e" "l" "l" "o"
+
+{% endhighlight %}
+
+The above works, but is a perfect example of where we could benefit from declarative syntax over the above very hard to understand / approach imperative code. And of course, in ES6 we also go the `for of` loop. The `for of` loop takes iterables, things that can be iterated over, iterates over them and gives you the value for each iteration. Take a look at this example:
+
+{% highlight javascript %}
+
+var str = "Hello";
+var it = str[Symbol.iterator]();
+
+for (let v of it) {
+    console.log(v);
+}
+// "H" "e" "l" "l" "o"
+
+for (let v of str) {
+    console.log(v);
+}
+// "H" "e" "l" "l" "o"
+
+{% endhighlight %}
+
+Notice in the above code that either an iterator or an iterable is able to be iterated over. Another way to iterate over iterables is to use the `spread` operator: `...`.
+
+{% highlight javascript %}
+
+var str = "Hello":
+
+var letters = [...str];
+letters;
+
+// ["H", "e", "l", "l", "o"]
+
+{% endhighlight %}
+
+The `spread` operator and `for of` loop are syntactic support for iterators which are now a first-class built-in citizen in JavaScript.
+
 ### Data Structure without Iterators
 
+It's great that iterable data structures are now supported in JavaScript, but what about data structures that do not have iterators? For example, objects are not iterable.
+
+{% highlight javascript %}
+
+var obj = {
+    a: 1,
+    b: 2,
+    c: 3
+};
+
+for (let v of obj) {
+    console.log(v);
+}
+
+// TypeError!
+
+{% endhighlight %}
+
+While it is frustrating that one of the most used data structures is not out-of-the-box iterable in JavaScript, it is possible to define our own. Here is an example of what that looks like:
+
+{% highlight javascript %}
+
+var obj = {
+    a: 1,
+    b: 2,
+    c: 3,
+    [Symbol.iterator]: function() {
+        var keys = Object.keys(this);
+        var index = 0;
+        return {
+            next: () =>
+                (index < keys.length) ?
+                    { done: false, value: this[keys[index++]] } :
+                    { done: true, value: undefined }
+        };
+    }
+};
+
+[...obj];
+// [1, 2, 3]
+
+{% endhighlight %}
+
+Notice that the `next` function inside of the object above is exactly like the `.next` we've seen before with iterables. And also notice the arrow function, here being a perfect example of when it is a good idea to use one, because in this case we want to get the lexical `this` from the parent scope of the (arrow) function.
+
 ### Generators
+
+The code we just looked at to iterate over an object seems straightforward enough, but it is still an imperative approach... isn't there a more declarative way to do this? There is! Generator functions. Here's an example of one, notice the asterisk (*), this denotes a generator function:
+
+{% highlight javascript %}
+
+function *main() {
+    yield 1;
+    yield 2;
+    yield 3;
+    return 4;
+}
+
+var it = main();
+
+it.next(); // { value: 1, done: false }
+it.next(); // { value: 2, done: false }
+it.next(); // { value: 3, done: false }
+it.next(); // { value: 4, done: true }
+
+[...main()];
+// [1, 2, 3]
+
+{% endhighlight %}
+
+The generator function allows iteration, with the yield keyword 'returning' a value. Until the generator function hits the `return` value, `done` will be false, the `return` statement will return a `done` boolean of `true`. The only problem with using a `return` statement in a generator function is if you are using the `spread` operator... as soon as the `spread` operator sees a `return` statement, it stops and does not return whatever the `return` returns. So if you are going to use a generator function to `yield` values, make sure that it always `yield`(s) the values and never `return`(s) values. Now that we know we can `yield` values from a generator function, let's take another look at iterating over the key/value pairs of an object using a more declarative approach:
+
+{% highlight javascript %}
+
+var obj = {
+    a: 1,
+    b: 2,
+    c: 3,
+    *[Symbol.iterator]() {
+        for (let key of Object.keys(this)) {
+            yield this[key];
+        }
+    }
+};
+
+[...obj];
+// [1, 2, 3]
+
+{% endhighlight %}
+
+Well that's so wonderful. But we are only getting the values from the object... what about the keys? We could yield the keys, we could yield the keys and the values, there are plenty of interesting things you can do when iterating over an object. For keys and values at once, let's look at something called 'entries'. An entry is a tuple, and a tuple is just a two-element array, where the first element is the key, and the second element is the... value?! 
 
 ### Iterator & Generator Exercise
 
