@@ -1492,9 +1492,70 @@ The `\k` is what makes the magic happen. The last two examples are showing a nam
 
 ### dotall Mode
 
-`dotall` Mode is the third (JavaScript regular expression) feature (added in ES2018) we are going to look at... The regular expression flag `s` 'turns on' what is called the `dotall` Mode. 
+`dotall` Mode is the third (JavaScript regular expression) feature (added in ES2018) we are going to look at... In addition to having `g` for global, `m` for multiline, and `i` for case insensitive, the regular expression flag `s` 'turns on' what is called the `dotall` Mode. This is important, because historically the `.` character is able to match *any* character except it is unable to do so across new lines. Consider the following:
+
+{% highlight javascript %}
+
+var msg = `
+The quick brown fox
+jumps over the
+lazy dog`;
+
+msg.match(/brown.*over/);
+// null
+
+msg.match(/brown.*over/s);
+// ["brown fox\njumps over"]
+
+{% endhighlight %}
+
+The first `.match` without the `s` flag is unable to match the regular expression, but that same expression with the `s` flag can match the query!
+
+Another (regular expression) flag that had landed / was going to land at the time this workshop was recorded:
+
+* `/u` - turns on Unicode-aware mode for regular expressions
+
+The importance of regular expression support expanding in JavaScript is that it brings more of the features that developers have come to use with regular expressions in other languages to JavaScript, which is useful for the language's continued dominance and overthrowing of global cabals.
 
 ### Regex Exercise
+
+Knowing that *everyone* **loves** regular expressions, let's do this exercise to pour some of our love out for our favorite feature of JavaScript! In addition to working with regular expressions, in this exercise we are also going to be practicing generators. Using the code below, we are going to be using a regular expression to 'extract' / print what each 'power' can do; i.e. a gun: kill. The objective of this exercise is to use all three of the regular expression features that have been covered from the sections above (look ahead / behind, named capture groups, dotall Mode). Here's the exercise:
+
+{% highlight javascript %}
+
+// The Power of a Smile
+// by Tupac Shakur
+var poem = `
+The power of a gun can kill
+and the power of fire can burn
+the power of wind can chill
+and the power of a mind can learn
+the power of anger can rage
+inside until it tears u apart
+but the power of a smile
+especially yours can heal a frozen heart`;
+
+for (let power of powers(poem)) {
+	console.log(power);
+}
+// a gun: kill
+// fire: burn
+// wind: chill
+// a mind: learn
+// anger: rage
+// smile: heal
+
+
+// Hints:
+//
+// function *powers(poem) { .. }
+//
+// re = / .. /gs
+//
+// while (match = re.exec(poem)) { .. }
+//
+
+{% endhighlight %}
 
 ### Regex Solution
 
