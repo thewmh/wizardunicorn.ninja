@@ -1303,9 +1303,62 @@ order is </span><span class="p">${</span><span class="nx">amount</span><span cla
 
 <h3 id="dotall-mode">dotall Mode</h3>
 
-<p><code class="language-plaintext highlighter-rouge">dotall</code> Mode is the third (JavaScript regular expression) feature (added in ES2018) we are going to look at… The regular expression flag <code class="language-plaintext highlighter-rouge">s</code> ‘turns on’ what is called the <code class="language-plaintext highlighter-rouge">dotall</code> Mode.</p>
+<p><code class="language-plaintext highlighter-rouge">dotall</code> Mode is the third (JavaScript regular expression) feature (added in ES2018) we are going to look at… In addition to having <code class="language-plaintext highlighter-rouge">g</code> for global, <code class="language-plaintext highlighter-rouge">m</code> for multiline, and <code class="language-plaintext highlighter-rouge">i</code> for case insensitive, the regular expression flag <code class="language-plaintext highlighter-rouge">s</code> ‘turns on’ what is called the <code class="language-plaintext highlighter-rouge">dotall</code> Mode. This is important, because historically the <code class="language-plaintext highlighter-rouge">.</code> character is able to match <em>any</em> character except it is unable to do so across new lines. Consider the following:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="s2">`
+The quick brown fox
+jumps over the
+lazy dog`</span><span class="p">;</span>
+
+<span class="nx">msg</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/brown.*over/</span><span class="p">);</span>
+<span class="c1">// null</span>
+
+<span class="nx">msg</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/brown.*over/</span><span class="nx">s</span><span class="p">);</span>
+<span class="c1">// ["brown fox\njumps over"]</span></code></pre></figure>
+
+<p>The first <code class="language-plaintext highlighter-rouge">.match</code> without the <code class="language-plaintext highlighter-rouge">s</code> flag is unable to match the regular expression, but that same expression with the <code class="language-plaintext highlighter-rouge">s</code> flag can match the query!</p>
+
+<p>Another (regular expression) flag that had landed / was going to land at the time this workshop was recorded:</p>
+
+<p>* <code class="language-plaintext highlighter-rouge">/u</code> - turns on Unicode-aware mode for regular expressions</p>
+
+<p>The importance of regular expression support expanding in JavaScript is that it brings more of the features that developers have come to use with regular expressions in other languages to JavaScript, which is useful for the language’s continued dominance and overthrowing of global cabals.</p>
 
 <h3 id="regex-exercise">Regex Exercise</h3>
+
+<p>Knowing that <em>everyone</em> <strong>loves</strong> regular expressions, let’s do this exercise to pour some of our love out for our favorite feature of JavaScript! In addition to working with regular expressions, in this exercise we are also going to be practicing generators. Using the code below, we are going to be using a regular expression to ‘extract’ / print what each ‘power’ can do; i.e. a gun: kill. The objective of this exercise is to use all three of the regular expression features that have been covered from the sections above (look ahead / behind, named capture groups, dotall Mode). Here’s the exercise:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// The Power of a Smile</span>
+<span class="c1">// by Tupac Shakur</span>
+<span class="kd">var</span> <span class="nx">poem</span> <span class="o">=</span> <span class="s2">`
+The power of a gun can kill
+and the power of fire can burn
+the power of wind can chill
+and the power of a mind can learn
+the power of anger can rage
+inside until it tears u apart
+but the power of a smile
+especially yours can heal a frozen heart`</span><span class="p">;</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">power</span> <span class="k">of</span> <span class="nx">powers</span><span class="p">(</span><span class="nx">poem</span><span class="p">))</span> <span class="p">{</span>
+	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">power</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// a gun: kill</span>
+<span class="c1">// fire: burn</span>
+<span class="c1">// wind: chill</span>
+<span class="c1">// a mind: learn</span>
+<span class="c1">// anger: rage</span>
+<span class="c1">// smile: heal</span>
+
+
+<span class="c1">// Hints:</span>
+<span class="c1">//</span>
+<span class="c1">// function *powers(poem) { .. }</span>
+<span class="c1">//</span>
+<span class="c1">// re = / .. /gs</span>
+<span class="c1">//</span>
+<span class="c1">// while (match = re.exec(poem)) { .. }</span>
+<span class="c1">//</span></code></pre></figure>
 
 <h3 id="regex-solution">Regex Solution</h3>
 
