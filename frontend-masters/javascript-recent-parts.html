@@ -1362,6 +1362,49 @@ especially yours can heal a frozen heart`</span><span class="p">;</span>
 
 <h3 id="regex-solution">Regex Solution</h3>
 
+<details>
+    <summary>Click to view the solution
+</summary>
+    
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// The Power of a Smile</span>
+<span class="c1">// by Tupac Shakur</span>
+<span class="kd">var</span> <span class="nx">poem</span> <span class="o">=</span> <span class="s2">`
+The power of a gun can kill
+and the power of fire can burn
+the power of wind can chill
+and the power of a mind can learn
+the power of anger can rage
+inside until it tears u apart
+but the power of a smile
+especially yours can heal a frozen heart`</span><span class="p">;</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">power</span> <span class="k">of</span> <span class="nx">powers</span><span class="p">(</span><span class="nx">poem</span><span class="p">))</span> <span class="p">{</span>
+	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">power</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// a gun: kill</span>
+<span class="c1">// fire: burn</span>
+<span class="c1">// wind: chill</span>
+<span class="c1">// a mind: learn</span>
+<span class="c1">// anger: rage</span>
+<span class="c1">// smile: heal</span>
+
+<span class="kd">function</span> <span class="o">*</span><span class="nx">powers</span><span class="p">(</span><span class="nx">poem</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">re</span> <span class="o">=</span> <span class="sr">/</span><span class="se">(?&lt;</span><span class="sr">=power of </span><span class="se">)(?&lt;</span><span class="sr">thing&gt;</span><span class="se">(?:</span><span class="sr">a </span><span class="se">)?\w</span><span class="sr">+</span><span class="se">)</span><span class="sr">.*</span><span class="se">?(?&lt;</span><span class="sr">=can </span><span class="se">)(?&lt;</span><span class="sr">verb&gt;</span><span class="se">\w</span><span class="sr">+</span><span class="se">)</span><span class="sr">/g</span><span class="nx">s</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">match</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nx">match</span> <span class="o">=</span> <span class="nx">re</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">poem</span><span class="p">))</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="p">{</span>
+            <span class="na">groups</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nx">thing</span><span class="p">,</span>
+                <span class="nx">verb</span>
+            <span class="p">}</span>
+        <span class="p">}</span> <span class="o">=</span> <span class="nx">match</span><span class="p">;</span>
+        <span class="k">yield</span> <span class="s2">`</span><span class="p">${</span><span class="nx">thing</span><span class="p">:</span> <span class="nx">verb</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+
+</details>
+
 <h2 id="async-await">Async Await</h2>
 
 <h3 id="async-functions">Async Functions</h3>
