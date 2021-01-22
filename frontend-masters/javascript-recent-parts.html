@@ -1409,21 +1409,218 @@ especially yours can heal a frozen heart`</span><span class="p">;</span>
 
 <h3 id="async-functions">Async Functions</h3>
 
+<p>One of the most highly anticipated features that people got very++ excited about is… the <code class="language-plaintext highlighter-rouge">async</code> function and the <code class="language-plaintext highlighter-rouge">await</code> syntax inside of that function. But why would we need async functions?! Well… JavaScript first had callbacks, then in ES6 landed <code class="language-plaintext highlighter-rouge">Promise</code>(s), and finally came <code class="language-plaintext highlighter-rouge">async</code>… Which doesn’t really answer the question 😞 IDK, but there are likely scenarios where you want to have asynchronous function calls… With promises and generators, you could do something like this: (also with the help of a utility function from a library like <a href="https://github.com/tj/co">co</a>, <a href="https://koajs.com/">koa</a>, or <a href="http://bluebirdjs.com/docs/getting-started.html">bluebird</a>)</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">runner</span><span class="p">(</span><span class="kd">function</span> <span class="o">*</span><span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="k">yield</span> <span class="nx">fetchCurrentUser</span><span class="p">();</span>
+
+    <span class="kd">var</span> <span class="p">[</span> <span class="nx">archivedOrders</span><span class="p">,</span> <span class="nx">currentOrders</span> <span class="p">]</span> <span class="o">=</span>
+        <span class="k">yield</span> <span class="nb">Promise</span><span class="p">.</span><span class="nx">all</span><span class="p">([</span>
+            <span class="nx">fetchArchivedOrders</span><span class="p">(</span> <span class="nx">user</span><span class="p">.</span><span class="nx">id</span> <span class="p">),</span>
+            <span class="nx">fetchCurrentOrders</span><span class="p">(</span> <span class="nx">user</span><span class="p">.</span><span class="nx">id</span> <span class="p">)</span>
+        <span class="p">]);</span>
+        <span class="c1">//...</span>
+<span class="p">});</span></code></pre></figure>
+
+<p>The above code pattern is called the sync-async pattern. This was possible in ES6 because of the availability of <code class="language-plaintext highlighter-rouge">Promises</code> and generator functions. Many developers moved from promise chains to the sync-async pattern, the only unfortunate part of this pattern is its dependency on a third party utility function (<code class="language-plaintext highlighter-rouge">runner</code> above) to manage the pause and resume of the promise. So almost as soon as <code class="language-plaintext highlighter-rouge">Promises</code> and generator functions landed in ES6, people wanted the ability to pause and resume as they could with the third party utility function(s).</p>
+
+<p>💥 <code class="language-plaintext highlighter-rouge">async</code> <code class="language-plaintext highlighter-rouge">await</code> 💥</p>
+
+<p><code class="language-plaintext highlighter-rouge">await</code> effectively replaces the <code class="language-plaintext highlighter-rouge">yield</code> keyword. Here’s that same code block from above using the <code class="language-plaintext highlighter-rouge">async</code> <code class="language-plaintext highlighter-rouge">await</code> syntax:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">async</span> <span class="kd">function</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">fetchCurrentUser</span><span class="p">();</span>
+
+    <span class="kd">var</span> <span class="p">[</span> <span class="nx">archivedOrders</span><span class="p">,</span> <span class="nx">currentOrders</span> <span class="p">]</span> <span class="o">=</span>
+        <span class="k">await</span> <span class="nb">Promise</span><span class="p">.</span><span class="nx">all</span><span class="p">([</span>
+            <span class="nx">fetchArchivedOrders</span><span class="p">(</span> <span class="nx">user</span><span class="p">.</span><span class="nx">id</span> <span class="p">),</span>
+            <span class="nx">fetchCurrentOrders</span><span class="p">(</span> <span class="nx">user</span><span class="p">.</span><span class="nx">id</span> <span class="p">)</span>
+        <span class="p">]);</span>
+        <span class="c1">//...</span>
+<span class="p">}</span>
+
+<span class="nx">main</span><span class="p">();</span></code></pre></figure>
+
+<p><code class="language-plaintext highlighter-rouge">async</code> <code class="language-plaintext highlighter-rouge">await</code> shipped with ES2017 so by now… should be widely supported.</p>
+
 <h3 id="async-await-exercise">Async Await Exercise</h3>
+
+<p>Practice time! We want to be able to request a number of files and print their results to the correct ‘location’ but also not have to wait for the 1st then 2nd then 3rd result to be returned in order but still print the ‘files’ in their sequential order… Should take maybe 5 - 8 lines of code. Solution in the next section if you need it!</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">getFile</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resolve</span><span class="p">){</span>
+		<span class="nx">fakeAjax</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span><span class="nx">resolve</span><span class="p">);</span>
+	<span class="p">});</span>
+<span class="p">}</span>
+
+<span class="k">async</span> <span class="kd">function</span> <span class="nx">loadFiles</span><span class="p">(</span><span class="nx">files</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c1">// request all files concurrently</span>
+
+	<span class="c1">// print in order, sequentially</span>
+<span class="p">}</span>
+
+<span class="nx">loadFiles</span><span class="p">([</span><span class="dl">"</span><span class="s2">file1</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">file2</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">file3</span><span class="dl">"</span><span class="p">]);</span>
+
+
+<span class="c1">// **************************************</span>
+
+
+<span class="kd">function</span> <span class="nx">fakeAjax</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">fake_responses</span> <span class="o">=</span> <span class="p">{</span>
+		<span class="dl">"</span><span class="s2">file1</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">The first text</span><span class="dl">"</span><span class="p">,</span>
+		<span class="dl">"</span><span class="s2">file2</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">The middle text</span><span class="dl">"</span><span class="p">,</span>
+		<span class="dl">"</span><span class="s2">file3</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">The last text</span><span class="dl">"</span>
+	<span class="p">};</span>
+	<span class="kd">var</span> <span class="nx">randomDelay</span> <span class="o">=</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1</span><span class="nx">E4</span><span class="p">)</span> <span class="o">%</span> <span class="mi">8000</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1000</span><span class="p">;</span>
+
+	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Requesting: </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">url</span><span class="p">);</span>
+
+	<span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+		<span class="nx">cb</span><span class="p">(</span><span class="nx">fake_responses</span><span class="p">[</span><span class="nx">url</span><span class="p">]);</span>
+	<span class="p">},</span><span class="nx">randomDelay</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
 
 <h3 id="async-await-solution">Async Await Solution</h3>
 
+<details>
+    <summary>Click to view the solution
+</summary>
+    
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">getFile</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resolve</span><span class="p">){</span>
+		<span class="nx">fakeAjax</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span><span class="nx">resolve</span><span class="p">);</span>
+	<span class="p">});</span>
+<span class="p">}</span>
+
+<span class="k">async</span> <span class="kd">function</span> <span class="nx">loadFiles</span><span class="p">(</span><span class="nx">files</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c1">// request all files concurrently</span>
+    <span class="kd">var</span> <span class="nx">promises</span> <span class="o">=</span> <span class="nx">files</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">getFile</span><span class="p">);</span>
+
+	<span class="c1">// print in order, sequentially</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="nx">promise</span> <span class="k">of</span> <span class="nx">promises</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="k">await</span> <span class="nx">promise</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">loadFiles</span><span class="p">([</span><span class="dl">"</span><span class="s2">file1</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">file2</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">file3</span><span class="dl">"</span><span class="p">]);</span>
+
+
+<span class="c1">// **************************************</span>
+
+
+<span class="kd">function</span> <span class="nx">fakeAjax</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">fake_responses</span> <span class="o">=</span> <span class="p">{</span>
+		<span class="dl">"</span><span class="s2">file1</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">The first text</span><span class="dl">"</span><span class="p">,</span>
+		<span class="dl">"</span><span class="s2">file2</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">The middle text</span><span class="dl">"</span><span class="p">,</span>
+		<span class="dl">"</span><span class="s2">file3</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">The last text</span><span class="dl">"</span>
+	<span class="p">};</span>
+	<span class="kd">var</span> <span class="nx">randomDelay</span> <span class="o">=</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1</span><span class="nx">E4</span><span class="p">)</span> <span class="o">%</span> <span class="mi">8000</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1000</span><span class="p">;</span>
+
+	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Requesting: </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">url</span><span class="p">);</span>
+
+	<span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+		<span class="nx">cb</span><span class="p">(</span><span class="nx">fake_responses</span><span class="p">[</span><span class="nx">url</span><span class="p">]);</span>
+	<span class="p">},</span><span class="nx">randomDelay</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+
+</details>
+
 <h3 id="async-iteration">Async Iteration</h3>
+
+<p>There are some issues with async functions. For example, if you try to run a function and pass it to <code class="language-plaintext highlighter-rouge">forEach</code>, like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">async</span> <span class="kd">function</span> <span class="nx">fetchFiles</span><span class="p">(</span><span class="nx">files</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">prs</span> <span class="o">=</span> <span class="nx">files</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span> <span class="nx">getFile</span> <span class="p">);</span>
+
+    <span class="nx">prs</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span> <span class="kd">function</span> <span class="nx">each</span><span class="p">(</span><span class="nx">pr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="k">await</span> <span class="nx">pr</span> <span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>…the async function will fail. The reason it fails is because the await keyword has to be used inside of an async function, not a regular function. So, you may expect to be able to pass the async function to the forEach, but forEach does not know what to do with a promise, so it will still fail. What we really need is an asynchronous iterator. As of the workshop, there was no proposal to add this ‘eager’ asynchronous iterator to JavaScript, but it is a missing piece… But the instructor, Kyle, has built a solution for us called <a href="https://github.com/getify/fasy">fasy</a> (/ˈfāsē/). Fasy provides eager asynchronous iterator functions for all of the standard (JavaScript) functions, such as; map, filter, reduce.</p>
 
 <h3 id="async-function-problems">Async Function Problems</h3>
 
+<p>The instructors Fasy library addresses the issue of nesting async functions, but there are some other issues / concerns to consider. These issues are why the instructor still often uses a generator (function) with a runner (as we have seen in the first section of this unit). Here are some of the issues to consider:</p>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">await</code> keyword only knows what to do with actual Promises - There is no way to extend the <code class="language-plaintext highlighter-rouge">await</code> keyword, it only knows what to do with thenables and promises. Not a huge deal, but when you work with generator function and a runner, you have the ability to pause no any representation of a future value that you may need to.</p>
+  </li>
+  <li>
+    <p>Scheduling (starvation) - The way promises were implemented was with the micro-task queue. The micro-task queue is ‘outside’ of the event loop, which allows a promise to jump to ‘the front of the line’ whenever a promise is resolved. The side effect of this is anything in the event loop, i.e. an AAJX call or some other function will be blocked. The danger in this is that it is possible to create an infinite loop where a promise keeps adding a new micro-task queue, forever blocking the standard event loop. This is called starvation, CS people write PhD theses about it. TLDR; the instructor ran across an instance where his async code starved the rest of his application. He brought it to the attention of TC39 (board that oversees JavaScript). TC39 said, “you are the only person who has ever ran into this problem, we are going to do nothing to fix it”. I guess be aware that it is a possibility, and if it happens to you, godspeed.</p>
+  </li>
+  <li>
+    <p>External Cancelation - Async functions are essentially ‘black boxes’ in the sense that once they start, it is impossible to externally cancel them. <a href="https://www.youtube.com/watch?v=VDaKLQE03ss">Here’s a link to Kyle’s talk all about this topic, “Cancel All My Appointments”</a> - He even went on to write some example code for how JavaScript could handle external cancellation of asynchronous functions, using cancellation tokens, which would look something similar to how an AJAX request is canceled. You can take a look at that code here: <a href="https://github.com/getify/CAF">Cancelable Asynchronous Functions - CAF</a>. Being able to cancel any event on the back or front end is a basic necessity, and asynchronous functions are no different. If you need to be able to do this, either use the generator function / runner combination or take a look at the just mentioned CAF.</p>
+  </li>
+</ul>
+
 <h3 id="async-generators-with-yield">Async Generators with yield</h3>
 
+<p>Another ‘missing piece’ of asynchronous functions is the ability to ‘push’ or <code class="language-plaintext highlighter-rouge">yield</code> something that we can pass to another function. It would be beneficial if there were a way to ‘push’ and ‘pull’ in the same kind of function. An async* generator can solve this problem. In ES2018, async* generators were added. It is a new function type that is both an async function and a generator in one. The async* generator function type allows you to use both the <code class="language-plaintext highlighter-rouge">yield</code> and <code class="language-plaintext highlighter-rouge">await</code> keyword(s) in the same function. The <code class="language-plaintext highlighter-rouge">yield</code> keyword for pushing and the <code class="language-plaintext highlighter-rouge">await</code> keyword for pulling. Here is a code example that shows why this could be desirable:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">async</span> <span class="kd">function</span> <span class="nx">fetchURLs</span><span class="p">(</span><span class="nx">urls</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">results</span> <span class="o">=</span> <span class="p">[];</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">url</span> <span class="k">of</span> <span class="nx">urls</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">resp</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">fetch</span><span class="p">(</span> <span class="nx">url</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">resp</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="mi">200</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">let</span> <span class="nx">text</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">text</span><span class="p">();</span>
+            <span class="nx">results</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">text</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">results</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="kc">undefined</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nx">results</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The above code is actually fine if you only had a few results, but what if you had thousands? Does it make any sense that you would have to wait an indefinite amount of time before you are able to do anything with your data? Probably not… Here is that same code, but using the async* generator function type:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">async</span> <span class="kd">function</span> <span class="o">*</span><span class="nx">fetchURLs</span><span class="p">(</span><span class="nx">urls</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">url</span> <span class="k">of</span> <span class="nx">urls</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">resp</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">fetch</span><span class="p">(</span> <span class="nx">url</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">resp</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="mi">200</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">let</span> <span class="nx">text</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">text</span><span class="p">();</span>
+            <span class="k">yield</span> <span class="nx">text</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">();</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">yield</span> <span class="kc">undefined</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Not a lot changes, but <code class="language-plaintext highlighter-rouge">await</code> will be ‘pulling’ the results and <code class="language-plaintext highlighter-rouge">yield</code> will be ‘pushing’ the results out. Pretty 🔥</p>
+
 <h3 id="async-generators-iteration">Async Generators Iteration</h3>
+
+<p>When you call an async* generator function, what you get back from it is a special kind of iterator which allows you to consume its results as it has them. The problem with async* generator functions is that they return a promise rather than an iterator / iterable result, which means you cannot use a <code class="language-plaintext highlighter-rouge">for of</code> loop or something like that on it, but adding asynchronous behavior to an iterator can work. Here’s an example of how that could look:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">async</span> <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">favoriteSites</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">it</span> <span class="o">=</span> <span class="nx">fetchURLs</span><span class="p">(</span> <span class="nx">favoriteSites</span> <span class="p">);</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">res</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">it</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">done</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+        <span class="kd">let</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">text</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The above code is considered to be a ‘lazy’ asynchronous iteration as it will (a)wait results before proceeding. And this is great, but to have to write all that every time you are ‘lazily’ getting some results is probably not the easiest approach… Thanks to the powers that be, we have the <code class="language-plaintext highlighter-rouge">for await of</code> loop! Check it out:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">async</span> <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">favoriteSites</span><span class="p">)</span> <span class="p">{</span>
+ <span class="k">for</span> <span class="k">await</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">text</span> <span class="k">of</span> <span class="nx">fetchURLs</span><span class="p">(</span> <span class="nx">favoriteSites</span> <span class="p">)){</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">text</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
 
 <h2 id="wrap-up">Wrap-Up</h2>
 
 <h3 id="wrap-up-1">Wrap-Up</h3>
+
+<p>All of the topics that have been covered in this workshop were not things that even the instructor was able to immediately understand. It may take days, weeks, and even months to truly understand some of these features. Don’t feel bad if you are not able to get all this right now. Find opportunities to work with these things and solidify your knowledge and understanding of these concepts over time and over real world use. The mission of this workshop was not to have you walk away and be like, “I KNOW ALL THE THINGS ABOUT JAVASCRIPT! ! ! !”, but to let you know that this is an ever-evolving language that needs to be kept up with.</p>
 
         </article>
     </div>
