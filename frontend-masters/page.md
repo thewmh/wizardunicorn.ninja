@@ -22,6 +22,12 @@ Organized by subject.
 
 [JavaScript: The Recent Parts](javascript-recent-parts)
 
+**COMING SOON** JavaScript: The New Hard Parts [](new-hard-parts-js)
+
+**COMING SOON** Functional Light JavaScript, v3 [](functional-light-javascript)
+
+**COMING SOON** Hardcore Functional Programming in JavaScript, v2 [](hardcore-functional-programming-js)
+
 ## Webpack
 
 [Webpack 4 Fundamentals](webpack-4-fundamentals)
