@@ -1606,18 +1606,241 @@ function *powers(poem) {
 
 ### Async Functions
 
+One of the most highly anticipated features that people got very++ excited about is... the `async` function and the `await` syntax inside of that function. But why would we need async functions?! Well... JavaScript first had callbacks, then in ES6 landed `Promise`(s), and finally came `async`... Which doesn't really answer the question 😞 IDK, but there are likely scenarios where you want to have asynchronous function calls... With promises and generators, you could do something like this: (also with the help of a utility function from a library like [co](https://github.com/tj/co), [koa](https://koajs.com/), or [bluebird](http://bluebirdjs.com/docs/getting-started.html))
+
+{% highlight javascript %}
+
+runner(function *main() {
+    var user = yield fetchCurrentUser();
+
+    var [ archivedOrders, currentOrders ] =
+        yield Promise.all([
+            fetchArchivedOrders( user.id ),
+            fetchCurrentOrders( user.id )
+        ]);
+        //...
+});
+
+{% endhighlight %}
+
+The above code pattern is called the sync-async pattern. This was possible in ES6 because of the availability of `Promises` and generator functions. Many developers moved from promise chains to the sync-async pattern, the only unfortunate part of this pattern is its dependency on a third party utility function (`runner` above) to manage the pause and resume of the promise. So almost as soon as `Promises` and generator functions landed in ES6, people wanted the ability to pause and resume as they could with the third party utility function(s).
+
+💥 `async` `await` 💥
+
+`await` effectively replaces the `yield` keyword. Here's that same code block from above using the `async` `await` syntax:
+
+{% highlight javascript %}
+
+async function main() {
+    var user = await fetchCurrentUser();
+
+    var [ archivedOrders, currentOrders ] =
+        await Promise.all([
+            fetchArchivedOrders( user.id ),
+            fetchCurrentOrders( user.id )
+        ]);
+        //...
+}
+
+main();
+
+{% endhighlight %}
+
+`async` `await` shipped with ES2017 so by now... should be widely supported.
+
 ### Async Await Exercise
+
+Practice time! We want to be able to request a number of files and print their results to the correct 'location' but also not have to wait for the 1st then 2nd then 3rd result to be returned in order but still print the 'files' in their sequential order... Should take maybe 5 - 8 lines of code. Solution in the next section if you need it! 
+
+{% highlight javascript %}
+
+function getFile(file) {
+	return new Promise(function(resolve){
+		fakeAjax(file,resolve);
+	});
+}
+
+async function loadFiles(files) {
+	// request all files concurrently
+
+	// print in order, sequentially
+}
+
+loadFiles(["file1","file2","file3"]);
+
+
+// **************************************
+
+
+function fakeAjax(url,cb) {
+	var fake_responses = {
+		"file1": "The first text",
+		"file2": "The middle text",
+		"file3": "The last text"
+	};
+	var randomDelay = (Math.round(Math.random() * 1E4) % 8000) + 1000;
+
+	console.log("Requesting: " + url);
+
+	setTimeout(function(){
+		cb(fake_responses[url]);
+	},randomDelay);
+}
+
+{% endhighlight %}
 
 ### Async Await Solution
 
+{% capture summary %}Click to view the solution{% endcapture %}
+{% capture details %}
+{% highlight javascript %}
+
+function getFile(file) {
+	return new Promise(function(resolve){
+		fakeAjax(file,resolve);
+	});
+}
+
+async function loadFiles(files) {
+	// request all files concurrently
+    var promises = files.map(getFile);
+
+	// print in order, sequentially
+    for ( promise of promises ) {
+        console.log( await promise );
+    }
+}
+
+loadFiles(["file1","file2","file3"]);
+
+
+// **************************************
+
+
+function fakeAjax(url,cb) {
+	var fake_responses = {
+		"file1": "The first text",
+		"file2": "The middle text",
+		"file3": "The last text"
+	};
+	var randomDelay = (Math.round(Math.random() * 1E4) % 8000) + 1000;
+
+	console.log("Requesting: " + url);
+
+	setTimeout(function(){
+		cb(fake_responses[url]);
+	},randomDelay);
+}
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %}
+
 ### Async Iteration
+
+There are some issues with async functions. For example, if you try to run a function and pass it to `forEach`, like this:
+
+{% highlight javascript %}
+
+async function fetchFiles(files) {
+    var prs = files.map( getFile );
+
+    prs.forEach( function each(pr) {
+        console.log( await pr );
+    });
+}
+
+{% endhighlight %}
+
+...the async function will fail. The reason it fails is because the await keyword has to be used inside of an async function, not a regular function. So, you may expect to be able to pass the async function to the forEach, but forEach does not know what to do with a promise, so it will still fail. What we really need is an asynchronous iterator. As of the workshop, there was no proposal to add this 'eager' asynchronous iterator to JavaScript, but it is a missing piece... But the instructor, Kyle, has built a solution for us called [fasy](https://github.com/getify/fasy) (/ˈfāsē/). Fasy provides eager asynchronous iterator functions for all of the standard (JavaScript) functions, such as; map, filter, reduce.
 
 ### Async Function Problems
 
+The instructors Fasy library addresses the issue of nesting async functions, but there are some other issues / concerns to consider. These issues are why the instructor still often uses a generator (function) with a runner (as we have seen in the first section of this unit). Here are some of the issues to consider:
+
+* `await` keyword only knows what to do with actual Promises - There is no way to extend the `await` keyword, it only knows what to do with thenables and promises. Not a huge deal, but when you work with generator function and a runner, you have the ability to pause no any representation of a future value that you may need to.
+
+* Scheduling (starvation) - The way promises were implemented was with the micro-task queue. The micro-task queue is 'outside' of the event loop, which allows a promise to jump to 'the front of the line' whenever a promise is resolved. The side effect of this is anything in the event loop, i.e. an AAJX call or some other function will be blocked. The danger in this is that it is possible to create an infinite loop where a promise keeps adding a new micro-task queue, forever blocking the standard event loop. This is called starvation, CS people write PhD theses about it. TLDR; the instructor ran across an instance where his async code starved the rest of his application. He brought it to the attention of TC39 (board that oversees JavaScript). TC39 said, "you are the only person who has ever ran into this problem, we are going to do nothing to fix it". I guess be aware that it is a possibility, and if it happens to you, godspeed.
+
+* External Cancelation - Async functions are essentially 'black boxes' in the sense that once they start, it is impossible to externally cancel them. [Here's a link to Kyle's talk all about this topic, "Cancel All My Appointments"](https://www.youtube.com/watch?v=VDaKLQE03ss) - He even went on to write some example code for how JavaScript could handle external cancellation of asynchronous functions, using cancellation tokens, which would look something similar to how an AJAX request is canceled. You can take a look at that code here: [Cancelable Asynchronous Functions - CAF](https://github.com/getify/CAF). Being able to cancel any event on the back or front end is a basic necessity, and asynchronous functions are no different. If you need to be able to do this, either use the generator function / runner combination or take a look at the just mentioned CAF.
+
 ### Async Generators with yield
 
+Another 'missing piece' of asynchronous functions is the ability to 'push' or `yield` something that we can pass to another function. It would be beneficial if there were a way to 'push' and 'pull' in the same kind of function. An async* generator can solve this problem. In ES2018, async* generators were added. It is a new function type that is both an async function and a generator in one. The async* generator function type allows you to use both the `yield` and `await` keyword(s) in the same function. The `yield` keyword for pushing and the `await` keyword for pulling. Here is a code example that shows why this could be desirable:
+
+{% highlight javascript %}
+
+async function fetchURLs(urls) {
+    var results = [];
+
+    for (let url of urls) {
+        let resp = await fetch( url );
+        if (resp.status == 200) {
+            let text = await resp.text();
+            results.push( text.toUpperCase() );
+        } else {
+            results.push( undefined );
+        }
+    }
+
+    return results;
+}
+
+{% endhighlight %}
+
+The above code is actually fine if you only had a few results, but what if you had thousands? Does it make any sense that you would have to wait an indefinite amount of time before you are able to do anything with your data? Probably not... Here is that same code, but using the async* generator function type:
+
+{% highlight javascript %}
+
+async function *fetchURLs(urls) {
+    for (let url of urls) {
+        let resp = await fetch( url );
+        if (resp.status == 200) {
+            let text = await resp.text();
+            yield text.toUpperCase();
+        } else {
+            yield undefined;
+        }
+    }
+}
+
+{% endhighlight %}
+
+Not a lot changes, but `await` will be 'pulling' the results and `yield` will be 'pushing' the results out. Pretty 🔥
+
 ### Async Generators Iteration
+
+When you call an async* generator function, what you get back from it is a special kind of iterator which allows you to consume its results as it has them. The problem with async* generator functions is that they return a promise rather than an iterator / iterable result, which means you cannot use a `for of` loop or something like that on it, but adding asynchronous behavior to an iterator can work. Here's an example of how that could look:
+
+{% highlight javascript %}
+
+async function main(favoriteSites) {
+    var it = fetchURLs( favoriteSites );
+
+    while (true) {
+        let res = await it.next();
+        if (res.done) break;
+        let text = res.value;
+
+        console.log( text );
+    }
+}
+
+{% endhighlight %}
+
+The above code is considered to be a 'lazy' asynchronous iteration as it will (a)wait results before proceeding. And this is great, but to have to write all that every time you are 'lazily' getting some results is probably not the easiest approach... Thanks to the powers that be, we have the `for await of` loop! Check it out:
+
+{% highlight javascript %}
+
+async function main(favoriteSites) {
+ for await (let text of fetchURLs( favoriteSites )){
+        console.log( text );
+    }
+}
+
+{% endhighlight %}
 
 ## Wrap-Up
 
 ### Wrap-Up
+
+All of the topics that have been covered in this workshop were not things that even the instructor was able to immediately understand. It may take days, weeks, and even months to truly understand some of these features. Don't feel bad if you are not able to get all this right now. Find opportunities to work with these things and solidify your knowledge and understanding of these concepts over time and over real world use. The mission of this workshop was not to have you walk away and be like, "I KNOW ALL THE THINGS ABOUT JAVASCRIPT! ! ! !", but to let you know that this is an ever-evolving language that needs to be kept up with.

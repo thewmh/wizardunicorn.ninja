@@ -20,7 +20,7 @@ Organized by subject.
 
 [Deep Javascript Foundations, v3](deep-javascript-foundations)
 
-01/2021 **IN PROGRESS** JavaScript: The Recent Parts [🤫](javascript-recent-parts)
+[JavaScript: The Recent Parts](javascript-recent-parts)
 
 ## Webpack
 
