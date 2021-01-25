@@ -76,27 +76,259 @@
                 <a class="workshop-nav--link" href="#final">Final</a>
             </li></ul>
     </div>
-</div><div class="container mx-auto px-10 pb-4 max-w-screen-lg"><article class="mx-auto mt-8 dark:text-blueGray-50 unicorn:text-purple-700 break-words"><h1 class="text-5xl lg:text-8xl font-semibold">JavaScript: The New Hard Parts</h1><h2 id="introduction">Introduction</h2>
+</div><div class="container mx-auto px-10 pb-4 max-w-screen-lg"><article class="mx-auto mt-8 dark:text-blueGray-50 unicorn:text-purple-700 break-words"><h1 class="text-5xl lg:text-8xl font-semibold">JavaScript: The New Hard Parts</h1><p><a href="https://static.frontendmasters.com/resources/2018-05-23-javascript-new-hard-parts/new-hard-parts-slides.pdf">Workshop slides are here</a></p>
+
+<h2 id="introduction">Introduction</h2>
 
 <h3 id="introduction-1">Introduction</h3>
 
+<p>The instructor for this course, Will Sentance, is the founder of <a href="https://codesmith.io/">Codesmith</a>. He lets everyone know how amazing it is and that the graduates of his program earn a reasonable salary at big tech companies. Great. More importantly, the content covered in this workshop is what job seekers get asked the most in interviews. Event loop and closure are two of the very important topics. Also, here is a list of things that companies look for in mid - senior level candidates:</p>
+
+<ul>
+  <li>
+    <p>Analytical problem solving with code</p>
+  </li>
+  <li>
+    <p>Technical communication (can I implement your approach just from your explanation)</p>
+  </li>
+  <li>
+    <p>Engineering best practices and approach (debugging, code structure, patience, and reference to documentation)</p>
+  </li>
+  <li>
+    <p>Non-technical communication (empathetic and thoughtful communication)</p>
+  </li>
+  <li>
+    <p>Language and computer science experience</p>
+  </li>
+</ul>
+
 <h3 id="javascript-code-execution">JavaScript Code Execution</h3>
+
+<p>If you’ve already taken / read my notes on, Javascript: The Hard Parts, this next bit may look familiar, but a refresher never hurt. It is important to understand how the JavaScript engine executes code, having this understanding will make it easier to comprehend the content of this workshop.</p>
+
+<p>What happens when JavaScript executes (runs) my code?</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">num</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nx">multiplyBy2</span> <span class="p">(</span><span class="nx">inputNumber</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">inputNumber</span><span class="o">*</span><span class="mi">2</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Will</span><span class="dl">"</span><span class="p">;</span></code></pre></figure>
+
+<p>When JavaScript code is executed, a ‘global execution context’ is created and two things happen when JavaScript executes the above (or any…) code. One, a ‘thread of execution’ is created which parses and executes the code line by line. Two, a live memory of variables with data (known as a ‘global variable environment’) is created. In the above code, the <strong>only</strong> thing ‘happening’ is 3 pieces of data are being stored in the ‘global variable environment’ aka memory; num, multiplyBy2, name. Adding on to the above example:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">num</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nx">multiplyBy2</span> <span class="p">(</span><span class="nx">inputNumber</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">inputNumber</span><span class="o">*</span><span class="mi">2</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">output</span> <span class="o">=</span> <span class="nx">multiplyBy2</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">newOutput</span> <span class="o">=</span> <span class="nx">multiplyBy2</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span></code></pre></figure>
+
+<p>Now with <code class="language-plaintext highlighter-rouge">output</code> and <code class="language-plaintext highlighter-rouge">newOutput</code>, we are actually storing the result of the multiplyBy2 function. To do that, a new execution context is created for each, <code class="language-plaintext highlighter-rouge">output</code> and <code class="language-plaintext highlighter-rouge">newOutput</code>, with their own separate local memory / variable environments, within the global execution context. Walking through <code class="language-plaintext highlighter-rouge">output</code>, would be something like this:</p>
+
+<ul>
+  <li>New (local) execution context is created</li>
+  <li>Local memory is created, storing the function’s parameter <code class="language-plaintext highlighter-rouge">inputNumber</code> with the passed in argument value of 4</li>
+  <li>A label for <code class="language-plaintext highlighter-rouge">result</code> is created in local memory in which is stored the value of <code class="language-plaintext highlighter-rouge">inputNumber</code> * 2… 8</li>
+  <li>Finally, the value of <code class="language-plaintext highlighter-rouge">result</code> is returned out to the global execution context’s variable environment memory</li>
+</ul>
+
+<p>While setting the value of <code class="language-plaintext highlighter-rouge">outuput</code> by running <code class="language-plaintext highlighter-rouge">multiplyBy2</code>, <code class="language-plaintext highlighter-rouge">newOutput</code> will have an undefined value because JavaScript can only execute one thing at a time. Also, once the value of <code class="language-plaintext highlighter-rouge">output</code> is set, the local execution context that was created to run <code class="language-plaintext highlighter-rouge">multiplyBy2</code> is ‘garbage collected’ (deleted).</p>
+
+<p>The last thing that is important to know about in this foundational review of JavaScript, is the call stack. Imagine JavaScript is like a stack of plates, with the global execution context being the first (or bottom) plate, while each additional execution context gets placed on top of the stack of plates in the order in which it was called. i.e. a new function call creates a new execution context which gets added to the call stack of plates, when that execution context is exited, the plate gets removed and JavaScript returns to the execution context that it was previously in, in this case the global execution context. Adding to the call stack(s) technical term is ‘push’, removing from the call stack(s) technical term is ‘pop’… similar to arrays.</p>
 
 <h2 id="asynchronous-javascript">Asynchronous JavaScript</h2>
 
 <h3 id="introducing-asynchronicity">Introducing Asynchronicity</h3>
 
+<p>Asynchronicity is the backbone of modern web development in JavaScript. JavaScript is single threaded and has a synchronous execution model. But what if we need to wait until we get some data back from an API? It would be nice to be able to wait for some code to execute, but not block the entire execution thread from executing any other code while it is also waiting… It is also important to note that there are a ton of features that JavaScript has access to but are not directly within the language itself; i.e. ‘speaking to the internet’, this is a browser feature. Take a look at this code:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">display</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">dataFromAPI</span> <span class="o">=</span> <span class="nx">fetchAndWait</span><span class="p">(</span><span class="dl">'</span><span class="s1">https:/twitter.com/viljar/tweets/1</span><span class="dl">'</span><span class="p">)</span>
+
+<span class="c1">//... user can do NOTHING here 😞</span>
+<span class="c1">//... could take 300ms, could never finish</span>
+<span class="c1">//... they're clicking and getting nothing until it finishes</span>
+
+<span class="nx">display</span><span class="p">(</span><span class="nx">dataFromAPI</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Run me later!</span><span class="dl">"</span><span class="p">);</span></code></pre></figure>
+
+<p>Executing the above code goes like so: Declare <code class="language-plaintext highlighter-rouge">display</code> function, set <code class="language-plaintext highlighter-rouge">dataFromAPI</code> to result of <code class="language-plaintext highlighter-rouge">fetchAndWait</code>, execute <code class="language-plaintext highlighter-rouge">display</code> function with <code class="language-plaintext highlighter-rouge">dataFromAPI</code> as its argument, console.log ‘Run me later!’. It’s pretty straightforward, but the wrench in the flow is <code class="language-plaintext highlighter-rouge">dataFromAPI</code>. While that is being set, we have no idea how much time will pass before it is complete and it will block the rest of our code from executing until it is finished…</p>
+
+<p>The above code ‘works’, but in a synchronous manner. If we didn’t care about the functionality of our application it would be fine. But we do care about the functionality of our application and we need to have the ability asynchronously execute code.</p>
+
 <h3 id="asynchronous-web-browser-apis">Asynchronous Web Browser APIs</h3>
+
+<p>In order to get some asynchronous features, we need to interface with external environments to introduce them. Let’s look at how the web browser helps with asynchronicity. One feature that the web browser ‘lends’ to JavaScript is the DOM (Document Object Model) which are the elements on the ‘page’ that JavaScript can interact with. Console is another web browser feature that is outside of JavaScript. Local storage, ability to speak to the internet, XHR; all of these are not JavaScript features. To bring asynchronicity to JavaScript, we need <a href="https://developer.mozilla.org/en-US/docs/Web/API">Web Browser APIs</a> / Node Background Threads. Take a look at this code and then we’ll walk through it / break down what it is doing.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">printHello</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">setTimeout</span><span class="p">(</span><span class="nx">printHello</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Print me first!</span><span class="dl">"</span><span class="p">);</span></code></pre></figure>
+
+<p>Here’s how the above code executes:</p>
+
+<ul>
+  <li>Declare a function called <code class="language-plaintext highlighter-rouge">printHello</code></li>
+  <li>Call <code class="language-plaintext highlighter-rouge">setTimeout</code> with the arguments <code class="language-plaintext highlighter-rouge">printHello</code> and <code class="language-plaintext highlighter-rouge">1000</code> (milliseconds) - <code class="language-plaintext highlighter-rouge">setTimeout</code> is not a feature / function which exists in JavaScript, but rather is a ‘Web Browser feature’. Calling <code class="language-plaintext highlighter-rouge">setTimeout</code> will ‘spin up’ an instance of a ‘Timer’ which in this case will take a reference to the <code class="language-plaintext highlighter-rouge">printHello</code> function and be set to 1000ms</li>
+  <li>Console <code class="language-plaintext highlighter-rouge">log</code> “Print me first!”, which will immediately print to the console</li>
+  <li>After ~1001ms, <code class="language-plaintext highlighter-rouge">setTimeout</code> will have finished and <code class="language-plaintext highlighter-rouge">printHello</code> will be pushed to the call stack and executed, printing “Hello” to the console.</li>
+</ul>
 
 <h3 id="asynchronous-web-browser-apis-qa">Asynchronous Web Browser APIs Q&amp;A</h3>
 
+<p>Q: How do you work with ‘layers’? i.e. if the function called in the <code class="language-plaintext highlighter-rouge">setTimeout</code> had another <code class="language-plaintext highlighter-rouge">setTimeout</code> in it?</p>
+
+<p>A: We’ll come back to that.</p>
+
+<p>Q: What happens if I am actively executing something on the call stack, when will the <code class="language-plaintext highlighter-rouge">setTimeout</code> be ‘allowed’ on the call stack?</p>
+
+<p>A: Good question.</p>
+
+<p>Come on Will… You literally did not answer these questions.</p>
+
 <h3 id="calling-the-outside-world">Calling the Outside World</h3>
+
+<p>Here’s another look using the Web Browser API <code class="language-plaintext highlighter-rouge">setTimeout</code> and another blocking function:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">printHello</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">blockFor1Sec</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// blocks JavaScript thread of execution for 1 second</span>
+<span class="p">}</span>
+
+<span class="nx">setTimeout</span><span class="p">(</span><span class="nx">printHello</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+
+<span class="nx">blockFor1Sec</span><span class="p">();</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Print me first</span><span class="dl">"</span><span class="p">);</span></code></pre></figure>
+
+<p>Here’s what will happen:</p>
+
+<ul>
+  <li>
+    <p>Declare <code class="language-plaintext highlighter-rouge">printHello</code></p>
+  </li>
+  <li>
+    <p>Declare <code class="language-plaintext highlighter-rouge">blockFor1Sec</code> - this is probably a loop of some sort that takes 1sec</p>
+  </li>
+  <li>
+    <p>Call <code class="language-plaintext highlighter-rouge">setTimeout</code> with <code class="language-plaintext highlighter-rouge">printHello</code> and <code class="language-plaintext highlighter-rouge">0</code> as the arguments - it is technically ready, but cannot be run yet</p>
+  </li>
+  <li>
+    <p>Put <code class="language-plaintext highlighter-rouge">blockFor1Sec</code> on the call stack and execute it</p>
+  </li>
+  <li>
+    <p>Print ‘Print me first’ to the console</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">printHello</code> is allowed to run</p>
+  </li>
+</ul>
+
+<p>Why does <code class="language-plaintext highlighter-rouge">printHello</code> not get run until the end?! There is another component to JavaScript that we’ve not yet seen, the  Callback Queue. When the <code class="language-plaintext highlighter-rouge">setTimeout</code> is ready, the function is first put in the Callback Queue. The Callback Queue checks the Call Stack to see if it can add to it, which it is allowed to do only when the Call Stack is empty and all of the Global Execution Context code is finished running. The process of checking the Call Stack and the Global Execution Context is called the Event Loop.</p>
 
 <h3 id="calling-the-outside-world-qa">Calling the Outside World Q&amp;A</h3>
 
+<p>Q: Where is the Callback Queue? Is it a Web Browser feature?</p>
+
+<p>A: That is a JavaScript engine feature.</p>
+
+<p>Q: How are is the Callback Queue prioritized? i.e. what if you have more than one <code class="language-plaintext highlighter-rouge">setTimeout</code>?</p>
+
+<p>A: They are put in the Callback Queue as they are ready. (not clear if it functions like the call stack, or if they are placed in the order that they are ready…)</p>
+
+<p>Q: Is the Callback Queue a stack?</p>
+
+<p>A: It is a queue. It is a ‘first in, first out’ queue. If you have <code class="language-plaintext highlighter-rouge">printHello</code>, then <code class="language-plaintext highlighter-rouge">printGoodbye</code>, then <code class="language-plaintext highlighter-rouge">printNothing</code>, if they were added to the Callback Queue in that order, they would be executed in that same order.</p>
+
+<p>Q: What does <code class="language-plaintext highlighter-rouge">setInterval</code> do?</p>
+
+<p>A: It is similar to <code class="language-plaintext highlighter-rouge">setTimeout</code>, in that it is another Web Browser API.</p>
+
+<p>Q: Is there a limit to the size of the Callback Queue?</p>
+
+<p>A: The function is not actually stored in the Callback Queue, it is stored in JavaScript memory, so the question more technically is, “Is there a to JavaScript memory for function definitions?”. The answer to which is, yes…</p>
+
+<p>Q: Is the Event Loop a part of the JavaScript engine?</p>
+
+<p>A: Yes.</p>
+
+<p>Q: What happens when you pass an anonymous function to <code class="language-plaintext highlighter-rouge">setTimeout</code>?</p>
+
+<p>A: Even without a ‘label’, function definitions are stored in memory with a position.</p>
+
 <h3 id="wrapping-up-web-browser-apis">Wrapping Up Web Browser APIs</h3>
 
+<p>What are the problems of Web Browser APIs?</p>
+
+<ul>
+  <li>
+    <p>None - It is super intuitive</p>
+  </li>
+  <li>
+    <p>Response data is only available in the callback function AKA callback hell</p>
+  </li>
+  <li>
+    <p>Maybe  it feels odd to think of passing a function into another function only for it to run later</p>
+  </li>
+</ul>
+
+<p>Benefits?</p>
+
+<ul>
+  <li>Super explicit once you understand how it works under-the-hood</li>
+</ul>
+
 <h3 id="asynchronous-exercises">Asynchronous Exercises</h3>
+
+<p>There is no better way to grow as a software engineer than pair programming. If you are just watching video workshops or reading articles, you are likely not hitting any of the ‘blocks’ that require you to try hard to get through which is what allows you to grow as an engineer. Code challenges, difficult projects, pair programming all help you grow. Pair programming is especially important as you have a navigator who’s job it is to verbalize precisely how the program should function and a driver who is required to make the implementation of the code. The navigator is not allowed to ever touch the keyboard, so they are ‘forced’ to use technical communication to effectively communicate their ‘vision’. <a href="https://en.wikipedia.org/wiki/Pair_programming">Here’s some more details about pair programming</a>. Ideally with a partner, answer these questions:</p>
+
+<ul>
+  <li>
+    <p>I know what a variable is</p>
+  </li>
+  <li>
+    <p>I’ve created a function before</p>
+  </li>
+  <li>
+    <p>I’ve added a CSS style before</p>
+  </li>
+  <li>
+    <p>I have implemented a sort algorithm (bubble, merge, etc)</p>
+  </li>
+  <li>
+    <p>I can add a method too an object’s prototype</p>
+  </li>
+  <li>
+    <p>I understand the event loop in JavaScript</p>
+  </li>
+  <li>
+    <p>I understand callback functions</p>
+  </li>
+  <li>
+    <p>I’ve implemented <code class="language-plaintext highlighter-rouge">filter</code> from scratch</p>
+  </li>
+  <li>
+    <p>I can handle collisions in hash tables</p>
+  </li>
+</ul>
+
+<p>Great! Now go to <a href="http://csbin.io/promises">http://csbin.io/promises</a> and do the things! (still with a partner if possible)</p>
+
+<p><a href="https://gist.github.com/aegorenkov/2ae91cabf21223bddca8c5b3ef3ec6f6#file-promises-js">Here’s the solutions, no peeking</a></p>
 
 <h2 id="promises">Promises</h2>
 
