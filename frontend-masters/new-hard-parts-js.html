@@ -334,7 +334,33 @@
 
 <h3 id="introducing-promises">Introducing Promises</h3>
 
+<p>Promises are special objects built into JavaScript that get returned immediately when we make a call to a web browser API / feature (i.e. <code class="language-plaintext highlighter-rouge">fetch</code>) that’s set up to return promises (not all are). Promises act as a placeholder for the data we hope to get back from the web browser feature’s background work. We also attach the functionality we want to defer running until that background work is done (using the built-in <code class="language-plaintext highlighter-rouge">.then</code> method). Promise objects will automatically trigger that functionality to run. The value returned from the web browser feature’s work will be that function’s input / argument.</p>
+
 <h3 id="promises-1">Promises</h3>
+
+<p>Now that we have seen the promise of promises, let’s look at a third approach to asynchronous code, which is a two-pronged ‘facade’ function  that both initiates background web browser work <em>and</em> returns a placeholder object (a promise) immediately in JavaScript:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">display</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">futureData</span> <span class="o">=</span> <span class="nx">fetch</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://twitter.com/viljar/tweets/1</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">futureData</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">display</span><span class="p">);</span> <span class="c1">// attached display functionality</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Print me first!</span><span class="dl">"</span><span class="p">);</span></code></pre></figure>
+
+<p>As usual, here’s a breakdown of how the above code executes:</p>
+
+<ul>
+  <li>
+    <p>declare <code class="language-plaintext highlighter-rouge">display</code> function</p>
+  </li>
+  <li>
+    <p>declare <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">futureData</code>, <code class="language-plaintext highlighter-rouge">fetch</code> function starts to run</p>
+  </li>
+  <li></li>
+</ul>
 
 <h3 id="promises-qa">Promises Q&amp;A</h3>
 
