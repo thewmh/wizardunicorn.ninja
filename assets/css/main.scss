@@ -57,6 +57,20 @@
         h2 {
             @apply relative inline-block p-4 transform rotate-1 font-black text-blueGray-50 bg-blueGray-700;
         }
+
+        ul {
+
+            li {
+
+                * {
+                    @apply inline-block;
+                }
+
+                &:before {
+                    content: "- ";
+                }
+            }
+        }
     }
 
     blockquote {

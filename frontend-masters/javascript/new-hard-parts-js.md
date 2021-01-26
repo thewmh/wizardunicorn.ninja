@@ -256,7 +256,33 @@ Great! Now go to [http://csbin.io/promises](http://csbin.io/promises) and do the
 
 ### Introducing Promises
 
+Promises are special objects built into JavaScript that get returned immediately when we make a call to a web browser API / feature (i.e. `fetch`) that's set up to return promises (not all are). Promises act as a placeholder for the data we hope to get back from the web browser feature's background work. We also attach the functionality we want to defer running until that background work is done (using the built-in `.then` method). Promise objects will automatically trigger that functionality to run. The value returned from the web browser feature's work will be that function's input / argument. 
+
 ### Promises
+
+Now that we have seen the promise of promises, let's look at a third approach to asynchronous code, which is a two-pronged 'facade' function  that both initiates background web browser work *and* returns a placeholder object (a promise) immediately in JavaScript:
+
+{% highlight javascript %}
+
+function display(data) {
+    console.log(data);
+}
+
+const futureData = fetch("https://twitter.com/viljar/tweets/1");
+
+futureData.then(display); // attached display functionality
+
+console.log("Print me first!");
+
+{% endhighlight %}
+
+As usual, here's a breakdown of how the above code executes:
+
+* declare `display` function
+
+* declare `const` `futureData`, `fetch` function starts to run
+
+* 
 
 ### Promises Q&A
 
