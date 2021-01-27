@@ -280,7 +280,18 @@ As usual, here's a breakdown of how the above code executes:
 
 * declare `display` function
 
-* declare `const` `futureData`, `fetch` function starts to run
+* declare `const` `futureData`, `fetch` function starts to run. `fetch` triggers the web browser feature `XMLHttpRequest` and immediately returns an object with a property on it called `value`. The object would look something like this:
+
+{% highlight javascript %}
+
+{
+    value: undefined,
+    onFulfillment: [...]
+}
+
+{% endhighlight %}
+
+When the web browser feature completes the request, `value` in the above object will be updated with the result of the request. *And*, when the `value` gets 'filled in', the `onFulfillment` array (which is an array of functions) gets triggered / run. 
 
 * 
 
