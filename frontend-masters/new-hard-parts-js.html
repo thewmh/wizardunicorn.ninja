@@ -357,8 +357,18 @@
     <p>declare <code class="language-plaintext highlighter-rouge">display</code> function</p>
   </li>
   <li>
-    <p>declare <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">futureData</code>, <code class="language-plaintext highlighter-rouge">fetch</code> function starts to run</p>
+    <p>declare <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">futureData</code>, <code class="language-plaintext highlighter-rouge">fetch</code> function starts to run. <code class="language-plaintext highlighter-rouge">fetch</code> triggers the web browser feature <code class="language-plaintext highlighter-rouge">XMLHttpRequest</code> and immediately returns an object with a property on it called <code class="language-plaintext highlighter-rouge">value</code>. The object would look something like this:</p>
   </li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">{</span>
+    <span class="nl">value</span><span class="p">:</span> <span class="kc">undefined</span><span class="p">,</span>
+    <span class="nx">onFulfillment</span><span class="p">:</span> <span class="p">[...]</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>When the web browser feature completes the request, <code class="language-plaintext highlighter-rouge">value</code> in the above object will be updated with the result of the request. <em>And</em>, when the <code class="language-plaintext highlighter-rouge">value</code> gets ‘filled in’, the <code class="language-plaintext highlighter-rouge">onFulfillment</code> array (which is an array of functions) gets triggered / run.</p>
+
+<ul>
   <li></li>
 </ul>
 
