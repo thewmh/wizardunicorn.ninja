@@ -291,9 +291,17 @@ As usual, here's a breakdown of how the above code executes:
 
 {% endhighlight %}
 
-When the web browser feature completes the request, `value` in the above object will be updated with the result of the request. *And*, when the `value` gets 'filled in', the `onFulfillment` array (which is an array of functions) gets triggered / run. 
+When the web browser feature completes the request, `value` in the above object will be updated with the result of the request. *And*, when the `value` gets 'filled in', the `onFulfillment` array (which is an array of functions) gets triggered / run. `fetch` defaults to `GET` which means that it is retrieving data as opposed to sending data. 
 
-* 
+* `futureData.then` is how 'we' are able to 'store' a function in the `onFulfillment` property of the promise object returned from `fetch`. So `futureData.then(display)` is effectively 'storing' the `display` function (or rather a reference to it) in the `onFulfillment` property (which is  an array) of the promise object returned from `fetch`.
+
+* Now, the `console.log` prints 'Print me first!', which completes all of the synchronous code in our program. But there is still an unfulfilled process happening in the background...
+
+* The unfulfilled process is the XHR browser feature that was triggered by `fecth`. Imagine that request is now complete and the `value` property of the promise object gets updated. Now, the `onFulfillment` array of functions gets automatically triggered, which in our code contains the `display` function.
+
+* The `display` function will `console.log` the data that was returned from the `fetch`.
+
+Finally, with this approach, we are able to start a task that takes a long time, continue running through our JavaScript code, and when the data comes back, we were able to 'auto-trigger' functionality (that we set; `display` function) on the returned data. 🔥
 
 ### Promises Q&A
 
