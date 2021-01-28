@@ -366,11 +366,24 @@
     <span class="nx">onFulfillment</span><span class="p">:</span> <span class="p">[...]</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>When the web browser feature completes the request, <code class="language-plaintext highlighter-rouge">value</code> in the above object will be updated with the result of the request. <em>And</em>, when the <code class="language-plaintext highlighter-rouge">value</code> gets ‘filled in’, the <code class="language-plaintext highlighter-rouge">onFulfillment</code> array (which is an array of functions) gets triggered / run.</p>
+<p>When the web browser feature completes the request, <code class="language-plaintext highlighter-rouge">value</code> in the above object will be updated with the result of the request. <em>And</em>, when the <code class="language-plaintext highlighter-rouge">value</code> gets ‘filled in’, the <code class="language-plaintext highlighter-rouge">onFulfillment</code> array (which is an array of functions) gets triggered / run. <code class="language-plaintext highlighter-rouge">fetch</code> defaults to <code class="language-plaintext highlighter-rouge">GET</code> which means that it is retrieving data as opposed to sending data.</p>
 
 <ul>
-  <li></li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">futureData.then</code> is how ‘we’ are able to ‘store’ a function in the <code class="language-plaintext highlighter-rouge">onFulfillment</code> property of the promise object returned from <code class="language-plaintext highlighter-rouge">fetch</code>. So <code class="language-plaintext highlighter-rouge">futureData.then(display)</code> is effectively ‘storing’ the <code class="language-plaintext highlighter-rouge">display</code> function (or rather a reference to it) in the <code class="language-plaintext highlighter-rouge">onFulfillment</code> property (which is  an array) of the promise object returned from <code class="language-plaintext highlighter-rouge">fetch</code>.</p>
+  </li>
+  <li>
+    <p>Now, the <code class="language-plaintext highlighter-rouge">console.log</code> prints ‘Print me first!’, which completes all of the synchronous code in our program. But there is still an unfulfilled process happening in the background…</p>
+  </li>
+  <li>
+    <p>The unfulfilled process is the XHR browser feature that was triggered by <code class="language-plaintext highlighter-rouge">fecth</code>. Imagine that request is now complete and the <code class="language-plaintext highlighter-rouge">value</code> property of the promise object gets updated. Now, the <code class="language-plaintext highlighter-rouge">onFulfillment</code> array of functions gets automatically triggered, which in our code contains the <code class="language-plaintext highlighter-rouge">display</code> function.</p>
+  </li>
+  <li>
+    <p>The <code class="language-plaintext highlighter-rouge">display</code> function will <code class="language-plaintext highlighter-rouge">console.log</code> the data that was returned from the <code class="language-plaintext highlighter-rouge">fetch</code>.</p>
+  </li>
 </ul>
+
+<p>Finally, with this approach, we are able to start a task that takes a long time, continue running through our JavaScript code, and when the data comes back, we were able to ‘auto-trigger’ functionality (that we set; <code class="language-plaintext highlighter-rouge">display</code> function) on the returned data. 🔥</p>
 
 <h3 id="promises-qa">Promises Q&amp;A</h3>
 
