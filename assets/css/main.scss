@@ -61,9 +61,10 @@
         ul {
 
             li {
+                @apply block mb-2 mt-2;
 
                 * {
-                    @apply inline-block;
+                    @apply inline;
                 }
 
                 &:before {
