@@ -305,7 +305,55 @@ Finally, with this approach, we are able to start a task that takes a long time,
 
 ### Promises Q&A
 
+Q: Does `fetch` use the event loop?
+
+A: Yes, but in a really interesting way 🤦🏻‍♂️
+
+Q: Does the (XHR) web browser feature directly set memory or does it use the event loop?
+
+A: Will Sentance refuses to answer...
+
+Q: Why are we using `const` for the variable that will eventually get updated when the `fetch` operation is complete? I thought that `const` was not able to be modified?!
+
+A: For primitive values stored in a `const`, they are unable to be changed. Objects and arrays though... they can be modified as long as you do not get rid of the object or array... i.e. you can add properties to the object or positions to the array.
+
+Q: If the `onFulfillment` 'function' triggered by JavaScript or the web browser?
+
+A: JavaScript.
+
 ### Promises & Microtask Queue
+
+How does the promise deferred functionality get back into JavaScript to be run?! Let's break down the following code to get a comprehensive understanding of how asynchronous code works:
+
+{% highlight javascript %}
+
+function display(data){
+    console.log(data);
+}
+
+function printHello() {
+    console.log("Hello");
+}
+
+function blockFor300ms() {
+    // blocks js thread for 300ms with long for loop
+}
+
+setTimeout(printHello, 0);
+
+const futureData = fetch('https://twitter.com/viljar/tweets/1');
+
+futureData.then(display);
+
+blockFor300ms();
+
+// which will run first?
+
+console.log("Print me first!");
+
+{% endhighlight %}
+
+### Microtask Queue Q&A
 
 ### Wrapping Up Promises
 
