@@ -353,13 +353,51 @@ console.log("Print me first!");
 
 {% endhighlight %}
 
+And... here's how the above code executes:
+
+* define `display`, `printHello`, and `blockFor300ms` as functions stored in global memory
+
+* `printHello` is passed to `setTimeout` which a 'timer' value of 0 (zero). 0 does not tell us when `printHello` will run, but for how long will the 'timer' of the `setTimeout` run for... When `printHello` actually executes is not known. But, `printHello` does get added to the Callback Queue. 
+
+* The `const` `futureData` is declared, but remains `undefined` until a moment later when it is set to a (Promise) object like this: `{value: undefined, onFulfillment: [...]}` - when the web browser feature (XHR) completes, `value` will get updated with the result which then triggers any functions in the `onFulfillment` array of the Promise object. The web browser feature (XHR) needs a URL, path, and a method (auto-defaults to `GET`).
+
+* `futureData.then` is passed the `display` function which 'adds' a `display` function reference to the array stored in the  `onFulfillment` property of the `futureData` Promise object.
+
+* `blockFor300ms` gets run; however it works, it is blocking any additional code for 300ms. While that function is running, the XHR web browser feature completes and receives back a response, which is then updates the `value` property of the `futureData` Promise object, this triggers the `display` in the `onFulfillment` array. The `display` function is added to the Microtask / Job Queue.
+
+* The `console.log("Print me first!")` is executed.
+
+* The Event Loop prioritizes tasks in the Microtask Queue, so even though `printHello` has been waiting in the Callback Queue since the beginning of time, `display`, which is in the Microtask Queue, gets run first! `display` `console.log`(s) the value that was returned from the `fetch`.
+
+* **Finally**, all of the synchronous code has executed and the Microtask Queue is empty, `printHello` is able to be run.
+
 ### Microtask Queue Q&A
 
+Q: Are there any other browser features that use the Microtask Queue instead of the Callback Queue?
+
+A: Yes, but you would need to check the JavaScript specification docs to find exactly which ones. Job queue = Microtask queue, Task queue = Callback queue. Keep in mind that the spec is not necessarily how JavaScript gets implemented. For a long time, browsers other than Chrome put `fetch` into the Callback Queue...
+
+Q: How was the `value` property of the Promise object updated? It seems like it skipped over the Callback Queue, Call Stack, Event Loop, etc...
+
+A: The assignment of `value` is 'likely' not set until the Call Stack is empty, but the important thing is that `value` being set triggers the functions in the `onFulfillment` array...
+
+Q: If `value` gets updated again and triggers the functions stored in the `onFulfillment` array, do they (the functions) get added to the Microtask queue?
+
+A: Yes, you can starve the Callback queue if the Microtask queue is never emptied.
+
+There is a third property on the Promise object; that is the `status` property. The `status` property is actually what triggers the functions in the `onFulfillment` array. `status` can be: pending, resolved, or rejected. When status is resolved is actually what triggers the `onFulfillment` array of functions. AND there is a fourth property on the Promise object; `onRejected`, which is another array of functions for when the `fetch` fails... You can pass functions into the `onRejected` array as a second argument in a `.then(onF, onR)` or use `.catch()` to only specify a function in the event of an error.
+
 ### Wrapping Up Promises
+
+Now, with the Microtask queue, JavaScript can be an asynchronous language. And thanks to web browsers, there are a ton of asynchronous features available to JavaScript. 99% of developers have no idea how Promises work under the hood, but if you have read the above, you do understand. If you do not understand them, Promises make debugging harder. If you do understand Promises, you end up with a cleaner and more readable style of code with a pseudo-synchronous style to it AND a nice error handling process.
+
+In summary... Promises, Web APIs, the Callback & Microtask Queues, and the Event Loop allow us to defer actions until the 'work' (an API request, timer, etc) is completed and continue running our code in the meantime. Asynchronous JavaScript is the backbone of the modern web - letting us build fast and in a 'non-blocking' way.
 
 ## Iterators
 
 ### Returning Function Inside a Function
+
+
 
 ### Return Next Element with a Function
 
