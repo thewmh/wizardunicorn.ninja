@@ -486,6 +486,46 @@
 
 <h3 id="returning-function-inside-a-function">Returning Function Inside a Function</h3>
 
+<p>It is often the case that we have some data in our application that we need to update, but it is not often the case that the data is a single item, but usually a collection of some sort… an array, object, etc… So the updating of data, the finding of the correct element to update is of itself a task. Also, you generally just want a specific element, then the next one, then the next, and so on. How that happens doesn’t really matter… Imagine that your data is a stream that is coming towards you and this is a way of accessing the next element in that flow. So instead of your data being a static source, imagine it being a flow that you could turn on and off to get the next element as needed 🤯</p>
+
+<p>Before we look at this ‘new way’ of working with / iterating over data, let’s look at the ‘old way’.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">];</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">numbers</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">numbers</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>And… here is how that executes:</p>
+
+<ul>
+  <li>
+    <p>Declare <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">numbers</code> and assign an array to it containing the numbers; 4, 5, 6</p>
+  </li>
+  <li>
+    <p>The <code class="language-plaintext highlighter-rouge">for</code> loop then executes… it is essentially checking if <code class="language-plaintext highlighter-rouge">i</code> is less than <code class="language-plaintext highlighter-rouge">numbers.length</code> and while that condition returns true; <code class="language-plaintext highlighter-rouge">console.log(numbers[i])</code>, <code class="language-plaintext highlighter-rouge">i++</code></p>
+  </li>
+</ul>
+
+<p>Great… The eventual ‘new way’ that we get to will be way better. Until then, let’s read this:</p>
+
+<p>Programs store data and apply functionality to it. But there are two parts to applying functions to collections of data:</p>
+
+<ol>
+  <li>The process of accessing each element</li>
+  <li>What we want to do to each element</li>
+</ol>
+
+<p>Iterators automate the accessing of each element - so we can focus on what to do to each element - and make it available to us in a smooth way</p>
+
+<p>Imagine if wee could create a function that stored <code class="language-plaintext highlighter-rouge">numbers</code> and each time we ran the function it would return out an element (the next one) from <code class="language-plaintext highlighter-rouge">numbers</code>. NOTE: It would have to remember which element was next somehow.</p>
+
+<p>BUT… this would let us think of our array/list as a ‘stream’ or flow of data with our function returning the next element from our ‘stream’ - this makes our code more readable and more functional.</p>
+
+<p><strong>But it starts with us returning a function from another function</strong></p>
+
+<p>🤔 some of that seems like we’ve already read it before… 🤷‍♂️ guess it doesn’t hurt to iterate over the subject of iteration?</p>
+
 <h3 id="return-next-element-with-a-function">Return Next Element with a Function</h3>
 
 <h3 id="iterator-function">Iterator Function</h3>
