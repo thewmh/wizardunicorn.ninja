@@ -397,6 +397,43 @@ In summary... Promises, Web APIs, the Callback & Microtask Queues, and the Event
 
 ### Returning Function Inside a Function
 
+It is often the case that we have some data in our application that we need to update, but it is not often the case that the data is a single item, but usually a collection of some sort... an array, object, etc... So the updating of data, the finding of the correct element to update is of itself a task. Also, you generally just want a specific element, then the next one, then the next, and so on. How that happens doesn't really matter... Imagine that your data is a stream that is coming towards you and this is a way of accessing the next element in that flow. So instead of your data being a static source, imagine it being a flow that you could turn on and off to get the next element as needed 🤯
+
+Before we look at this 'new way' of working with / iterating over data, let's look at the 'old way'.
+
+{% highlight javascript %}
+
+const numbers = [4, 5, 6];
+
+for (let i = 0; i < numbers.length; i++) {
+    console.log(numbers[i]);
+}
+
+{% endhighlight %}
+
+And... here is how that executes:
+
+* Declare `const` `numbers` and assign an array to it containing the numbers; 4, 5, 6
+
+* The `for` loop then executes... it is essentially checking if `i` is less than `numbers.length` and while that condition returns true; `console.log(numbers[i])`, `i++`
+
+Great... The eventual 'new way' that we get to will be way better. Until then, let's read this:
+
+Programs store data and apply functionality to it. But there are two parts to applying functions to collections of data:
+
+1. The process of accessing each element
+2. What we want to do to each element
+
+Iterators automate the accessing of each element - so we can focus on what to do to each element - and make it available to us in a smooth way
+
+Imagine if wee could create a function that stored `numbers` and each time we ran the function it would return out an element (the next one) from `numbers`. NOTE: It would have to remember which element was next somehow.
+
+BUT... this would let us think of our array/list as a 'stream' or flow of data with our function returning the next element from our 'stream' - this makes our code more readable and more functional.
+
+**But it starts with us returning a function from another function**
+
+🤔 some of that seems like we've already read it before... 🤷‍♂️ guess it doesn't hurt to iterate over the subject of iteration?
+
 
 
 ### Return Next Element with a Function
