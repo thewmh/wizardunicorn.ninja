@@ -431,9 +431,56 @@
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Print me first!</span><span class="dl">"</span><span class="p">);</span></code></pre></figure>
 
+<p>And… here’s how the above code executes:</p>
+
+<ul>
+  <li>
+    <p>define <code class="language-plaintext highlighter-rouge">display</code>, <code class="language-plaintext highlighter-rouge">printHello</code>, and <code class="language-plaintext highlighter-rouge">blockFor300ms</code> as functions stored in global memory</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">printHello</code> is passed to <code class="language-plaintext highlighter-rouge">setTimeout</code> which a ‘timer’ value of 0 (zero). 0 does not tell us when <code class="language-plaintext highlighter-rouge">printHello</code> will run, but for how long will the ‘timer’ of the <code class="language-plaintext highlighter-rouge">setTimeout</code> run for… When <code class="language-plaintext highlighter-rouge">printHello</code> actually executes is not known. But, <code class="language-plaintext highlighter-rouge">printHello</code> does get added to the Callback Queue.</p>
+  </li>
+  <li>
+    <p>The <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">futureData</code> is declared, but remains <code class="language-plaintext highlighter-rouge">undefined</code> until a moment later when it is set to a (Promise) object like this: <code class="language-plaintext highlighter-rouge">{value: undefined, onFulfillment: [...]}</code> - when the web browser feature (XHR) completes, <code class="language-plaintext highlighter-rouge">value</code> will get updated with the result which then triggers any functions in the <code class="language-plaintext highlighter-rouge">onFulfillment</code> array of the Promise object. The web browser feature (XHR) needs a URL, path, and a method (auto-defaults to <code class="language-plaintext highlighter-rouge">GET</code>).</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">futureData.then</code> is passed the <code class="language-plaintext highlighter-rouge">display</code> function which ‘adds’ a <code class="language-plaintext highlighter-rouge">display</code> function reference to the array stored in the  <code class="language-plaintext highlighter-rouge">onFulfillment</code> property of the <code class="language-plaintext highlighter-rouge">futureData</code> Promise object.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">blockFor300ms</code> gets run; however it works, it is blocking any additional code for 300ms. While that function is running, the XHR web browser feature completes and receives back a response, which is then updates the <code class="language-plaintext highlighter-rouge">value</code> property of the <code class="language-plaintext highlighter-rouge">futureData</code> Promise object, this triggers the <code class="language-plaintext highlighter-rouge">display</code> in the <code class="language-plaintext highlighter-rouge">onFulfillment</code> array. The <code class="language-plaintext highlighter-rouge">display</code> function is added to the Microtask / Job Queue.</p>
+  </li>
+  <li>
+    <p>The <code class="language-plaintext highlighter-rouge">console.log("Print me first!")</code> is executed.</p>
+  </li>
+  <li>
+    <p>The Event Loop prioritizes tasks in the Microtask Queue, so even though <code class="language-plaintext highlighter-rouge">printHello</code> has been waiting in the Callback Queue since the beginning of time, <code class="language-plaintext highlighter-rouge">display</code>, which is in the Microtask Queue, gets run first! <code class="language-plaintext highlighter-rouge">display</code> <code class="language-plaintext highlighter-rouge">console.log</code>(s) the value that was returned from the <code class="language-plaintext highlighter-rouge">fetch</code>.</p>
+  </li>
+  <li>
+    <p><strong>Finally</strong>, all of the synchronous code has executed and the Microtask Queue is empty, <code class="language-plaintext highlighter-rouge">printHello</code> is able to be run.</p>
+  </li>
+</ul>
+
 <h3 id="microtask-queue-qa">Microtask Queue Q&amp;A</h3>
 
+<p>Q: Are there any other browser features that use the Microtask Queue instead of the Callback Queue?</p>
+
+<p>A: Yes, but you would need to check the JavaScript specification docs to find exactly which ones. Job queue = Microtask queue, Task queue = Callback queue. Keep in mind that the spec is not necessarily how JavaScript gets implemented. For a long time, browsers other than Chrome put <code class="language-plaintext highlighter-rouge">fetch</code> into the Callback Queue…</p>
+
+<p>Q: How was the <code class="language-plaintext highlighter-rouge">value</code> property of the Promise object updated? It seems like it skipped over the Callback Queue, Call Stack, Event Loop, etc…</p>
+
+<p>A: The assignment of <code class="language-plaintext highlighter-rouge">value</code> is ‘likely’ not set until the Call Stack is empty, but the important thing is that <code class="language-plaintext highlighter-rouge">value</code> being set triggers the functions in the <code class="language-plaintext highlighter-rouge">onFulfillment</code> array…</p>
+
+<p>Q: If <code class="language-plaintext highlighter-rouge">value</code> gets updated again and triggers the functions stored in the <code class="language-plaintext highlighter-rouge">onFulfillment</code> array, do they (the functions) get added to the Microtask queue?</p>
+
+<p>A: Yes, you can starve the Callback queue if the Microtask queue is never emptied.</p>
+
+<p>There is a third property on the Promise object; that is the <code class="language-plaintext highlighter-rouge">status</code> property. The <code class="language-plaintext highlighter-rouge">status</code> property is actually what triggers the functions in the <code class="language-plaintext highlighter-rouge">onFulfillment</code> array. <code class="language-plaintext highlighter-rouge">status</code> can be: pending, resolved, or rejected. When status is resolved is actually what triggers the <code class="language-plaintext highlighter-rouge">onFulfillment</code> array of functions. AND there is a fourth property on the Promise object; <code class="language-plaintext highlighter-rouge">onRejected</code>, which is another array of functions for when the <code class="language-plaintext highlighter-rouge">fetch</code> fails… You can pass functions into the <code class="language-plaintext highlighter-rouge">onRejected</code> array as a second argument in a <code class="language-plaintext highlighter-rouge">.then(onF, onR)</code> or use <code class="language-plaintext highlighter-rouge">.catch()</code> to only specify a function in the event of an error.</p>
+
 <h3 id="wrapping-up-promises">Wrapping Up Promises</h3>
+
+<p>Now, with the Microtask queue, JavaScript can be an asynchronous language. And thanks to web browsers, there are a ton of asynchronous features available to JavaScript. 99% of developers have no idea how Promises work under the hood, but if you have read the above, you do understand. If you do not understand them, Promises make debugging harder. If you do understand Promises, you end up with a cleaner and more readable style of code with a pseudo-synchronous style to it AND a nice error handling process.</p>
+
+<p>In summary… Promises, Web APIs, the Callback &amp; Microtask Queues, and the Event Loop allow us to defer actions until the ‘work’ (an API request, timer, etc) is completed and continue running our code in the meantime. Asynchronous JavaScript is the backbone of the modern web - letting us build fast and in a ‘non-blocking’ way.</p>
 
 <h2 id="iterators">Iterators</h2>
 
