@@ -526,7 +526,74 @@
 
 <p>🤔 some of that seems like we’ve already read it before… 🤷‍♂️ guess it doesn’t hurt to iterate over the subject of iteration?</p>
 
+<p>One of the most powerful features of JavaScript is returning a function from another function and we’ll see why in just a moment. Consider this bit of code:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">createNewFunction</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">function</span> <span class="nx">add2</span><span class="p">(</span><span class="nx">num</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">num</span><span class="o">+</span><span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">add2</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">newFunction</span> <span class="o">=</span> <span class="nx">createNewFunction</span><span class="p">();</span>
+
+<span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">newFunction</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span></code></pre></figure>
+
+<p>How can we run/call <code class="language-plaintext highlighter-rouge">add2</code> now? Outside of <code class="language-plaintext highlighter-rouge">createNewFunction</code>?</p>
+
+<p>I imagine we will answer those question(s) if we walk through the code… Here’s that:</p>
+
+<ul>
+  <li>
+    <p>Define <code class="language-plaintext highlighter-rouge">createNewFunction</code> and store it in global memory</p>
+  </li>
+  <li>
+    <p>Declare <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">newFunction</code>, the value of which is set to the return value of <code class="language-plaintext highlighter-rouge">createNewFunction</code>. This creates a new execution context.</p>
+  </li>
+  <li>
+    <p>Moving inside of <code class="language-plaintext highlighter-rouge">createNewFunction</code>, a new function <code class="language-plaintext highlighter-rouge">add2</code> is created in the local memory of <code class="language-plaintext highlighter-rouge">createNewFunction</code>. <code class="language-plaintext highlighter-rouge">add2</code> is returned from <code class="language-plaintext highlighter-rouge">createNewFunction</code> into <code class="language-plaintext highlighter-rouge">newFunction</code> and the <code class="language-plaintext highlighter-rouge">createNewFunction</code> execution context is ‘garbage collected’ (removed from memory).</p>
+  </li>
+  <li>
+    <p>Declare <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">result</code>, the value of which is set to the return value of <code class="language-plaintext highlighter-rouge">newFunction(3)</code> (which invokes <code class="language-plaintext highlighter-rouge">newFunction</code>, creating a new execution context).</p>
+  </li>
+  <li>
+    <p>Inside of the new execution context created by <code class="language-plaintext highlighter-rouge">newFunction</code> and inside of that execution contexts local memory, the <code class="language-plaintext highlighter-rouge">num</code> parameter is stored with the argument of 3. <code class="language-plaintext highlighter-rouge">num</code> + 2 is returned out to <code class="language-plaintext highlighter-rouge">result</code>.</p>
+  </li>
+</ul>
+
 <h3 id="return-next-element-with-a-function">Return Next Element with a Function</h3>
+
+<p>Wonderful… now we can set the value of a variable to be the return value of a function (which is another function), but why would that be of any use?! Why not just define <code class="language-plaintext highlighter-rouge">add2</code> globally?! Because when you return a function from another function, you get… Damnit Will, the rhetorical question lead-ins always trip me up. Before we talk about the benefits of returning a function from a function, lets look at some more code!</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">createFunction</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kd">function</span> <span class="nx">inner</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="nx">array</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+        <span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nx">element</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">inner</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">returnNextElement</span> <span class="o">=</span> <span class="nx">createFunction</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span></code></pre></figure>
+
+<p>^ ^ How can we access the first element in the list?! By walking through the code line-by-line!</p>
+
+<ul>
+  <li>
+    <p>Define a function, <code class="language-plaintext highlighter-rouge">createFunction</code>, in global memory</p>
+  </li>
+  <li>
+    <p>Define a <code class="language-plaintext highlighter-rouge">const</code>, <code class="language-plaintext highlighter-rouge">returnNextElement</code>, in global memory. Its value defaults to <code class="language-plaintext highlighter-rouge">undefined</code> until <code class="language-plaintext highlighter-rouge">createFunction</code> is executed and returns a value.</p>
+  </li>
+  <li>
+    <p>Calling <code class="language-plaintext highlighter-rouge">createFunction</code> makes a new execution context, the array; [4, 5, 6] is stored in local memory, <code class="language-plaintext highlighter-rouge">i</code> is set to 0, and the function <code class="language-plaintext highlighter-rouge">inner</code> is declared and stored in local memory. <code class="language-plaintext highlighter-rouge">inner</code> is returned from <code class="language-plaintext highlighter-rouge">createFunction</code> and stored in <code class="language-plaintext highlighter-rouge">returnNextElement</code>. The execution context of calling <code class="language-plaintext highlighter-rouge">createFunction</code> is removed from memory.</p>
+  </li>
+</ul>
+
+<p>Now, hopefully… we should be able to call <code class="language-plaintext highlighter-rouge">returnNextElement</code> and ‘get’ the <em>next</em> element returned. Yes, that’s exactly how it works… <code class="language-plaintext highlighter-rouge">returnNextElement()</code>, <code class="language-plaintext highlighter-rouge">returnNextElement()</code>, <code class="language-plaintext highlighter-rouge">returnNextElement()</code></p>
+
+<p>With each call of <code class="language-plaintext highlighter-rouge">returnNextElement</code>, a new execution context is created in the local memory of which is declared the <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">element</code> which is set to <code class="language-plaintext highlighter-rouge">array[i]</code>… but what is the value of either <code class="language-plaintext highlighter-rouge">array</code> or <code class="language-plaintext highlighter-rouge">i</code>?! Well, initially, JavaScript will check local memory and when <code class="language-plaintext highlighter-rouge">array</code> and <code class="language-plaintext highlighter-rouge">i</code> are not found, where does JavaScript check next? Global? no… Even though the execution context of <code class="language-plaintext highlighter-rouge">createFunction</code> was removed, <code class="language-plaintext highlighter-rouge">returnNextElement</code> does retain the data that was stored in the local memory of <code class="language-plaintext highlighter-rouge">createFunction</code>… so the next place that <code class="language-plaintext highlighter-rouge">returnNextElement</code> looks for <code class="language-plaintext highlighter-rouge">array</code> and <code class="language-plaintext highlighter-rouge">i</code> is technically itself? Yep. The function definition did retain <code class="language-plaintext highlighter-rouge">array</code> and <code class="language-plaintext highlighter-rouge">i</code>. So in this way, we are able to ‘iterate’ over the array and get the correct next element from repeatedly calling <code class="language-plaintext highlighter-rouge">returnNextElement</code>.</p>
 
 <h3 id="iterator-function">Iterator Function</h3>
 
