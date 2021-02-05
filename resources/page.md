@@ -64,3 +64,9 @@ Make your code snippet screenshots look pretty with [Carbon](https://carbon.now.
 ## JavaScript
 
 [Essential JavaScript Design Patterns](https://addyosmani.com/resources/essentialjsdesignpatterns/book/) - Complete Book
+
+## All-encompassing Frontend Development Resources
+
+[Spellbook of Modern Web Development](https://github.com/dexteryy/spellbook-of-modern-webdev)
+
+[Frontend Interview Handbook](https://github.com/yangshun/front-end-interview-handbook)
