@@ -434,9 +434,68 @@ BUT... this would let us think of our array/list as a 'stream' or flow of data w
 
 🤔 some of that seems like we've already read it before... 🤷‍♂️ guess it doesn't hurt to iterate over the subject of iteration?
 
+One of the most powerful features of JavaScript is returning a function from another function and we'll see why in just a moment. Consider this bit of code:
 
+{% highlight javascript %}
+
+function createNewFunction() {
+    function add2(num) {
+        return num+2;
+    }
+    return add2;
+}
+
+const newFunction = createNewFunction();
+
+const result = newFunction(3);
+
+{% endhighlight %}
+
+How can we run/call `add2` now? Outside of `createNewFunction`?
+
+I imagine we will answer those question(s) if we walk through the code... Here's that:
+
+* Define `createNewFunction` and store it in global memory
+
+* Declare `const` `newFunction`, the value of which is set to the return value of `createNewFunction`. This creates a new execution context.
+
+* Moving inside of `createNewFunction`, a new function `add2` is created in the local memory of `createNewFunction`. `add2` is returned from `createNewFunction` into `newFunction` and the `createNewFunction` execution context is 'garbage collected' (removed from memory).
+
+* Declare `const` `result`, the value of which is set to the return value of `newFunction(3)` (which invokes `newFunction`, creating a new execution context).
+
+* Inside of the new execution context created by `newFunction` and inside of that execution contexts local memory, the `num` parameter is stored with the argument of 3. `num` + 2 is returned out to `result`. 
 
 ### Return Next Element with a Function
+
+Wonderful... now we can set the value of a variable to be the return value of a function (which is another function), but why would that be of any use?! Why not just define `add2` globally?! Because when you return a function from another function, you get... Damnit Will, the rhetorical question lead-ins always trip me up. Before we talk about the benefits of returning a function from a function, lets look at some more code!
+
+{% highlight javascript %}
+
+function createFunction(array) {
+    let i = 0;
+    function inner() {
+        const element = array[i];
+        i++;
+        return element;
+    }
+    return inner;
+}
+
+const returnNextElement = createFunction([4, 5, 6])
+
+{% endhighlight %}
+
+^ ^ How can we access the first element in the list?! By walking through the code line-by-line!
+
+* Define a function, `createFunction`, in global memory
+
+* Define a `const`, `returnNextElement`, in global memory. Its value defaults to `undefined` until `createFunction` is executed and returns a value.
+
+* Calling `createFunction` makes a new execution context, the array; [4, 5, 6] is stored in local memory, `i` is set to 0, and the function `inner` is declared and stored in local memory. `inner` is returned from `createFunction` and stored in `returnNextElement`. The execution context of calling `createFunction` is removed from memory.
+
+Now, hopefully... we should be able to call `returnNextElement` and 'get' the *next* element returned. Yes, that's exactly how it works... `returnNextElement()`, `returnNextElement()`, `returnNextElement()`
+
+With each call of `returnNextElement`, a new execution context is created in the local memory of which is declared the `const` `element` which is set to `array[i]`... but what is the value of either `array` or `i`?! Well, initially, JavaScript will check local memory and when `array` and `i` are not found, where does JavaScript check next? Global? no... Even though the execution context of `createFunction` was removed, `returnNextElement` does retain the data that was stored in the local memory of `createFunction`... so the next place that `returnNextElement` looks for `array` and `i` is technically itself? Yep. The function definition did retain `array` and `i`. So in this way, we are able to 'iterate' over the array and get the correct next element from repeatedly calling `returnNextElement`.
 
 ### Iterator Function
 
