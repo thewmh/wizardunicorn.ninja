@@ -597,6 +597,31 @@
 
 <h3 id="iterator-function">Iterator Function</h3>
 
+<p>The ‘backpack’ of (referenced) data that we get when returning a function from a function is known as:</p>
+
+<ul>
+  <li>
+    <p>Persistent Lexical Scope Referenced Data - This is a <strong>very</strong> literal way of defining what the referenced data <em>could</em> be called. Perhaps impressive, but not colloquial</p>
+  </li>
+  <li>
+    <p>Closed Over Variable Environment - C.O.V.E.</p>
+  </li>
+  <li>
+    <p>The Backpack - Makes some sense, as the data is ‘on’ / ‘attached to’ the surrounding function that returned the function… The instructor is trying to hard sell on using ‘The Backpack’ as the best name</p>
+  </li>
+  <li>
+    <p>The Closure - Most engineers call it this, but the whole concept of functions retaining their lexical environment reference is known as closure, not just the referenced data from the original lexical scope</p>
+  </li>
+</ul>
+
+<p>Any function that when called gives out the next element from a flow of data is known as an iterator. Iterators turn data into ‘streams’ of actual values that can be accessed one after the other.</p>
+
+<p>Now we have functions that hold an underlying array, the current position in the array, and <code class="language-plaintext highlighter-rouge">return</code> out the next item in the ‘stream’ of elements from the array when run.</p>
+
+<p>This allows us to have loops that show us the element itself in the body on each loop and <em>more deeply</em> allows us to rethink arrays as flows of elements themselves which we can interact with by calling a function that switches that flow on to give us the next element (in the array).</p>
+
+<p>This ‘decouples’ the process of accessing each element from what we want to do to each element.</p>
+
 <h3 id="iterators-exercise">Iterators Exercise</h3>
 
 <h2 id="generators">Generators</h2>
