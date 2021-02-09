@@ -499,6 +499,24 @@ With each call of `returnNextElement`, a new execution context is created in the
 
 ### Iterator Function
 
+The 'backpack' of (referenced) data that we get when returning a function from a function is known as:
+
+* Persistent Lexical Scope Referenced Data - This is a **very** literal way of defining what the referenced data *could* be called. Perhaps impressive, but not colloquial
+
+* Closed Over Variable Environment - C.O.V.E.
+
+* The Backpack - Makes some sense, as the data is 'on' / 'attached to' the surrounding function that returned the function... The instructor is trying to hard sell on using 'The Backpack' as the best name
+
+* The Closure - Most engineers call it this, but the whole concept of functions retaining their lexical environment reference is known as closure, not just the referenced data from the original lexical scope
+
+Any function that when called gives out the next element from a flow of data is known as an iterator. Iterators turn data into 'streams' of actual values that can be accessed one after the other.
+
+Now we have functions that hold an underlying array, the current position in the array, and `return` out the next item in the 'stream' of elements from the array when run.
+
+This allows us to have loops that show us the element itself in the body on each loop and *more deeply* allows us to rethink arrays as flows of elements themselves which we can interact with by calling a function that switches that flow on to give us the next element (in the array).
+
+This 'decouples' the process of accessing each element from what we want to do to each element. 
+
 ### Iterators Exercise
 
 ## Generators
