@@ -519,6 +519,8 @@ This 'decouples' the process of accessing each element from what we want to do t
 
 ### Iterators Exercise
 
+Go to [https://csbin.io/iterators](https://csbin.io/iterators) and do the exercices (but not 7, 8, 9 yet). [Solutions are here](https://gist.github.com/aegorenkov/2ae91cabf21223bddca8c5b3ef3ec6f6)
+
 ## Generators
 
 ### Generators
