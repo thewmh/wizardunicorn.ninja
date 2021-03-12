@@ -624,11 +624,29 @@
 
 <h3 id="iterators-exercise">Iterators Exercise</h3>
 
-<p>Go to <a href="https://csbin.io/iterators">https://csbin.io/iterators</a> and do the exercices (but not 7, 8, 9 yet). <a href="https://gist.github.com/aegorenkov/2ae91cabf21223bddca8c5b3ef3ec6f6">Solutions are here</a></p>
+<p>Go to <a href="https://csbin.io/iterators">https://csbin.io/iterators</a> and do the exercises (but not 7, 8, 9 yet). <a href="https://gist.github.com/aegorenkov/2ae91cabf21223bddca8c5b3ef3ec6f6">Solutions are here</a></p>
 
 <h2 id="generators">Generators</h2>
 
 <h3 id="generators-1">Generators</h3>
+
+<p>Once we start thinking of our data as flows (where we can pick an element one-by-one) we can rethink how we produce those flows; JavaScript now lets us produce the flows using a (generator) function to set what individual element will be returned next 🎉</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="o">*</span><span class="nx">createFlow</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">yield</span> <span class="mi">4</span>
+    <span class="k">yield</span> <span class="mi">5</span>
+    <span class="k">yield</span> <span class="mi">6</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">returnNextElement</span> <span class="o">=</span> <span class="nx">createFlow</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">element1</span> <span class="o">=</span> <span class="nx">returnNextElement</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">element2</span> <span class="o">=</span> <span class="nx">returnNextElement</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span></code></pre></figure>
+
+<p>What do we hope <code class="language-plaintext highlighter-rouge">returnNextElement.next()</code> will return? But how?</p>
+
+<p>By reiterating what we’ve already covered!</p>
+
+<p>JavaScript’s built-in iterators are actually objects with a <code class="language-plaintext highlighter-rouge">next</code> method that when called return the next element from the ‘stream’ / flow - with some slight restructuring to make sure that we are truly clear on how iterators work.</p>
 
 <h3 id="generator-functions-with-dynamic-data">Generator Functions with Dynamic Data</h3>
 
