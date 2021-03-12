@@ -67,6 +67,8 @@ Make your code snippet screenshots look pretty with [Carbon](https://carbon.now.
 
 ## All-encompassing Frontend Development Resources
 
+[Architectural Styles and the Design of Network-based Software Architectures](https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf)
+
 [Spellbook of Modern Web Development](https://github.com/dexteryy/spellbook-of-modern-webdev)
 
 [Frontend Interview Handbook](https://github.com/yangshun/front-end-interview-handbook)

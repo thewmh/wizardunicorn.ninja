@@ -519,11 +519,33 @@ This 'decouples' the process of accessing each element from what we want to do t
 
 ### Iterators Exercise
 
-Go to [https://csbin.io/iterators](https://csbin.io/iterators) and do the exercices (but not 7, 8, 9 yet). [Solutions are here](https://gist.github.com/aegorenkov/2ae91cabf21223bddca8c5b3ef3ec6f6)
+Go to [https://csbin.io/iterators](https://csbin.io/iterators) and do the exercises (but not 7, 8, 9 yet). [Solutions are here](https://gist.github.com/aegorenkov/2ae91cabf21223bddca8c5b3ef3ec6f6)
 
 ## Generators
 
 ### Generators
+
+Once we start thinking of our data as flows (where we can pick an element one-by-one) we can rethink how we produce those flows; JavaScript now lets us produce the flows using a (generator) function to set what individual element will be returned next 🎉
+
+{% highlight javascript %}
+
+function *createFlow() {
+    yield 4
+    yield 5
+    yield 6
+}
+
+const returnNextElement = createFlow();
+const element1 = returnNextElement.next();
+const element2 = returnNextElement.next();
+
+{% endhighlight %}
+
+What do we hope `returnNextElement.next()` will return? But how?
+
+By reiterating what we've already covered!
+
+JavaScript's built-in iterators are actually objects with a `next` method that when called return the next element from the 'stream' / flow - with some slight restructuring to make sure that we are truly clear on how iterators work.
 
 ### Generator Functions with Dynamic Data
 
