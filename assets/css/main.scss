@@ -63,12 +63,19 @@
             li {
                 @apply block mb-2 mt-2;
 
-                * {
+                *:not(li) {
                     @apply inline;
                 }
 
                 &:before {
                     content: "- ";
+                }
+
+                ul {
+                    
+                    li {
+                        @apply ml-8;
+                    }
                 }
             }
         }
