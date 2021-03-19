@@ -811,9 +811,11 @@ article h2 { --tw-bg-opacity:1; background-color: rgba(51, 65, 85, var(--tw-bg-o
 
 article ul li { display: block; margin-top: .5rem; margin-bottom: .5rem; }
 
-article ul li * { display: inline; }
+article ul li :not(li) { display: inline; }
 
 article ul li:before { content: "- "; }
+
+article ul li ul li { margin-left: 2rem; }
 
 blockquote { border-color: currentColor; border-left-width: 4px; display: inline-block; margin-left: 1rem; padding-left: 1rem; --tw-translate-x:0; --tw-translate-y:0; --tw-rotate:0; --tw-skew-x:0; --tw-skew-y:0; --tw-scale-x:1; --tw-scale-y:1; transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)); --tw-rotate:-.125deg; }
 
