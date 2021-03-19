@@ -648,7 +648,64 @@
 
 <p>JavaScript’s built-in iterators are actually objects with a <code class="language-plaintext highlighter-rouge">next</code> method that when called return the next element from the ‘stream’ / flow - with some slight restructuring to make sure that we are truly clear on how iterators work.</p>
 
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">createFlow</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">inner</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="na">next</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kd">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="nx">array</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+            <span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+            <span class="k">return</span> <span class="nx">element</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">inner</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">returnNextElement</span> <span class="o">=</span> <span class="nx">createFlow</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]);</span>
+<span class="kd">const</span> <span class="nx">element1</span> <span class="o">=</span> <span class="nx">returnNextElement</span><span class="p">.</span><span class="nx">next</span><span class="p">()</span>
+<span class="kd">const</span> <span class="nx">element2</span> <span class="o">=</span> <span class="nx">returnNextElement</span><span class="p">.</span><span class="nx">next</span><span class="p">()</span></code></pre></figure>
+
+<p>Walking step-by-step through the above code:</p>
+
+<ul>
+  <li>create a function <code class="language-plaintext highlighter-rouge">createFlow</code></li>
+  <li>create a <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">returnNextElement</code> that will be set to the return value of passing the array <code class="language-plaintext highlighter-rouge">[4, 5, 6]</code> to <code class="language-plaintext highlighter-rouge">createFlow</code> - doing this creates a new execution context in the memory of which will be stored:
+    <ul>
+      <li>array : [4, 5, 6]</li>
+      <li>i : 0</li>
+      <li>inner : (is an object) - the object has a method called <code class="language-plaintext highlighter-rouge">next</code> which stores a function that shares the scope of its parent, so it has access to <code class="language-plaintext highlighter-rouge">i</code> and <code class="language-plaintext highlighter-rouge">array</code>… <code class="language-plaintext highlighter-rouge">[[scope]]</code></li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">createFlow</code> returns <code class="language-plaintext highlighter-rouge">inner</code> which gets stored in global memory, and is in this case assigned to <code class="language-plaintext highlighter-rouge">returnNextElement</code>. The <code class="language-plaintext highlighter-rouge">[[scope]]</code> ‘local’ memory from the execution context that <code class="language-plaintext highlighter-rouge">inner</code> was defined in (<code class="language-plaintext highlighter-rouge">createFlow</code>) is also included with the <code class="language-plaintext highlighter-rouge">inner</code> function i.e. <code class="language-plaintext highlighter-rouge">i</code> and <code class="language-plaintext highlighter-rouge">array</code> (the ‘backpack’ as mentioned above in the Iterator Function section)</li>
+  <li>create a <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">element1</code> and set it to the return value of calling <code class="language-plaintext highlighter-rouge">returnNextElement.next()</code>. Since the <code class="language-plaintext highlighter-rouge">.next</code> property of <code class="language-plaintext highlighter-rouge">returnNextElement</code> is in fact a method, a new execution context is created and entered.
+    <ul>
+      <li>inside of the execution context of the <code class="language-plaintext highlighter-rouge">next</code> method of <code class="language-plaintext highlighter-rouge">returnNextElement</code>, a local memory is created.</li>
+      <li>a <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">element</code> is created and set to the value of <code class="language-plaintext highlighter-rouge">array[i]</code>; neither of which is in the scope…</li>
+      <li>the ‘backpack’ of the <code class="language-plaintext highlighter-rouge">next</code> method does have <code class="language-plaintext highlighter-rouge">array</code> and <code class="language-plaintext highlighter-rouge">i</code>! <code class="language-plaintext highlighter-rouge">array</code> is [4, 5, 6] and <code class="language-plaintext highlighter-rouge">i</code> is currently 0, so <code class="language-plaintext highlighter-rouge">element</code> will be set to 4</li>
+      <li><code class="language-plaintext highlighter-rouge">i++</code> will increment <code class="language-plaintext highlighter-rouge">i</code> by 1, changing the value of <code class="language-plaintext highlighter-rouge">i</code> from 0 to 1</li>
+      <li>finally, <code class="language-plaintext highlighter-rouge">element</code> is returned and stored in <code class="language-plaintext highlighter-rouge">element1</code> which is in global memory</li>
+    </ul>
+  </li>
+  <li>the above (last 5 steps) is repeated for the <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">element2</code></li>
+</ul>
+
+<p>All that verbosity is just to illustrate precisely how generator functions work in JavaScript, because that is how they work! With the <code class="language-plaintext highlighter-rouge">.next</code> method and all that magic!</p>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*">Read about generator functions on MDN</a>
+<a href="https://tc39.es/ecma262/#sec-generatorfunction-objects">Read about generator functions in the JavaScript specification</a></p>
+
 <h3 id="generator-functions-with-dynamic-data">Generator Functions with Dynamic Data</h3>
+
+<p>…and we’re right back at the beginning of this section with this bit of code to re-view (this time with a step-by-step walkthrough):</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="o">*</span><span class="nx">createFlow</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">yield</span> <span class="mi">4</span>
+    <span class="k">yield</span> <span class="mi">5</span>
+    <span class="k">yield</span> <span class="mi">6</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">returnNextElement</span> <span class="o">=</span> <span class="nx">createFlow</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">element1</span> <span class="o">=</span> <span class="nx">returnNextElement</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">element2</span> <span class="o">=</span> <span class="nx">returnNextElement</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span></code></pre></figure>
 
 <h3 id="generators-qa">Generators Q&amp;A</h3>
 
