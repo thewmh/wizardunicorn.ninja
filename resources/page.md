@@ -1,20 +1,12 @@
 ---
 title: Resources
-description: This is the frontend development resources page.
+description: Hand selected frontend development resources page.
 permalink: /resources/
 
 layout: default
 ---
 
 ## SXA
-
-<!-- [Custom Component Build - Part 1 - Introduction](https://www.nishtechinc.com/en/Blog/2018/November/Nuptial-Experiment-Introduction)
-
-[Custom Component Build - Part 2 - Milestone 1](https://www.nishtechinc.com/en/Blog/2018/November/Nuptial-Experiment-Part-2)
-
-[Custom Component Build - Part 3 - Milestones 2 & 3](https://www.nishtechinc.com/en/Blog/2018/November/Nuptial-Experiment-Part-3)
-
-[Custom Component Build - Part 4 - Final Thoughts](https://www.nishtechinc.com/en/Blog/2018/November/Nuptial-Experiment-Final-Thoughts) -->
 
 [SXA Overview Part 1](https://www.velir.com/blog/2017/10/16/tour-sitecore-experience-accelerator-sxa-part-1)
 
@@ -40,7 +32,7 @@ Make your code snippet screenshots look pretty with [Carbon](https://carbon.now.
 
 [ES6 In Depth](https://hacks.mozilla.org/category/es6-in-depth/) - Brought to you by Mozilla
 
-[Add or Remove classes on things w/ Jquery?](http://jsfiddle.net/ak9Lnrjj/10/)  
+[Add or Remove classes on things w/ jQuery?](http://jsfiddle.net/ak9Lnrjj/10/)  
 *could be a fix for slick carousel variable height slides. add a class that makes all the other slides have ` display: none;`* 
 
 [Charles - Web Debugging Proxy Application](https://www.charlesproxy.com)

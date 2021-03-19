@@ -547,7 +547,66 @@ By reiterating what we've already covered!
 
 JavaScript's built-in iterators are actually objects with a `next` method that when called return the next element from the 'stream' / flow - with some slight restructuring to make sure that we are truly clear on how iterators work.
 
+{% highlight javascript %}
+
+function createFlow(array) {
+    let i = 0;
+    const inner = {
+        next: function() {
+            const element = array[i];
+            i++;
+            return element;
+        }
+    }
+    return inner
+}
+
+const returnNextElement = createFlow([4, 5, 6]);
+const element1 = returnNextElement.next()
+const element2 = returnNextElement.next()
+
+{% endhighlight %}
+
+Walking step-by-step through the above code:
+
+* create a function `createFlow`
+* create a `const` `returnNextElement` that will be set to the return value of passing the array `[4, 5, 6]` to `createFlow` - doing this creates a new execution context in the memory of which will be stored:
+  * array : [4, 5, 6]
+  * i : 0
+  * inner : (is an object) - the object has a method called `next` which stores a function that shares the scope of its parent, so it has access to `i` and `array`... `[[scope]]`
+* `createFlow` returns `inner` which gets stored in global memory, and is in this case assigned to `returnNextElement`. The `[[scope]]` 'local' memory from the execution context that `inner` was defined in (`createFlow`) is also included with the `inner` function i.e. `i` and `array` (the 'backpack' as mentioned above in the Iterator Function section)
+* create a `const` `element1` and set it to the return value of calling `returnNextElement.next()`. Since the `.next` property of `returnNextElement` is in fact a method, a new execution context is created and entered.
+  * inside of the execution context of the `next` method of `returnNextElement`, a local memory is created.
+  * a `const` `element` is created and set to the value of `array[i]`; neither of which is in the scope...
+  * the 'backpack' of the `next` method does have `array` and `i`! `array` is [4, 5, 6] and `i` is currently 0, so `element` will be set to 4
+  * `i++` will increment `i` by 1, changing the value of `i` from 0 to 1
+  * finally, `element` is returned and stored in `element1` which is in global memory
+* the above (last 5 steps) is repeated for the `const` `element2`
+
+All that verbosity is just to illustrate precisely how generator functions work in JavaScript, because that is how they work! With the `.next` method and all that magic!
+
+[Read about generator functions on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*)
+[Read about generator functions in the JavaScript specification](https://tc39.es/ecma262/#sec-generatorfunction-objects)
+
 ### Generator Functions with Dynamic Data
+
+...and we're right back at the beginning of this section with this bit of code to re-view (this time with a step-by-step walkthrough):
+
+{% highlight javascript %}
+
+function *createFlow() {
+    yield 4
+    yield 5
+    yield 6
+}
+
+const returnNextElement = createFlow();
+const element1 = returnNextElement.next();
+const element2 = returnNextElement.next();
+
+{% endhighlight %}
+
+
 
 ### Generators Q&A
 
