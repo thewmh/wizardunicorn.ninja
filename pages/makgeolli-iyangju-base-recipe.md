@@ -95,8 +95,6 @@ Once strained, bottle beverage.
 
 Refrigerate.
 
-Bonus
-
 Drink!
 
 ## Recipe Notes
