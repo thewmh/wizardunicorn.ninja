@@ -45,7 +45,6 @@ function scrollToTitle(e) {
 
 function toggleNav() {
     pageNavLinkList.classList.toggle('hidden');
-    document.body.classList.toggle('overflow-hidden')
 }
 
 if (document.querySelector('.workshop-nav')) {
