@@ -19,8 +19,8 @@ pagenav:
 
 ### Stage 1
 
-* 200 g Sweet Rice Flour [available alternatives: any flour]
-* 1 L Water [available alternatives: filtered or not, tea or vegetable water]
+* 200 g Sweet Rice Flour [available alternatives: any flour]
+* 1 L Water [available alternatives: filtered or not, tea or vegetable water]
 * 100 g Nuruk
 * 2.5 g Yeast [available alternatives: many types of yeast]
 * 100 ml Water [available alternatives: filtered or not, tea or vegetable water]
