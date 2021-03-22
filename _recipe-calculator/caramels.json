@@ -1,0 +1,36 @@
+{
+    "ingredients": {
+        "agave": {
+            "name": "Agave",
+            "amount": 438
+        },
+        "granulatedSugar": {
+            "name": "Granulated Sugar",
+            "amount": 800
+        },
+        "heavyWhippingCream": {
+            "name": "Heavy Whipping Cream",
+            "amount": 120
+        },
+        "roastedFruit": {
+            "name": "Roasted Fruit",
+            "amount": 100
+        },
+        "salt": {
+            "name": "Salt",
+            "amount": 7
+        },
+        "naturalFlavoring": {
+            "name": "Natural Flavoring",
+            "amount": 6
+        },
+        "vanillaExtract": {
+            "name": "Vanilla Extract",
+            "amount": 23
+        },
+        "butter": {
+            "name": "Butter",
+            "amount": 330
+        }
+    }
+}
