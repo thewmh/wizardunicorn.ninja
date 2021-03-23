@@ -613,7 +613,7 @@ const element2 = returnNextElement.next();
 * define `const` `element2` and set its value to the output of calling the `next` method on the `returnNextElement` `const` - this will return to the suspended `createFlow` execution context.
 * inside of `createFlow`, the next line JavaScript will hit is `yield 5` - `element2` is set to have a value of 5.
 
-We can now get some data 'flowing' out. This allows us to dynamically set what data flows to us (when we run  `returnNextElement`s function).
+We can now get some data 'flowing' out. This allows us to dynamically set what data flows to us (when we run  `returnNextElement`'s function).
 
 {% highlight javascript %}
 
@@ -630,7 +630,64 @@ const element2 = returnNextElement.next(2) // 7
 
 {% endhighlight %}
 
+* create a generator function `createFlow` and store it in global memory.
+* create a `const` `returnNextElement` and set it to the output of calling `createFlow`, which immediately returns a generator object with a `next` property in it.
+* declare `const` `element1` and set it to the value of calling the `next` method of `returnNextElement`. This will create a new execution context for the `createFlow` generator function.
+* inside of the `createFlow` generator function, create a `const` `num` and set it to the value of 10.
+* inside of the `createFlow` generator function, create a `const` `newNum` and set it to the value `yield num`, which will `yield` 10 (the value of `num`). But because yield suspends and exits the execution context, `newNum` was not assigned 10, but `element1` does receive 10 as its value.
+* back in the global scope, `const` `element2` is declared and set to the value of calling the `next` method of `returnNextElement`and passing in the value 2. This will return us to the execution context of `createFlow`.
+* since `newNum` was left undefined (`yield` kicked us out of the function), whatever is passed in as a value (2) will be the value assigned to `newNum`.
+* the next line we hit will be `yield 5 + newNum` which will yield 7 and set `element2` to the value of 7
+
+[Check out MDN for a plethora of additional information about generator functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*)
+
+One additional note about generator functions is that the position of where in the function the code was last executed is stored in generator object in the memory of the scope that it was defined; in our case this would be in global memory.
+
 ### Generators Q&A
+
+Q: What is this patterned after?
+
+A: Other languages have iterators and generators; i.e. Python. Traditional computer programming is very imperative, in that it will generally show you every last thing about how it does what it can do. Whereas, something like these iterators and generators are more of an abstracted style.
+
+Q: When we are returning from `next` are we also returning `done`?
+
+A: Yes. The above examples were simplified, there are both a `value` and a `done` property on the `next` object.
+
+Q: Is `yield` essentially like `return`? i.e. can you have a ternary operation after it?
+
+A: Yes.
+
+Q: Does the generator object only have the `next` property or are there other properties on that object?
+
+A: Go look... Thanks Will. I **did** go look, come at me bro! 🤣 The generator object looks like this:
+
+{% highlight javascript %}
+
+const superCoolVariableName = awesomeFunction();
+
+superCoolVariableName
+// awesomeFunction
+// __proto__: Generator
+//   __proto__: Generator
+//     constructor: GeneratorFunction {prototype: Generator, Symbol(Symbol.toStringTag): "GeneratorFunction", constructor: *f*}
+//     next: *f* next()
+//     return: *f* return()
+//     throw: *f* throw()
+//     Symbol(Symbol.toStringTag): "Generator"
+//     __proto__: Object
+// [[GeneratorLocation]]: VM000:0
+// [[GeneratorState]]: "suspended"
+// [[GeneratorFunction]]: *f* *awesomeFunction()
+// [[GeneratorReceiver]]: Window
+// [[Scopes]]: Scopes[3]
+
+{% endhighlight %}
+
+Q: Is the fact that these generator functions are synchronous a problem for code execution?
+
+A: Not going to answer that right now. 😞
+
+Now that you are a generator function expert, go back to [https://csbin.io/iterators](https://csbin.io/iterators) and complete exercises 7, 8, and 9. [Solutions are here](https://gist.github.com/aegorenkov/2ae91cabf21223bddca8c5b3ef3ec6f6)
 
 ### Introducing Async Generators
 
