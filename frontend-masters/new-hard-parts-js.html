@@ -707,6 +707,28 @@
 <span class="kd">const</span> <span class="nx">element1</span> <span class="o">=</span> <span class="nx">returnNextElement</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
 <span class="kd">const</span> <span class="nx">element2</span> <span class="o">=</span> <span class="nx">returnNextElement</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span></code></pre></figure>
 
+<ul>
+  <li>create a generator function <code class="language-plaintext highlighter-rouge">createFlow</code> and store it in global memory</li>
+  <li>define <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">returnNextElement</code> and set its value to the output of running the <code class="language-plaintext highlighter-rouge">createFlow</code> generator function, which in this case is an object that contains a <code class="language-plaintext highlighter-rouge">next</code> method.</li>
+  <li>define <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">element1</code> and set its value to the output of calling the <code class="language-plaintext highlighter-rouge">next</code> method on the <code class="language-plaintext highlighter-rouge">returnNextElement</code> <code class="language-plaintext highlighter-rouge">const</code> - this will create a new execution context, but with <code class="language-plaintext highlighter-rouge">createFlow</code> as its scope, not <code class="language-plaintext highlighter-rouge">returnNextElement</code>.</li>
+  <li>inside of <code class="language-plaintext highlighter-rouge">createFlow</code>, the first line JavaScript will hit is <code class="language-plaintext highlighter-rouge">yield 4</code> - <code class="language-plaintext highlighter-rouge">yield</code> is a powerful keyword, similar to <code class="language-plaintext highlighter-rouge">return</code>, which exits out of the function, but <code class="language-plaintext highlighter-rouge">yield</code> suspends the execution context instead of destroying it. <code class="language-plaintext highlighter-rouge">element1</code> is set to have a value of 4.</li>
+  <li>define <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">element2</code> and set its value to the output of calling the <code class="language-plaintext highlighter-rouge">next</code> method on the <code class="language-plaintext highlighter-rouge">returnNextElement</code> <code class="language-plaintext highlighter-rouge">const</code> - this will return to the suspended <code class="language-plaintext highlighter-rouge">createFlow</code> execution context.</li>
+  <li>inside of <code class="language-plaintext highlighter-rouge">createFlow</code>, the next line JavaScript will hit is <code class="language-plaintext highlighter-rouge">yield 5</code> - <code class="language-plaintext highlighter-rouge">element2</code> is set to have a value of 5.</li>
+</ul>
+
+<p>We can now get some data ‘flowing’ out. This allows us to dynamically set what data flows to us (when we run  <code class="language-plaintext highlighter-rouge">returnNextElement</code>s function).</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="o">*</span><span class="nx">createFlow</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">num</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">newNum</span> <span class="o">=</span> <span class="k">yield</span> <span class="nx">num</span><span class="p">;</span>
+    <span class="k">yield</span> <span class="mi">5</span> <span class="o">+</span> <span class="nx">newNum</span><span class="p">;</span>
+    <span class="k">yield</span> <span class="mi">6</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">returnNextElement</span> <span class="o">=</span> <span class="nx">createFlow</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">element1</span> <span class="o">=</span> <span class="nx">returnNextElement</span><span class="p">.</span><span class="nx">next</span><span class="p">()</span> <span class="c1">// 10</span>
+<span class="kd">const</span> <span class="nx">element2</span> <span class="o">=</span> <span class="nx">returnNextElement</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1">// 7</span></code></pre></figure>
+
 <h3 id="generators-qa">Generators Q&amp;A</h3>
 
 <h3 id="introducing-async-generators">Introducing Async Generators</h3>
