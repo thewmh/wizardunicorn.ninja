@@ -606,7 +606,29 @@ const element2 = returnNextElement.next();
 
 {% endhighlight %}
 
+* create a generator function `createFlow` and store it in global memory
+* define `const` `returnNextElement` and set its value to the output of running the `createFlow` generator function, which in this case is an object that contains a `next` method.
+* define `const` `element1` and set its value to the output of calling the `next` method on the `returnNextElement` `const` - this will create a new execution context, but with `createFlow` as its scope, not `returnNextElement`.
+* inside of `createFlow`, the first line JavaScript will hit is `yield 4` - `yield` is a powerful keyword, similar to `return`, which exits out of the function, but `yield` suspends the execution context instead of destroying it. `element1` is set to have a value of 4.
+* define `const` `element2` and set its value to the output of calling the `next` method on the `returnNextElement` `const` - this will return to the suspended `createFlow` execution context.
+* inside of `createFlow`, the next line JavaScript will hit is `yield 5` - `element2` is set to have a value of 5.
 
+We can now get some data 'flowing' out. This allows us to dynamically set what data flows to us (when we run  `returnNextElement`s function).
+
+{% highlight javascript %}
+
+function *createFlow() {
+    const num = 10;
+    const newNum = yield num;
+    yield 5 + newNum;
+    yield 6;
+}
+
+const returnNextElement = createFlow();
+const element1 = returnNextElement.next() // 10
+const element2 = returnNextElement.next(2) // 7
+
+{% endhighlight %}
 
 ### Generators Q&A
 
