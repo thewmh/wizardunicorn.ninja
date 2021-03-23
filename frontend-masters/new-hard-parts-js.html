@@ -716,7 +716,7 @@
   <li>inside of <code class="language-plaintext highlighter-rouge">createFlow</code>, the next line JavaScript will hit is <code class="language-plaintext highlighter-rouge">yield 5</code> - <code class="language-plaintext highlighter-rouge">element2</code> is set to have a value of 5.</li>
 </ul>
 
-<p>We can now get some data ‘flowing’ out. This allows us to dynamically set what data flows to us (when we run  <code class="language-plaintext highlighter-rouge">returnNextElement</code>s function).</p>
+<p>We can now get some data ‘flowing’ out. This allows us to dynamically set what data flows to us (when we run  <code class="language-plaintext highlighter-rouge">returnNextElement</code>’s function).</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="o">*</span><span class="nx">createFlow</span><span class="p">()</span> <span class="p">{</span>
     <span class="kd">const</span> <span class="nx">num</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
@@ -729,7 +729,62 @@
 <span class="kd">const</span> <span class="nx">element1</span> <span class="o">=</span> <span class="nx">returnNextElement</span><span class="p">.</span><span class="nx">next</span><span class="p">()</span> <span class="c1">// 10</span>
 <span class="kd">const</span> <span class="nx">element2</span> <span class="o">=</span> <span class="nx">returnNextElement</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1">// 7</span></code></pre></figure>
 
+<ul>
+  <li>create a generator function <code class="language-plaintext highlighter-rouge">createFlow</code> and store it in global memory.</li>
+  <li>create a <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">returnNextElement</code> and set it to the output of calling <code class="language-plaintext highlighter-rouge">createFlow</code>, which immediately returns a generator object with a <code class="language-plaintext highlighter-rouge">next</code> property in it.</li>
+  <li>declare <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">element1</code> and set it to the value of calling the <code class="language-plaintext highlighter-rouge">next</code> method of <code class="language-plaintext highlighter-rouge">returnNextElement</code>. This will create a new execution context for the <code class="language-plaintext highlighter-rouge">createFlow</code> generator function.</li>
+  <li>inside of the <code class="language-plaintext highlighter-rouge">createFlow</code> generator function, create a <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">num</code> and set it to the value of 10.</li>
+  <li>inside of the <code class="language-plaintext highlighter-rouge">createFlow</code> generator function, create a <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">newNum</code> and set it to the value <code class="language-plaintext highlighter-rouge">yield num</code>, which will <code class="language-plaintext highlighter-rouge">yield</code> 10 (the value of <code class="language-plaintext highlighter-rouge">num</code>). But because yield suspends and exits the execution context, <code class="language-plaintext highlighter-rouge">newNum</code> was not assigned 10, but <code class="language-plaintext highlighter-rouge">element1</code> does receive 10 as its value.</li>
+  <li>back in the global scope, <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">element2</code> is declared and set to the value of calling the <code class="language-plaintext highlighter-rouge">next</code> method of <code class="language-plaintext highlighter-rouge">returnNextElement</code>and passing in the value 2. This will return us to the execution context of <code class="language-plaintext highlighter-rouge">createFlow</code>.</li>
+  <li>since <code class="language-plaintext highlighter-rouge">newNum</code> was left undefined (<code class="language-plaintext highlighter-rouge">yield</code> kicked us out of the function), whatever is passed in as a value (2) will be the value assigned to <code class="language-plaintext highlighter-rouge">newNum</code>.</li>
+  <li>the next line we hit will be <code class="language-plaintext highlighter-rouge">yield 5 + newNum</code> which will yield 7 and set <code class="language-plaintext highlighter-rouge">element2</code> to the value of 7</li>
+</ul>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*">Check out MDN for a plethora of additional information about generator functions</a></p>
+
+<p>One additional note about generator functions is that the position of where in the function the code was last executed is stored in generator object in the memory of the scope that it was defined; in our case this would be in global memory.</p>
+
 <h3 id="generators-qa">Generators Q&amp;A</h3>
+
+<p>Q: What is this patterned after?</p>
+
+<p>A: Other languages have iterators and generators; i.e. Python. Traditional computer programming is very imperative, in that it will generally show you every last thing about how it does what it can do. Whereas, something like these iterators and generators are more of an abstracted style.</p>
+
+<p>Q: When we are returning from <code class="language-plaintext highlighter-rouge">next</code> are we also returning <code class="language-plaintext highlighter-rouge">done</code>?</p>
+
+<p>A: Yes. The above examples were simplified, there are both a <code class="language-plaintext highlighter-rouge">value</code> and a <code class="language-plaintext highlighter-rouge">done</code> property on the <code class="language-plaintext highlighter-rouge">next</code> object.</p>
+
+<p>Q: Is <code class="language-plaintext highlighter-rouge">yield</code> essentially like <code class="language-plaintext highlighter-rouge">return</code>? i.e. can you have a ternary operation after it?</p>
+
+<p>A: Yes.</p>
+
+<p>Q: Does the generator object only have the <code class="language-plaintext highlighter-rouge">next</code> property or are there other properties on that object?</p>
+
+<p>A: Go look… Thanks Will. I <strong>did</strong> go look, come at me bro! 🤣 The generator object looks like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">superCoolVariableName</span> <span class="o">=</span> <span class="nx">awesomeFunction</span><span class="p">();</span>
+
+<span class="nx">superCoolVariableName</span>
+<span class="c1">// awesomeFunction</span>
+<span class="c1">// __proto__: Generator</span>
+<span class="c1">//   __proto__: Generator</span>
+<span class="c1">//     constructor: GeneratorFunction {prototype: Generator, Symbol(Symbol.toStringTag): "GeneratorFunction", constructor: *f*}</span>
+<span class="c1">//     next: *f* next()</span>
+<span class="c1">//     return: *f* return()</span>
+<span class="c1">//     throw: *f* throw()</span>
+<span class="c1">//     Symbol(Symbol.toStringTag): "Generator"</span>
+<span class="c1">//     __proto__: Object</span>
+<span class="c1">// [[GeneratorLocation]]: VM000:0</span>
+<span class="c1">// [[GeneratorState]]: "suspended"</span>
+<span class="c1">// [[GeneratorFunction]]: *f* *awesomeFunction()</span>
+<span class="c1">// [[GeneratorReceiver]]: Window</span>
+<span class="c1">// [[Scopes]]: Scopes[3]</span></code></pre></figure>
+
+<p>Q: Is the fact that these generator functions are synchronous a problem for code execution?</p>
+
+<p>A: Not going to answer that right now. 😞</p>
+
+<p>Now that you are a generator function expert, go back to <a href="https://csbin.io/iterators">https://csbin.io/iterators</a> and complete exercises 7, 8, and 9. <a href="https://gist.github.com/aegorenkov/2ae91cabf21223bddca8c5b3ef3ec6f6">Solutions are here</a></p>
 
 <h3 id="introducing-async-generators">Introducing Async Generators</h3>
 
