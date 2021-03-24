@@ -519,7 +519,7 @@ This 'decouples' the process of accessing each element from what we want to do t
 
 ### Iterators Exercise
 
-Go to [https://csbin.io/iterators](https://csbin.io/iterators) and do the exercises (but not 7, 8, 9 yet). [Solutions are here](https://gist.github.com/aegorenkov/2ae91cabf21223bddca8c5b3ef3ec6f6)
+Go to [http://csbin.io/iterators](http://csbin.io/iterators) and do the exercises (but not 7, 8, 9 yet). [Solutions are here](https://gist.github.com/aegorenkov/2ae91cabf21223bddca8c5b3ef3ec6f6)
 
 ## Generators
 
@@ -687,7 +687,7 @@ Q: Is the fact that these generator functions are synchronous a problem for code
 
 A: Not going to answer that right now. 😞
 
-Now that you are a generator function expert, go back to [https://csbin.io/iterators](https://csbin.io/iterators) and complete exercises 7, 8, and 9. [Solutions are here](https://gist.github.com/aegorenkov/2ae91cabf21223bddca8c5b3ef3ec6f6)
+Now that you are a generator function expert, go back to [http://csbin.io/iterators](http://csbin.io/iterators) and complete exercises 7, 8, and 9. [Solutions are here](https://gist.github.com/aegorenkov/2ae91cabf21223bddca8c5b3ef3ec6f6)
 
 ### Introducing Async Generators
 
