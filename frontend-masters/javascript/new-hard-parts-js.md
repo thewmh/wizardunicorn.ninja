@@ -691,9 +691,99 @@ Now that you are a generator function expert, go back to [http://csbin.io/iterat
 
 ### Introducing Async Generators
 
+`returnNextElement` is a special object (generator object) that when its `next` method is run, starts (or continues) running `createFlow` until it hits `yield` and 'returns' out the value being 'yielded':
+
+{% highlight javascript %}
+
+function *createFlow() {
+    const num = 10;
+    const newNum = yield num;
+    yield 5 + newNum;
+    yield 6;
+}
+
+const returnNextElement = createFlow();
+const element1 = returnNextElement.next() // 10
+const element2 = returnNextElement.next(2) // 7
+
+{% endhighlight %}
+
+We end up with a 'stream'/flow of values that we can get one-by-one by running `returnNextElement.next()`. AND, we now have a way to control the re-entering to a function(s) execution context and whatever state it was in when we were pushed out of it.
+
+Again, we are now able to suspend a function being run and then return to it by calling `returnNextElement.next()`. What if we could use this to handle asynchronicity? If we could... (we can), we could:
+
+1. Initiate a task that takes a long time (i.e. requesting data from the server)
+
+2. Move on to more synchronous 'regular' code in the meantime
+
+3. Run some functionality once the requested data has come back
+
+What if we were to `yield` out of the function at the moment of sending off the long-time task and return to the function only when the task is complete?
+
+We **can** use the ability to pause `createFlow`'s running and then restart it only when our data returns:
+
+{% highlight javascript %}
+
+function doWhenDataReceived(value) {
+    returnNextElement.next(value);
+}
+
+function *createFlow() {
+    const data = yield fetch('http://twitter.com/will/tweets/1');
+    console.log(data);
+}
+
+const returnNextElement = createFlow();
+const futureData = returnNextElement.next();
+
+futureData.then(doWhenDataReceived);
+
+{% endhighlight %}
+
+We get to control when we return back to `createFlow` and continue executing — by setting up the trigger to do so (`returnNextElement.next()`) to be run by our function that was triggered by the promise resolution (when the value returned from Twitter).
+
 ### Async Generators
 
+Starting with a step-by-step walkthrough of this code:
+
+{% highlight javascript %}
+
+function doWhenDataReceived(value) {
+    returnNextElement.next(value);
+}
+
+function *createFlow() {
+    const data = yield fetch('http://twitter.com/will/tweets/1');
+    console.log(data);
+}
+
+const returnNextElement = createFlow();
+const futureData = returnNextElement.next();
+
+futureData.then(doWhenDataReceived);
+
+{% endhighlight %}
+
+* declare a function in global memory `doWhenDataReceived`
+* declare a generator function in global memory `createFlow`
+* declare a `const` `returnNextElement` which will be set to the return value of `createFlow`
+* declare a `const` `futureData` which will be set to the return value of `returnNextElement.next()`, this will enter the execution context of `createFlow`, at which point the `const` `data` is created in the local memory of `createFlow` and set to the value of `yield fetch...` 
+* the `yield` statement 'kicks' us out before anything is stored in `data`, but the `fetch...` will still return a promise object which will be 'sent' to `returnNextElement`. The promise object has `value` and `onFulfillment` properties on it and gets stored in `futureData` in global memory
+* `fetch` will also kick off the Web Browser Feature `XMLHttpRequest` (xhr) which then makes the call to Twitter to get the data, but on completion, `futureData.value` will be updated.
+* back in global scope, the final line, `futureData.then(doWhenDataReceived)` adds `doWhenDataReceived` to the `onFulfillment` 'list' (array) of available functions in the `futureData` promise object that will be executed when a value is returned from the `fetch` call.
+* the data from the xhr is complete and `futureData.value` is updated with the returned value, which triggers the `onFulfillment` property of `futureData`'s promise object, the contents of which are added to the Microtask Queue. At this point there is nothing in the Call Stack and the Event Loop gives an OK to the Microtask Queue to send its tasks to the Call Stack, which sends `doWhenDataReceived` which is triggered with `futureData.value` as its input
+* a new execution context is created for `doWhenDataReceived` and in its local memory `value` is stored with the returned data from the `fetch` operation, which is 'hi'
+* the method `next` from the `returnNextElement` generator object is called with `value` passed in as its argument. This takes us back to the `createFlow` generator function, right back at the point at which we were pushed out and the execution context was suspended; at the `yield` statement.
+* 'hi' gets stored in `value` in `createFlow`
+* ...and `console.log(data)` gets hit in `createFlow`, printing 'hi' to the console.
+
+As we'll see in a moment, while the above is great and provides asynchronicity in a way that hasn't been seen before, it gets even better with async await.
+
 ### Async Generators Q&A
+
+Q: If you had more code below the `doWhenDataReceived` assignment to the `onFulfillment` array on the `futureData` promise object, would the Microtask Queue be blocked from execution until the rest of the [synchronous] code has finished executing?
+
+A: Yes. The code is asynchronous but still being executed inside of a synchronous environment.
 
 ## Final
 
