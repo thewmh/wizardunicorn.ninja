@@ -788,9 +788,95 @@
 
 <h3 id="introducing-async-generators">Introducing Async Generators</h3>
 
+<p><code class="language-plaintext highlighter-rouge">returnNextElement</code> is a special object (generator object) that when its <code class="language-plaintext highlighter-rouge">next</code> method is run, starts (or continues) running <code class="language-plaintext highlighter-rouge">createFlow</code> until it hits <code class="language-plaintext highlighter-rouge">yield</code> and ‘returns’ out the value being ‘yielded’:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="o">*</span><span class="nx">createFlow</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">num</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">newNum</span> <span class="o">=</span> <span class="k">yield</span> <span class="nx">num</span><span class="p">;</span>
+    <span class="k">yield</span> <span class="mi">5</span> <span class="o">+</span> <span class="nx">newNum</span><span class="p">;</span>
+    <span class="k">yield</span> <span class="mi">6</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">returnNextElement</span> <span class="o">=</span> <span class="nx">createFlow</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">element1</span> <span class="o">=</span> <span class="nx">returnNextElement</span><span class="p">.</span><span class="nx">next</span><span class="p">()</span> <span class="c1">// 10</span>
+<span class="kd">const</span> <span class="nx">element2</span> <span class="o">=</span> <span class="nx">returnNextElement</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1">// 7</span></code></pre></figure>
+
+<p>We end up with a ‘stream’/flow of values that we can get one-by-one by running <code class="language-plaintext highlighter-rouge">returnNextElement.next()</code>. AND, we now have a way to control the re-entering to a function(s) execution context and whatever state it was in when we were pushed out of it.</p>
+
+<p>Again, we are now able to suspend a function being run and then return to it by calling <code class="language-plaintext highlighter-rouge">returnNextElement.next()</code>. What if we could use this to handle asynchronicity? If we could… (we can), we could:</p>
+
+<ol>
+  <li>
+    <p>Initiate a task that takes a long time (i.e. requesting data from the server)</p>
+  </li>
+  <li>
+    <p>Move on to more synchronous ‘regular’ code in the meantime</p>
+  </li>
+  <li>
+    <p>Run some functionality once the requested data has come back</p>
+  </li>
+</ol>
+
+<p>What if we were to <code class="language-plaintext highlighter-rouge">yield</code> out of the function at the moment of sending off the long-time task and return to the function only when the task is complete?</p>
+
+<p>We <strong>can</strong> use the ability to pause <code class="language-plaintext highlighter-rouge">createFlow</code>’s running and then restart it only when our data returns:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">doWhenDataReceived</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">returnNextElement</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="o">*</span><span class="nx">createFlow</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="k">yield</span> <span class="nx">fetch</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://twitter.com/will/tweets/1</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">returnNextElement</span> <span class="o">=</span> <span class="nx">createFlow</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">futureData</span> <span class="o">=</span> <span class="nx">returnNextElement</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
+
+<span class="nx">futureData</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doWhenDataReceived</span><span class="p">);</span></code></pre></figure>
+
+<p>We get to control when we return back to <code class="language-plaintext highlighter-rouge">createFlow</code> and continue executing — by setting up the trigger to do so (<code class="language-plaintext highlighter-rouge">returnNextElement.next()</code>) to be run by our function that was triggered by the promise resolution (when the value returned from Twitter).</p>
+
 <h3 id="async-generators">Async Generators</h3>
 
+<p>Starting with a step-by-step walkthrough of this code:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">doWhenDataReceived</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">returnNextElement</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="o">*</span><span class="nx">createFlow</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="k">yield</span> <span class="nx">fetch</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://twitter.com/will/tweets/1</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">returnNextElement</span> <span class="o">=</span> <span class="nx">createFlow</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">futureData</span> <span class="o">=</span> <span class="nx">returnNextElement</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
+
+<span class="nx">futureData</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doWhenDataReceived</span><span class="p">);</span></code></pre></figure>
+
+<ul>
+  <li>declare a function in global memory <code class="language-plaintext highlighter-rouge">doWhenDataReceived</code></li>
+  <li>declare a generator function in global memory <code class="language-plaintext highlighter-rouge">createFlow</code></li>
+  <li>declare a <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">returnNextElement</code> which will be set to the return value of <code class="language-plaintext highlighter-rouge">createFlow</code></li>
+  <li>declare a <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">futureData</code> which will be set to the return value of <code class="language-plaintext highlighter-rouge">returnNextElement.next()</code>, this will enter the execution context of <code class="language-plaintext highlighter-rouge">createFlow</code>, at which point the <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">data</code> is created in the local memory of <code class="language-plaintext highlighter-rouge">createFlow</code> and set to the value of <code class="language-plaintext highlighter-rouge">yield fetch...</code></li>
+  <li>the <code class="language-plaintext highlighter-rouge">yield</code> statement ‘kicks’ us out before anything is stored in <code class="language-plaintext highlighter-rouge">data</code>, but the <code class="language-plaintext highlighter-rouge">fetch...</code> will still return a promise object which will be ‘sent’ to <code class="language-plaintext highlighter-rouge">returnNextElement</code>. The promise object has <code class="language-plaintext highlighter-rouge">value</code> and <code class="language-plaintext highlighter-rouge">onFulfillment</code> properties on it and gets stored in <code class="language-plaintext highlighter-rouge">futureData</code> in global memory</li>
+  <li><code class="language-plaintext highlighter-rouge">fetch</code> will also kick off the Web Browser Feature <code class="language-plaintext highlighter-rouge">XMLHttpRequest</code> (xhr) which then makes the call to Twitter to get the data, but on completion, <code class="language-plaintext highlighter-rouge">futureData.value</code> will be updated.</li>
+  <li>back in global scope, the final line, <code class="language-plaintext highlighter-rouge">futureData.then(doWhenDataReceived)</code> adds <code class="language-plaintext highlighter-rouge">doWhenDataReceived</code> to the <code class="language-plaintext highlighter-rouge">onFulfillment</code> ‘list’ (array) of available functions in the <code class="language-plaintext highlighter-rouge">futureData</code> promise object that will be executed when a value is returned from the <code class="language-plaintext highlighter-rouge">fetch</code> call.</li>
+  <li>the data from the xhr is complete and <code class="language-plaintext highlighter-rouge">futureData.value</code> is updated with the returned value, which triggers the <code class="language-plaintext highlighter-rouge">onFulfillment</code> property of <code class="language-plaintext highlighter-rouge">futureData</code>’s promise object, the contents of which are added to the Microtask Queue. At this point there is nothing in the Call Stack and the Event Loop gives an OK to the Microtask Queue to send its tasks to the Call Stack, which sends <code class="language-plaintext highlighter-rouge">doWhenDataReceived</code> which is triggered with <code class="language-plaintext highlighter-rouge">futureData.value</code> as its input</li>
+  <li>a new execution context is created for <code class="language-plaintext highlighter-rouge">doWhenDataReceived</code> and in its local memory <code class="language-plaintext highlighter-rouge">value</code> is stored with the returned data from the <code class="language-plaintext highlighter-rouge">fetch</code> operation, which is ‘hi’</li>
+  <li>the method <code class="language-plaintext highlighter-rouge">next</code> from the <code class="language-plaintext highlighter-rouge">returnNextElement</code> generator object is called with <code class="language-plaintext highlighter-rouge">value</code> passed in as its argument. This takes us back to the <code class="language-plaintext highlighter-rouge">createFlow</code> generator function, right back at the point at which we were pushed out and the execution context was suspended; at the <code class="language-plaintext highlighter-rouge">yield</code> statement.</li>
+  <li>‘hi’ gets stored in <code class="language-plaintext highlighter-rouge">value</code> in <code class="language-plaintext highlighter-rouge">createFlow</code></li>
+  <li>…and <code class="language-plaintext highlighter-rouge">console.log(data)</code> gets hit in <code class="language-plaintext highlighter-rouge">createFlow</code>, printing ‘hi’ to the console.</li>
+</ul>
+
+<p>As we’ll see in a moment, while the above is great and provides asynchronicity in a way that hasn’t been seen before, it gets even better with async await.</p>
+
 <h3 id="async-generators-qa">Async Generators Q&amp;A</h3>
+
+<p>Q: If you had more code below the <code class="language-plaintext highlighter-rouge">doWhenDataReceived</code> assignment to the <code class="language-plaintext highlighter-rouge">onFulfillment</code> array on the <code class="language-plaintext highlighter-rouge">futureData</code> promise object, would the Microtask Queue be blocked from execution until the rest of the [synchronous] code has finished executing?</p>
+
+<p>A: Yes. The code is asynchronous but still being executed inside of a synchronous environment.</p>
 
 <h2 id="final">Final</h2>
 
