@@ -789,4 +789,38 @@ A: Yes. The code is asynchronous but still being executed inside of a synchronou
 
 ### Async Await
 
+Async/await simplifies all of what we've covered with iterators and generators and fixes the inversion of control problem of callbacks.
+
+{% highlight javascript %}
+
+async function createFlow() {
+    console.log("Print this first");
+    const data = await fetch('https://twitter.com/will/tweets/1');
+    console.log(data)
+}
+
+createFlow();
+
+console.log("Print this second");
+
+{% endhighlight %}
+
+There is no need for a triggered function on the promise resolution, instead we auto-trigger the resumption of `createFlow`'s execution (the functionality of which is still added to the Microtask Queue). Walking through the above code:
+
+* create an `async` function `createFlow`
+* invoke `createFlow`, which creates and enters an execution context
+* `console.log("Print this first")`
+* declare `const` `data` which will have its value set to be the evaluated result of the expression on the right hand side of its declaration — `await fetch('https://twitter.com/will/tweets/1')` — remember `fetch` is a 'two-pronged' function that both returns a promise object **and** spins-up the Web Browser Feature for an `XMLHttpRequest`
+* while the `fetch` is happening, we've also been 'thrown out' of the execution context of `createFlow` and we hit `console.log("Print this second")`
+* when the xhr completes, the `value` property of the promise object that has been stored in memory gets updated. This pushes us back into the execution context of `createFlow`, which adds `createFlow` to the top of the Call Stack and because `await` threw us out of `createFlow` before assigning any value to the `data` `const`, that is the point at which we re-enter `createFlow` and `data` gets set to the returned value of having called `fetch('https://twitter.com/will/tweets/1')`, 'hi'.
+* `console.log(data)` gets run and prints 'hi' to the console.
+
+Boom! 💥 All the things we did in the last section 'Async Generators' was just simplified with async/await!
+
+[Read more about async functions on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)
+
 ### Wrapping Up
+
+The 'under the hood' overview of JavaScript is really the foundation of getting a senior developer position. And you should go to [Codesmith](https://codesmith.io/). Another important takeaway is to focus on the quality of technical communication (generally seen in the code line-by-line walkthroughs). What makes a great senior developer is the ability to take any feature and  empower one's team to build it out with you. The ability to do so is very heavily based in / on the quality of technical communication.
+
+This workshop covered all* of the 'hardest' parts of ES6 and ES7. Starting with the foundations of JavaScript; memory thread, execution context, call stack — to the JavaScript foundation getting augmented by a whole new set of pieces of architecture. Web browser features, callback queue, event loop, leading to the new built-in asynchronicity feature; promise objects, whose deferred functionality is assigned not to the callback queue, but the microtask queue. This workshop covered iterators and generators, which allow greater control over how we work with data and the `yield` keyword which allows us to suspend, exit, and re-enter an execution context. Finally, this workshop covered async/await which nicely wraps up all of the previous sections into a more concise model to handle asynchronous code. 

@@ -22,7 +22,7 @@ Organized by subject.
 
 [JavaScript: The Recent Parts](javascript-recent-parts)
 
-**COMING SOON** JavaScript: The New Hard Parts [](new-hard-parts-js)
+[JavaScript: The New Hard Parts](new-hard-parts-js)
 
 **COMING SOON** Functional Light JavaScript, v3 [](functional-light-javascript)
 
