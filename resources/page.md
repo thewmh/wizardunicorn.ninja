@@ -65,6 +65,6 @@ Make your code snippet screenshots look pretty with [Carbon](https://carbon.now.
 
 [Frontend Interview Handbook](https://github.com/yangshun/front-end-interview-handbook)
 
-## Non-Development Things...
+## Non-Development
 
-[Make makgeolli (Korean rice wine / beer) with this iyangju base recipe!](/makgeolli-iyangju-base-recipe)
+Make makgeolli (Korean rice wine / beer) with this [iyangju base recipe](/makgeolli-iyangju-base-recipe)
