@@ -12,7 +12,7 @@ pagenav:
   - name: Jamstack
     href: jamstack
   - name: Sitecore & Jamstack
-    href: sitecore-jamstack
+    href: sitecore--jamstack
   - name: Next.js
     href: nextjs
   - name: Next.js in Containers
