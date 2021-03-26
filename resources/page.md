@@ -64,3 +64,7 @@ Make your code snippet screenshots look pretty with [Carbon](https://carbon.now.
 [Spellbook of Modern Web Development](https://github.com/dexteryy/spellbook-of-modern-webdev)
 
 [Frontend Interview Handbook](https://github.com/yangshun/front-end-interview-handbook)
+
+## Non-Development Things...
+
+[Make makgeolli (Korean rice wine / beer) with this iyangju base recipe!](/makgeolli-iyangju-base-recipe)
