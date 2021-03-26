@@ -882,7 +882,39 @@
 
 <h3 id="async-await">Async Await</h3>
 
+<p>Async/await simplifies all of what we’ve covered with iterators and generators and fixes the inversion of control problem of callbacks.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">async</span> <span class="kd">function</span> <span class="nx">createFlow</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Print this first</span><span class="dl">"</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://twitter.com/will/tweets/1</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nx">createFlow</span><span class="p">();</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Print this second</span><span class="dl">"</span><span class="p">);</span></code></pre></figure>
+
+<p>There is no need for a triggered function on the promise resolution, instead we auto-trigger the resumption of <code class="language-plaintext highlighter-rouge">createFlow</code>’s execution (the functionality of which is still added to the Microtask Queue). Walking through the above code:</p>
+
+<ul>
+  <li>create an <code class="language-plaintext highlighter-rouge">async</code> function <code class="language-plaintext highlighter-rouge">createFlow</code></li>
+  <li>invoke <code class="language-plaintext highlighter-rouge">createFlow</code>, which creates and enters an execution context</li>
+  <li><code class="language-plaintext highlighter-rouge">console.log("Print this first")</code></li>
+  <li>declare <code class="language-plaintext highlighter-rouge">const</code> <code class="language-plaintext highlighter-rouge">data</code> which will have its value set to be the evaluated result of the expression on the right hand side of its declaration — <code class="language-plaintext highlighter-rouge">await fetch('https://twitter.com/will/tweets/1')</code> — remember <code class="language-plaintext highlighter-rouge">fetch</code> is a ‘two-pronged’ function that both returns a promise object <strong>and</strong> spins-up the Web Browser Feature for an <code class="language-plaintext highlighter-rouge">XMLHttpRequest</code></li>
+  <li>while the <code class="language-plaintext highlighter-rouge">fetch</code> is happening, we’ve also been ‘thrown out’ of the execution context of <code class="language-plaintext highlighter-rouge">createFlow</code> and we hit <code class="language-plaintext highlighter-rouge">console.log("Print this second")</code></li>
+  <li>when the xhr completes, the <code class="language-plaintext highlighter-rouge">value</code> property of the promise object that has been stored in memory gets updated. This pushes us back into the execution context of <code class="language-plaintext highlighter-rouge">createFlow</code>, which adds <code class="language-plaintext highlighter-rouge">createFlow</code> to the top of the Call Stack and because <code class="language-plaintext highlighter-rouge">await</code> threw us out of <code class="language-plaintext highlighter-rouge">createFlow</code> before assigning any value to the <code class="language-plaintext highlighter-rouge">data</code> <code class="language-plaintext highlighter-rouge">const</code>, that is the point at which we re-enter <code class="language-plaintext highlighter-rouge">createFlow</code> and <code class="language-plaintext highlighter-rouge">data</code> gets set to the returned value of having called <code class="language-plaintext highlighter-rouge">fetch('https://twitter.com/will/tweets/1')</code>, ‘hi’.</li>
+  <li><code class="language-plaintext highlighter-rouge">console.log(data)</code> gets run and prints ‘hi’ to the console.</li>
+</ul>
+
+<p>Boom! 💥 All the things we did in the last section ‘Async Generators’ was just simplified with async/await!</p>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function">Read more about async functions on MDN</a></p>
+
 <h3 id="wrapping-up">Wrapping Up</h3>
+
+<p>The ‘under the hood’ overview of JavaScript is really the foundation of getting a senior developer position. And you should go to <a href="https://codesmith.io/">Codesmith</a>. Another important takeaway is to focus on the quality of technical communication (generally seen in the code line-by-line walkthroughs). What makes a great senior developer is the ability to take any feature and  empower one’s team to build it out with you. The ability to do so is very heavily based in / on the quality of technical communication.</p>
+
+<p>This workshop covered all* of the ‘hardest’ parts of ES6 and ES7. Starting with the foundations of JavaScript; memory thread, execution context, call stack — to the JavaScript foundation getting augmented by a whole new set of pieces of architecture. Web browser features, callback queue, event loop, leading to the new built-in asynchronicity feature; promise objects, whose deferred functionality is assigned not to the callback queue, but the microtask queue. This workshop covered iterators and generators, which allow greater control over how we work with data and the <code class="language-plaintext highlighter-rouge">yield</code> keyword which allows us to suspend, exit, and re-enter an execution context. Finally, this workshop covered async/await which nicely wraps up all of the previous sections into a more concise model to handle asynchronous code.</p>
 
         </article>
     </div>
