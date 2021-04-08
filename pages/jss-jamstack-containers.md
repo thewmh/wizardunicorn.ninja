@@ -98,3 +98,11 @@ For Companies:
 ## Sitecore & Jamstack
 
 ### Sitecore & Jamstack
+
+How does the Jamstack fit with Sitecore and JSS? With content management and Node services, [content] authors are able to input content in the solution, the Node server will render the page, and the page will be uploaded to a CDN, available for an end user to view. The idea being that as much as possible, content that can be pre-rendered on the server *is*. Any personalized content is handled through a content delivery load balancer and additional rendering happens both client and server-side. But how can we actually do all that with Sitecore and JSS?
+
+## Next.js
+
+### Next.js
+
+Next.js is an enterprise-level framework that allows us to use the Jamstack approach for a website and pre-render content before it is delivered to the client. 
