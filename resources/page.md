@@ -6,6 +6,14 @@ permalink: /resources/
 layout: default
 ---
 
+## All-encompassing Frontend Development Resources
+
+[Architectural Styles and the Design of Network-based Software Architectures](https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf)
+
+[Spellbook of Modern Web Development](https://github.com/dexteryy/spellbook-of-modern-webdev)
+
+[Frontend Interview Handbook](https://github.com/yangshun/front-end-interview-handbook)
+
 ## SXA
 
 [SXA Overview Part 1](https://www.velir.com/blog/2017/10/16/tour-sitecore-experience-accelerator-sxa-part-1)
@@ -17,6 +25,20 @@ layout: default
 [Video Tutorial Walkthrough](https://www.reddit.com/r/sitecore/comments/bdihvd/sitecore_sxa_tutorials_sxa_1_8_full_site_step_by/)
 
 [Add data attributes to renderings](http://blog.martinmiles.net/post/how-to-add-id-and-data-attributes-to-a-rendering-variant-in-sxa)
+
+## JavaScript
+
+[Essential JavaScript Design Patterns](https://addyosmani.com/resources/essentialjsdesignpatterns/book/) - Complete Book
+
+## CSS
+
+[CSS Architecture](https://philipwalton.com/articles/css-architecture/)
+
+[Objects in Space](https://medium.com/objects-in-space/objects-in-space-f6f404727) - A style-guide for modular SASS development using SMACSS and BEM
+
+## Computer Science
+
+[Teach Yourself Computer Science](https://teachyourselfcs.com/)
 
 ## Random Junk & Garbage
 
@@ -37,10 +59,6 @@ Make your code snippet screenshots look pretty with [Carbon](https://carbon.now.
 
 [Charles - Web Debugging Proxy Application](https://www.charlesproxy.com)
 
-[CSS Architecture](https://philipwalton.com/articles/css-architecture/)
-
-[Objects in Space](https://medium.com/objects-in-space/objects-in-space-f6f404727) - A style-guide for modular SASS development using SMACSS and BEM
-
 ## SVG
 
 *read in order*
@@ -52,18 +70,6 @@ Make your code snippet screenshots look pretty with [Carbon](https://carbon.now.
 [Data URI Generator](https://dopiaza.org/tools/datauri/index.php)
 
 [URL Encoder](https://www.urlencoder.org/)
-
-## JavaScript
-
-[Essential JavaScript Design Patterns](https://addyosmani.com/resources/essentialjsdesignpatterns/book/) - Complete Book
-
-## All-encompassing Frontend Development Resources
-
-[Architectural Styles and the Design of Network-based Software Architectures](https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf)
-
-[Spellbook of Modern Web Development](https://github.com/dexteryy/spellbook-of-modern-webdev)
-
-[Frontend Interview Handbook](https://github.com/yangshun/front-end-interview-handbook)
 
 ## Non-Development
 
