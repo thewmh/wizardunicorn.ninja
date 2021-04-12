@@ -63,17 +63,7 @@
     <div class="workshop-nav--div">
         <p class="workshop-nav--title">Structure and Interpretation of Computer Programs Navigation</p>
         <ul class="workshop-nav--list hidden"><li class="workshop-nav--item">
-                <a class="workshop-nav--link" href="#introduction">Lecture 1 - Functional Programming 1</a>
-            </li><li class="workshop-nav--item">
-                <a class="workshop-nav--link" href="#asynchronous-javascript">Asynchronous JavaScript</a>
-            </li><li class="workshop-nav--item">
-                <a class="workshop-nav--link" href="#promises">Promises</a>
-            </li><li class="workshop-nav--item">
-                <a class="workshop-nav--link" href="#iterators">Iterators</a>
-            </li><li class="workshop-nav--item">
-                <a class="workshop-nav--link" href="#generators">Generators</a>
-            </li><li class="workshop-nav--item">
-                <a class="workshop-nav--link" href="#final">Final</a>
+                <a class="workshop-nav--link" href="#lecture-1---functional-programming-1-1">Lecture 1 - Functional Programming 1</a>
             </li></ul>
     </div>
 </div><div class="container mx-auto px-10 pb-4 max-w-screen-lg"><article class="mx-auto mt-8 dark:text-blueGray-50 unicorn:text-purple-700 break-words"><h1 class="text-5xl lg:text-8xl font-semibold">Structure and Interpretation of Computer Programs</h1><h2 id="lecture-1---functional-programming-1">Lecture 1 - Functional Programming 1</h2>
@@ -84,66 +74,66 @@
 
 <p>Here are the outputs of some operations in Scheme:</p>
 
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="o">+</span> <span class="mi">4</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="nv">STK&gt;</span> <span class="p">(</span><span class="nb">+</span> <span class="mi">4</span><span class="p">)</span>
 <span class="mi">4</span>
-<span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
+<span class="nv">STK&gt;</span> <span class="p">(</span><span class="nb">+</span><span class="p">)</span>
 <span class="mi">0</span>
-<span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="o">*</span><span class="p">)</span>
-<span class="mi">1</span> <span class="c1">// 1 is the value of the multiplication symbol in Scheme</span>
-<span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="sr">/</span><span class="err">)
-</span><span class="nb">Error</span> <span class="c1">// This operator always requires arguments</span>
-<span class="nx">STK</span><span class="o">&gt;</span> <span class="o">+</span>
-<span class="err">#</span><span class="p">[</span><span class="nx">closure</span> <span class="nx">arglistargs</span> <span class="mi">8177524</span><span class="p">]</span></code></pre></figure>
+<span class="nv">STK&gt;</span> <span class="p">(</span><span class="nb">*</span><span class="p">)</span>
+<span class="mi">1</span> <span class="nv">//</span> <span class="mi">1</span> <span class="nv">is</span> <span class="nv">the</span> <span class="nv">value</span> <span class="nv">of</span> <span class="nv">the</span> <span class="nv">multiplication</span> <span class="nv">symbol</span> <span class="nv">in</span> <span class="nv">Scheme</span>
+<span class="nv">STK&gt;</span> <span class="p">(</span><span class="nb">/</span><span class="p">)</span>
+<span class="nv">Error</span> <span class="nv">//</span> <span class="nv">This</span> <span class="nv">operator</span> <span class="nv">always</span> <span class="nv">requires</span> <span class="nv">arguments</span>
+<span class="nv">STK&gt;</span> <span class="nv">+</span>
+<span class="o">#</span><span class="p">[</span><span class="nf">closure</span> <span class="nv">arglistargs</span> <span class="mi">8177524</span><span class="p">]</span></code></pre></figure>
 
 <p>As seen in the final output above, the value of the symbol <code class="language-plaintext highlighter-rouge">+</code> is a function. To print a value in STK, a single quote (otherwise known as an apostrophe) symbol should precede the desired output; i.e. <code class="language-plaintext highlighter-rouge">'hello world</code>. Functions can be composed in Scheme like so:</p>
 
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="o">+</span> <span class="p">(</span><span class="o">*</span> <span class="mi">3</span> <span class="mi">7</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span> <span class="mi">10</span> <span class="mi">10</span><span class="p">))</span>
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="nv">STK&gt;</span> <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nb">*</span> <span class="mi">3</span> <span class="mi">7</span><span class="p">)</span> <span class="p">(</span><span class="nb">*</span> <span class="mi">10</span> <span class="mi">10</span><span class="p">))</span>
 <span class="mi">121</span></code></pre></figure>
 
 <p>This first few examples of Scheme covers about 90% of the language. Congratulations! You know Scheme. But not all functions and use-cases are numeric. Here’s some examples of other functions:</p>
 
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="nx">first</span> <span class="dl">'</span><span class="s1">hello)
-h
-STK&gt; (last </span><span class="dl">'</span><span class="nx">hello</span><span class="p">)</span>
-<span class="nx">o</span>
-<span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="nx">butfirst</span> <span class="dl">'</span><span class="s1">hello)
-ello
-STK&gt; (butlast </span><span class="dl">'</span><span class="nx">hello</span><span class="p">)</span>
-<span class="nx">hell</span>
-<span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="nx">bf</span> <span class="dl">'</span><span class="s1">scheme) // abbreviated function call for `butfirst`
-cheme
-STK&gt; (word </span><span class="dl">'</span><span class="nx">now</span> <span class="dl">'</span><span class="s1">here)
-nowhere
-STK&gt; (sentence </span><span class="dl">'</span><span class="nx">now</span> <span class="dl">'</span><span class="s1">here)
-(now here) // notice how this does not concatenate the words
-STK&gt; </span><span class="dl">'</span><span class="p">(</span><span class="nx">magical</span> <span class="nx">mystery</span> <span class="nx">tour</span><span class="p">)</span>
-<span class="p">(</span><span class="nx">magical</span> <span class="nx">mystery</span> <span class="nx">tour</span><span class="p">)</span> <span class="c1">// the apostrophe functions as the sentence function functions</span>
-<span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="nx">first</span> <span class="dl">'</span><span class="s1">(got to get you into my life))
-got // prints first word of provided sentence
-STK&gt; (bf </span><span class="dl">'</span><span class="p">(</span><span class="nx">the</span> <span class="nx">fool</span> <span class="nx">on</span> <span class="nx">the</span> <span class="nx">hill</span><span class="p">))</span>
-<span class="nx">fool</span> <span class="nx">on</span> <span class="nx">the</span> <span class="nx">hill</span> <span class="c1">// prints all but the first word of provided sentence</span>
-<span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="nx">first</span> <span class="p">(</span><span class="nx">bf</span> <span class="dl">'</span><span class="s1">(a hard days night)))
-hard // operates </span><span class="dl">'</span><span class="nx">butfirst</span><span class="dl">'</span><span class="s1"> on provided sentence; </span><span class="dl">'</span><span class="nx">hard</span> <span class="nx">days</span> <span class="nx">night</span><span class="dl">'</span><span class="s1">; then </span><span class="dl">'</span><span class="nx">first</span><span class="dl">'</span><span class="s1"> on </span><span class="dl">'</span><span class="nx">hard</span> <span class="nx">days</span> <span class="nx">night</span><span class="dl">'</span><span class="s1">; returns </span><span class="dl">'</span><span class="nx">hard</span><span class="dl">'</span><span class="s1">
-STK&gt; (first (first (bf </span><span class="dl">'</span><span class="p">(</span><span class="nx">she</span> <span class="nx">loves</span> <span class="nx">you</span><span class="p">))))</span>
-<span class="nx">l</span> <span class="c1">// 'butfirst' on sentence; 'loves you'; first on 'loves you'; 'loves'; first on 'loves'; 'l'</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="nv">STK&gt;</span> <span class="p">(</span><span class="nf">first</span> <span class="ss">'hello</span><span class="p">)</span>
+<span class="nv">h</span>
+<span class="nv">STK&gt;</span> <span class="p">(</span><span class="nf">last</span> <span class="ss">'hello</span><span class="p">)</span>
+<span class="nv">o</span>
+<span class="nv">STK&gt;</span> <span class="p">(</span><span class="nf">butfirst</span> <span class="ss">'hello</span><span class="p">)</span>
+<span class="nv">ello</span>
+<span class="nv">STK&gt;</span> <span class="p">(</span><span class="nf">butlast</span> <span class="ss">'hello</span><span class="p">)</span>
+<span class="nv">hell</span>
+<span class="nv">STK&gt;</span> <span class="p">(</span><span class="nf">bf</span> <span class="ss">'scheme</span><span class="p">)</span> <span class="nv">//</span> <span class="nv">abbreviated</span> <span class="nv">function</span> <span class="nv">call</span> <span class="nv">for</span> <span class="o">`</span><span class="nv">butfirst</span><span class="o">`</span>
+<span class="nv">cheme</span>
+<span class="nv">STK&gt;</span> <span class="p">(</span><span class="nf">word</span> <span class="ss">'now</span> <span class="ss">'here</span><span class="p">)</span>
+<span class="nv">nowhere</span>
+<span class="nv">STK&gt;</span> <span class="p">(</span><span class="nf">sentence</span> <span class="ss">'now</span> <span class="ss">'here</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">now</span> <span class="nv">here</span><span class="p">)</span> <span class="nv">//</span> <span class="nv">notice</span> <span class="nv">how</span> <span class="nv">this</span> <span class="nv">does</span> <span class="nv">not</span> <span class="nv">concatenate</span> <span class="nv">the</span> <span class="nv">words</span>
+<span class="nv">STK&gt;</span> <span class="o">'</span><span class="p">(</span><span class="nf">magical</span> <span class="nv">mystery</span> <span class="nv">tour</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">magical</span> <span class="nv">mystery</span> <span class="nv">tour</span><span class="p">)</span> <span class="nv">//</span> <span class="nv">the</span> <span class="nv">apostrophe</span> <span class="nv">functions</span> <span class="nv">as</span> <span class="nv">the</span> <span class="nv">sentence</span> <span class="nv">function</span> <span class="nv">functions</span>
+<span class="nv">STK&gt;</span> <span class="p">(</span><span class="nf">first</span> <span class="o">'</span><span class="p">(</span><span class="nf">got</span> <span class="nv">to</span> <span class="nv">get</span> <span class="nv">you</span> <span class="nv">into</span> <span class="nv">my</span> <span class="nv">life</span><span class="p">))</span>
+<span class="nv">got</span> <span class="nv">//</span> <span class="nv">prints</span> <span class="nv">first</span> <span class="nv">word</span> <span class="nv">of</span> <span class="nv">provided</span> <span class="nv">sentence</span>
+<span class="nv">STK&gt;</span> <span class="p">(</span><span class="nf">bf</span> <span class="o">'</span><span class="p">(</span><span class="nf">the</span> <span class="nv">fool</span> <span class="nv">on</span> <span class="nv">the</span> <span class="nv">hill</span><span class="p">))</span>
+<span class="nv">fool</span> <span class="nv">on</span> <span class="nv">the</span> <span class="nv">hill</span> <span class="nv">//</span> <span class="nv">prints</span> <span class="nv">all</span> <span class="nv">but</span> <span class="nv">the</span> <span class="nv">first</span> <span class="nv">word</span> <span class="nv">of</span> <span class="nv">provided</span> <span class="nv">sentence</span>
+<span class="nv">STK&gt;</span> <span class="p">(</span><span class="nf">first</span> <span class="p">(</span><span class="nf">bf</span> <span class="o">'</span><span class="p">(</span><span class="nf">a</span> <span class="nv">hard</span> <span class="nv">days</span> <span class="nv">night</span><span class="p">)))</span>
+<span class="nv">hard</span> <span class="nv">//</span> <span class="nv">operates</span> <span class="ss">'butfirst</span><span class="o">'</span> <span class="nv">on</span> <span class="nv">provided</span> <span class="nv">sentence</span><span class="c1">; 'hard days night'; then 'first' on 'hard days night'; returns 'hard'</span>
+<span class="nv">STK&gt;</span> <span class="p">(</span><span class="nf">first</span> <span class="p">(</span><span class="nf">first</span> <span class="p">(</span><span class="nf">bf</span> <span class="o">'</span><span class="p">(</span><span class="nf">she</span> <span class="nv">loves</span> <span class="nv">you</span><span class="p">))))</span>
+<span class="nv">l</span> <span class="nv">//</span> <span class="ss">'butfirst</span><span class="o">'</span> <span class="nv">on</span> <span class="nv">sentence</span><span class="c1">; 'loves you'; first on 'loves you'; 'loves'; first on 'loves'; 'l'</span></code></pre></figure>
 
 <p>This handout gets handed out: <a href="https://people.eecs.berkeley.edu/~bh/61a-pages/first-day-handout.pdf">CS 61A: Structure and Interpretation of Computer Programs General Course Information</a></p>
 
 <p>Scheme also allows the definition of new things; i.e.</p>
 
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="nx">define</span> <span class="nx">pi</span> <span class="mf">3.141592654</span><span class="p">)</span>
-<span class="nx">pi</span>
-<span class="nx">STK</span><span class="o">&gt;</span> <span class="nx">pi</span>
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="nv">STK&gt;</span> <span class="p">(</span><span class="k">define</span> <span class="nv">pi</span> <span class="mf">3.141592654</span><span class="p">)</span>
+<span class="nv">pi</span>
+<span class="nv">STK&gt;</span> <span class="nv">pi</span>
 <span class="mf">3.141592654</span>
-<span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="o">*</span> <span class="nx">pi</span> <span class="mi">5</span> <span class="mi">5</span><span class="p">)</span>
-<span class="mf">78.53981635</span> <span class="c1">// the area of a circle with a radius of 5</span></code></pre></figure>
+<span class="nv">STK&gt;</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">pi</span> <span class="mi">5</span> <span class="mi">5</span><span class="p">)</span>
+<span class="mf">78.53981635</span> <span class="nv">//</span> <span class="nv">the</span> <span class="nv">area</span> <span class="nv">of</span> <span class="nv">a</span> <span class="nv">circle</span> <span class="nv">with</span> <span class="nv">a</span> <span class="nv">radius</span> <span class="nv">of</span> <span class="mi">5</span></code></pre></figure>
 
 <p>Scheme also allows for the definition of procedures:</p>
 
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="nx">define</span> <span class="p">(</span><span class="nx">square</span> <span class="nx">x</span><span class="p">)</span>
-        <span class="p">(</span><span class="o">*</span> <span class="nx">x</span> <span class="nx">x</span><span class="p">))</span>
-<span class="nx">square</span>
-<span class="nx">STK</span><span class="o">&gt;</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="nv">STK&gt;</span> <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">square</span> <span class="nv">x</span><span class="p">)</span>
+        <span class="p">(</span><span class="nb">*</span> <span class="nv">x</span> <span class="nv">x</span><span class="p">))</span>
+<span class="nv">square</span>
+<span class="nv">STK&gt;</span></code></pre></figure>
 
 <p>In the code examples so far, you may have noticed that when creating a definition, Scheme will print the name of the definition after it has been created. If you did not notice that…Scheme prints the name of the definition after it has been created. Now that the procedure <code class="language-plaintext highlighter-rouge">square</code> has been created, you could call it like so: <code class="language-plaintext highlighter-rouge">(square (+ 2 3))</code> In what order would that evaluate? Well, first the subexpression <code class="language-plaintext highlighter-rouge">(+ 2 3)</code> would evaluate to <code class="language-plaintext highlighter-rouge">5</code>, then that <code class="language-plaintext highlighter-rouge">5</code> would be used as the argument for the <code class="language-plaintext highlighter-rouge">square</code> procedure we defined; <code class="language-plaintext highlighter-rouge">(* 5 5)</code> or <code class="language-plaintext highlighter-rouge">5*5</code>, which would return 🥁 <code class="language-plaintext highlighter-rouge">25</code>.</p>
 
