@@ -6,17 +6,7 @@ permalink: /computer-science/structure-interpretation-computer-programs
 layout: default
 pagenav:
   - name: Lecture 1 - Functional Programming 1
-    href: introduction
-  - name: Asynchronous JavaScript
-    href: asynchronous-javascript
-  - name: Promises
-    href: promises
-  - name: Iterators
-    href: iterators
-  - name: Generators
-    href: generators
-  - name: Final
-    href: final
+    href: lecture-1---functional-programming-1-1
 ---
 
 ## Lecture 1 - Functional Programming 1
@@ -27,7 +17,7 @@ This course will be using a programming language called Scheme and while this co
 
 Here are the outputs of some operations in Scheme:
 
-{% highlight javascript %}
+{% highlight scheme %}
 
 STK> (+ 4)
 4
@@ -44,7 +34,7 @@ STK> +
 
 As seen in the final output above, the value of the symbol `+` is a function. To print a value in STK, a single quote (otherwise known as an apostrophe) symbol should precede the desired output; i.e. `'hello world`. Functions can be composed in Scheme like so:
 
-{% highlight javascript %}
+{% highlight scheme %}
 
 STK> (+ (* 3 7) (* 10 10))
 121
@@ -53,7 +43,7 @@ STK> (+ (* 3 7) (* 10 10))
 
 This first few examples of Scheme covers about 90% of the language. Congratulations! You know Scheme. But not all functions and use-cases are numeric. Here's some examples of other functions:
 
-{% highlight javascript %}
+{% highlight scheme %}
 
 STK> (first 'hello)
 h
@@ -86,7 +76,7 @@ This handout gets handed out: [CS 61A: Structure and Interpretation of Computer 
 
 Scheme also allows the definition of new things; i.e.
 
-{% highlight javascript %}
+{% highlight scheme %}
 
 STK> (define pi 3.141592654)
 pi
@@ -99,7 +89,7 @@ STK> (* pi 5 5)
 
 Scheme also allows for the definition of procedures:
 
-{% highlight javascript %}
+{% highlight scheme %}
 
 STK> (define (square x)
         (* x x))
