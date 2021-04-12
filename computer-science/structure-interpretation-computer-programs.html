@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<title>Resources • Wizard Unicorn Ninja</title><meta name="description" content="Hand selected frontend development resources page."><meta name="theme-color" content="#fafafa"/><link rel="shortcut icon" type="image/ico"href="/assets/img/favicons/favicon.ico"><link rel="icon" type="image/png"href="/assets/img/favicons/favicon.png"><link rel="icon" type="image/png"sizes="192x192"href="/assets/img/favicons/favicon-192.png"><link rel="apple-touch-icon" type=""href="/assets/img/favicons/favicon-57.png"><link rel="apple-touch-icon" type=""sizes="72x72"href="/assets/img/favicons/favicon-72.png"><link rel="apple-touch-icon" type=""sizes="114x114"href="/assets/img/favicons/favicon-114.png"><link rel="apple-touch-icon" type=""sizes="144x144"href="/assets/img/favicons/favicon-144.png"><script>
+<title>Structure and Interpretation of Computer Programs • Wizard Unicorn Ninja</title><meta name="description" content="These are notes from Computer Science 61A 'Structure and Interpretation of Computer Programs' (SICP) lectures with Brian Harvey at UC Berkeley."><meta name="theme-color" content="#fafafa"/><link rel="shortcut icon" type="image/ico"href="/assets/img/favicons/favicon.ico"><link rel="icon" type="image/png"href="/assets/img/favicons/favicon.png"><link rel="icon" type="image/png"sizes="192x192"href="/assets/img/favicons/favicon-192.png"><link rel="apple-touch-icon" type=""href="/assets/img/favicons/favicon-57.png"><link rel="apple-touch-icon" type=""sizes="72x72"href="/assets/img/favicons/favicon-72.png"><link rel="apple-touch-icon" type=""sizes="114x114"href="/assets/img/favicons/favicon-114.png"><link rel="apple-touch-icon" type=""sizes="144x144"href="/assets/img/favicons/favicon-144.png"><script>
     if ("serviceWorker" in navigator) {
   if (navigator.serviceWorker.controller) {
     console.log("An active service worker found, no need to register");
@@ -46,7 +46,7 @@
                   <span>Home</span>
                 </a>
             </li><li>
-                <a class="text-blueGray-700 hover:text-blueGray-900 dark:text-blueGray-50 unicorn:text-purple-700 unicorn:hover:text-pink-300 dark:hover:text-blueGray-300  font-semibold" href="/resources/" title="Resources" alt="Resources">
+                <a class="text-blueGray-700 hover:text-blueGray-900 dark:text-blueGray-50 unicorn:text-purple-700 unicorn:hover:text-pink-300 dark:hover:text-blueGray-300 " href="/resources/" title="Resources" alt="Resources">
                   <span>Resources</span>
                 </a>
             </li><li>
@@ -59,74 +59,93 @@
                 </a>
             </li></ul></div>
       </nav>
-</header></div><div class="container mx-auto px-10 pb-4 max-w-screen-lg"><article class="mx-auto mt-8 dark:text-blueGray-50 unicorn:text-purple-700 break-words"><h1 class="text-5xl lg:text-8xl font-semibold">Resources</h1><h2 id="all-encompassing-frontend-development-resources">All-encompassing Frontend Development Resources</h2>
+</header></div><div class="workshop-nav">
+    <div class="workshop-nav--div">
+        <p class="workshop-nav--title">Structure and Interpretation of Computer Programs Navigation</p>
+        <ul class="workshop-nav--list hidden"><li class="workshop-nav--item">
+                <a class="workshop-nav--link" href="#introduction">Lecture 1 - Functional Programming 1</a>
+            </li><li class="workshop-nav--item">
+                <a class="workshop-nav--link" href="#asynchronous-javascript">Asynchronous JavaScript</a>
+            </li><li class="workshop-nav--item">
+                <a class="workshop-nav--link" href="#promises">Promises</a>
+            </li><li class="workshop-nav--item">
+                <a class="workshop-nav--link" href="#iterators">Iterators</a>
+            </li><li class="workshop-nav--item">
+                <a class="workshop-nav--link" href="#generators">Generators</a>
+            </li><li class="workshop-nav--item">
+                <a class="workshop-nav--link" href="#final">Final</a>
+            </li></ul>
+    </div>
+</div><div class="container mx-auto px-10 pb-4 max-w-screen-lg"><article class="mx-auto mt-8 dark:text-blueGray-50 unicorn:text-purple-700 break-words"><h1 class="text-5xl lg:text-8xl font-semibold">Structure and Interpretation of Computer Programs</h1><h2 id="lecture-1---functional-programming-1">Lecture 1 - Functional Programming 1</h2>
 
-<p><a href="https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf">Architectural Styles and the Design of Network-based Software Architectures</a></p>
+<h3 id="lecture-1---functional-programming-1-1">Lecture 1 - Functional Programming 1</h3>
 
-<p><a href="https://github.com/dexteryy/spellbook-of-modern-webdev">Spellbook of Modern Web Development</a></p>
+<p>This course will be using a programming language called Scheme and while this course is not about Scheme, we’ll learn all about it in this first lecture. The particular implementation of Scheme that this course uses is called STK. The way Scheme works is you ask it a question, it tells you the answer; i.e. if you type <code class="language-plaintext highlighter-rouge">6</code>, STK will ‘return’ <code class="language-plaintext highlighter-rouge">6</code>, if you type <code class="language-plaintext highlighter-rouge">(+ 6 8)</code>, STK will return <code class="language-plaintext highlighter-rouge">14</code>. The syntax for addition as just seen is so that Scheme can use the notation uniformly. In math there is ‘in-fix’, ‘prefix’, and ‘post-fix’ notation, and in the case of the root symbol ‘all around’ notation. None of these work very well if there are more than 2 operands. Again, for uniformity, the operator, in this case the <code class="language-plaintext highlighter-rouge">+</code>, will come first in Scheme.</p>
 
-<p><a href="https://github.com/yangshun/front-end-interview-handbook">Frontend Interview Handbook</a></p>
+<p>Here are the outputs of some operations in Scheme:</p>
 
-<h2 id="sxa">SXA</h2>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="o">+</span> <span class="mi">4</span><span class="p">)</span>
+<span class="mi">4</span>
+<span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span>
+<span class="mi">0</span>
+<span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="o">*</span><span class="p">)</span>
+<span class="mi">1</span> <span class="c1">// 1 is the value of the multiplication symbol in Scheme</span>
+<span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="sr">/</span><span class="err">)
+</span><span class="nb">Error</span> <span class="c1">// This operator always requires arguments</span>
+<span class="nx">STK</span><span class="o">&gt;</span> <span class="o">+</span>
+<span class="err">#</span><span class="p">[</span><span class="nx">closure</span> <span class="nx">arglistargs</span> <span class="mi">8177524</span><span class="p">]</span></code></pre></figure>
 
-<p><a href="https://www.velir.com/blog/2017/10/16/tour-sitecore-experience-accelerator-sxa-part-1">SXA Overview Part 1</a></p>
+<p>As seen in the final output above, the value of the symbol <code class="language-plaintext highlighter-rouge">+</code> is a function. To print a value in STK, a single quote (otherwise known as an apostrophe) symbol should precede the desired output; i.e. <code class="language-plaintext highlighter-rouge">'hello world</code>. Functions can be composed in Scheme like so:</p>
 
-<p><a href="https://www.velir.com/blog/2017/10/16/tour-sitecore-experience-accelerator-sxa-part-2">SXA Overview Part 2</a></p>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="o">+</span> <span class="p">(</span><span class="o">*</span> <span class="mi">3</span> <span class="mi">7</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span> <span class="mi">10</span> <span class="mi">10</span><span class="p">))</span>
+<span class="mi">121</span></code></pre></figure>
 
-<p><a href="https://www.sidewalk.be/articles/the-sitecore-sxa-journey-discover-tips-and-tricks-when-implementing-an-sxa-website">SXA Implementation - Some Tips &amp; Tricks</a></p>
+<p>This first few examples of Scheme covers about 90% of the language. Congratulations! You know Scheme. But not all functions and use-cases are numeric. Here’s some examples of other functions:</p>
 
-<p><a href="https://www.reddit.com/r/sitecore/comments/bdihvd/sitecore_sxa_tutorials_sxa_1_8_full_site_step_by/">Video Tutorial Walkthrough</a></p>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="nx">first</span> <span class="dl">'</span><span class="s1">hello)
+h
+STK&gt; (last </span><span class="dl">'</span><span class="nx">hello</span><span class="p">)</span>
+<span class="nx">o</span>
+<span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="nx">butfirst</span> <span class="dl">'</span><span class="s1">hello)
+ello
+STK&gt; (butlast </span><span class="dl">'</span><span class="nx">hello</span><span class="p">)</span>
+<span class="nx">hell</span>
+<span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="nx">bf</span> <span class="dl">'</span><span class="s1">scheme) // abbreviated function call for `butfirst`
+cheme
+STK&gt; (word </span><span class="dl">'</span><span class="nx">now</span> <span class="dl">'</span><span class="s1">here)
+nowhere
+STK&gt; (sentence </span><span class="dl">'</span><span class="nx">now</span> <span class="dl">'</span><span class="s1">here)
+(now here) // notice how this does not concatenate the words
+STK&gt; </span><span class="dl">'</span><span class="p">(</span><span class="nx">magical</span> <span class="nx">mystery</span> <span class="nx">tour</span><span class="p">)</span>
+<span class="p">(</span><span class="nx">magical</span> <span class="nx">mystery</span> <span class="nx">tour</span><span class="p">)</span> <span class="c1">// the apostrophe functions as the sentence function functions</span>
+<span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="nx">first</span> <span class="dl">'</span><span class="s1">(got to get you into my life))
+got // prints first word of provided sentence
+STK&gt; (bf </span><span class="dl">'</span><span class="p">(</span><span class="nx">the</span> <span class="nx">fool</span> <span class="nx">on</span> <span class="nx">the</span> <span class="nx">hill</span><span class="p">))</span>
+<span class="nx">fool</span> <span class="nx">on</span> <span class="nx">the</span> <span class="nx">hill</span> <span class="c1">// prints all but the first word of provided sentence</span>
+<span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="nx">first</span> <span class="p">(</span><span class="nx">bf</span> <span class="dl">'</span><span class="s1">(a hard days night)))
+hard // operates </span><span class="dl">'</span><span class="nx">butfirst</span><span class="dl">'</span><span class="s1"> on provided sentence; </span><span class="dl">'</span><span class="nx">hard</span> <span class="nx">days</span> <span class="nx">night</span><span class="dl">'</span><span class="s1">; then </span><span class="dl">'</span><span class="nx">first</span><span class="dl">'</span><span class="s1"> on </span><span class="dl">'</span><span class="nx">hard</span> <span class="nx">days</span> <span class="nx">night</span><span class="dl">'</span><span class="s1">; returns </span><span class="dl">'</span><span class="nx">hard</span><span class="dl">'</span><span class="s1">
+STK&gt; (first (first (bf </span><span class="dl">'</span><span class="p">(</span><span class="nx">she</span> <span class="nx">loves</span> <span class="nx">you</span><span class="p">))))</span>
+<span class="nx">l</span> <span class="c1">// 'butfirst' on sentence; 'loves you'; first on 'loves you'; 'loves'; first on 'loves'; 'l'</span></code></pre></figure>
 
-<p><a href="http://blog.martinmiles.net/post/how-to-add-id-and-data-attributes-to-a-rendering-variant-in-sxa">Add data attributes to renderings</a></p>
+<p>This handout gets handed out: <a href="https://people.eecs.berkeley.edu/~bh/61a-pages/first-day-handout.pdf">CS 61A: Structure and Interpretation of Computer Programs General Course Information</a></p>
 
-<h2 id="javascript">JavaScript</h2>
+<p>Scheme also allows the definition of new things; i.e.</p>
 
-<p><a href="https://addyosmani.com/resources/essentialjsdesignpatterns/book/">Essential JavaScript Design Patterns</a> - Complete Book</p>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="nx">define</span> <span class="nx">pi</span> <span class="mf">3.141592654</span><span class="p">)</span>
+<span class="nx">pi</span>
+<span class="nx">STK</span><span class="o">&gt;</span> <span class="nx">pi</span>
+<span class="mf">3.141592654</span>
+<span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="o">*</span> <span class="nx">pi</span> <span class="mi">5</span> <span class="mi">5</span><span class="p">)</span>
+<span class="mf">78.53981635</span> <span class="c1">// the area of a circle with a radius of 5</span></code></pre></figure>
 
-<h2 id="css">CSS</h2>
+<p>Scheme also allows for the definition of procedures:</p>
 
-<p><a href="https://philipwalton.com/articles/css-architecture/">CSS Architecture</a></p>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">STK</span><span class="o">&gt;</span> <span class="p">(</span><span class="nx">define</span> <span class="p">(</span><span class="nx">square</span> <span class="nx">x</span><span class="p">)</span>
+        <span class="p">(</span><span class="o">*</span> <span class="nx">x</span> <span class="nx">x</span><span class="p">))</span>
+<span class="nx">square</span>
+<span class="nx">STK</span><span class="o">&gt;</span></code></pre></figure>
 
-<p><a href="https://medium.com/objects-in-space/objects-in-space-f6f404727">Objects in Space</a> - A style-guide for modular SASS development using SMACSS and BEM</p>
-
-<h2 id="computer-science">Computer Science</h2>
-
-<p><a href="https://teachyourselfcs.com/">Teach Yourself Computer Science</a></p>
-
-<h2 id="random-junk--garbage">Random Junk &amp; Garbage</h2>
-
-<p><a href="https://vscodecandothat.com">VSCode Can Do That?!</a> - A collection of resources for VSCode, because yes… it CAN do that.</p>
-
-<p>VSCode <a href="https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync">Settings Sync</a> - Share your extensions with others or re-populate all your installed extensions into a new computer or instance of VS Code</p>
-
-<p>A Collection of <a href="https://twitter.com/i/moments/994601867987619840">UI Design Tips</a></p>
-
-<p>Make your code snippet screenshots look pretty with <a href="https://carbon.now.sh/">Carbon</a></p>
-
-<p><a href="https://github.com/minamarkham/formation">A Script</a> to set up a new Laptop with all the Things</p>
-
-<p><a href="https://hacks.mozilla.org/category/es6-in-depth/">ES6 In Depth</a> - Brought to you by Mozilla</p>
-
-<p><a href="http://jsfiddle.net/ak9Lnrjj/10/">Add or Remove classes on things w/ jQuery?</a><br />
-<em>could be a fix for slick carousel variable height slides. add a class that makes all the other slides have ` display: none;`</em></p>
-
-<p><a href="https://www.charlesproxy.com">Charles - Web Debugging Proxy Application</a></p>
-
-<h2 id="svg">SVG</h2>
-
-<p><em>read in order</em></p>
-
-<p><a href="https://dbushell.com/2013/02/04/a-primer-to-front-end-svg-hacking/">A Primer to Frontend SVG Hacking :D</a></p>
-
-<p><a href="https://codepen.io/tigt/post/optimizing-svgs-in-data-uris">Optimizing SVGs in Data URIs</a></p>
-
-<p><a href="https://dopiaza.org/tools/datauri/index.php">Data URI Generator</a></p>
-
-<p><a href="https://www.urlencoder.org/">URL Encoder</a></p>
-
-<h2 id="non-development">Non-Development</h2>
-
-<p>Make makgeolli (Korean rice wine / beer) with this <a href="/makgeolli-iyangju-base-recipe">iyangju base recipe</a></p>
+<p>In the code examples so far, you may have noticed that when creating a definition, Scheme will print the name of the definition after it has been created. If you did not notice that…Scheme prints the name of the definition after it has been created. Now that the procedure <code class="language-plaintext highlighter-rouge">square</code> has been created, you could call it like so: <code class="language-plaintext highlighter-rouge">(square (+ 2 3))</code> In what order would that evaluate? Well, first the subexpression <code class="language-plaintext highlighter-rouge">(+ 2 3)</code> would evaluate to <code class="language-plaintext highlighter-rouge">5</code>, then that <code class="language-plaintext highlighter-rouge">5</code> would be used as the argument for the <code class="language-plaintext highlighter-rouge">square</code> procedure we defined; <code class="language-plaintext highlighter-rouge">(* 5 5)</code> or <code class="language-plaintext highlighter-rouge">5*5</code>, which would return 🥁 <code class="language-plaintext highlighter-rouge">25</code>.</p>
 
         </article>
     </div>
