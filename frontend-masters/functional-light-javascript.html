@@ -155,7 +155,26 @@
 
 <p><code class="language-plaintext highlighter-rouge">extraNumbers</code> is not a function, because; expanding on the definition of what a function <strong>is</strong>, a function can only call other functions. Functions cannot call procedures (<code class="language-plaintext highlighter-rouge">addNumbers</code>), if they do, they themselves become procedures. Number one in functional programming is that you can’t do functional programming with a thing that is not a function; it has to be a function for you to take advantage of functional principles. So, neither <code class="language-plaintext highlighter-rouge">addNumbers</code> nor <code class="language-plaintext highlighter-rouge">extraNumbers</code> qualify as functions because they both violate what we have so far learned about what a function is. They are procedures.</p>
 
+<p>How about this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">tuple</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">y</span> <span class="o">-</span><span class="mi">1</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="p">[</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">]</span> <span class="o">=</span> <span class="nx">tuple</span><span class="p">(...[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">]);</span>
+
+<span class="nx">a</span><span class="p">;</span> <span class="c1">// 6</span>
+<span class="nx">b</span><span class="p">;</span> <span class="c1">// 9</span></code></pre></figure>
+
+<p>In JavaScript, a tuple is basically two values in an array. The function <code class="language-plaintext highlighter-rouge">tuple</code> has inputs, uses the <code class="language-plaintext highlighter-rouge">return</code> keyword to return outputs, it is a function?</p>
+
 <h3 id="function-naming-semantics">Function Naming Semantics</h3>
+
+<p>Long story short, yes, <code class="language-plaintext highlighter-rouge">tuple</code> was a function. But if you took that <code class="language-plaintext highlighter-rouge">tuple</code> function and it required the inputs <code class="language-plaintext highlighter-rouge">x</code> and <code class="language-plaintext highlighter-rouge">y</code>, but instead of returning those as outputs returned the number 40, would it still be a function? Not really. To better understand what makes a function a function, lets look at some maths:</p>
+
+<blockquote>
+  <p>f(x) = 2x<sup>2</sup> + 3</p>
+</blockquote>
 
 <h3 id="side-effects">Side Effects</h3>
 
