@@ -23,9 +23,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 'v12.12.0'
-      # Install Node Modules for React Workshop Project Build React
-      # - name: Install Node Modules for React Workshop Project
-      #  run: npm ci
+      # Install Node Modules
+      - name: Install Node Modules
+        run: npm ci
       # Build Jekyll
       - name: Build Jekyll
         run: npm run build
