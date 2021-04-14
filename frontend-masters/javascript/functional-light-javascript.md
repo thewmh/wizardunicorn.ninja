@@ -74,6 +74,34 @@ Functional programming is based on mathematical principles. It is likely that we
 
 ### Functions vs Procedures
 
+What is a function? Let's start with this inflammatory statement: "Functional programming is not all about the function keyword". Consider the following:
+
+{% highlight javascript %}
+
+function addNumbers(x = 0, y = 0, z = 0, w = 0) {
+    var total = x + y + z + w;
+    console.log(total);
+}
+
+function extraNumbers(x = 2, ...args) {
+    return addNumbers(x, 40, ...args)
+}
+
+extraNumbers(); // 42
+extraNumbers(3, 8, 11); // 62
+
+{% endhighlight %}
+
+Is `addNumbers` a function? What about `extraNumbers`? Are either of them functions? If they are not functions, why not?
+
+`addNumbers` clearly takes some inputs (`x, y, z, w`) and it clearly does something with those inputs, so it is at least kind of like a function, right? Nope. The bar for being a function is a bit higher than that. So... what is it then? The best term that we could use to describe `addNumbers` is that it is a 'procedure'. A procedure is a collection of operations, a collection of things that you need to do in a program. Just because it uses the function keyword does not make it a function. Procedures can take inputs, they can return outputs, they can print to the console, they can be called multiple times. There are a lot of benefits to procedures, but this course is not about procedural programming (yes, its a thing). 
+
+Wonderful, but... what is a function? To start, a function not only has to take some input, it also has to return some output. Not just print something to the console, if it does not have the `return` keyword, it is most definitely not a function! So any 'function' that does not have a `return` keyword is a procedure and a function is more than what we've covered so far, we will expand on what a function **is** as we move through this workshop. Oooook, so `addNumbers` isn't a function, it's a procedure. What about `extraNumbers`? `extraNumbers` **has** a `return` keyword! `extraNumbers` is function? 😞 No.
+
+`extraNumbers` is not a function, because; expanding on the definition of what a function **is**, a function can only call other functions. Functions cannot call procedures (`addNumbers`), if they do, they themselves become procedures. Number one in functional programming is that you can't do functional programming with a thing that is not a function; it has to be a function for you to take advantage of functional principles. So, neither `addNumbers` nor `extraNumbers` qualify as functions because they both violate what we have so far learned about what a function is. They are procedures.
+
+
+
 ### Function Naming Semantics
 
 ### Side Effects
