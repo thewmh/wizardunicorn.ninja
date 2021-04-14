@@ -24,8 +24,8 @@ jobs:
         with:
           node-version: 'v12.12.0'
       # Install Node Modules for React Workshop Project Build React
-      - name: Install Node Modules for React Workshop Project
-        run: npm ci
+      # - name: Install Node Modules for React Workshop Project
+      #  run: npm ci
       # Build Jekyll
       - name: Build Jekyll
         run: npm run build
