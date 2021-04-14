@@ -133,6 +133,28 @@
 
 <h3 id="functions-vs-procedures">Functions vs Procedures</h3>
 
+<p>What is a function? Let’s start with this inflammatory statement: “Functional programming is not all about the function keyword”. Consider the following:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">addNumbers</span><span class="p">(</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">w</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">total</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span> <span class="o">+</span> <span class="nx">z</span> <span class="o">+</span> <span class="nx">w</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">total</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">extraNumbers</span><span class="p">(</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="p">...</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">addNumbers</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="p">...</span><span class="nx">args</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nx">extraNumbers</span><span class="p">();</span> <span class="c1">// 42</span>
+<span class="nx">extraNumbers</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">);</span> <span class="c1">// 62</span></code></pre></figure>
+
+<p>Is <code class="language-plaintext highlighter-rouge">addNumbers</code> a function? What about <code class="language-plaintext highlighter-rouge">extraNumbers</code>? Are either of them functions? If they are not functions, why not?</p>
+
+<p><code class="language-plaintext highlighter-rouge">addNumbers</code> clearly takes some inputs (<code class="language-plaintext highlighter-rouge">x, y, z, w</code>) and it clearly does something with those inputs, so it is at least kind of like a function, right? Nope. The bar for being a function is a bit higher than that. So… what is it then? The best term that we could use to describe <code class="language-plaintext highlighter-rouge">addNumbers</code> is that it is a ‘procedure’. A procedure is a collection of operations, a collection of things that you need to do in a program. Just because it uses the function keyword does not make it a function. Procedures can take inputs, they can return outputs, they can print to the console, they can be called multiple times. There are a lot of benefits to procedures, but this course is not about procedural programming (yes, its a thing).</p>
+
+<p>Wonderful, but… what is a function? To start, a function not only has to take some input, it also has to return some output. Not just print something to the console, if it does not have the <code class="language-plaintext highlighter-rouge">return</code> keyword, it is most definitely not a function! So any ‘function’ that does not have a <code class="language-plaintext highlighter-rouge">return</code> keyword is a procedure and a function is more than what we’ve covered so far, we will expand on what a function <strong>is</strong> as we move through this workshop. Oooook, so <code class="language-plaintext highlighter-rouge">addNumbers</code> isn’t a function, it’s a procedure. What about <code class="language-plaintext highlighter-rouge">extraNumbers</code>? <code class="language-plaintext highlighter-rouge">extraNumbers</code> <strong>has</strong> a <code class="language-plaintext highlighter-rouge">return</code> keyword! <code class="language-plaintext highlighter-rouge">extraNumbers</code> is function? 😞 No.</p>
+
+<p><code class="language-plaintext highlighter-rouge">extraNumbers</code> is not a function, because; expanding on the definition of what a function <strong>is</strong>, a function can only call other functions. Functions cannot call procedures (<code class="language-plaintext highlighter-rouge">addNumbers</code>), if they do, they themselves become procedures. Number one in functional programming is that you can’t do functional programming with a thing that is not a function; it has to be a function for you to take advantage of functional principles. So, neither <code class="language-plaintext highlighter-rouge">addNumbers</code> nor <code class="language-plaintext highlighter-rouge">extraNumbers</code> qualify as functions because they both violate what we have so far learned about what a function is. They are procedures.</p>
+
 <h3 id="function-naming-semantics">Function Naming Semantics</h3>
 
 <h3 id="side-effects">Side Effects</h3>
