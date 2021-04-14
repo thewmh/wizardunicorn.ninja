@@ -100,9 +100,28 @@ Wonderful, but... what is a function? To start, a function not only has to take 
 
 `extraNumbers` is not a function, because; expanding on the definition of what a function **is**, a function can only call other functions. Functions cannot call procedures (`addNumbers`), if they do, they themselves become procedures. Number one in functional programming is that you can't do functional programming with a thing that is not a function; it has to be a function for you to take advantage of functional principles. So, neither `addNumbers` nor `extraNumbers` qualify as functions because they both violate what we have so far learned about what a function is. They are procedures.
 
+How about this:
 
+{% highlight javascript %}
+
+function tuple(x, y) {
+    return [x + 1, y -1];
+}
+
+var [a, b] = tuple(...[5, 10]);
+
+a; // 6
+b; // 9
+
+{% endhighlight %}
+
+In JavaScript, a tuple is basically two values in an array. The function `tuple` has inputs, uses the `return` keyword to return outputs, it is a function?
 
 ### Function Naming Semantics
+
+Long story short, yes, `tuple` was a function. But if you took that `tuple` function and it required the inputs `x` and `y`, but instead of returning those as outputs returned the number 40, would it still be a function? Not really. To better understand what makes a function a function, lets look at some maths:
+
+> f(x) = 2x<sup>2</sup> + 3
 
 ### Side Effects
 
