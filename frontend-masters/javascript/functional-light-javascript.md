@@ -123,6 +123,8 @@ Long story short, yes, `tuple` was a function. But if you took that `tuple` func
 
 > f(x) = 2x<sup>2</sup> + 3
 
+The above might look familiar from some math you may have learned in (not college) school and, unless you were using a graphing calculator, you may recall not really understanding that math in any real concrete sense. The reality of the math above is that you are taking an input value, x, putting it into a function `x`. The output value will be the `y` coordinate, when you combine `x` with `y`, you will see a 'u' shape on a graph!
+
 ### Side Effects
 
 ### Pure Functions & Constants
