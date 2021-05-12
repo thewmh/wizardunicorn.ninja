@@ -281,7 +281,27 @@ With the revised code, your confidence level of whether you would get the same i
 
 ### Level of Confidence
 
+The point of function purity in JavaScript is; how confident are we, the reader, in any given functions behavior? When asked whether or not a function is pure, a binary answer of yes or no will not suffice. The question is not a yes or no question, but one of level of confidence. Something along the lines of "I have a high level of confidence that this function will behave pure" or "I have a low level of confidence that this is a pure function" is more appropriate. The goal being to shift the balance of confidence, as much as possible, to a high degree of confidence in the purity of our functions. And remember that the determining factor, in JavaScript, of whether or not a function behaves pure is at the function call, not the function definition. 
+
 ### Extracting Impurity
+
+If a function is not pure for whatever reason, what are our options? An obvious option would be to leave it as it is; i.e. maybe it must write to a database, this is a side effect and an impurity, but sometimes it has to happen. What you can do is make it obvious that the procedure will have side effects; name it in a way that conveys this, add a comment. The reason for being obvious is to make it easier to maintain the code. Another option would be to look at any given impure function and ask: Is there some way for me to rearrange the way this function works and extract out the impurity, leaving just a pure function in place? This does not mean to remove the impure functionality from your application, but to put the impurity in a place that makes it more obvious. Here is some code to look over:
+
+{% highlight javascript %}
+
+function addComment(userID, comment) {
+  var record = {
+    id: uniqueID(),
+    userID,
+    text: comment
+  };
+  var elem = buildCommentElement(record);
+  commentList.appendChild(elem);
+}
+
+addComment(42, "This is my first comment!");
+
+{% endhighlight %}
 
 ### Containing Impurity
 
