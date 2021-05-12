@@ -123,15 +123,161 @@ Long story short, yes, `tuple` was a function. But if you took that `tuple` func
 
 > f(x) = 2x<sup>2</sup> + 3
 
-The above might look familiar from some math you may have learned in (not college) school and, unless you were using a graphing calculator, you may recall not really understanding that math in any real concrete sense. The reality of the math above is that you are taking an input value, x, putting it into a function `x`. The output value will be the `y` coordinate, when you combine `x` with `y`, you will see a 'u' shape on a graph!
+The above might look familiar from some math you may have learned in (not college) school and, unless you were using a graphing calculator, you may recall not really understanding that math in any real concrete sense. The reality of the math above is that you are taking an input value, x, putting it into a function `x`. The output value will be the `y` coordinate, when you combine `x` with `y`, you will see a 'u' shape on a graph! Uh huh... But what is a function? A function is a relationship between the input and the output. If you were to write the above maths as a JavaScript function, it might look something like this:
+
+{% highlight javascript %}
+
+function parabola(x) {
+  return 2 * Math.pow(x, 2) + 3;
+}
+
+{% endhighlight %}
+
+In functional programming, it matters that there is an obvious relationship between the input and output of a function. Again, a function is the semantic relationship between input and computed output. Here's another example:
+
+{% highlight javascript %}
+
+function shippingRate(size, weight, speed) {
+  return ((size + 1) * weight) + speed;
+}
+
+{% endhighlight %}
 
 ### Side Effects
 
+In functional programming there should not be any side effects in functions. But what is meant by side effects? Indirect inputs or outputs. Like this:
+
+{% highlight javascript %}
+
+function shippingRate() {
+  rate = ((size + 1) * weight) + speed;
+}
+
+var rate;
+var size = 12;
+var weight = 4;
+var speed = 5;
+shippingRate();
+rate; // 57
+
+size = 8;
+speed = 6;
+shippingRate();
+rate; // 42
+
+{% endhighlight %}
+
+The above code has no direct relationship between the input and output values, and therefore is not considered a function. If however, we made some changes and made the code look like this:
+
+{% highlight javascript %}
+
+function shippingRate(size, weight, speed) {
+  return ((size + 1) * weight) + speed;
+}
+
+var rate;
+
+rate = shippingRate(12, 4, 5); // 57
+rate = shippingRate(8, 4, 6); // 42
+
+{% endhighlight %}
+
+Now in the above code, the (direct) relationship between the input and output values has been created and this qualifies as a function? Yes! The important thing to consider when talking about whether or not a function is a function is to look at where was the function called, which needs to avoid creating or using side effects. But w hat really are the side effects that we need to be concerned about? 
+
+* I/O (console, files, etc) - Any logs or something dealing with files are considered side effects on the system
+* Database Storage
+* Network Calls
+* Reading from / Writing to the DOM
+* Timestamps
+* Generating a Random Number
+* CPU Heat? - Any program will cause a CPU to compute which in turn will cause it to generate heat which is a side effect
+* CPU Time Delay
+
+Not only is it impractical to avoid all side effects, but it is theoretically impossible to avoid all side effects. So really, what is meant when it is suggested to avoid side effects is to minimize them. A program with no side effects would be no different than if the program did not exist at all, you couldn't even prove it existed! The necessity of side effects is undeniable, but we need to make certain that we are as intentional as possible about them and make them obvious. 
+
 ### Pure Functions & Constants
+
+Continuing to build on our definition of what a function in functional programming is, a 'pure function' is one that takes direct inputs and provides direct outputs and has no side effects. Also, as mentioned previously, it is where the function is called that will be the determining factor as to whether or not the function is a function and whether or not it is pure. Consider this code:
+
+{% highlight javascript %}
+
+// pure
+function addTwo(x, y) {
+  return x + y;
+}
+
+// impure
+function addAnother(x, y) {
+  return addTwo(x, y) + z;
+}
+
+{% endhighlight %}
+
+Because `addAnother` relies on `z`, which would be a value that is potentially unknown at the time of the function call, it is considered impure. But what if the code looked like this:
+
+{% highlight javascript %}
+
+const z = 1;
+
+function addTwo(x, y) {
+  return x + y;
+}
+
+function addAnother(x, y) {
+  return addTwo(x, y) + z;
+}
+
+addAnother(20, 21); // 42
+
+{% endhighlight %}
+
+Now, `z` is defined as a `const` and we could surmise that its value would not change throughout the life of the program, is that valid? Well, it is still consistent with functional principles. But what if you used `var` instead of `const`? Would that invalidate the above code as being in line with functional programming? No, `var` or `const` the above code would still be following / consistent with functional principles. The reason being that in the above code block, `z` is never being reassigned and is therefore serving the purpose of a constant value in the application. If you are using something as a constant in your program, it is best to make it as obvious as possible that is what you are doing. It is important for the reader of our code, yes even if that person is ourselves, to know that they do not need to worry whether something will change, this improves code readability.
 
 ### Reducing Surface Area
 
+{% highlight javascript %}
+
+function addAnother(z) {
+  return function addTwo(x, y) {
+    return x + y + z;
+  };
+}
+
+addAnother(1)(20, 21); // 42
+
+{% endhighlight %}
+
+Now the codes 'surface area' has been reduced. There are only 2 possible places where the value of `z` could be reassigned (inside of the addAnother function before the return statement, and inside of the addTwo function also before the return statement). This should have the effect on the reader of making them confident that when they pass a value into the `addAnother` function it will stay the same as the value they passed in. The constant nature of the `z` variable is happening via closure. The above code is both a pure function and a pure function call; they both have predictability which is needed and expected out of pure functions.
+
 ### Same Input, Same Output
+
+What about this code?
+
+{% highlight javascript %}
+
+function getId(obj) {
+  return obj.id;
+}
+
+{% endhighlight %}
+
+Would you consider `getId` to be a pure function in the sense that if passed the same object it would always return the same id? What if there was more to the program and it looked like this:
+
+{% highlight javascript %}
+
+function getId(obj) {
+  return obj.id;
+}
+
+getId({
+  get id() {
+    return Math.random();
+  }
+});
+
+{% endhighlight %}
+
+With the revised code, your confidence level of whether you would get the same id from passing in the same object should have gone to zero. In determining whether or not a function is pure, it is important to see all relevant parts of the program. The more that you can use the techniques outlined in this workshop, to reduce the surface area of where non-functional things can occur, the easier it will be for somebody to read, understand, and ultimately rely upon. We want all readers of our code, again including our future selves, to know from reading our code that they can 'trust' it. Pure function calls act in isolation. i.e given the same inputs they should always produce the same output. A pure function is one that whenever it is executed with the same input, it will always give the same output. The goal in functional programming is to design our functions so that as many of the functions as possible will always return the same output when provided the same input, i.e. pure functions.
 
 ### Level of Confidence
 
