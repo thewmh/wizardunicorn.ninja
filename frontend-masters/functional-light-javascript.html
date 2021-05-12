@@ -176,15 +176,127 @@
   <p>f(x) = 2x<sup>2</sup> + 3</p>
 </blockquote>
 
-<p>The above might look familiar from some math you may have learned in (not college) school and, unless you were using a graphing calculator, you may recall not really understanding that math in any real concrete sense. The reality of the math above is that you are taking an input value, x, putting it into a function <code class="language-plaintext highlighter-rouge">x</code>. The output value will be the <code class="language-plaintext highlighter-rouge">y</code> coordinate, when you combine <code class="language-plaintext highlighter-rouge">x</code> with <code class="language-plaintext highlighter-rouge">y</code>, you will see a ‘u’ shape on a graph!</p>
+<p>The above might look familiar from some math you may have learned in (not college) school and, unless you were using a graphing calculator, you may recall not really understanding that math in any real concrete sense. The reality of the math above is that you are taking an input value, x, putting it into a function <code class="language-plaintext highlighter-rouge">x</code>. The output value will be the <code class="language-plaintext highlighter-rouge">y</code> coordinate, when you combine <code class="language-plaintext highlighter-rouge">x</code> with <code class="language-plaintext highlighter-rouge">y</code>, you will see a ‘u’ shape on a graph! Uh huh… But what is a function? A function is a relationship between the input and the output. If you were to write the above maths as a JavaScript function, it might look something like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">parabola</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">3</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>In functional programming, it matters that there is an obvious relationship between the input and output of a function. Again, a function is the semantic relationship between input and computed output. Here’s another example:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">shippingRate</span><span class="p">(</span><span class="nx">size</span><span class="p">,</span> <span class="nx">weight</span><span class="p">,</span> <span class="nx">speed</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">((</span><span class="nx">size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">weight</span><span class="p">)</span> <span class="o">+</span> <span class="nx">speed</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
 
 <h3 id="side-effects">Side Effects</h3>
 
+<p>In functional programming there should not be any side effects in functions. But what is meant by side effects? Indirect inputs or outputs. Like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">shippingRate</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">rate</span> <span class="o">=</span> <span class="p">((</span><span class="nx">size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">weight</span><span class="p">)</span> <span class="o">+</span> <span class="nx">speed</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">rate</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">size</span> <span class="o">=</span> <span class="mi">12</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">weight</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">speed</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="nx">shippingRate</span><span class="p">();</span>
+<span class="nx">rate</span><span class="p">;</span> <span class="c1">// 57</span>
+
+<span class="nx">size</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
+<span class="nx">speed</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+<span class="nx">shippingRate</span><span class="p">();</span>
+<span class="nx">rate</span><span class="p">;</span> <span class="c1">// 42</span></code></pre></figure>
+
+<p>The above code has no direct relationship between the input and output values, and therefore is not considered a function. If however, we made some changes and made the code look like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">shippingRate</span><span class="p">(</span><span class="nx">size</span><span class="p">,</span> <span class="nx">weight</span><span class="p">,</span> <span class="nx">speed</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">((</span><span class="nx">size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">weight</span><span class="p">)</span> <span class="o">+</span> <span class="nx">speed</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">rate</span><span class="p">;</span>
+
+<span class="nx">rate</span> <span class="o">=</span> <span class="nx">shippingRate</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span> <span class="c1">// 57</span>
+<span class="nx">rate</span> <span class="o">=</span> <span class="nx">shippingRate</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span> <span class="c1">// 42</span></code></pre></figure>
+
+<p>Now in the above code, the (direct) relationship between the input and output values has been created and this qualifies as a function? Yes! The important thing to consider when talking about whether or not a function is a function is to look at where was the function called, which needs to avoid creating or using side effects. But w hat really are the side effects that we need to be concerned about?</p>
+
+<ul>
+  <li>I/O (console, files, etc) - Any logs or something dealing with files are considered side effects on the system</li>
+  <li>Database Storage</li>
+  <li>Network Calls</li>
+  <li>Reading from / Writing to the DOM</li>
+  <li>Timestamps</li>
+  <li>Generating a Random Number</li>
+  <li>CPU Heat? - Any program will cause a CPU to compute which in turn will cause it to generate heat which is a side effect</li>
+  <li>CPU Time Delay</li>
+</ul>
+
+<p>Not only is it impractical to avoid all side effects, but it is theoretically impossible to avoid all side effects. So really, what is meant when it is suggested to avoid side effects is to minimize them. A program with no side effects would be no different than if the program did not exist at all, you couldn’t even prove it existed! The necessity of side effects is undeniable, but we need to make certain that we are as intentional as possible about them and make them obvious.</p>
+
 <h3 id="pure-functions--constants">Pure Functions &amp; Constants</h3>
+
+<p>Continuing to build on our definition of what a function in functional programming is, a ‘pure function’ is one that takes direct inputs and provides direct outputs and has no side effects. Also, as mentioned previously, it is where the function is called that will be the determining factor as to whether or not the function is a function and whether or not it is pure. Consider this code:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// pure</span>
+<span class="kd">function</span> <span class="nx">addTwo</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// impure</span>
+<span class="kd">function</span> <span class="nx">addAnother</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">addTwo</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="o">+</span> <span class="nx">z</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Because <code class="language-plaintext highlighter-rouge">addAnother</code> relies on <code class="language-plaintext highlighter-rouge">z</code>, which would be a value that is potentially unknown at the time of the function call, it is considered impure. But what if the code looked like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">z</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">addTwo</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">addAnother</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">addTwo</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="o">+</span> <span class="nx">z</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">addAnother</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">21</span><span class="p">);</span> <span class="c1">// 42</span></code></pre></figure>
+
+<p>Now, <code class="language-plaintext highlighter-rouge">z</code> is defined as a <code class="language-plaintext highlighter-rouge">const</code> and we could surmise that its value would not change throughout the life of the program, is that valid? Well, it is still consistent with functional principles. But what if you used <code class="language-plaintext highlighter-rouge">var</code> instead of <code class="language-plaintext highlighter-rouge">const</code>? Would that invalidate the above code as being in line with functional programming? No, <code class="language-plaintext highlighter-rouge">var</code> or <code class="language-plaintext highlighter-rouge">const</code> the above code would still be following / consistent with functional principles. The reason being that in the above code block, <code class="language-plaintext highlighter-rouge">z</code> is never being reassigned and is therefore serving the purpose of a constant value in the application. If you are using something as a constant in your program, it is best to make it as obvious as possible that is what you are doing. It is important for the reader of our code, yes even if that person is ourselves, to know that they do not need to worry whether something will change, this improves code readability.</p>
 
 <h3 id="reducing-surface-area">Reducing Surface Area</h3>
 
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">addAnother</span><span class="p">(</span><span class="nx">z</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">addTwo</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span> <span class="o">+</span> <span class="nx">z</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="nx">addAnother</span><span class="p">(</span><span class="mi">1</span><span class="p">)(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">21</span><span class="p">);</span> <span class="c1">// 42</span></code></pre></figure>
+
+<p>Now the codes ‘surface area’ has been reduced. There are only 2 possible places where the value of <code class="language-plaintext highlighter-rouge">z</code> could be reassigned (inside of the addAnother function before the return statement, and inside of the addTwo function also before the return statement). This should have the effect on the reader of making them confident that when they pass a value into the <code class="language-plaintext highlighter-rouge">addAnother</code> function it will stay the same as the value they passed in. The constant nature of the <code class="language-plaintext highlighter-rouge">z</code> variable is happening via closure. The above code is both a pure function and a pure function call; they both have predictability which is needed and expected out of pure functions.</p>
+
 <h3 id="same-input-same-output">Same Input, Same Output</h3>
+
+<p>What about this code?</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">getId</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Would you consider <code class="language-plaintext highlighter-rouge">getId</code> to be a pure function in the sense that if passed the same object it would always return the same id? What if there was more to the program and it looked like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">getId</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">getId</span><span class="p">({</span>
+  <span class="kd">get</span> <span class="nx">id</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">});</span></code></pre></figure>
+
+<p>With the revised code, your confidence level of whether you would get the same id from passing in the same object should have gone to zero. In determining whether or not a function is pure, it is important to see all relevant parts of the program. The more that you can use the techniques outlined in this workshop, to reduce the surface area of where non-functional things can occur, the easier it will be for somebody to read, understand, and ultimately rely upon. We want all readers of our code, again including our future selves, to know from reading our code that they can ‘trust’ it. Pure function calls act in isolation. i.e given the same inputs they should always produce the same output. A pure function is one that whenever it is executed with the same input, it will always give the same output. The goal in functional programming is to design our functions so that as many of the functions as possible will always return the same output when provided the same input, i.e. pure functions.</p>
 
 <h3 id="level-of-confidence">Level of Confidence</h3>
 
