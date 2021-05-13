@@ -37,6 +37,8 @@ pagenav:
 
 [Link to the course document](http://static.frontendmasters.com/resources/2019-05-06-functional-light-v3/functional-light-v3.pdf)
 
+[Link to the course exercise files](https://static.frontendmasters.com/resources/2019-05-06-functional-light-v3/functional-light-v3.zip)
+
 ## Introduction
 
 ### Introduction
@@ -397,9 +399,50 @@ numbers; // [ 5, 4, 3, 2, 1 ]
 
 {% endhighlight %}
 
-Now that `insertSortedDesc` is wrapped in `getSortedNums`, the `numbers` variable is restricted to the function scope of `getSortedNums`. The side effect of modifying the `numbers` array still exists, but it is now contained within a function scope instead of global scope, effectively reducing the impurities surface area. But there is still one additional impurity... `SomeAPI.threshold = v;` is modifying the value of `threshold` in the `SomeAPI` object. How can that be contained? We likely cannot wrap it in another function because this is likely a third-parties API service who's code we do not have access to modify. 
+Now that `insertSortedDesc` is wrapped in `getSortedNums`, the `numbers` variable is restricted to the function scope of `getSortedNums`. The side effect of modifying the `numbers` array still exists, but it is now contained within a function scope instead of global scope, effectively reducing the impurities surface area. But there is still one additional impurity... `SomeAPI.threshold = v;` is modifying the value of `threshold` in the `SomeAPI` object. How can that be contained? We likely cannot wrap it in another function because this is likely a third-parties API service who's code we do not have access to modify. Containment of this impurity might look like this:
+
+{% highlight javascript %}
+
+var SomeAPI = {
+  threshold: 13,
+  isBelowThreshold(x) {
+    return x <= SomeAPI.threshold;
+  }
+};
+var numbers = [];
+
+function insertSortedDesc(v) {
+  SomeAPI.threshold = v;
+  var idx = numbers.findIndex(SomeAPI.isBelowThreshold);
+  if (idx == -1) {
+    idx = numbers.length;
+  }
+  numbers.splice(idx, 0, v);
+}
+
+function getSortedNums(nums, v) {
+  var [origNumbers, origThreshold] = [numbers, SomeAPI.threshold]; // capture original values
+  numbers = nums.slice(); // numbers is a copy of the nums array
+  insertSortedDesc(v); // call the function that has all the side effects
+  nums = numbers; // capture the changed state of the insertSortedDesc function call
+  [numbers, SomeAPI.threshold] = [origNumbers, origThreshold]; // reset values to original value
+  return nums; // return the state
+}
+
+numbers = getSortedNums(numbers, 3);
+numbers = getSortedNums(numbers, 5);
+numbers = getSortedNums(numbers, 1);
+numbers = getSortedNums(numbers, 4);
+numbers = getSortedNums(numbers, 2);
+numbers; // [ 5, 4, 3, 2, 1 ]
+
+{% endhighlight %}
+
+The above code is a very 'brute force' way of dealing with side effects which would get very unmanageable very quickly, especially if we were dealing with a more complex set of state; i.e. the DOM. Capturing the current state of the DOM, modifying it, then resetting it is very hard. Same for a database. Again, all of this is just an attempt to reduce the surface area of side effects, ideally improving code readability and maintainability. 
 
 ### Impurity Exercise: Wrappers & Adapters
+
+
 
 ### Impurity Solution: Wrappers
 
