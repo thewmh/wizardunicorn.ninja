@@ -94,6 +94,8 @@
     </div>
 </div><div class="container mx-auto px-10 pb-4 max-w-screen-lg"><article class="mx-auto mt-8 dark:text-blueGray-50 unicorn:text-purple-700 break-words"><h1 class="text-5xl lg:text-8xl font-semibold">Functional Light JavaScript, v3</h1><p><a href="http://static.frontendmasters.com/resources/2019-05-06-functional-light-v3/functional-light-v3.pdf">Link to the course document</a></p>
 
+<p><a href="https://static.frontendmasters.com/resources/2019-05-06-functional-light-v3/functional-light-v3.zip">Link to the course exercise files</a></p>
+
 <h2 id="introduction">Introduction</h2>
 
 <h3 id="introduction-1">Introduction</h3>
@@ -400,7 +402,42 @@
 <span class="nx">numbers</span> <span class="o">=</span> <span class="nx">getSortedNums</span><span class="p">(</span><span class="nx">numbers</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
 <span class="nx">numbers</span><span class="p">;</span> <span class="c1">// [ 5, 4, 3, 2, 1 ]</span></code></pre></figure>
 
-<p>Now that <code class="language-plaintext highlighter-rouge">insertSortedDesc</code> is wrapped in <code class="language-plaintext highlighter-rouge">getSortedNums</code>, the <code class="language-plaintext highlighter-rouge">numbers</code> variable is restricted to the function scope of <code class="language-plaintext highlighter-rouge">getSortedNums</code>. The side effect of modifying the <code class="language-plaintext highlighter-rouge">numbers</code> array still exists, but it is now contained within a function scope instead of global scope, effectively reducing the impurities surface area. But there is still one additional impurity… <code class="language-plaintext highlighter-rouge">SomeAPI.threshold = v;</code> is modifying the value of <code class="language-plaintext highlighter-rouge">threshold</code> in the <code class="language-plaintext highlighter-rouge">SomeAPI</code> object. How can that be contained? We likely cannot wrap it in another function because this is likely a third-parties API service who’s code we do not have access to modify.</p>
+<p>Now that <code class="language-plaintext highlighter-rouge">insertSortedDesc</code> is wrapped in <code class="language-plaintext highlighter-rouge">getSortedNums</code>, the <code class="language-plaintext highlighter-rouge">numbers</code> variable is restricted to the function scope of <code class="language-plaintext highlighter-rouge">getSortedNums</code>. The side effect of modifying the <code class="language-plaintext highlighter-rouge">numbers</code> array still exists, but it is now contained within a function scope instead of global scope, effectively reducing the impurities surface area. But there is still one additional impurity… <code class="language-plaintext highlighter-rouge">SomeAPI.threshold = v;</code> is modifying the value of <code class="language-plaintext highlighter-rouge">threshold</code> in the <code class="language-plaintext highlighter-rouge">SomeAPI</code> object. How can that be contained? We likely cannot wrap it in another function because this is likely a third-parties API service who’s code we do not have access to modify. Containment of this impurity might look like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">SomeAPI</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">threshold</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+  <span class="nx">isBelowThreshold</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">x</span> <span class="o">&lt;=</span> <span class="nx">SomeAPI</span><span class="p">.</span><span class="nx">threshold</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+<span class="kd">var</span> <span class="nx">numbers</span> <span class="o">=</span> <span class="p">[];</span>
+
+<span class="kd">function</span> <span class="nx">insertSortedDesc</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">SomeAPI</span><span class="p">.</span><span class="nx">threshold</span> <span class="o">=</span> <span class="nx">v</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">idx</span> <span class="o">=</span> <span class="nx">numbers</span><span class="p">.</span><span class="nx">findIndex</span><span class="p">(</span><span class="nx">SomeAPI</span><span class="p">.</span><span class="nx">isBelowThreshold</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">idx</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">idx</span> <span class="o">=</span> <span class="nx">numbers</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nx">numbers</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">v</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">getSortedNums</span><span class="p">(</span><span class="nx">nums</span><span class="p">,</span> <span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="p">[</span><span class="nx">origNumbers</span><span class="p">,</span> <span class="nx">origThreshold</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nx">numbers</span><span class="p">,</span> <span class="nx">SomeAPI</span><span class="p">.</span><span class="nx">threshold</span><span class="p">];</span> <span class="c1">// capture original values</span>
+  <span class="nx">numbers</span> <span class="o">=</span> <span class="nx">nums</span><span class="p">.</span><span class="nx">slice</span><span class="p">();</span> <span class="c1">// numbers is a copy of the nums array</span>
+  <span class="nx">insertSortedDesc</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span> <span class="c1">// call the function that has all the side effects</span>
+  <span class="nx">nums</span> <span class="o">=</span> <span class="nx">numbers</span><span class="p">;</span> <span class="c1">// capture the changed state of the insertSortedDesc function call</span>
+  <span class="p">[</span><span class="nx">numbers</span><span class="p">,</span> <span class="nx">SomeAPI</span><span class="p">.</span><span class="nx">threshold</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nx">origNumbers</span><span class="p">,</span> <span class="nx">origThreshold</span><span class="p">];</span> <span class="c1">// reset values to original value</span>
+  <span class="k">return</span> <span class="nx">nums</span><span class="p">;</span> <span class="c1">// return the state</span>
+<span class="p">}</span>
+
+<span class="nx">numbers</span> <span class="o">=</span> <span class="nx">getSortedNums</span><span class="p">(</span><span class="nx">numbers</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+<span class="nx">numbers</span> <span class="o">=</span> <span class="nx">getSortedNums</span><span class="p">(</span><span class="nx">numbers</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+<span class="nx">numbers</span> <span class="o">=</span> <span class="nx">getSortedNums</span><span class="p">(</span><span class="nx">numbers</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="nx">numbers</span> <span class="o">=</span> <span class="nx">getSortedNums</span><span class="p">(</span><span class="nx">numbers</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+<span class="nx">numbers</span> <span class="o">=</span> <span class="nx">getSortedNums</span><span class="p">(</span><span class="nx">numbers</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="nx">numbers</span><span class="p">;</span> <span class="c1">// [ 5, 4, 3, 2, 1 ]</span></code></pre></figure>
+
+<p>The above code is a very ‘brute force’ way of dealing with side effects which would get very unmanageable very quickly, especially if we were dealing with a more complex set of state; i.e. the DOM. Capturing the current state of the DOM, modifying it, then resetting it is very hard. Same for a database. Again, all of this is just an attempt to reduce the surface area of side effects, ideally improving code readability and maintainability.</p>
 
 <h3 id="impurity-exercise-wrappers--adapters">Impurity Exercise: Wrappers &amp; Adapters</h3>
 
