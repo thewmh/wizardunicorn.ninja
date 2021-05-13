@@ -100,7 +100,7 @@ nav ul li .dark a:hover { --tw-text-opacity:1; color: rgba(203, 213, 225, var(--
 
 .workshop-nav li { padding-bottom: .5rem; padding-top: .5rem; }
 
-.workshop-nav .workshop-nav--title { font-weight: 700; margin: 0; text-align: center; }
+.workshop-nav .workshop-nav--title { cursor: pointer; font-weight: 700; margin: 0; text-align: center; }
 
 .workshop-nav .workshop-nav--item { display: inline; }
 
