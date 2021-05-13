@@ -441,9 +441,257 @@
 
 <h3 id="impurity-exercise-wrappers--adapters">Impurity Exercise: Wrappers &amp; Adapters</h3>
 
+<p>Instructions:</p>
+
+<p>This is a two-part exercise to practice two techniques for containing function impurity.</p>
+
+<p>Instructions (Part 1)</p>
+
+<p>In this part of the exercise, you will contain the function impurity of <code class="language-plaintext highlighter-rouge">sortStudentsByName(..)</code> using a wrapper function.</p>
+
+<p><strong>NOTE:</strong> Do not modify the contents of <code class="language-plaintext highlighter-rouge">sortStudentsByName(..)</code> for this exercise.</p>
+
+<ol>
+  <li>
+    <p>Move and modify <code class="language-plaintext highlighter-rouge">getStudentsByName(..)</code> so that it wraps around <code class="language-plaintext highlighter-rouge">sortStudentsByName(..)</code> (and calls it internally).</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">getStudentsByName(..)</code> should receive the current list of students, and return a new sorted list of students.</p>
+  </li>
+  <li>
+    <p>Make sure that calling <code class="language-plaintext highlighter-rouge">getStudentsByName(..)</code> doesn’t have a side-effect of modifying the global <code class="language-plaintext highlighter-rouge">students</code> array.</p>
+  </li>
+  <li>
+    <p>The <code class="language-plaintext highlighter-rouge">studentsTest1</code> and <code class="language-plaintext highlighter-rouge">studentsTest3</code> tests at the bottom of the exercise should all print <code class="language-plaintext highlighter-rouge">true</code>.</p>
+  </li>
+</ol>
+
+<p>Instructions (Part 2)</p>
+
+<p>In this part of the exercise, you will contain the function impurity of <code class="language-plaintext highlighter-rouge">sortStudentsByID(..)</code> using an adapter function.</p>
+
+<p><strong>NOTE:</strong> Do not modify the contents of <code class="language-plaintext highlighter-rouge">sortStudentsByID(..)</code> for this exercise.</p>
+
+<ol>
+  <li>
+    <p>Modify <code class="language-plaintext highlighter-rouge">getStudentsByID(..)</code> so that it is an adapter that calls <code class="language-plaintext highlighter-rouge">sortStudentsByID(..)</code>.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">getStudentByID(..)</code> should receive the current list of students, and return a new sorted list of students.</p>
+  </li>
+  <li>
+    <p>Make sure that calling <code class="language-plaintext highlighter-rouge">getStudentsByID(..)</code> doesn’t have a side-effect of modifying the global <code class="language-plaintext highlighter-rouge">students</code> array.</p>
+  </li>
+  <li>
+    <p>All tests (<code class="language-plaintext highlighter-rouge">studentsTest1</code>, <code class="language-plaintext highlighter-rouge">studentsTest2</code>, and <code class="language-plaintext highlighter-rouge">studentsTest3</code>) at the bottom of the exercise should all print <code class="language-plaintext highlighter-rouge">true</code>.</p>
+  </li>
+</ol>
+
+<p>Code to work from:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="dl">"</span><span class="s2">use strict</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">students</span> <span class="o">=</span> <span class="p">[</span>
+	<span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="mi">260</span><span class="p">,</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span> <span class="p">},</span>
+	<span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="mi">729</span><span class="p">,</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Susan</span><span class="dl">"</span> <span class="p">},</span>
+	<span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Frank</span><span class="dl">"</span> <span class="p">},</span>
+	<span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="mi">74</span><span class="p">,</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Jessica</span><span class="dl">"</span> <span class="p">},</span>
+	<span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="mi">491</span><span class="p">,</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Ally</span><span class="dl">"</span> <span class="p">}</span>
+<span class="p">];</span>
+
+<span class="kd">function</span> <span class="nx">sortStudentsByName</span><span class="p">()</span> <span class="p">{</span>
+	<span class="c1">// Don't modify this function</span>
+	<span class="nx">students</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="kd">function</span> <span class="nx">byName</span><span class="p">(</span><span class="nx">s1</span><span class="p">,</span><span class="nx">s2</span><span class="p">){</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">s1</span><span class="p">.</span><span class="nx">name</span> <span class="o">&lt;</span> <span class="nx">s2</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">s1</span><span class="p">.</span><span class="nx">name</span> <span class="o">&gt;</span> <span class="nx">s2</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+		<span class="k">else</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="p">});</span>
+	<span class="k">return</span> <span class="nx">students</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">sortStudentsByID</span><span class="p">()</span> <span class="p">{</span>
+	<span class="c1">// Don't modify this function</span>
+	<span class="nx">students</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="kd">function</span> <span class="nx">byID</span><span class="p">(</span><span class="nx">s1</span><span class="p">,</span><span class="nx">s2</span><span class="p">){</span>
+		<span class="k">return</span> <span class="nx">s1</span><span class="p">.</span><span class="nx">id</span> <span class="o">-</span> <span class="nx">s2</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+	<span class="p">});</span>
+	<span class="k">return</span> <span class="nx">students</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// *************************************</span>
+
+<span class="c1">// modify/move this function</span>
+<span class="kd">function</span> <span class="nx">getStudentsByName</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">students</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="c1">// modify/move this function</span>
+<span class="kd">function</span> <span class="nx">getStudentsByID</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">students</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="c1">// *************************************</span>
+
+<span class="kd">var</span> <span class="nx">studentsTest1</span> <span class="o">=</span> <span class="nx">getStudentsByName</span><span class="p">(</span><span class="nx">students</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest1</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Ally</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest1</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Frank</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest1</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Jessica</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest1</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest1</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Susan</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">studentsTest2</span> <span class="o">=</span> <span class="nx">getStudentsByID</span><span class="p">(</span><span class="nx">students</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest2</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">42</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest2</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">74</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest2</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">260</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest2</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">491</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest2</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">729</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">studentsTest3</span> <span class="o">=</span> <span class="nx">students</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">260</span> <span class="o">&amp;&amp;</span> <span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">729</span> <span class="o">&amp;&amp;</span> <span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Susan</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">42</span> <span class="o">&amp;&amp;</span> <span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Frank</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">74</span> <span class="o">&amp;&amp;</span> <span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Jessica</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">491</span> <span class="o">&amp;&amp;</span> <span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Ally</span><span class="dl">"</span><span class="p">);</span></code></pre></figure>
+
 <h3 id="impurity-solution-wrappers">Impurity Solution: Wrappers</h3>
 
+<details>
+    <summary>Click to view the solution
+</summary>
+    
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="dl">"</span><span class="s2">use strict</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">students</span> <span class="o">=</span> <span class="p">[</span>
+	<span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="mi">260</span><span class="p">,</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span> <span class="p">},</span>
+	<span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="mi">729</span><span class="p">,</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Susan</span><span class="dl">"</span> <span class="p">},</span>
+	<span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Frank</span><span class="dl">"</span> <span class="p">},</span>
+	<span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="mi">74</span><span class="p">,</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Jessica</span><span class="dl">"</span> <span class="p">},</span>
+	<span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="mi">491</span><span class="p">,</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Ally</span><span class="dl">"</span> <span class="p">}</span>
+<span class="p">];</span>
+
+<span class="kd">function</span> <span class="nx">getStudentsByName</span><span class="p">(</span><span class="nx">students</span><span class="p">)</span> <span class="p">{</span> 
+  <span class="nx">students</span> <span class="o">=</span> <span class="nx">students</span><span class="p">.</span><span class="nx">slice</span><span class="p">();</span>
+  <span class="k">return</span> <span class="nx">sortStudentsByName</span><span class="p">();</span>
+
+  <span class="kd">function</span> <span class="nx">sortStudentsByName</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Don't modify this function</span>
+    <span class="nx">students</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="kd">function</span> <span class="nx">byName</span><span class="p">(</span><span class="nx">s1</span><span class="p">,</span><span class="nx">s2</span><span class="p">){</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">s1</span><span class="p">.</span><span class="nx">name</span> <span class="o">&lt;</span> <span class="nx">s2</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">s1</span><span class="p">.</span><span class="nx">name</span> <span class="o">&gt;</span> <span class="nx">s2</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="k">else</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="nx">students</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">sortStudentsByID</span><span class="p">()</span> <span class="p">{</span>
+	<span class="c1">// Don't modify this function</span>
+	<span class="nx">students</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="kd">function</span> <span class="nx">byID</span><span class="p">(</span><span class="nx">s1</span><span class="p">,</span><span class="nx">s2</span><span class="p">){</span>
+		<span class="k">return</span> <span class="nx">s1</span><span class="p">.</span><span class="nx">id</span> <span class="o">-</span> <span class="nx">s2</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+	<span class="p">});</span>
+	<span class="k">return</span> <span class="nx">students</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// *************************************</span>
+
+<span class="c1">// modify/move this function</span>
+<span class="kd">function</span> <span class="nx">getStudentsByID</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">students</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="c1">// *************************************</span>
+
+<span class="kd">var</span> <span class="nx">studentsTest1</span> <span class="o">=</span> <span class="nx">getStudentsByName</span><span class="p">(</span><span class="nx">students</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest1</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Ally</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest1</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Frank</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest1</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Jessica</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest1</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest1</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Susan</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">studentsTest2</span> <span class="o">=</span> <span class="nx">getStudentsByID</span><span class="p">(</span><span class="nx">students</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest2</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">42</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest2</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">74</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest2</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">260</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest2</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">491</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest2</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">729</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">studentsTest3</span> <span class="o">=</span> <span class="nx">students</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">260</span> <span class="o">&amp;&amp;</span> <span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">729</span> <span class="o">&amp;&amp;</span> <span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Susan</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">42</span> <span class="o">&amp;&amp;</span> <span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Frank</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">74</span> <span class="o">&amp;&amp;</span> <span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Jessica</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">491</span> <span class="o">&amp;&amp;</span> <span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Ally</span><span class="dl">"</span><span class="p">);</span>  </code></pre></figure>
+
+
+</details>
+
 <h3 id="impurity-solution-adapters">Impurity Solution: Adapters</h3>
+
+<details>
+    <summary>Click to view the solution
+</summary>
+    
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="dl">"</span><span class="s2">use strict</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">students</span> <span class="o">=</span> <span class="p">[</span>
+	<span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="mi">260</span><span class="p">,</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span> <span class="p">},</span>
+	<span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="mi">729</span><span class="p">,</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Susan</span><span class="dl">"</span> <span class="p">},</span>
+	<span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Frank</span><span class="dl">"</span> <span class="p">},</span>
+	<span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="mi">74</span><span class="p">,</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Jessica</span><span class="dl">"</span> <span class="p">},</span>
+	<span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="mi">491</span><span class="p">,</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Ally</span><span class="dl">"</span> <span class="p">}</span>
+<span class="p">];</span>
+
+<span class="kd">function</span> <span class="nx">getStudentsByName</span><span class="p">(</span><span class="nx">students</span><span class="p">)</span> <span class="p">{</span> 
+  <span class="nx">students</span> <span class="o">=</span> <span class="nx">students</span><span class="p">.</span><span class="nx">slice</span><span class="p">();</span>
+  <span class="k">return</span> <span class="nx">sortStudentsByName</span><span class="p">();</span>
+
+  <span class="kd">function</span> <span class="nx">sortStudentsByName</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Don't modify this function</span>
+    <span class="nx">students</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="kd">function</span> <span class="nx">byName</span><span class="p">(</span><span class="nx">s1</span><span class="p">,</span><span class="nx">s2</span><span class="p">){</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">s1</span><span class="p">.</span><span class="nx">name</span> <span class="o">&lt;</span> <span class="nx">s2</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">s1</span><span class="p">.</span><span class="nx">name</span> <span class="o">&gt;</span> <span class="nx">s2</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="k">else</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="nx">students</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">sortStudentsByID</span><span class="p">()</span> <span class="p">{</span>
+	<span class="c1">// Don't modify this function</span>
+	<span class="nx">students</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="kd">function</span> <span class="nx">byID</span><span class="p">(</span><span class="nx">s1</span><span class="p">,</span><span class="nx">s2</span><span class="p">){</span>
+		<span class="k">return</span> <span class="nx">s1</span><span class="p">.</span><span class="nx">id</span> <span class="o">-</span> <span class="nx">s2</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+	<span class="p">});</span>
+	<span class="k">return</span> <span class="nx">students</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">getStudentsByID</span><span class="p">(</span><span class="nx">currentStudents</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">origStudents</span> <span class="o">=</span> <span class="nx">students</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+  <span class="nx">students</span> <span class="o">=</span> <span class="nx">currentStudents</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">newStudents</span> <span class="o">=</span> <span class="nx">sortStudentsByID</span><span class="p">();</span>
+  <span class="nx">students</span> <span class="o">=</span> <span class="nx">origStudents</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">newStudents</span><span class="p">;</span> 
+<span class="p">}</span>
+
+<span class="c1">// *************************************</span>
+
+<span class="c1">// *************************************</span>
+
+<span class="kd">var</span> <span class="nx">studentsTest1</span> <span class="o">=</span> <span class="nx">getStudentsByName</span><span class="p">(</span><span class="nx">students</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest1</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Ally</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest1</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Frank</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest1</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Jessica</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest1</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest1</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Susan</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">studentsTest2</span> <span class="o">=</span> <span class="nx">getStudentsByID</span><span class="p">(</span><span class="nx">students</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest2</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">42</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest2</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">74</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest2</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">260</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest2</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">491</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest2</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">729</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">studentsTest3</span> <span class="o">=</span> <span class="nx">students</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">260</span> <span class="o">&amp;&amp;</span> <span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">729</span> <span class="o">&amp;&amp;</span> <span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Susan</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">42</span> <span class="o">&amp;&amp;</span> <span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Frank</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">74</span> <span class="o">&amp;&amp;</span> <span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Jessica</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">491</span> <span class="o">&amp;&amp;</span> <span class="nx">studentsTest3</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Ally</span><span class="dl">"</span><span class="p">);</span>  </code></pre></figure>
+
+
+</details>
 
 <h2 id="argument-adapters">Argument Adapters</h2>
 
