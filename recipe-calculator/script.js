@@ -1,12 +1,15 @@
 ;(function() {
-    var ingredients = recipeData[0].ingredients;
-
+    var availableRecipess = [];
+    var recipeName,
+    ingredients;
+    
     var config = {
         selectors: {
             recipe: 'recipe',
             inputs: 'input',
             editButton: 'editButton',
-            resetButton: 'resetButton'
+            resetButton: 'resetButton',
+            availableRecipes: 'available-recipe'
         }
     }
 
@@ -14,19 +17,22 @@
     var updatedValues = {};
 
     var init = function init() {
-        createElements(ingredients);
-        getElements();
-        attachListeners();
-        getBaseValues();
+        getAvailableRecipes();
     }
 
-    var createElements = function createElements(ingredients) {
+    var createElements = function createElements(ingredients, availableRecipess) {
         let recipeForm = document.getElementById('recipe');
         let content = '';
+        content += `<h1>${recipeName}</h1>`;
         for(let i = 0; i < ingredients.length; i++) {
             content += `<div class='fieldset'>
             <label for='${ingredients[i].id}'>${ingredients[i].name}</label>
             <input type='number' id='${ingredients[i].id}' placeholder='${ingredients[i].name}' value="${ingredients[i].amount}" disabled/>
+          </div>`
+        }
+        for(let i = 0; i < availableRecipess.length; i++) {
+            content += `<div class='all-recipes'>
+            <a href="${availableRecipess[i].src}" class="available-recipe">${availableRecipess[i].title}</a>
           </div>`
         }
         recipeForm.innerHTML = content;
@@ -53,7 +59,7 @@
         for(input of inputs) {
             input.value = baseValues[input.id]
         }
-        updatedValues = {...baseValues};
+        updatedValues = baseValues;
     }
 
     function doTheMaths(val1, val2, key) {
@@ -72,7 +78,9 @@
             let value = input.value;
             baseValues[`${key}`] = Number(value);
         }
+        updatedValues = {};
         updatedValues = {...baseValues};
+        console.log(updatedValues, baseValues)
     }
 
     var getElements = function getElements() {
@@ -80,14 +88,50 @@
         inputs = document.querySelectorAll(config.selectors.inputs, recipe);
         editButton = document.getElementById(config.selectors.editButton, recipe);
         resetButton = document.getElementById(config.selectors.resetButton, recipe);
+        availableRecipes = document.getElementsByClassName(config.selectors.availableRecipes, recipe);
     };
 
     var attachListeners = function attachListeners() {
         editButton.addEventListener('click', toggleRecipeEdit);
         resetButton.addEventListener('click', resetValues);
         for(input of inputs) {
+            input.removeEventListener('keyup', updateValues);
             input.addEventListener('keyup', updateValues);
         }
+        for(let i = 0; i < availableRecipes.length; i++) {
+          availableRecipes[i].addEventListener('click', function(e){e.preventDefault(); loadThisRecipe(this);})
+        }
+    }
+
+    var loadThisRecipe = async function loadThisRecipe(el) {
+      let response;
+      const url = el.href ? el.href : el.src;
+      response = await fetch(url)
+      .then(res => res.text())
+      .then(data => {return data})
+      
+      response = JSON.parse(response);
+      ingredients = response.recipeData[0].ingredients;
+      recipeName = response.recipeData[0].name;
+      
+      createElements(ingredients, availableRecipess)
+      getElements();
+      resetObjects();
+      getBaseValues();
+      attachListeners();
+    }
+
+    var resetObjects = function resetObjects() {
+      baseValues = {};
+      updatedValues = {};
+    }
+
+    var getAvailableRecipes = function getAvailableRecipes() {
+      let allRecipes = document.getElementsByClassName('original-recipe')
+      for(let i = 0; i < allRecipes.length; i++) {
+        availableRecipess.push(allRecipes[i])
+      }
+      loadThisRecipe(availableRecipess[0])
     }
 
 if (document.getElementById('recipe')) {
