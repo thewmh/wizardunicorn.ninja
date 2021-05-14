@@ -108,10 +108,9 @@
       let response;
       const url = el.href ? el.href : el.src;
       response = await fetch(url)
-      .then(res => res.text())
+      .then(res => res.json())
       .then(data => {return data})
       
-      response = JSON.parse(response);
       ingredients = response.recipeData[0].ingredients;
       recipeName = response.recipeData[0].name;
       
