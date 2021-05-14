@@ -41,10 +41,12 @@
     let toggled = false;
 
     function toggleRecipeEdit() {
+      toggled ? (editButton.innerText = 'Edit', toggled = false, toggleInputs()) : (editButton.innerText = 'Save', toggled = true, toggleInputs());
+      function toggleInputs() {
         for(input of inputs) {
-            input.disabled ? input.disabled = false : input.disabled = true;
+            input.disabled && toggled == true ? input.disabled = false : input.disabled = true;
         }
-        toggled ? (editButton.innerText = 'Edit', toggled = false) : (editButton.innerText = 'Save', toggled = true);
+      }
     }
 
     function updateValues() {
@@ -66,8 +68,8 @@
         let enumerator = val1/val2;
         for(const value in updatedValues) {
             updatedValues[key] > baseValues[key] ?
-            updatedValues[value] = Math.round(enumerator*baseValues[value]) :
-            updatedValues[value] = Math.round(baseValues[value]/enumerator);
+            updatedValues[value] = (enumerator*baseValues[value]).toFixed(2) :
+            updatedValues[value] = (baseValues[value]/enumerator).toFixed(2);
             document.getElementById(`${value}`).value = updatedValues[value];
         }
     }
@@ -80,7 +82,6 @@
         }
         updatedValues = {};
         updatedValues = {...baseValues};
-        console.log(updatedValues, baseValues)
     }
 
     var getElements = function getElements() {
@@ -95,8 +96,8 @@
         editButton.addEventListener('click', toggleRecipeEdit);
         resetButton.addEventListener('click', resetValues);
         for(input of inputs) {
-            input.removeEventListener('keyup', updateValues);
-            input.addEventListener('keyup', updateValues);
+            input.removeEventListener('blur', updateValues);
+            input.addEventListener('blur', updateValues);
         }
         for(let i = 0; i < availableRecipes.length; i++) {
           availableRecipes[i].addEventListener('click', function(e){e.preventDefault(); loadThisRecipe(this);})
@@ -119,11 +120,17 @@
       resetObjects();
       getBaseValues();
       attachListeners();
+      resetToggleState();
     }
 
     var resetObjects = function resetObjects() {
       baseValues = {};
       updatedValues = {};
+    }
+
+    var resetToggleState = function resetToggleState() {
+      toggled = true;
+      toggleRecipeEdit();
     }
 
     var getAvailableRecipes = function getAvailableRecipes() {
