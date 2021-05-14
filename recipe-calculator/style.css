@@ -2,6 +2,8 @@
     width: 50%;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 16px;
+    margin: 0 auto;
+    text-align: center;
 }
 
 #recipe input {
@@ -35,6 +37,7 @@
 
 #recipeButtons {
     width: 50%;
+    margin: 0 auto;
 }
 
 #recipeButtons button {

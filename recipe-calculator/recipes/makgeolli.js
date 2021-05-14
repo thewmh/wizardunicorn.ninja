@@ -1,4 +1,5 @@
-recipeData = [{
+{"recipeData": [{
+    "name": "Makgeolli",
     "ingredients": [
         {
             "id": "sweetRiceFlour",
@@ -31,4 +32,4 @@ recipeData = [{
             "amount": 800
         }
     ]
-}]
+}]}
