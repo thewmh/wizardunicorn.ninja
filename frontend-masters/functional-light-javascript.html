@@ -825,13 +825,224 @@
 
 <span class="nx">isEven</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span> <span class="c1">// true</span></code></pre></figure>
 
-<p>In the above code, <code class="language-plaintext highlighter-rouge">isEven</code> is defined in terms of <code class="language-plaintext highlighter-rouge">isOdd</code>, specifically checking whether <code class="language-plaintext highlighter-rouge">v % 2 == 1</code> returns false. This is beneficial for the sake of readability and to create the relationship between the <code class="language-plaintext highlighter-rouge">isOdd</code> and <code class="language-plaintext highlighter-rouge">isEven</code> function definitions. Going further, would it be possible to define <code class="language-plaintext highlighter-rouge">isEven</code> in a point-free way? Before we do that, what even is the point of point-free? Point-free moves us closer to a declarative style of code.</p>
+<p>In the above code, <code class="language-plaintext highlighter-rouge">isEven</code> is defined in terms of <code class="language-plaintext highlighter-rouge">isOdd</code>, specifically checking whether <code class="language-plaintext highlighter-rouge">v % 2 == 1</code> returns false. This is beneficial for the sake of readability and to create the relationship between the <code class="language-plaintext highlighter-rouge">isOdd</code> and <code class="language-plaintext highlighter-rouge">isEven</code> function definitions. Going further, would it be possible to define <code class="language-plaintext highlighter-rouge">isEven</code> in a point-free way? Before we do that, what even is the point of point-free? Point-free moves us closer to a declarative style of code. The approach we are going to take is to implement another Higher Order Function (HOF) as we had done in a previous section. Like so:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">not</span><span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">negated</span><span class="p">(...</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="o">!</span><span class="nx">fn</span><span class="p">(...</span><span class="nx">args</span><span class="p">);</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">isOdd</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">v</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">isEven</span> <span class="o">=</span> <span class="nx">not</span><span class="p">(</span><span class="nx">isOdd</span><span class="p">);</span>
+
+<span class="nx">isEven</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span> <span class="c1">// true</span></code></pre></figure>
+
+<p>The refactored code makes more obvious the relationship between <code class="language-plaintext highlighter-rouge">isEven</code> and <code class="language-plaintext highlighter-rouge">isOdd</code> which arguably improves readability in the code.</p>
 
 <h3 id="point-free-exercise">Point Free Exercise</h3>
 
+<p>This is an exercise to practice point-free style.</p>
+
+<p>Instructions</p>
+
+<ol>
+  <li>
+    <p>Refactor the <code class="language-plaintext highlighter-rouge">output(..)</code>, <code class="language-plaintext highlighter-rouge">printIf(..)</code>, and <code class="language-plaintext highlighter-rouge">isLongEnough(..)</code> functions to use point-free style.</p>
+  </li>
+  <li>
+    <p>Hints:</p>
+    <ul>
+      <li>Some browsers require <code class="language-plaintext highlighter-rouge">console.log(..)</code> to run against the <code class="language-plaintext highlighter-rouge">console</code> context , so <code class="language-plaintext highlighter-rouge">f = console.log; f(..)</code> fails (because of lost <code class="language-plaintext highlighter-rouge">this</code> binding).</li>
+    </ul>
+  </li>
+</ol>
+
+<p>Use <code class="language-plaintext highlighter-rouge">.bind(..)</code> to be safe.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">printIf(..)</code> can be expressed in terms of a <code class="language-plaintext highlighter-rouge">when(..)</code> that looks like:</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">when</span><span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">predicate</span><span class="p">){</span>
+    <span class="k">return</span> <span class="kd">function</span><span class="p">(...</span><span class="nx">args</span><span class="p">){</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">predicate</span><span class="p">(...</span><span class="nx">args</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">fn</span><span class="p">(...</span><span class="nx">args</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">};</span>
+  <span class="p">};</span>
+<span class="p">}</span></code></pre></figure>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">isLongEnough(..)</code> is the negation of <code class="language-plaintext highlighter-rouge">isShortEnough(..)</code>.</li>
+</ul>
+
+<p>Code:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="dl">"</span><span class="s2">use strict</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">output</span><span class="p">(</span><span class="nx">txt</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">txt</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">printIf</span><span class="p">(</span><span class="nx">shouldPrintIt</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">shouldPrintIt</span><span class="p">(</span><span class="nx">msg</span><span class="p">))</span> <span class="p">{</span>
+			<span class="nx">output</span><span class="p">(</span><span class="nx">msg</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">isShortEnough</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">str</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">isLongEnough</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">!</span><span class="nx">isShortEnough</span><span class="p">(</span><span class="nx">str</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">msg1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">msg2</span> <span class="o">=</span> <span class="nx">msg1</span> <span class="o">+</span> <span class="dl">"</span><span class="s2"> World</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="nx">printIf</span><span class="p">(</span><span class="nx">isShortEnough</span><span class="p">)(</span><span class="nx">msg1</span><span class="p">);</span>		<span class="c1">// Hello</span>
+<span class="nx">printIf</span><span class="p">(</span><span class="nx">isShortEnough</span><span class="p">)(</span><span class="nx">msg2</span><span class="p">);</span>
+<span class="nx">printIf</span><span class="p">(</span><span class="nx">isLongEnough</span><span class="p">)(</span><span class="nx">msg1</span><span class="p">);</span>
+<span class="nx">printIf</span><span class="p">(</span><span class="nx">isLongEnough</span><span class="p">)(</span><span class="nx">msg2</span><span class="p">);</span>		<span class="c1">// Hello World</span></code></pre></figure>
+
 <h3 id="point-free-solution">Point Free Solution</h3>
 
+<details>
+    <summary>Click to view the solution
+</summary>
+    
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="dl">"</span><span class="s2">use strict</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">output</span> <span class="o">=</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">console</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">when</span><span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">predicate</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kd">function</span><span class="p">(...</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">predicate</span><span class="p">(...</span><span class="nx">args</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">fn</span><span class="p">(...</span><span class="nx">args</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">};</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">printIf</span> <span class="o">=</span> <span class="nx">when</span><span class="p">(</span><span class="nx">output</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">isShortEnough</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">str</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">not</span><span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">negated</span><span class="p">(...</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="o">!</span><span class="nx">fn</span><span class="p">(...</span><span class="nx">args</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">isLongEnough</span> <span class="o">=</span> <span class="nx">not</span><span class="p">(</span><span class="nx">isShortEnough</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">msg1</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">msg2</span> <span class="o">=</span> <span class="nx">msg1</span> <span class="o">+</span> <span class="dl">"</span><span class="s2"> World</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="nx">printIf</span><span class="p">(</span><span class="nx">isShortEnough</span><span class="p">)(</span><span class="nx">msg1</span><span class="p">);</span>		<span class="c1">// Hello</span>
+<span class="nx">printIf</span><span class="p">(</span><span class="nx">isShortEnough</span><span class="p">)(</span><span class="nx">msg2</span><span class="p">);</span>
+<span class="nx">printIf</span><span class="p">(</span><span class="nx">isLongEnough</span><span class="p">)(</span><span class="nx">msg1</span><span class="p">);</span>
+<span class="nx">printIf</span><span class="p">(</span><span class="nx">isLongEnough</span><span class="p">)(</span><span class="nx">msg2</span><span class="p">);</span>		<span class="c1">// Hello World </span></code></pre></figure>
+
+
+</details>
+
 <h3 id="advanced-point-free">Advanced Point Free</h3>
+
+<p>We’ll cover these advanced point-free techniques later in this workshop, but here is a preview:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">mod</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">forX</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">x</span> <span class="o">%</span> <span class="nx">y</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">eq</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">forX</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">x</span> <span class="o">===</span> <span class="nx">y</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The above methods are something that you could find in a functional programming utility library, but we’ll break them down. Both the <code class="language-plaintext highlighter-rouge">mod</code> and <code class="language-plaintext highlighter-rouge">eq</code> functions take two arguments, first <code class="language-plaintext highlighter-rouge">y</code>, then <code class="language-plaintext highlighter-rouge">x</code>. This might seem strange, but it makes them more predictable. In functional programming, the order of parameters is important and should be considered. Adding on to the above code, let’s stub out an <code class="language-plaintext highlighter-rouge">isOdd</code> function that uses both <code class="language-plaintext highlighter-rouge">mod</code> and <code class="language-plaintext highlighter-rouge">eq</code>:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">mod</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">forX</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">x</span> <span class="o">%</span> <span class="nx">y</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">eq</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">forX</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">x</span> <span class="o">===</span> <span class="nx">y</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">mod2</span> <span class="o">=</span> <span class="nx">mod</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">eq1</span> <span class="o">=</span> <span class="nx">eq</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">isOdd</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">eq1</span><span class="p">(</span> <span class="nx">mod2</span><span class="p">(</span> <span class="nx">x</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>In the above code, specifically in the <code class="language-plaintext highlighter-rouge">isOdd</code> function definition, you may notice that the return value of executing <code class="language-plaintext highlighter-rouge">mod2</code> is immediately passed in to <code class="language-plaintext highlighter-rouge">eq1</code>, this is known as composition. Now let’s make <code class="language-plaintext highlighter-rouge">isOdd</code> into a point-free function:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">mod</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">forX</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">x</span> <span class="o">%</span> <span class="nx">y</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">eq</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">forX</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">x</span> <span class="o">===</span> <span class="nx">y</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">mod2</span> <span class="o">=</span> <span class="nx">mod</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">eq1</span> <span class="o">=</span> <span class="nx">eq</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">compose</span><span class="p">(</span><span class="nx">fn2</span><span class="p">,</span> <span class="nx">fn1</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">composed</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">fn2</span><span class="p">(</span> <span class="nx">fn1</span><span class="p">(</span> <span class="nx">v</span> <span class="p">)</span> <span class="p">);</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">isOdd</span> <span class="o">=</span> <span class="nx">compose</span><span class="p">(</span><span class="nx">eq1</span><span class="p">,</span> <span class="nx">mod2</span><span class="p">);</span></code></pre></figure>
+
+<p>We’ve added a <code class="language-plaintext highlighter-rouge">compose</code> function which will compose two functions for us, but there is still an additional measure we could take to make our code more implicit and get rid of the <code class="language-plaintext highlighter-rouge">var mod2</code> <code class="language-plaintext highlighter-rouge">var eq1</code> variables:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">mod</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">forX</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">x</span> <span class="o">%</span> <span class="nx">y</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">eq</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">forX</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">x</span> <span class="o">===</span> <span class="nx">y</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">compose</span><span class="p">(</span><span class="nx">fn2</span><span class="p">,</span> <span class="nx">fn1</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">composed</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">fn2</span><span class="p">(</span> <span class="nx">fn1</span><span class="p">(</span> <span class="nx">v</span> <span class="p">)</span> <span class="p">);</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">isOdd</span> <span class="o">=</span> <span class="nx">compose</span><span class="p">(</span><span class="nx">eq</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="nx">mod</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span></code></pre></figure>
+
+<p>All of this was achieved using equational reasoning which is the core of being able to do point-free style code. This may feel way too advanced and more confusing that helpful, but the point is exposure and the real understanding and comfort with this paradigm will come from practice and from being able to speak to your code which will reinforce your knowledge and comfort level.</p>
 
 <h2 id="closure">Closure</h2>
 
