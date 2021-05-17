@@ -810,9 +810,45 @@ The spread operator is the same as JavaScrips's `.apply` method; it 'spreads' th
 
 ### Equational Reasoning
 
+What is point-free? Point-free is a way of defining a function without actually writing anything in the function; a way of making a function by making it with other functions. More specifically, point-free is a way of defining a function without needing to define its 'points', aka, its inputs. Check out this code:
 
+{% highlight javascript %}
+
+getPerson(function onPerson(person) {
+  return renderPerson(person);
+})
+
+{% endhighlight %}
+
+The above code has a callback passed in `onPerson` which passed on the `person` input to another function, in the above case; `renderPerson`. The input, `person`, is the 'point'. What if you could define the `onPerson` function without needing to list the 'point' at all? Since `onPerson` and `renderPerson` have the same 'shape', you could just pass `renderPerson` as the argument to `getPerson`; i.e.
+
+{% highlight javascript %}
+
+getPerson(renderPerson);
+
+{% endhighlight %}
+
+Doing the above is called equational reasoning. Equational reasoning means reason about this thing and say that it is equationally, not equal in the identity sense, but equal in the shape sense with another thing. Equational reasoning is just one aspect of the 'family' called point-free, and in the next few sections it might become increasingly difficult to follow, but don't despair. Try the things and they will become more familiar and easier to understand. Once you do understand how to implement point-free, try not to go overboard, it can have the unintended side-effect of making your code less readable which is not the point of functional programming.
 
 ### Point Free Refactor
+
+Our goal is to make the shape of our functions similar, let's look at some code:
+
+{% highlight javascript %}
+
+function isOdd(v) {
+  return v % 2 == 1;
+}
+
+function isEven(v) {
+  return !isOdd(v);
+}
+
+isEven(4); // true
+
+{% endhighlight %}
+
+In the above code, `isEven` is defined in terms of `isOdd`, specifically checking whether `v % 2 == 1` returns false. This is beneficial for the sake of readability and to create the relationship between the `isOdd` and `isEven` function definitions. Going further, would it be possible to define `isEven` in a point-free way? Before we do that, what even is the point of point-free? Point-free moves us closer to a declarative style of code. 
 
 ### Point Free Exercise
 
