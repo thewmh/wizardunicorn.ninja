@@ -848,13 +848,241 @@ isEven(4); // true
 
 {% endhighlight %}
 
-In the above code, `isEven` is defined in terms of `isOdd`, specifically checking whether `v % 2 == 1` returns false. This is beneficial for the sake of readability and to create the relationship between the `isOdd` and `isEven` function definitions. Going further, would it be possible to define `isEven` in a point-free way? Before we do that, what even is the point of point-free? Point-free moves us closer to a declarative style of code. 
+In the above code, `isEven` is defined in terms of `isOdd`, specifically checking whether `v % 2 == 1` returns false. This is beneficial for the sake of readability and to create the relationship between the `isOdd` and `isEven` function definitions. Going further, would it be possible to define `isEven` in a point-free way? Before we do that, what even is the point of point-free? Point-free moves us closer to a declarative style of code. The approach we are going to take is to implement another Higher Order Function (HOF) as we had done in a previous section. Like so:
+
+{% highlight javascript %}
+
+function not(fn) {
+  return function negated(...args) {
+    return !fn(...args);
+  };
+}
+
+function isOdd(v) {
+  return v % 2 == 1;
+}
+
+var isEven = not(isOdd);
+
+isEven(4); // true
+
+{% endhighlight %}
+
+The refactored code makes more obvious the relationship between `isEven` and `isOdd` which arguably improves readability in the code.
 
 ### Point Free Exercise
 
+This is an exercise to practice point-free style.
+
+Instructions
+
+1. Refactor the `output(..)`, `printIf(..)`, and `isLongEnough(..)` functions to use point-free style.
+
+2. Hints:
+- Some browsers require `console.log(..)` to run against the `console` context , so `f = console.log; f(..)` fails (because of lost `this` binding).
+
+Use `.bind(..)` to be safe.
+
+- `printIf(..)` can be expressed in terms of a `when(..)` that looks like:
+
+{% highlight javascript %}
+
+function when(fn) {
+  return function(predicate){
+    return function(...args){
+      if (predicate(...args)) {
+        return fn(...args);
+      }
+    };
+  };
+}
+
+{% endhighlight %}
+
+- `isLongEnough(..)` is the negation of `isShortEnough(..)`.
+
+Code:
+
+{% highlight javascript %}
+
+"use strict";
+
+function output(txt) {
+	console.log(txt);
+}
+
+function printIf(shouldPrintIt) {
+	return function(msg) {
+		if (shouldPrintIt(msg)) {
+			output(msg);
+		}
+	};
+}
+
+function isShortEnough(str) {
+	return str.length <= 5;
+}
+
+function isLongEnough(str) {
+	return !isShortEnough(str);
+}
+
+var msg1 = "Hello";
+var msg2 = msg1 + " World";
+
+printIf(isShortEnough)(msg1);		// Hello
+printIf(isShortEnough)(msg2);
+printIf(isLongEnough)(msg1);
+printIf(isLongEnough)(msg2);		// Hello World
+
+{% endhighlight %}
+
 ### Point Free Solution
 
+{% capture summary %}Click to view the solution{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+"use strict";
+
+var output = console.log.bind(console);
+
+function when(fn) {
+  return function(predicate) {
+    return function(...args) {
+      if (predicate(...args)) {
+        return fn(...args);
+      }
+    };
+  };
+}
+
+var printIf = when(output);
+
+function isShortEnough(str) {
+	return str.length <= 5;
+}
+
+function not(fn) {
+  return function negated(...args) {
+    return !fn(...args);
+  }
+}
+
+var isLongEnough = not(isShortEnough);
+
+var msg1 = "Hello";
+var msg2 = msg1 + " World";
+
+printIf(isShortEnough)(msg1);		// Hello
+printIf(isShortEnough)(msg2);
+printIf(isLongEnough)(msg1);
+printIf(isLongEnough)(msg2);		// Hello World 
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %} 
+
 ### Advanced Point Free
+
+We'll cover these advanced point-free techniques later in this workshop, but here is a preview:
+
+{% highlight javascript %}
+
+function mod(y) {
+  return function forX(x) {
+    return x % y;
+  };
+}
+
+function eq(y) {
+  return function forX(x) {
+    return x === y;
+  };
+}
+
+{% endhighlight %}
+
+The above methods are something that you could find in a functional programming utility library, but we'll break them down. Both the `mod` and `eq` functions take two arguments, first `y`, then `x`. This might seem strange, but it makes them more predictable. In functional programming, the order of parameters is important and should be considered. Adding on to the above code, let's stub out an `isOdd` function that uses both `mod` and `eq`:
+
+{% highlight javascript %}
+
+function mod(y) {
+  return function forX(x) {
+    return x % y;
+  };
+}
+
+function eq(y) {
+  return function forX(x) {
+    return x === y;
+  };
+}
+
+var mod2 = mod(2);
+var eq1 = eq(1);
+
+function isOdd(x) {
+  return eq1( mod2( x ) );
+}
+
+{% endhighlight %}
+
+In the above code, specifically in the `isOdd` function definition, you may notice that the return value of executing `mod2` is immediately passed in to `eq1`, this is known as composition. Now let's make `isOdd` into a point-free function:
+
+{% highlight javascript %}
+
+function mod(y) {
+  return function forX(x) {
+    return x % y;
+  };
+}
+
+function eq(y) {
+  return function forX(x) {
+    return x === y;
+  };
+}
+
+var mod2 = mod(2);
+var eq1 = eq(1);
+
+function compose(fn2, fn1) {
+  return function composed(v) {
+    return fn2( fn1( v ) );
+  };
+}
+
+var isOdd = compose(eq1, mod2);
+
+{% endhighlight %}
+
+We've added a `compose` function which will compose two functions for us, but there is still an additional measure we could take to make our code more implicit and get rid of the `var mod2` `var eq1` variables:
+
+{% highlight javascript %}
+
+function mod(y) {
+  return function forX(x) {
+    return x % y;
+  };
+}
+
+function eq(y) {
+  return function forX(x) {
+    return x === y;
+  };
+}
+
+function compose(fn2, fn1) {
+  return function composed(v) {
+    return fn2( fn1( v ) );
+  };
+}
+
+var isOdd = compose(eq(1), mod(2));
+
+{% endhighlight %}
+
+All of this was achieved using equational reasoning which is the core of being able to do point-free style code. This may feel way too advanced and more confusing that helpful, but the point is exposure and the real understanding and comfort with this paradigm will come from practice and from being able to speak to your code which will reinforce your knowledge and comfort level. 
 
 ## Closure
 
