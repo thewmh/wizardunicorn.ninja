@@ -1,6 +1,3 @@
-const fs = require('graceful-fs');
-let folderfiles = fs.readdirSync('./recipes/')
-console.log(folderfiles)
 ;(function() {
     var availableRecipess = [];
     var recipeName,
@@ -108,7 +105,6 @@ console.log(folderfiles)
     }
 
     var loadThisRecipe = async function loadThisRecipe(el) {
-      fetch('./recipes/*.json').then(data => console.log(data))
       let response;
       const url = el.href ? el.href : el.src;
       response = await fetch(url)
