@@ -688,15 +688,129 @@ console.log(studentsTest3[4].id === 491 && studentsTest3[4].name === "Ally");
 
 ### Function Arguments
 
+Shifting from to the arguments that functions receive. Parameter and argument are generally used interchangeably, but they are technically different. The generally accepted definition is that a parameter is the 'thing' in the function definition and an argument is the value that gets passed in when you call the function. Put more simply, arguments get assigned to parameters. And to throw some confusion in there, both parameters and arguments can be considered inputs. Here's some code to look at:
+
+{% highlight javascript %}
+
+// unary
+function increment(x) {
+  return sum(x, 1);
+}
+
+// binary
+function sum(x, y) {
+  return x + y;
+}
+
+{% endhighlight %}
+
+Throughout the remainder of this course, the instructor will be describing the 'shape' of functions which will speak to the number and kinds of things that get passed into and returned from functions. In the above code block, the 'shape' of the two functions is described in the comment above each of the respective function definitions; unary and binary. The shape of a function is quite critical and functional programmers are obsessed with the shape of functions. For functions that we create, it is important to be cognizant of their shape; what arguments will they receive, what will they return. Functional programmers tend to prefer unary functions; those with a single input and a single output, followed by binary functions; two inputs, single output. The more inputs a function has, the harder it is to make it work with other functions, the harder it is to get the shapes to fit.
+
 ### Arguments Shape Adapters
+
+We can adapt the shape of functions, have a look at this code:
+
+{% highlight javascript %}
+
+function unary(fn) {
+  return function one(arg) {
+    return fn(arg);
+  };
+}
+
+function binary(fn) {
+  return function two(arg1, arg2) {
+    return fn(arg1, arg2);
+  };
+}
+
+function f(...args) {
+  return args;
+}
+
+var g = unary(f);
+var h = binary(f);
+
+g(1, 2, 3, 4); // [1]
+h(1, 2, 3, 4); // [1, 2]
+
+{% endhighlight %}
+
+Let's talk about higher order functions. A higher order function is a function that either receives, as its inputs, one or more functions, and/or returns one or more functions. In the above code, the variables `g` and  `h` are creating copies of the `unary` and `binary` functions respectively, with the function definition `f` being passed in as an argument. So, when `g(1, 2, 3, 4)` is called, it only returns the first number in the supplied arguments, effectively limiting, or adapting, the shape of `f` to the definition of `unary`; only takes (and returns) a single argument. Adapter and higher order functions are at the core of functional programming. 
 
 ### Flip & Reverse Adapter
 
+Let's look at a couple of adapter functions; flip and reverse. Starting with `flip`:
+
+{% highlight javascript %}
+
+function flip(fn) {
+  return function flipped(arg1, arg2, ...args) {
+    return fn(arg2, arg1, ...args);
+  };
+}
+
+function f(...args) {
+  return args;
+}
+
+var g = flip(f);
+
+g(1, 2, 3, 4); // [2, 1, 3, 4]
+
+{% endhighlight %}
+
+`flip` is a function that...flips the order of some of the supplied arguments; in the above example, `flip` flips the first two of the supplied arguments. `flip` is a common method that you might find in utility libraries. A somewhat less common example that you may come across is a reverse arguments method. That looks something like this:
+
+{% highlight javascript %}
+
+function reverseArgs(fn) {
+  return function reversed(...args) {
+    return fn(...args.reverse());
+  };
+}
+
+function f(...args) {
+  return args;
+}
+
+var g = reverseArgs(f);
+
+g(1, 2, 3, 4); // [4, 3, 2, 1]
+
+{% endhighlight %}
+
+This may not be a situation you come across, but the above will reverse the supplied arguments that are passed in. When you find yourself struggling to 'fit' together functions that have different shapes, can you refactor the functions to make them better fit one another or do you need to write an adapter function to make them fit? While it is possible to make a variety of utility functions to modify the shape of other functions, it is best practice to try and write your functions as close to a familiar functional programming approach as possible so that it is familiar at a glance without some reader of your code having to trace all of the transformations and shape changes.
+
 ### Spread Adapter
+
+Another of shape adaptation that commonly occurs in functional programming is having a function that takes numerous individual arguments, but you want to call that function with an array. To do this, we can use the spread operator:
+
+{% highlight javascript %}
+
+function spreadArgs(fn) {
+  return function spread(args) {
+    return fn(...args);
+  };
+}
+
+function f(x, y, z, w) {
+  return x + y + z + w;
+}
+
+var g = spreadArgs(f);
+
+g([1, 2, 3, 4]); // 10
+
+{% endhighlight %}
+
+The spread operator is the same as JavaScrips's `.apply` method; it 'spreads' the array out so that each value becomes it's own value, separate from the array. 
 
 ## Point Free
 
 ### Equational Reasoning
+
+
 
 ### Point Free Refactor
 
