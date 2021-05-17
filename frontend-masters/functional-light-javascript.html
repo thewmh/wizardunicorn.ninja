@@ -697,11 +697,103 @@
 
 <h3 id="function-arguments">Function Arguments</h3>
 
+<p>Shifting from to the arguments that functions receive. Parameter and argument are generally used interchangeably, but they are technically different. The generally accepted definition is that a parameter is the ‘thing’ in the function definition and an argument is the value that gets passed in when you call the function. Put more simply, arguments get assigned to parameters. And to throw some confusion in there, both parameters and arguments can be considered inputs. Here’s some code to look at:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// unary</span>
+<span class="kd">function</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">sum</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// binary</span>
+<span class="kd">function</span> <span class="nx">sum</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Throughout the remainder of this course, the instructor will be describing the ‘shape’ of functions which will speak to the number and kinds of things that get passed into and returned from functions. In the above code block, the ‘shape’ of the two functions is described in the comment above each of the respective function definitions; unary and binary. The shape of a function is quite critical and functional programmers are obsessed with the shape of functions. For functions that we create, it is important to be cognizant of their shape; what arguments will they receive, what will they return. Functional programmers tend to prefer unary functions; those with a single input and a single output, followed by binary functions; two inputs, single output. The more inputs a function has, the harder it is to make it work with other functions, the harder it is to get the shapes to fit.</p>
+
 <h3 id="arguments-shape-adapters">Arguments Shape Adapters</h3>
+
+<p>We can adapt the shape of functions, have a look at this code:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">unary</span><span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">one</span><span class="p">(</span><span class="nx">arg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">fn</span><span class="p">(</span><span class="nx">arg</span><span class="p">);</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">binary</span><span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">two</span><span class="p">(</span><span class="nx">arg1</span><span class="p">,</span> <span class="nx">arg2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">fn</span><span class="p">(</span><span class="nx">arg1</span><span class="p">,</span> <span class="nx">arg2</span><span class="p">);</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">f</span><span class="p">(...</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">args</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">g</span> <span class="o">=</span> <span class="nx">unary</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">binary</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span>
+
+<span class="nx">g</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span> <span class="c1">// [1]</span>
+<span class="nx">h</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span> <span class="c1">// [1, 2]</span></code></pre></figure>
+
+<p>Let’s talk about higher order functions. A higher order function is a function that either receives, as its inputs, one or more functions, and/or returns one or more functions. In the above code, the variables <code class="language-plaintext highlighter-rouge">g</code> and  <code class="language-plaintext highlighter-rouge">h</code> are creating copies of the <code class="language-plaintext highlighter-rouge">unary</code> and <code class="language-plaintext highlighter-rouge">binary</code> functions respectively, with the function definition <code class="language-plaintext highlighter-rouge">f</code> being passed in as an argument. So, when <code class="language-plaintext highlighter-rouge">g(1, 2, 3, 4)</code> is called, it only returns the first number in the supplied arguments, effectively limiting, or adapting, the shape of <code class="language-plaintext highlighter-rouge">f</code> to the definition of <code class="language-plaintext highlighter-rouge">unary</code>; only takes (and returns) a single argument. Adapter and higher order functions are at the core of functional programming.</p>
 
 <h3 id="flip--reverse-adapter">Flip &amp; Reverse Adapter</h3>
 
+<p>Let’s look at a couple of adapter functions; flip and reverse. Starting with <code class="language-plaintext highlighter-rouge">flip</code>:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">flip</span><span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">flipped</span><span class="p">(</span><span class="nx">arg1</span><span class="p">,</span> <span class="nx">arg2</span><span class="p">,</span> <span class="p">...</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">fn</span><span class="p">(</span><span class="nx">arg2</span><span class="p">,</span> <span class="nx">arg1</span><span class="p">,</span> <span class="p">...</span><span class="nx">args</span><span class="p">);</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">f</span><span class="p">(...</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">args</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">g</span> <span class="o">=</span> <span class="nx">flip</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span>
+
+<span class="nx">g</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span> <span class="c1">// [2, 1, 3, 4]</span></code></pre></figure>
+
+<p><code class="language-plaintext highlighter-rouge">flip</code> is a function that…flips the order of some of the supplied arguments; in the above example, <code class="language-plaintext highlighter-rouge">flip</code> flips the first two of the supplied arguments. <code class="language-plaintext highlighter-rouge">flip</code> is a common method that you might find in utility libraries. A somewhat less common example that you may come across is a reverse arguments method. That looks something like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">reverseArgs</span><span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">reversed</span><span class="p">(...</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">fn</span><span class="p">(...</span><span class="nx">args</span><span class="p">.</span><span class="nx">reverse</span><span class="p">());</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">f</span><span class="p">(...</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">args</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">g</span> <span class="o">=</span> <span class="nx">reverseArgs</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span>
+
+<span class="nx">g</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span> <span class="c1">// [4, 3, 2, 1]</span></code></pre></figure>
+
+<p>This may not be a situation you come across, but the above will reverse the supplied arguments that are passed in. When you find yourself struggling to ‘fit’ together functions that have different shapes, can you refactor the functions to make them better fit one another or do you need to write an adapter function to make them fit? While it is possible to make a variety of utility functions to modify the shape of other functions, it is best practice to try and write your functions as close to a familiar functional programming approach as possible so that it is familiar at a glance without some reader of your code having to trace all of the transformations and shape changes.</p>
+
 <h3 id="spread-adapter">Spread Adapter</h3>
+
+<p>Another of shape adaptation that commonly occurs in functional programming is having a function that takes numerous individual arguments, but you want to call that function with an array. To do this, we can use the spread operator:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">spreadArgs</span><span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">spread</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">fn</span><span class="p">(...</span><span class="nx">args</span><span class="p">);</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">f</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">z</span><span class="p">,</span> <span class="nx">w</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span> <span class="o">+</span> <span class="nx">z</span> <span class="o">+</span> <span class="nx">w</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">g</span> <span class="o">=</span> <span class="nx">spreadArgs</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span>
+
+<span class="nx">g</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]);</span> <span class="c1">// 10</span></code></pre></figure>
+
+<p>The spread operator is the same as JavaScrips’s <code class="language-plaintext highlighter-rouge">.apply</code> method; it ‘spreads’ the array out so that each value becomes it’s own value, separate from the array.</p>
 
 <h2 id="point-free">Point Free</h2>
 
