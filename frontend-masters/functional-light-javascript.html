@@ -799,7 +799,33 @@
 
 <h3 id="equational-reasoning">Equational Reasoning</h3>
 
+<p>What is point-free? Point-free is a way of defining a function without actually writing anything in the function; a way of making a function by making it with other functions. More specifically, point-free is a way of defining a function without needing to define its ‘points’, aka, its inputs. Check out this code:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">getPerson</span><span class="p">(</span><span class="kd">function</span> <span class="nx">onPerson</span><span class="p">(</span><span class="nx">person</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">renderPerson</span><span class="p">(</span><span class="nx">person</span><span class="p">);</span>
+<span class="p">})</span></code></pre></figure>
+
+<p>The above code has a callback passed in <code class="language-plaintext highlighter-rouge">onPerson</code> which passed on the <code class="language-plaintext highlighter-rouge">person</code> input to another function, in the above case; <code class="language-plaintext highlighter-rouge">renderPerson</code>. The input, <code class="language-plaintext highlighter-rouge">person</code>, is the ‘point’. What if you could define the <code class="language-plaintext highlighter-rouge">onPerson</code> function without needing to list the ‘point’ at all? Since <code class="language-plaintext highlighter-rouge">onPerson</code> and <code class="language-plaintext highlighter-rouge">renderPerson</code> have the same ‘shape’, you could just pass <code class="language-plaintext highlighter-rouge">renderPerson</code> as the argument to <code class="language-plaintext highlighter-rouge">getPerson</code>; i.e.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">getPerson</span><span class="p">(</span><span class="nx">renderPerson</span><span class="p">);</span></code></pre></figure>
+
+<p>Doing the above is called equational reasoning. Equational reasoning means reason about this thing and say that it is equationally, not equal in the identity sense, but equal in the shape sense with another thing. Equational reasoning is just one aspect of the ‘family’ called point-free, and in the next few sections it might become increasingly difficult to follow, but don’t despair. Try the things and they will become more familiar and easier to understand. Once you do understand how to implement point-free, try not to go overboard, it can have the unintended side-effect of making your code less readable which is not the point of functional programming.</p>
+
 <h3 id="point-free-refactor">Point Free Refactor</h3>
+
+<p>Our goal is to make the shape of our functions similar, let’s look at some code:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">isOdd</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">v</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">isEven</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="o">!</span><span class="nx">isOdd</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">isEven</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span> <span class="c1">// true</span></code></pre></figure>
+
+<p>In the above code, <code class="language-plaintext highlighter-rouge">isEven</code> is defined in terms of <code class="language-plaintext highlighter-rouge">isOdd</code>, specifically checking whether <code class="language-plaintext highlighter-rouge">v % 2 == 1</code> returns false. This is beneficial for the sake of readability and to create the relationship between the <code class="language-plaintext highlighter-rouge">isOdd</code> and <code class="language-plaintext highlighter-rouge">isEven</code> function definitions. Going further, would it be possible to define <code class="language-plaintext highlighter-rouge">isEven</code> in a point-free way? Before we do that, what even is the point of point-free? Point-free moves us closer to a declarative style of code.</p>
 
 <h3 id="point-free-exercise">Point Free Exercise</h3>
 
