@@ -1,6 +1,6 @@
 const fs = require('graceful-fs');
 let folderfiles = fs.readdirSync('./recipes/')
-console.log(folderfiles)~
+console.log(folderfiles)
 ;(function() {
     var availableRecipess = [];
     var recipeName,
