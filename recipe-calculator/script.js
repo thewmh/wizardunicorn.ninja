@@ -105,6 +105,7 @@
     }
 
     var loadThisRecipe = async function loadThisRecipe(el) {
+      fetch('./recipes/*').then(data => console.log(data))
       let response;
       const url = el.href ? el.href : el.src;
       response = await fetch(url)
