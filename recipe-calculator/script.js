@@ -1,5 +1,5 @@
 ;(function() {
-    var availableRecipess = [];
+    var allRecipes = [];
     var recipeName,
     ingredients;
     
@@ -20,7 +20,7 @@
         getAvailableRecipes();
     }
 
-    var createElements = function createElements(ingredients, availableRecipess) {
+    var createElements = function createElements(ingredients, allRecipes) {
         let recipeForm = document.getElementById('recipe');
         let content = '';
         content += `<h1>${recipeName}</h1>`;
@@ -30,9 +30,9 @@
             <input type='number' id='${ingredients[i].id}' placeholder='${ingredients[i].name}' value="${ingredients[i].amount}" disabled/>
           </div>`
         }
-        for(let i = 0; i < availableRecipess.length; i++) {
+        for(let i = 0; i < allRecipes.length; i++) {
             content += `<div class='all-recipes'>
-            <a href="${availableRecipess[i].src}" class="available-recipe">${availableRecipess[i].title}</a>
+            <a href="${allRecipes[i].src}" class="available-recipe">${allRecipes[i].title}</a>
           </div>`
         }
         recipeForm.innerHTML = content;
@@ -114,7 +114,7 @@
       ingredients = response.recipeData[0].ingredients;
       recipeName = response.recipeData[0].name;
       
-      createElements(ingredients, availableRecipess)
+      createElements(ingredients, allRecipes)
       getElements();
       resetObjects();
       getBaseValues();
@@ -133,11 +133,11 @@
     }
 
     var getAvailableRecipes = function getAvailableRecipes() {
-      let allRecipes = document.getElementsByClassName('original-recipe')
-      for(let i = 0; i < allRecipes.length; i++) {
-        availableRecipess.push(allRecipes[i])
+      let recipes = document.getElementsByClassName('original-recipe')
+      for(let i = 0; i < recipes.length; i++) {
+        allRecipes.push(recipes[i])
       }
-      loadThisRecipe(availableRecipess[0])
+      loadThisRecipe(allRecipes[0])
     }
 
 if (document.getElementById('recipe')) {
