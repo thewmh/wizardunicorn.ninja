@@ -1088,23 +1088,389 @@ All of this was achieved using equational reasoning which is the core of being a
 
 ### Closure
 
+We've already used/seen closure a few times in this workshop, but let's get a definition for exactly what closure is. It is virtually impossible to be any good at functional programming without a solid understanding of what closure is.
+
+> Closure is when a function "remembers" the variables around it even when that function is executed elsewhere.
+
+Here is an example of closure:
+
+{% highlight javascript %}
+
+function  makeCounter() {
+  var counter = 0;
+  return function increment() {
+    return ++counter;
+  };
+}
+
+var c = makeCounter();
+
+c(); // 1
+c(); // 2
+c(); // 3
+
+{% endhighlight %}
+
+The example above clearly illustrates closure, but when `c` is set to `makeCounter` than repeatedly called, are the function calls; `c()`, pure function calls? Nope. Every time `c()` is called, it returns a different value. The takeaway of which is; closure is not necessarily functionally pure. This isn't to suggest that closure cannot be used in functional theory, it can. Here are some examples of using closure in a way that is consistent with functional style, that produces a pure function.
+
+{% highlight javascript %}
+
+function unary(fn) {
+  return function one(arg) {
+    return fn(arg);
+  };
+}
+
+{% endhighlight %}
+
+In the above `unary` function, the `one` function retains access to the `fn` parameter, This is closure and it is considered in functional programming to be pure. Here's another example we have already seen:
+
+{% highlight javascript %}
+
+function addAnother(z) {
+  return function addTwo(x, y) {
+    return x + y + z;
+  };
+}
+
+{% endhighlight %}
+
+In the above, `addTwo` is 'closed' over the `z` variable, which it is able to use in the final return statement; `return x + y + z`. Both the `unary` function  and the `addAnother` function reference variables that are outside of themselves, but it is 'safe' from a functional programming perspective because the values of the referenced variables do not change.
+
 ### Closure Exercise
+
+This is an exercise to practice closure.
+
+Instructions
+
+1. Modify `strBuilder(..)` so that it can take a string and return back a function.
+
+	**Note:** For purposes of this exercise, assume that `strBuilder(..)` itself is always called with a string initially.
+
+2. For each call to a function here, if a string is passed, a function should be returned.
+
+3. If a non-string is passed (such as passing no argument), a string value should be returned, which is the concatenation of all the passed in strings.
+
+4. Hints:
+	- You can use `typeof foo == "string"` to test if `foo` is a string.
+
+	- Look at the test cases at the bottom of the exercise file to clarify any questions about expected behavior.
+
+	- Ensure your function(s) are pure. Avoid mutating a closed over variable, which would be a side-effect.
+
+Here's the code to work from:
+
+{% highlight javascript %}
+
+"use strict";
+
+function strBuilder(str) {
+	return strBuilder;
+}
+
+var hello = strBuilder("Hello, ");
+var kyle = hello("Kyle");
+var susan = hello("Susan");
+var question = kyle("?")();
+var greeting = susan("!")();
+
+console.log(strBuilder("Hello, ")("")("Kyle")(".")("")() === "Hello, Kyle.");
+console.log(hello() === "Hello, ");
+console.log(kyle() === "Hello, Kyle");
+console.log(susan() === "Hello, Susan");
+console.log(question === "Hello, Kyle?");
+console.log(greeting === "Hello, Susan!");
+
+{% endhighlight %}
 
 ### Closure Solution
 
+{% capture summary %}Click to view the solution{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+"use strict";
+
+function strBuilder(str) {
+  return function concat(str2) {
+    if(typeof str2 == "string") {
+      return strBuilder(str + str2);
+    }
+    return str;
+  };
+}
+
+var hello = strBuilder("Hello, ");
+var kyle = hello("Kyle");
+var susan = hello("Susan");
+var question = kyle("?")();
+var greeting = susan("!")();
+
+console.log(strBuilder("Hello, ")("")("Kyle")(".")("")() === "Hello, Kyle.");
+console.log(hello() === "Hello, ");
+console.log(kyle() === "Hello, Kyle");
+console.log(susan() === "Hello, Susan");
+console.log(question === "Hello, Kyle?");
+console.log(greeting === "Hello, Susan!");
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %}
+
 ### Lazy vs Eager Execution
+
+{% highlight javascript %}
+
+function repeater(count) {
+  return function allTheAs() {
+    return "".padStart(count, "A");
+  };
+}
+
+var A = repeater(10);
+
+A(); // "AAAAAAAAAA"
+A(); // "AAAAAAAAAA"
+
+{% endhighlight %}
+
+As long as the `A` variable retains its relationship to the `repeater` function with the argument of 10; i.e. it is not reassigned, it will always return `AAAAAAAAAA`. The function call is when the 'work' of making the string of A's happens, this is considered to be deferred or lazy. But why would you want to defer the work? You would want to defer the work of a function if you are uncertain the frequency at which that function will be used; i.e. maybe you only need to call a function 10% of the time, it would not make sense to have it always run. The downside of this lazy or deferred approach is having to call the function and do the work every time it is called. The opposite approach to lazy is eager, which would look like this:
+
+{% highlight javascript %}
+
+function repeater(count) {
+  var str = "".padStart(count, "A");
+  return function allTheAs() {
+    return str;
+  };
+}
+
+var A = repeater(10);
+
+A(); // "AAAAAAAAAA"
+A(); // "AAAAAAAAAA"
+
+{% endhighlight %}
+
+Now, the work of the `repeater` functions execution has moved to when it is assigned to the variable `A` instead of when `A()` is called, meaning that the return value of executing the function has already been stored in `A` at the time of its declaration. The benefit of the eager approach is that the work is only done once. The downside of the eager approach is that `A` may never get called in which case we've 'wasted' having done the work up-front for storing a value that is never used. In these examples the 'cost' of executing vs. not is trivial, but if one were doing more intensive and complex executions, the value of choosing lazy over eager (or vice versa) would become a more important decision. Either approach is possible thanks to closure.
 
 ### Memoization
 
+What if we want to do the work of the function in the last section, but only want to do the work when it has been asked for and we want to do it only once? Maybe we could have a way to detect whether or not the work had been done, and if it had been done, not do it again? That approach might look like this:
+
+{% highlight javascript %}
+
+function repeater(count) {
+  var str;
+  return function allTheAs() {
+    if (str == undefined) {
+      str = "".padStart(count, "A");
+    }
+    return str;
+  };
+}
+
+var A = repeater(10);
+
+A(); // "AAAAAAAAAA"
+A(); // "AAAAAAAAAA"
+
+{% endhighlight %}
+
+Now, the only time `str` will be undefined is at the first call, in which case the work will execute. Once it has executed once, `str` will no longer be undefined and it will just return `str` instead of doing the work again. The only 'problem', from a functional programming perspective, is that the `str` variable changes over time from undefined to whatever the eventual string is. The function call itself is pure, but the function definition is not obviously pure. Functional programming is not useful unless it is both readable and pure. In other words, the style of this code produces a low-degree of confidence in the mind of a functional programmer. What if there was a way of achieving the performance benefit of having a lazy function that only executes once when called, but does so in a declarative way? There's a utility for that! The utility is called `memoize`.
+
+{% highlight javascript %}
+
+function repeater(count) {
+  return memoize(function allTheAs() {
+      return "".padStart(count, "A");
+    });
+}
+
+var A = repeater(10);
+
+A(); // "AAAAAAAAAA"
+A(); // "AAAAAAAAAA"
+
+{% endhighlight %}
+
+
+`memoize` is built into all the functional programming utility libraries. `memoize` maintains an internal cache, which if the same input is passed to a function, it will just return the previously cached result. Memoization allows us to write more declaratively, which makes the code more obviously pure. Since memoization maintains an internal cache, is it necessary to wrap all of your functions in it? It depends on whether your function will be called repeatedly with the same or different inputs. If the input will always be the same, this is a good use case for memoization, otherwise, you'd use up a lot of memory for all of the memoization from calling a function with different inputs, in which case this would not be a good use of it. Memoize if you would benefit from the usage pattern of the performance improvement.
+
 ### Referential Transparency
+
+We're finally ready to get to the complete definition of what a pure function is! We started with a pure function needs to take some inputs and return an output. We then added to that a pure function actually needs to have a relationship between the inputs and outputs, which is better but still not good enough. We then added that the input and output need to be direct, still incomplete. We then said that the inputs do not have to be direct, but do need to be unchanging. The definition then evolved to focus on the function call which stated that when the function is called with the same inputs we should be able to expect the same output. All of this builds on the previous, but yet incomplete, definition of what a pure function is, but is still incomplete. Here is the canonical definition of what a pure function is. If at the point of a function call you could replace the value with what is returned from the function call and it would not change anything else in the entire program, that is considered a pure function. This is referential transparency.
+
+A function call is pure if it has referential transparency. Referential transparency means that a function call can be replaced with its return value and not affect any of the rest of the program. The real benefit of referential transparency is to the reader of the code. If the reader of your code can realize that a function call will always return the same result, this reduces the cognitive overhead to trace through the entirety of your code every time they see a function call. You cannot have anything else in functional programming unless you understand the value and importance of function (call) purity.
 
 ### Generalized to Specialized
 
+Moving from generalized functions to ones that are more specialized is a key concept in functional programming. Imagine you have the following code:
+
+{% highlight javascript %}
+
+function ajax(url, data, cb) { /*..*/ }
+
+ajax(CUSTOMER_API, {id: 42}, renderCustomer);
+
+{% endhighlight %}
+
+There is nothing inherently wrong with the above code, but there may be some details in the function call that are unnecessary. How can we make that cleaner?
+
+{% highlight javascript %}
+
+function ajax(url, data, cb) { /*..*/ }
+
+ajax(CUSTOMER_API, {id: 42}, renderCustomer);
+
+function getCustomer(data, cb) {
+  return ajax(CUSTOMER_API, data, cb);
+}
+
+getCustomer({id: 42}, renderCustomer);
+
+{% endhighlight %}
+
+We've introduced an intermediary function, `getCustomer`, which only requires `data` and `cb` arguments. The `getCustomer` function call becomes easier to understand than the `ajax` function call. One of the reasons that you make something into a function is so the code is more semantic. The name of a function call describes its purpose, which is the key thing that we want to describe to our codes readers. Considering this, it may be beneficial to push this even further towards specialization adding additional benefit in the way of readability. Here's that same code further expanded upon:
+
+{% highlight javascript %}
+
+function ajax(url, data, cb) { /*..*/ }
+
+ajax(CUSTOMER_API, {id: 42}, renderCustomer);
+
+function getCustomer(data, cb) {
+  return ajax(CUSTOMER_API, data, cb);
+}
+
+getCustomer({id: 42}, renderCustomer);
+
+function getCurrentUser(cb) {
+  return getCustomer({id: 42}, cb);
+}
+
+getCurrentUser(renderCustomer);
+
+{% endhighlight %}
+
+`getCurrentUser(renderCustomer);` is more descriptive than `getCustomer({id: 42}, renderCustomer)` is more descriptive than `ajax(CUSTOMER_API, {id: 42}, renderCustomer)`. None of the functionality has changed, the stylization of the code has changed to be more semantic. This is great, but we've kind of cluttered up our code. Is there a way that we could define these more specialized versions of functions without having to define manually pointed functions? Of course there is! But before we jump into what that looks like, it is important to reiterate that the order of parameters in our function definitions is important! Parameters should be ordered from most general to most specialized and you will see this being the case if you take a look at functional programming utility libraries.
+
 ### Partial Application & Currying
+
+The first approach we could take to refactoring the code in the last section would be partial application:
+
+{% highlight javascript %}
+
+function ajax(url, data, cb) { /*..*/ }
+
+var getCustomer = partial(ajax, CUSTOMER_API);
+
+var getCurrentUser = partial(getCustomer, {id: 42});
+
+getCustomer({id: 42}, renderCustomer);
+
+getCurrentUser(renderCustomer);
+
+{% endhighlight %}
+
+`partial` is a utility method provided by all the functional libraries which takes a function as its first input, and then it takes as its next input a set of arguments to pass along to that function at some point. Another, more common, way of specialization is currying. When it comes to (function) specialization, partial application and currying are kind of like cousins, related in the sense that they both accomplish the same end goal; specializing a generalized function, but they both go about it in a different way. Let's look at how we could specialize our functions with currying.
+
+{% highlight javascript %}
+
+function ajax(url) {
+  return function getData(data) {
+    return function getCB(cb) { /*..*/ };
+  };
+}
+
+ajax(CUSTOMER_API)({id: 42})(renderCustomer);
+
+{% endhighlight %}
+
+The `ajax` function call is actually being called three separate times, with an argument supplied for each 'level' of the function; `url`, `data`, and `cb`; this could be considered a manual form of currying. This allows us to get specialization like so:
+
+{% highlight javascript %}
+
+function ajax(url) {
+  return function getData(data) {
+    return function getCB(cb) { /*..*/ };
+  };
+}
+
+ajax(CUSTOMER_API)({id: 42})(renderCustomer);
+
+var getCustomer = ajax(CUSTOMER_API);
+var getCurrentUser = getCustomer({id: 42});
+
+{% endhighlight %}
+
+We can now get the more specialized function calls without having to leverage a utility such as `partial`. It would be nice if there were a utility that could further simplify the currying for us! Well there is:
+
+{% highlight javascript %}
+
+var ajax = curry(
+  3,
+  function ajax(url, data, cb) { /*..*/ }
+);
+var getCustomer = ajax(CUSTOMER_API);
+var getCurrentUser = getCustomer(id: 42);
+
+{% endhighlight %}
+
+The `curry` utility adapts the passed in function into one that only accepts one input at a time. In other words, it creates a wrapper adapted function who's job it is to keep returning a new function that expects another input, until you have provided the specified number of inputs; in the above code that'd be 3.
 
 ### Partial Application & Currying Comparison
 
+So we have the same output with currying that we had with partial application. The major difference is that with partial application we had to call the `partial` utility function numerous times versus currying where we only had to call the utility function for currying once. Functional programmers prefer currying over partial application because they tend to prefer unary functions; single input, single output; which currying is. Here's a summary of partial application versus currying:
+
+1. Both are specialization techniques
+
+2. Partial Application presets some arguments now, receives the rest on the next call
+
+3. Currying does not preset any arguments, receives each argument one at a time
+
+If you're ever asked in an interview what's the difference between partial application and currying, the answer is; both of them specialize, but they do it differently; partial application takes some input now, the rest later, currying takes no input now, each input one at a time.
+
+Q: Why does Partial Application still exist in functional programming?
+
+A: Because, aside from it being a part of the historic canonical definition of functional programming, there are some cases where it would be more convenient to do Partial Application over Currying. For example, consider you have a function that starts out expecting five inputs, and you want to produce another function that expects three inputs, i.e. you only want to preset two of the inputs. If you were to curry this, you'd have to call it twice, and the function that you get back would not be one that is expecting three inputs, but a curried function of three more chains, which might not be the shape of function that you want to pass around. In this case, it might be that Partial Application produces a more preferable shape.
+
 ### Changing Function Shape with Curry
+
+Consider the following code:
+
+{% highlight javascript %}
+
+function add(x, y) { return x + y; }
+
+[0, 2, 4, 6, 8].map(function addOne(v) {
+  return add(1, v);
+});
+
+// [1, 3, 5, 7, 9]
+
+{% endhighlight %}
+
+Why in the above `.map` could you not directly pass the `add` function instead of how it is implemented above? Because they have different shapes. `add` is a binary function while `map` is expecting a unary function. In the above code, `addOne` is changing the shape by pre-specifying one of the inputs. But it might be even better to have a curried version like so:
+
+{% highlight javascript %}
+
+function add(x, y) { return x + y; }
+
+[0, 2, 4, 6, 8].map(function addOne(v) {
+  return add(1, v);
+});
+
+// [1, 3, 5, 7, 9]
+
+add = curry(add);
+
+[0, 2, 4, 6, 8].map(add(1));
+
+// [1, 3, 5, 7, 9]
+
+{% endhighlight %}
+
+While both function the same, using `curry` is arguably better for readability, and this is an extremely common pattern in functional programming. You will see this all the time if you are working in a functional programming environment. The `curry` function above is something that would be provided by a functional programming utility library and is out of the scope of this workshop to show / describe.
 
 ## Composition
 
