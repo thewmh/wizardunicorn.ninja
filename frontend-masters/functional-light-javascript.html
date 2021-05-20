@@ -1652,6 +1652,42 @@
 
 <h3 id="immutability-1">Immutability</h3>
 
+<p>Immutability implies that something is not going to change, but that does not fully encompass what this section of the workshop will cover. It isn’t only that things do not change, but that they do not change unexpectedly. In programs, there is a lot of state change, which is arguably the point of them, for state to change over time and with state change being the point, you don’t really want to stop that from happening. There’s really no such thing as making an immutable program because that program would not have any point or reason to exist. The point of immutability is that change which needs to occur, needs to do so in an intentional manner. How do we control mutation and change? There are a couple of types of immutability that we will look at, the first being assignment immutability.</p>
+
+<p>Assignment immutability is the idea that when you assign something to a variable or property that it is no longer allowed to be reassigned to another value. Here’s an example to consider:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">basePrice</span> <span class="o">=</span> <span class="mf">89.99</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">shippingCost</span> <span class="o">=</span> <span class="mf">6.50</span><span class="p">;</span>
+
+<span class="c1">// more code</span>
+
+<span class="nx">basePrice</span> <span class="o">+=</span> <span class="mf">5.00</span><span class="p">;</span> <span class="c1">// allowed</span>
+
+<span class="c1">// more code</span>
+
+<span class="nx">shippingCost</span> <span class="o">*=</span> <span class="mf">1.04</span><span class="p">;</span> <span class="c1">// nope</span></code></pre></figure>
+
+<p>In the above code, <code class="language-plaintext highlighter-rouge">basePrice</code> and <code class="language-plaintext highlighter-rouge">shippingCost</code> are both variables, rather a symbolic representation in memory, the difference between the two being how they will handle reassignment. With <code class="language-plaintext highlighter-rouge">var</code> or <code class="language-plaintext highlighter-rouge">let</code>, you can reassign them, no problem. But if you try to reassign something that has been declared as a <code class="language-plaintext highlighter-rouge">const</code>, you will get an error saying that it is not allowed. Another caveat about <code class="language-plaintext highlighter-rouge">const</code> is that it cannot be declared without an assignment. You may have heard of the ‘temporal dead zone’ or TDZ which is all about preventing us, the developers, from seeing a <code class="language-plaintext highlighter-rouge">const</code> ever in an in-between state where it is undefined. So… then why should we use <code class="language-plaintext highlighter-rouge">const</code> in our applications? The greatest support for having <code class="language-plaintext highlighter-rouge">const</code> as a variable type in JavaScript comes from the functional programming community.</p>
+
+<p>Let’s look at some more code:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">basePrice</span> <span class="o">=</span> <span class="mf">89.99</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">shippingCost</span> <span class="o">=</span> <span class="mf">6.50</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">increasePrice</span><span class="p">(</span><span class="nx">price</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">price</span> <span class="o">+</span> <span class="mf">5.00</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">increasePrice</span><span class="p">(</span><span class="nx">basePrice</span><span class="p">);</span> <span class="c1">// 94.99</span>
+
+<span class="kd">function</span> <span class="nx">increaseShipping</span><span class="p">(</span><span class="nx">shipping</span><span class="p">){</span>
+  <span class="k">return</span> <span class="nx">shipping</span> <span class="o">*</span> <span class="mf">1.04</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">increaseShipping</span><span class="p">(</span><span class="nx">shippingCost</span><span class="p">);</span> <span class="c1">// 6.76</span></code></pre></figure>
+
+<p>Notice now that we are merely computing values as opposed to reassigning values to existing variables. This is typical of functional programming where most will tell you to try and avoid assignment at all costs. Which is suspicious as to whether or not <code class="language-plaintext highlighter-rouge">const</code> is as useful as it is proclaimed to be.</p>
+
 <h3 id="rethinking-const-immutability">Rethinking const Immutability</h3>
 
 <h3 id="value-immutability">Value Immutability</h3>
