@@ -1787,6 +1787,50 @@ The above is another example of taking binary functions and composing them into 
 
 ### Immutability
 
+Immutability implies that something is not going to change, but that does not fully encompass what this section of the workshop will cover. It isn't only that things do not change, but that they do not change unexpectedly. In programs, there is a lot of state change, which is arguably the point of them, for state to change over time and with state change being the point, you don't really want to stop that from happening. There's really no such thing as making an immutable program because that program would not have any point or reason to exist. The point of immutability is that change which needs to occur, needs to do so in an intentional manner. How do we control mutation and change? There are a couple of types of immutability that we will look at, the first being assignment immutability.
+
+Assignment immutability is the idea that when you assign something to a variable or property that it is no longer allowed to be reassigned to another value. Here's an example to consider:
+
+{% highlight javascript %}
+
+var basePrice = 89.99;
+const shippingCost = 6.50;
+
+// more code
+
+basePrice += 5.00; // allowed
+
+// more code
+
+shippingCost *= 1.04; // nope
+
+{% endhighlight %}
+
+In the above code, `basePrice` and `shippingCost` are both variables, rather a symbolic representation in memory, the difference between the two being how they will handle reassignment. With `var` or `let`, you can reassign them, no problem. But if you try to reassign something that has been declared as a `const`, you will get an error saying that it is not allowed. Another caveat about `const` is that it cannot be declared without an assignment. You may have heard of the 'temporal dead zone' or TDZ which is all about preventing us, the developers, from seeing a `const` ever in an in-between state where it is undefined. So... then why should we use `const` in our applications? The greatest support for having `const` as a variable type in JavaScript comes from the functional programming community.
+
+Let's look at some more code:
+
+{% highlight javascript %}
+
+var basePrice = 89.99;
+const shippingCost = 6.50;
+
+function increasePrice(price) {
+  return price + 5.00;
+}
+
+increasePrice(basePrice); // 94.99
+
+function increaseShipping(shipping){
+  return shipping * 1.04;
+}
+
+increaseShipping(shippingCost); // 6.76
+
+{% endhighlight %}
+
+Notice now that we are merely computing values as opposed to reassigning values to existing variables. This is typical of functional programming where most will tell you to try and avoid assignment at all costs. Which is suspicious as to whether or not `const` is as useful as it is proclaimed to be.
+
 ### Rethinking const Immutability
 
 ### Value Immutability
