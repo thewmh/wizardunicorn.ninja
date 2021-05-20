@@ -1476,17 +1476,312 @@ While both function the same, using `curry` is arguably better for readability, 
 
 ### Composition Illustration
 
+Composition is the idea of one functions output becoming the input to another function. Here's an example of some code that could benefit from composition:
+
+{% highlight javascript %}
+
+function minus2(x) { return x - 2; }
+function triple(x) { return x * 3; }
+function increment(x) { return x + 1; }
+
+// add shipping rate
+var tmp = increment(4);
+tmp = triple(tmp);
+totalCost = basePrice + minus2(tmp);
+
+{% endhighlight %}
+
+Although we do not see what `basePrice` is, the code is easy enough to follow. Could it be improved? We will expand on this while working through what composition is. In the above code, there are a couple of things happening that we could abstract further; the calculation of the shipping rate and the calculation of the `totalCost`. But what is abstraction? The original idea of abstraction was to tease apart two things which were otherwise intertwined together, so that they are separate, and by way of separation, we insert between them a semantic boundary. Abstraction is not about hiding anything, but about separation. The idea behind separation is that we should be able to look at the pieces of our code and understand them as individuals. But how could we abstract(separate) the above code? Well, since you asked... We could do something like this:
+
+{% highlight javascript %}
+
+function minus2(x) { return x - 2; }
+function triple(x) { return x * 3; }
+function increment(x) { return x + 1; }
+
+// add shipping rate
+totalCost = basePrice + minus2(triple(increment(4)));
+
+{% endhighlight %}
+
+Notice how we are now nesting the function calls which allows us to get rid of the `tmp` variable. The nested function calls are a form of composition. This works, but the separation(abstraction) is still incomplete; the shipping is being calculated within the `totalCost` variable. What if there were a shipping cost function?
+
+{% highlight javascript %}
+
+function minus2(x) { return x - 2; }
+function triple(x) { return x * 3; }
+function increment(x) { return x + 1; }
+
+function shippingRate(x) {
+  return minus2(triple(increment(x)));
+}
+
+// add shipping rate
+totalCost = basePrice + shippingRate(4);
+
+{% endhighlight %}
+
+The above result is definitely cleaner, because the concerns have been separated. AKA abstraction. The semantic boundary that we've inserted is the function name `shippingRate`.
+
 ### Declarative Data Flow
+
+So far, the abstraction and composition of our code has progressed nicely, but what if there were numerous shipping rates to handle? Could we further modify our code to accommodate them? Well, currently, the `shippingRate` function is essentially handling the execution of 3 different functions, maybe we could create a utility function that could accommodate this.
+
+{% highlight javascript %}
+
+function composeThree(fn3, fn2, fn1) {
+  return function composed(v) {
+    return fn3(fn2(fn1(v)));
+  }
+}
+
+{% endhighlight %}
+
+Now, with our new utility function, we can refactor our code to look like so:
+
+{% highlight javascript %}
+
+function minus2(x) { return x - 2; }
+function triple(x) { return x * 3; }
+function increment(x) { return x + 1; }
+
+var shippingRate = composeThree(minus2, triple, increment);
+
+// calculate and add shipping rate
+totalCost = basePrice + shippingRate(4);
+
+{% endhighlight %}
+
+Using the utility function, `shippingRate` can change according to what functions are passed into `composeThree`. Composition works from right to left, which is why in the utility function definition we've structured the arguments from fn3 to fn1, because they will execute in the 'reverse' or right to left order. Composition is critical to functional programming because the entire point of any program is to have data flow; something coming in and something being returned out. The `composeThree` utility function that we 'created' is actually present in functional programming utility libraries, typically named `compose` which has the ability to compose however many functions you need.
 
 ### Piping vs Composition
 
+To illustrate the importance of function order and the right to left execution of composed functions, take a look at this:
+
+{% highlight javascript %}
+
+function minus2(x) { return x - 2 };
+function triple(x) { return x * 3 };
+function increment(x) { return x + 1 };
+
+var f = composeThree(minus2, triple, increment);
+var p = composeThree(increment, triple, minus2);
+
+f(4); // 13
+p(4); // 7
+
+{% endhighlight %}
+
+`f(4)` will first increment 4 making its value 5, then triple 5 becoming 15, finally minus2 returning the value 13.
+
+`p(4)` will first minus2 making the return value 2, then triple 2 becoming 6, finally incrementing by 1 returning the value 7.
+
+Considering composition, this should not come as a surprise. But what if we wanted to have the functions passed in as arguments to something like compose and executed in left to right instead of compose's right to left? Pipes do that! 
+
+{% highlight javascript %}
+
+function minus2(x) { return x - 2 };
+function triple(x) { return x * 3 };
+function increment(x) { return x + 1 };
+
+var f = composeThree(minus2, triple, increment);
+var p = composeThree(increment, triple, minus2);
+
+f(4); // 13
+p(4); // 7
+
+var g = pipeThree(minus2, triple, increment);
+
+g(4) // 7
+
+{% endhighlight %}
+
 ### Piping & Composition Exercise
+
+This is an exercise to practice composition.
+
+Instructions
+
+1. Define a `compose(..)` that takes any number of functions (as individual arguments) and composes them right-to-left.
+
+2. Define a `pipe(..)` that takes any number of functions (as individual arguments) and composes them left-to-right.
+
+{% highlight javascript %}
+
+"use strict";
+
+function increment(x) { return x + 1; }
+function decrement(x) { return x - 1; }
+function double(x) { return x * 2; }
+function half(x) { return x / 2; }
+
+function compose() { return compose; }
+function pipe() { return pipe; }
+
+var f1 = compose(increment,decrement);
+var f2 = pipe(decrement,increment);
+var f3 = compose(decrement,double,increment,half);
+var f4 = pipe(half,increment,double,decrement);
+var f5 = compose(increment);
+var f6 = pipe(increment);
+
+console.log( f1(3) === 3 );
+console.log( f1(3) === f2(3) );
+console.log( f3(3) === 4 );
+console.log( f3(3) === f4(3) );
+console.log( f5(3) === 4 );
+console.log( f5(3) === f6(3) );
+
+{% endhighlight %}
+
+**Hint:** you only need to implement one of the two functions `compose` or `pipe`. Once you've completed one of them, you can simply pass whatever is being passed to the other function but reverse it. i.e. complete `pipe`, then in `compose` you would just need to return `pipe(functions.reverse())`.
 
 ### Piping & Composition Solution
 
+{% capture summary %}Click to view the solution{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+"use strict";
+
+function increment(x) { return x + 1; }
+function decrement(x) { return x - 1; }
+function double(x) { return x * 2; }
+function half(x) { return x / 2; }
+
+function compose(...fns) { 
+    return pipe(...fns.reverse()); // reverse the fns array of arguments and pass them to the `pipe` function
+}
+function pipe(...fns) { // ...fns gathers all arguments into an array
+  return function piped(result) { // return a function
+    for(let fn of fns) { // loop over arguments
+      result = fn(result); // store result
+    }
+    return result; // return result
+  };
+}
+
+var f1 = compose(increment,decrement);
+var f2 = pipe(decrement,increment);
+var f3 = compose(decrement,double,increment,half);
+var f4 = pipe(half,increment,double,decrement);
+var f5 = compose(increment);
+var f6 = pipe(increment);
+
+console.log( f1(3) === 3 );
+console.log( f1(3) === f2(3) );
+console.log( f3(3) === 4 );
+console.log( f3(3) === f4(3) );
+console.log( f5(3) === 4 );
+console.log( f5(3) === f6(3) );
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %}
+
 ### Associativity
 
+Associativity is a mathematical concept, but composition is also associative. Meaning that if you have a list of functions that need to be composed, you can compose them in any grouping and get the same result. Here is some code which illustrates associativity:
+
+{% highlight javascript %}
+
+function minus2(x) { return x - 2};
+function triple(x) { return x * 3};
+function increment(x) { return x + 1};
+
+function composeTwo(fn2, fn1) {
+  return function composed(v) {
+    return fn2(fn1(v));
+  };
+}
+
+var f = composeTwo(
+  composeTwo(minus2, triple),
+  increment
+);
+
+var p = composeTwo(
+  minus2,
+  composeTwo(triple, increment)
+);
+
+f(4); // 13
+p(4); // 13
+
+{% endhighlight %}
+
+Associativity is useful because it means that we are able to do currying and partial application on compositions. 
+
 ### Composition with Currying
+
+With the following code, how could we combine composition and currying?
+
+{% highlight javascript %}
+
+function sum(x, y) { return x + y; }
+function triple(x) { return x * 3; }
+function divBy(y, x) { return x / y; }
+
+divBy( 2, triple( sum(3, 5) ) ); // 12
+
+{% endhighlight %}
+
+So far, we've seen composition only with unary functions; functions that take and return a single value. Why would it be that we would only compose unary functions? Primarily because of the differing shapes of unary and binary functions. Again, how would it be possible to compose the three functions in the code above? Possibly something like this which basically turns the binary functions into unary functions:
+
+{% highlight javascript %}
+
+function sum(x, y) { return x + y; }
+function triple(x) { return x * 3; }
+function divBy(y, x) { return x / y; }
+
+divBy( 2, triple( sum(3, 5) ) ); // 12
+
+sum = curry(2, sum);
+divBy = curry(2, divBy);
+
+composeThree(
+  divBy(2),
+  triple,
+  sum(3)
+)(5);
+
+{% endhighlight %}
+
+Now that we've seen composition and currying together in action, let's take another look at point free, with this before seen example:
+
+{% highlight javascript %}
+
+var mod2 = mod(2);
+var eq1 = eq(1);
+
+function isOdd(x) {
+  return eq1( mod2(x) );
+}
+
+{% endhighlight %}
+
+If we wanted to transform the above code for the `isOdd` function into one that is point free, we could again use the `compose` style of function to do just that:
+
+{% highlight javascript %}
+
+var mod2 = mod(2);
+var eq1 = eq(1);
+
+function isOdd(x) {
+  return eq1( mod2(x) );
+}
+
+function composeTwo(fn2, fn1) {
+  return function composed(v) {
+    return fn2( fn1( v ) );
+  };
+}
+
+var isOdd = composeTwo(eq1, mod2);
+var isOdd = composeTwo(eq(1), mod(2));
+
+{% endhighlight %}
+
+The above is another example of taking binary functions and composing them into unary functions.
 
 ## Immutability
 
