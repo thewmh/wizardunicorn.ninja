@@ -1388,17 +1388,265 @@
 
 <h3 id="composition-illustration">Composition Illustration</h3>
 
+<p>Composition is the idea of one functions output becoming the input to another function. Here’s an example of some code that could benefit from composition:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">minus2</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">-</span> <span class="mi">2</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">triple</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">3</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="c1">// add shipping rate</span>
+<span class="kd">var</span> <span class="nx">tmp</span> <span class="o">=</span> <span class="nx">increment</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+<span class="nx">tmp</span> <span class="o">=</span> <span class="nx">triple</span><span class="p">(</span><span class="nx">tmp</span><span class="p">);</span>
+<span class="nx">totalCost</span> <span class="o">=</span> <span class="nx">basePrice</span> <span class="o">+</span> <span class="nx">minus2</span><span class="p">(</span><span class="nx">tmp</span><span class="p">);</span></code></pre></figure>
+
+<p>Although we do not see what <code class="language-plaintext highlighter-rouge">basePrice</code> is, the code is easy enough to follow. Could it be improved? We will expand on this while working through what composition is. In the above code, there are a couple of things happening that we could abstract further; the calculation of the shipping rate and the calculation of the <code class="language-plaintext highlighter-rouge">totalCost</code>. But what is abstraction? The original idea of abstraction was to tease apart two things which were otherwise intertwined together, so that they are separate, and by way of separation, we insert between them a semantic boundary. Abstraction is not about hiding anything, but about separation. The idea behind separation is that we should be able to look at the pieces of our code and understand them as individuals. But how could we abstract(separate) the above code? Well, since you asked… We could do something like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">minus2</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">-</span> <span class="mi">2</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">triple</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">3</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="c1">// add shipping rate</span>
+<span class="nx">totalCost</span> <span class="o">=</span> <span class="nx">basePrice</span> <span class="o">+</span> <span class="nx">minus2</span><span class="p">(</span><span class="nx">triple</span><span class="p">(</span><span class="nx">increment</span><span class="p">(</span><span class="mi">4</span><span class="p">)));</span></code></pre></figure>
+
+<p>Notice how we are now nesting the function calls which allows us to get rid of the <code class="language-plaintext highlighter-rouge">tmp</code> variable. The nested function calls are a form of composition. This works, but the separation(abstraction) is still incomplete; the shipping is being calculated within the <code class="language-plaintext highlighter-rouge">totalCost</code> variable. What if there were a shipping cost function?</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">minus2</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">-</span> <span class="mi">2</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">triple</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">3</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">shippingRate</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">minus2</span><span class="p">(</span><span class="nx">triple</span><span class="p">(</span><span class="nx">increment</span><span class="p">(</span><span class="nx">x</span><span class="p">)));</span>
+<span class="p">}</span>
+
+<span class="c1">// add shipping rate</span>
+<span class="nx">totalCost</span> <span class="o">=</span> <span class="nx">basePrice</span> <span class="o">+</span> <span class="nx">shippingRate</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span></code></pre></figure>
+
+<p>The above result is definitely cleaner, because the concerns have been separated. AKA abstraction. The semantic boundary that we’ve inserted is the function name <code class="language-plaintext highlighter-rouge">shippingRate</code>.</p>
+
 <h3 id="declarative-data-flow">Declarative Data Flow</h3>
+
+<p>So far, the abstraction and composition of our code has progressed nicely, but what if there were numerous shipping rates to handle? Could we further modify our code to accommodate them? Well, currently, the <code class="language-plaintext highlighter-rouge">shippingRate</code> function is essentially handling the execution of 3 different functions, maybe we could create a utility function that could accommodate this.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">composeThree</span><span class="p">(</span><span class="nx">fn3</span><span class="p">,</span> <span class="nx">fn2</span><span class="p">,</span> <span class="nx">fn1</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">composed</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">fn3</span><span class="p">(</span><span class="nx">fn2</span><span class="p">(</span><span class="nx">fn1</span><span class="p">(</span><span class="nx">v</span><span class="p">)));</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Now, with our new utility function, we can refactor our code to look like so:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">minus2</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">-</span> <span class="mi">2</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">triple</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">3</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">shippingRate</span> <span class="o">=</span> <span class="nx">composeThree</span><span class="p">(</span><span class="nx">minus2</span><span class="p">,</span> <span class="nx">triple</span><span class="p">,</span> <span class="nx">increment</span><span class="p">);</span>
+
+<span class="c1">// calculate and add shipping rate</span>
+<span class="nx">totalCost</span> <span class="o">=</span> <span class="nx">basePrice</span> <span class="o">+</span> <span class="nx">shippingRate</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span></code></pre></figure>
+
+<p>Using the utility function, <code class="language-plaintext highlighter-rouge">shippingRate</code> can change according to what functions are passed into <code class="language-plaintext highlighter-rouge">composeThree</code>. Composition works from right to left, which is why in the utility function definition we’ve structured the arguments from fn3 to fn1, because they will execute in the ‘reverse’ or right to left order. Composition is critical to functional programming because the entire point of any program is to have data flow; something coming in and something being returned out. The <code class="language-plaintext highlighter-rouge">composeThree</code> utility function that we ‘created’ is actually present in functional programming utility libraries, typically named <code class="language-plaintext highlighter-rouge">compose</code> which has the ability to compose however many functions you need.</p>
 
 <h3 id="piping-vs-composition">Piping vs Composition</h3>
 
+<p>To illustrate the importance of function order and the right to left execution of composed functions, take a look at this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">minus2</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">-</span> <span class="mi">2</span> <span class="p">};</span>
+<span class="kd">function</span> <span class="nx">triple</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">3</span> <span class="p">};</span>
+<span class="kd">function</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="nx">composeThree</span><span class="p">(</span><span class="nx">minus2</span><span class="p">,</span> <span class="nx">triple</span><span class="p">,</span> <span class="nx">increment</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">composeThree</span><span class="p">(</span><span class="nx">increment</span><span class="p">,</span> <span class="nx">triple</span><span class="p">,</span> <span class="nx">minus2</span><span class="p">);</span>
+
+<span class="nx">f</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span> <span class="c1">// 13</span>
+<span class="nx">p</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span> <span class="c1">// 7</span></code></pre></figure>
+
+<p><code class="language-plaintext highlighter-rouge">f(4)</code> will first increment 4 making its value 5, then triple 5 becoming 15, finally minus2 returning the value 13.</p>
+
+<p><code class="language-plaintext highlighter-rouge">p(4)</code> will first minus2 making the return value 2, then triple 2 becoming 6, finally incrementing by 1 returning the value 7.</p>
+
+<p>Considering composition, this should not come as a surprise. But what if we wanted to have the functions passed in as arguments to something like compose and executed in left to right instead of compose’s right to left? Pipes do that!</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">minus2</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">-</span> <span class="mi">2</span> <span class="p">};</span>
+<span class="kd">function</span> <span class="nx">triple</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">3</span> <span class="p">};</span>
+<span class="kd">function</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="nx">composeThree</span><span class="p">(</span><span class="nx">minus2</span><span class="p">,</span> <span class="nx">triple</span><span class="p">,</span> <span class="nx">increment</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">composeThree</span><span class="p">(</span><span class="nx">increment</span><span class="p">,</span> <span class="nx">triple</span><span class="p">,</span> <span class="nx">minus2</span><span class="p">);</span>
+
+<span class="nx">f</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span> <span class="c1">// 13</span>
+<span class="nx">p</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span> <span class="c1">// 7</span>
+
+<span class="kd">var</span> <span class="nx">g</span> <span class="o">=</span> <span class="nx">pipeThree</span><span class="p">(</span><span class="nx">minus2</span><span class="p">,</span> <span class="nx">triple</span><span class="p">,</span> <span class="nx">increment</span><span class="p">);</span>
+
+<span class="nx">g</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1">// 7</span></code></pre></figure>
+
 <h3 id="piping--composition-exercise">Piping &amp; Composition Exercise</h3>
+
+<p>This is an exercise to practice composition.</p>
+
+<p>Instructions</p>
+
+<ol>
+  <li>
+    <p>Define a <code class="language-plaintext highlighter-rouge">compose(..)</code> that takes any number of functions (as individual arguments) and composes them right-to-left.</p>
+  </li>
+  <li>
+    <p>Define a <code class="language-plaintext highlighter-rouge">pipe(..)</code> that takes any number of functions (as individual arguments) and composes them left-to-right.</p>
+  </li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="dl">"</span><span class="s2">use strict</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">decrement</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">double</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">half</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">compose</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">compose</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">pipe</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">pipe</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">f1</span> <span class="o">=</span> <span class="nx">compose</span><span class="p">(</span><span class="nx">increment</span><span class="p">,</span><span class="nx">decrement</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">f2</span> <span class="o">=</span> <span class="nx">pipe</span><span class="p">(</span><span class="nx">decrement</span><span class="p">,</span><span class="nx">increment</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">f3</span> <span class="o">=</span> <span class="nx">compose</span><span class="p">(</span><span class="nx">decrement</span><span class="p">,</span><span class="nx">double</span><span class="p">,</span><span class="nx">increment</span><span class="p">,</span><span class="nx">half</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">f4</span> <span class="o">=</span> <span class="nx">pipe</span><span class="p">(</span><span class="nx">half</span><span class="p">,</span><span class="nx">increment</span><span class="p">,</span><span class="nx">double</span><span class="p">,</span><span class="nx">decrement</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">f5</span> <span class="o">=</span> <span class="nx">compose</span><span class="p">(</span><span class="nx">increment</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">f6</span> <span class="o">=</span> <span class="nx">pipe</span><span class="p">(</span><span class="nx">increment</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">f1</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">===</span> <span class="mi">3</span> <span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">f1</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">===</span> <span class="nx">f2</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">f3</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">===</span> <span class="mi">4</span> <span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">f3</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">===</span> <span class="nx">f4</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">f5</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">===</span> <span class="mi">4</span> <span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">f5</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">===</span> <span class="nx">f6</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="p">);</span></code></pre></figure>
+
+<p><strong>Hint:</strong> you only need to implement one of the two functions <code class="language-plaintext highlighter-rouge">compose</code> or <code class="language-plaintext highlighter-rouge">pipe</code>. Once you’ve completed one of them, you can simply pass whatever is being passed to the other function but reverse it. i.e. complete <code class="language-plaintext highlighter-rouge">pipe</code>, then in <code class="language-plaintext highlighter-rouge">compose</code> you would just need to return <code class="language-plaintext highlighter-rouge">pipe(functions.reverse())</code>.</p>
 
 <h3 id="piping--composition-solution">Piping &amp; Composition Solution</h3>
 
+<details>
+    <summary>Click to view the solution
+</summary>
+    
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="dl">"</span><span class="s2">use strict</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">decrement</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">double</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">half</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">compose</span><span class="p">(...</span><span class="nx">fns</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="k">return</span> <span class="nx">pipe</span><span class="p">(...</span><span class="nx">fns</span><span class="p">.</span><span class="nx">reverse</span><span class="p">());</span> <span class="c1">// reverse the fns array of arguments and pass them to the `pipe` function</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">pipe</span><span class="p">(...</span><span class="nx">fns</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// ...fns gathers all arguments into an array</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">piped</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// return a function</span>
+    <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">fn</span> <span class="k">of</span> <span class="nx">fns</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// loop over arguments</span>
+      <span class="nx">result</span> <span class="o">=</span> <span class="nx">fn</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span> <span class="c1">// store result</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">result</span><span class="p">;</span> <span class="c1">// return result</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">f1</span> <span class="o">=</span> <span class="nx">compose</span><span class="p">(</span><span class="nx">increment</span><span class="p">,</span><span class="nx">decrement</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">f2</span> <span class="o">=</span> <span class="nx">pipe</span><span class="p">(</span><span class="nx">decrement</span><span class="p">,</span><span class="nx">increment</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">f3</span> <span class="o">=</span> <span class="nx">compose</span><span class="p">(</span><span class="nx">decrement</span><span class="p">,</span><span class="nx">double</span><span class="p">,</span><span class="nx">increment</span><span class="p">,</span><span class="nx">half</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">f4</span> <span class="o">=</span> <span class="nx">pipe</span><span class="p">(</span><span class="nx">half</span><span class="p">,</span><span class="nx">increment</span><span class="p">,</span><span class="nx">double</span><span class="p">,</span><span class="nx">decrement</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">f5</span> <span class="o">=</span> <span class="nx">compose</span><span class="p">(</span><span class="nx">increment</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">f6</span> <span class="o">=</span> <span class="nx">pipe</span><span class="p">(</span><span class="nx">increment</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">f1</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">===</span> <span class="mi">3</span> <span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">f1</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">===</span> <span class="nx">f2</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">f3</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">===</span> <span class="mi">4</span> <span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">f3</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">===</span> <span class="nx">f4</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">f5</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">===</span> <span class="mi">4</span> <span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">f5</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">===</span> <span class="nx">f6</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="p">);</span></code></pre></figure>
+
+
+</details>
+
 <h3 id="associativity">Associativity</h3>
 
+<p>Associativity is a mathematical concept, but composition is also associative. Meaning that if you have a list of functions that need to be composed, you can compose them in any grouping and get the same result. Here is some code which illustrates associativity:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">minus2</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">-</span> <span class="mi">2</span><span class="p">};</span>
+<span class="kd">function</span> <span class="nx">triple</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">3</span><span class="p">};</span>
+<span class="kd">function</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">};</span>
+
+<span class="kd">function</span> <span class="nx">composeTwo</span><span class="p">(</span><span class="nx">fn2</span><span class="p">,</span> <span class="nx">fn1</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">composed</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">fn2</span><span class="p">(</span><span class="nx">fn1</span><span class="p">(</span><span class="nx">v</span><span class="p">));</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="nx">composeTwo</span><span class="p">(</span>
+  <span class="nx">composeTwo</span><span class="p">(</span><span class="nx">minus2</span><span class="p">,</span> <span class="nx">triple</span><span class="p">),</span>
+  <span class="nx">increment</span>
+<span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">composeTwo</span><span class="p">(</span>
+  <span class="nx">minus2</span><span class="p">,</span>
+  <span class="nx">composeTwo</span><span class="p">(</span><span class="nx">triple</span><span class="p">,</span> <span class="nx">increment</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="nx">f</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span> <span class="c1">// 13</span>
+<span class="nx">p</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span> <span class="c1">// 13</span></code></pre></figure>
+
+<p>Associativity is useful because it means that we are able to do currying and partial application on compositions.</p>
+
 <h3 id="composition-with-currying">Composition with Currying</h3>
+
+<p>With the following code, how could we combine composition and currying?</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">sum</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">triple</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">3</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">divBy</span><span class="p">(</span><span class="nx">y</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">/</span> <span class="nx">y</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="nx">divBy</span><span class="p">(</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">triple</span><span class="p">(</span> <span class="nx">sum</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="p">)</span> <span class="p">);</span> <span class="c1">// 12</span></code></pre></figure>
+
+<p>So far, we’ve seen composition only with unary functions; functions that take and return a single value. Why would it be that we would only compose unary functions? Primarily because of the differing shapes of unary and binary functions. Again, how would it be possible to compose the three functions in the code above? Possibly something like this which basically turns the binary functions into unary functions:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">sum</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">triple</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">3</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">divBy</span><span class="p">(</span><span class="nx">y</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">/</span> <span class="nx">y</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="nx">divBy</span><span class="p">(</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">triple</span><span class="p">(</span> <span class="nx">sum</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="p">)</span> <span class="p">);</span> <span class="c1">// 12</span>
+
+<span class="nx">sum</span> <span class="o">=</span> <span class="nx">curry</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nx">sum</span><span class="p">);</span>
+<span class="nx">divBy</span> <span class="o">=</span> <span class="nx">curry</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nx">divBy</span><span class="p">);</span>
+
+<span class="nx">composeThree</span><span class="p">(</span>
+  <span class="nx">divBy</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+  <span class="nx">triple</span><span class="p">,</span>
+  <span class="nx">sum</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="p">)(</span><span class="mi">5</span><span class="p">);</span></code></pre></figure>
+
+<p>Now that we’ve seen composition and currying together in action, let’s take another look at point free, with this before seen example:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">mod2</span> <span class="o">=</span> <span class="nx">mod</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">eq1</span> <span class="o">=</span> <span class="nx">eq</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">isOdd</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">eq1</span><span class="p">(</span> <span class="nx">mod2</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>If we wanted to transform the above code for the <code class="language-plaintext highlighter-rouge">isOdd</code> function into one that is point free, we could again use the <code class="language-plaintext highlighter-rouge">compose</code> style of function to do just that:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">mod2</span> <span class="o">=</span> <span class="nx">mod</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">eq1</span> <span class="o">=</span> <span class="nx">eq</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">isOdd</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">eq1</span><span class="p">(</span> <span class="nx">mod2</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">composeTwo</span><span class="p">(</span><span class="nx">fn2</span><span class="p">,</span> <span class="nx">fn1</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">composed</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">fn2</span><span class="p">(</span> <span class="nx">fn1</span><span class="p">(</span> <span class="nx">v</span> <span class="p">)</span> <span class="p">);</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">isOdd</span> <span class="o">=</span> <span class="nx">composeTwo</span><span class="p">(</span><span class="nx">eq1</span><span class="p">,</span> <span class="nx">mod2</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">isOdd</span> <span class="o">=</span> <span class="nx">composeTwo</span><span class="p">(</span><span class="nx">eq</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="nx">mod</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span></code></pre></figure>
+
+<p>The above is another example of taking binary functions and composing them into unary functions.</p>
 
 <h2 id="immutability">Immutability</h2>
 
