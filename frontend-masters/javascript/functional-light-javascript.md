@@ -1903,7 +1903,36 @@ How can we make sure that the `orderDetails` object does not change when it is p
 
 ### Don't Mutate, Copy
 
+> Read-Only Data Structures: Data structures that **never** need to be mutated
 
+{% highlight javascript %}
+
+function processOrder(order) {
+  if (!("status" in order)) {
+    order.status = "complete";
+  }
+
+  saveToDatabase(order);
+}
+
+{% endhighlight %}
+
+The above code is what the `processOrder` function that we saw before *could* look like. Notice that it is in fact trying to modify the object that it received, but the modification does make sense because it is trying to update the order status in a database. But this mutation is, by definition of functional programming, a side-effect; i.e. an impure function. Erring on the safe side, you should always assume that you are not allowed to mutate something; but then what can we do? Make a copy of the object! Like so:
+
+{% highlight javascript %}
+
+function processOrder(order) {
+  var processedOrder = { ...order }
+  if (!("status" in order)) {
+    processedOrder.status = "complete";
+  }
+
+  saveToDatabase(processedOrder);
+}
+
+{% endhighlight %}
+
+Now that we've made a copy of the original object, we can safely mutate it without mutating the original! So now we have two considerations when avoiding mutation; 1. Do your reader a favor and signal that you do not want whatever it is to be changed; i.e. use something like `Object.freeze`. 2. When you write a function that receives data structures, treat the incoming data as if it were read-only, no matter what. Make a copy of the data structure and make changes to that local copy. In these ways we are able to deal effectively with value mutability.
 
 ### Immutable Data Structures
 
