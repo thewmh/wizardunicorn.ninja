@@ -804,7 +804,7 @@ g([1, 2, 3, 4]); // 10
 
 {% endhighlight %}
 
-The spread operator is the same as JavaScrips's `.apply` method; it 'spreads' the array out so that each value becomes it's own value, separate from the array. 
+The spread operator is the same as JavaScript's `.apply` method; it 'spreads' the array out so that each value becomes it's own value, separate from the array. 
 
 ## Point Free
 
@@ -1833,11 +1833,77 @@ Notice now that we are merely computing values as opposed to reassigning values 
 
 ### Rethinking const Immutability
 
+Here's some more code to look at when considering the proliferation of `const` in JavaScript:
+
+{% highlight javascript %}
+
+{
+  const shippingCost = 6.50;
+  const updateOrder = compose(
+    saveOrderTotal,
+    computeOrderTotal(basePrice),
+    increaseShipping
+  );
+  updateOrder(shippingCost);
+}
+
+{% endhighlight %}
+
+There is a lot of baggage that comes with the `const` keyword. A lot of the 'issues' that people have seem to come from the term `const`(ant) and the meaning that it (constant) conveys in the English language as opposed to how `const` has been implemented in [insert programming language here]. In English, one would typically associate `const`(ant) with something that has not / does not change. When using `const` with a primitive value; number, string; it's no problem. But when using `const` with an array or an object (yes, also a function which is an object), these elements are changeable / has mutability. `const` implies that an assignment will not change, not the values within. You can certainly learn the mechanics of `const` and make these 'issues' not a problem for you. Java deprecated the `const` keyword and replaced it with `final`. `final` implies that it is the final state of a variable, rather than one that does not change.
+
+Does `const` have provide benefit that it can overcome any potential downsides that it may present? It is the opinion of the instructor that `const` doesn't really carry its own weight. The argument being that if it is going to trip people up so much, then it had better provide enough benefit to justify its inclusion in our programs. Keeping in mind that assigning a value to a variable is linked to the idea that the variable belongs to a particular scope, in the above code, there is a very small 'window' of possible code that could reassign any of the variables that exist. A typical argument in defense of `const` is that it is signifying intent, that this variable will not change anywhere in the code. But if we are following 'best practice', whether that is your own self-imposed definition of what best practice is or otherwise (perhaps you have some rule about how long you will allow any given block of code or function to be), the possibility of a variable changing should be fairly limited.
+
+So how can you signal to the reader of your code that a variable is not going to be reassigned without using `const`? Don't reassign it! And if you are doing functional programming, don't assign at all! Or as little as possible, do assignments. More important than all of this `const` business and whether it is immutable or not, is value immutability.
+
 ### Value Immutability
+
+After all that `const` hate, we're going to focus on the immutability of values. 99% of the problems we face come from a value being mutated in a way that we did not expect. The instructor shares that in all of the code he has ever written that he has never had a bug that came from reassignment... Here's some code to consider the idea of value immutability:
+
+{% highlight javascript %}
+
+{
+  const orderDetails = {
+    orderId: 42,
+    total: (basePrice + shipping)
+  };
+
+  if (orderedItems.length > 0) {
+  orderDetails.items = orderedItems;
+  }
+
+  processOrder(orderDetails);
+}
+
+{% endhighlight %}
+
+In the above code, what is the `processOrder` function doing? No idea? Me neither... But if there was something else after the function call to `processOrder`, something that relied on the `orderDetails` object, we would have to have the suspicion that the object has changed. One of the things functional programmers do is try to pinpoint where the bugs are going to be and avoid them before they occur by using patterns where bugs cannot happen. Value immutability is arguably one of the most under-covered topics in functional programming. Values get passed everywhere, we pass arrays and objects and functions all over the place. And we should be asking ourselves every time we are passing one of these things; how do I know that isn't going to create a bug somewhere in my program? When you pass a string or number, you do not have to worry, but when you pass an object or an array, you do not have that same level of (immutability) guarantee. So even without looking at the `processOrder` function, it should be safe to assume that it is going to do something to the `orderDetails` object and something should be done to ensure that does not happen!
 
 ### Object.freeze
 
+How can we make sure that the `orderDetails` object does not change when it is passed to the `processOrder` function? Your first guess might be, "we need an immutable data structure". Nope. We need to say that the value is read-only. i.e. a data structure that can be read but not written to. Thankfully, there is a method built in to JavaScript; `Object.freeze`. Here's that in action:
+
+{% highlight javascript %}
+
+{
+  let orderDetails = {
+    orderId: 42,
+    total: (basePrice + shipping)
+  };
+
+  if (orderedItems.length > 0) {
+  orderDetails.items = orderedItems;
+  }
+
+  processOrder(Object.freeze(orderDetails));
+}
+
+{% endhighlight %}
+
+`Object.freeze` is telling the object to change all of its properties to have the read-only attribute on them so that none of them can be changed, it also cannot have properties added or removed. `Object.freeze` is only shallow though, so be aware that if you have nested objects of nested objects of arrays, you would have to freeze each level to get that same read-only guarantee that `Object.freeze` provides. But in our code above, there is only a simple single-level object, so `Object.freeze` will make our object read-only. But maybe it doesn't really matter if the (entire) object becomes read-only? The real intent of using `Object.freeze` here is to communicate to the reader of your code that they do not need to worry about the thing changing. `Object.freeze` does in fact do what it is supposed to do, freeze the object to a read-only state, but it does also give the reader of your code the signal that this object will not be changed or mutated.
+
 ### Don't Mutate, Copy
+
+
 
 ### Immutable Data Structures
 
