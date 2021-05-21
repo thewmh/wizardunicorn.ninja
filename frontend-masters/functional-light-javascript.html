@@ -793,7 +793,7 @@
 
 <span class="nx">g</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]);</span> <span class="c1">// 10</span></code></pre></figure>
 
-<p>The spread operator is the same as JavaScrips’s <code class="language-plaintext highlighter-rouge">.apply</code> method; it ‘spreads’ the array out so that each value becomes it’s own value, separate from the array.</p>
+<p>The spread operator is the same as JavaScript’s <code class="language-plaintext highlighter-rouge">.apply</code> method; it ‘spreads’ the array out so that each value becomes it’s own value, separate from the array.</p>
 
 <h2 id="point-free">Point Free</h2>
 
@@ -1690,9 +1690,61 @@
 
 <h3 id="rethinking-const-immutability">Rethinking const Immutability</h3>
 
+<p>Here’s some more code to look at when considering the proliferation of <code class="language-plaintext highlighter-rouge">const</code> in JavaScript:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">shippingCost</span> <span class="o">=</span> <span class="mf">6.50</span><span class="p">;</span>
+  <span class="kd">const</span> <span class="nx">updateOrder</span> <span class="o">=</span> <span class="nx">compose</span><span class="p">(</span>
+    <span class="nx">saveOrderTotal</span><span class="p">,</span>
+    <span class="nx">computeOrderTotal</span><span class="p">(</span><span class="nx">basePrice</span><span class="p">),</span>
+    <span class="nx">increaseShipping</span>
+  <span class="p">);</span>
+  <span class="nx">updateOrder</span><span class="p">(</span><span class="nx">shippingCost</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>There is a lot of baggage that comes with the <code class="language-plaintext highlighter-rouge">const</code> keyword. A lot of the ‘issues’ that people have seem to come from the term <code class="language-plaintext highlighter-rouge">const</code>(ant) and the meaning that it (constant) conveys in the English language as opposed to how <code class="language-plaintext highlighter-rouge">const</code> has been implemented in [insert programming language here]. In English, one would typically associate <code class="language-plaintext highlighter-rouge">const</code>(ant) with something that has not / does not change. When using <code class="language-plaintext highlighter-rouge">const</code> with a primitive value; number, string; it’s no problem. But when using <code class="language-plaintext highlighter-rouge">const</code> with an array or an object (yes, also a function which is an object), these elements are changeable / has mutability. <code class="language-plaintext highlighter-rouge">const</code> implies that an assignment will not change, not the values within. You can certainly learn the mechanics of <code class="language-plaintext highlighter-rouge">const</code> and make these ‘issues’ not a problem for you. Java deprecated the <code class="language-plaintext highlighter-rouge">const</code> keyword and replaced it with <code class="language-plaintext highlighter-rouge">final</code>. <code class="language-plaintext highlighter-rouge">final</code> implies that it is the final state of a variable, rather than one that does not change.</p>
+
+<p>Does <code class="language-plaintext highlighter-rouge">const</code> have provide benefit that it can overcome any potential downsides that it may present? It is the opinion of the instructor that <code class="language-plaintext highlighter-rouge">const</code> doesn’t really carry its own weight. The argument being that if it is going to trip people up so much, then it had better provide enough benefit to justify its inclusion in our programs. Keeping in mind that assigning a value to a variable is linked to the idea that the variable belongs to a particular scope, in the above code, there is a very small ‘window’ of possible code that could reassign any of the variables that exist. A typical argument in defense of <code class="language-plaintext highlighter-rouge">const</code> is that it is signifying intent, that this variable will not change anywhere in the code. But if we are following ‘best practice’, whether that is your own self-imposed definition of what best practice is or otherwise (perhaps you have some rule about how long you will allow any given block of code or function to be), the possibility of a variable changing should be fairly limited.</p>
+
+<p>So how can you signal to the reader of your code that a variable is not going to be reassigned without using <code class="language-plaintext highlighter-rouge">const</code>? Don’t reassign it! And if you are doing functional programming, don’t assign at all! Or as little as possible, do assignments. More important than all of this <code class="language-plaintext highlighter-rouge">const</code> business and whether it is immutable or not, is value immutability.</p>
+
 <h3 id="value-immutability">Value Immutability</h3>
 
+<p>After all that <code class="language-plaintext highlighter-rouge">const</code> hate, we’re going to focus on the immutability of values. 99% of the problems we face come from a value being mutated in a way that we did not expect. The instructor shares that in all of the code he has ever written that he has never had a bug that came from reassignment… Here’s some code to consider the idea of value immutability:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">orderDetails</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">orderId</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
+    <span class="na">total</span><span class="p">:</span> <span class="p">(</span><span class="nx">basePrice</span> <span class="o">+</span> <span class="nx">shipping</span><span class="p">)</span>
+  <span class="p">};</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">orderedItems</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">orderDetails</span><span class="p">.</span><span class="nx">items</span> <span class="o">=</span> <span class="nx">orderedItems</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nx">processOrder</span><span class="p">(</span><span class="nx">orderDetails</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>In the above code, what is the <code class="language-plaintext highlighter-rouge">processOrder</code> function doing? No idea? Me neither… But if there was something else after the function call to <code class="language-plaintext highlighter-rouge">processOrder</code>, something that relied on the <code class="language-plaintext highlighter-rouge">orderDetails</code> object, we would have to have the suspicion that the object has changed. One of the things functional programmers do is try to pinpoint where the bugs are going to be and avoid them before they occur by using patterns where bugs cannot happen. Value immutability is arguably one of the most under-covered topics in functional programming. Values get passed everywhere, we pass arrays and objects and functions all over the place. And we should be asking ourselves every time we are passing one of these things; how do I know that isn’t going to create a bug somewhere in my program? When you pass a string or number, you do not have to worry, but when you pass an object or an array, you do not have that same level of (immutability) guarantee. So even without looking at the <code class="language-plaintext highlighter-rouge">processOrder</code> function, it should be safe to assume that it is going to do something to the <code class="language-plaintext highlighter-rouge">orderDetails</code> object and something should be done to ensure that does not happen!</p>
+
 <h3 id="objectfreeze">Object.freeze</h3>
+
+<p>How can we make sure that the <code class="language-plaintext highlighter-rouge">orderDetails</code> object does not change when it is passed to the <code class="language-plaintext highlighter-rouge">processOrder</code> function? Your first guess might be, “we need an immutable data structure”. Nope. We need to say that the value is read-only. i.e. a data structure that can be read but not written to. Thankfully, there is a method built in to JavaScript; <code class="language-plaintext highlighter-rouge">Object.freeze</code>. Here’s that in action:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">orderDetails</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">orderId</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
+    <span class="na">total</span><span class="p">:</span> <span class="p">(</span><span class="nx">basePrice</span> <span class="o">+</span> <span class="nx">shipping</span><span class="p">)</span>
+  <span class="p">};</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">orderedItems</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">orderDetails</span><span class="p">.</span><span class="nx">items</span> <span class="o">=</span> <span class="nx">orderedItems</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nx">processOrder</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">freeze</span><span class="p">(</span><span class="nx">orderDetails</span><span class="p">));</span>
+<span class="p">}</span></code></pre></figure>
+
+<p><code class="language-plaintext highlighter-rouge">Object.freeze</code> is telling the object to change all of its properties to have the read-only attribute on them so that none of them can be changed, it also cannot have properties added or removed. <code class="language-plaintext highlighter-rouge">Object.freeze</code> is only shallow though, so be aware that if you have nested objects of nested objects of arrays, you would have to freeze each level to get that same read-only guarantee that <code class="language-plaintext highlighter-rouge">Object.freeze</code> provides. But in our code above, there is only a simple single-level object, so <code class="language-plaintext highlighter-rouge">Object.freeze</code> will make our object read-only. But maybe it doesn’t really matter if the (entire) object becomes read-only? The real intent of using <code class="language-plaintext highlighter-rouge">Object.freeze</code> here is to communicate to the reader of your code that they do not need to worry about the thing changing. <code class="language-plaintext highlighter-rouge">Object.freeze</code> does in fact do what it is supposed to do, freeze the object to a read-only state, but it does also give the reader of your code the signal that this object will not be changed or mutated.</p>
 
 <h3 id="dont-mutate-copy">Don’t Mutate, Copy</h3>
 
