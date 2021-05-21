@@ -1936,6 +1936,18 @@ Now that we've made a copy of the original object, we can safely mutate it witho
 
 ### Immutable Data Structures
 
+We've covered what to do with data structures that don't need to change, what do we do with data structures that do need to change? You cannot treat all data structures as immutable data structures, some of them are going to have to be mutable. When you have the need for a mutable data structure, one that is not read-only, what you need is an immutable data structure. Wait, what? An immutable data structure is one that allows not no-mutation, but rather structured mutation. Structured, controlled, intentional mutation as opposed to just create an assignment and have side effects somewhere. You should build your objects by first asking if it will ever need to mutate. If so, you don't need to use read-only, but something immutable. But if it never needs to change, stick with a read-only structure. We will only use an immutable data structure if it need to mutate.
+
+What is an immutable data structure? It is a representation of the data structures that we are used to dealing with; i.e. arrays, where we can access things at indexed positions, and objects, where we can access things at named property positions. It is data structures like those mentioned, but where you don't have access to the underlying data structure, what you have only is an API to access it. The API creates a layer of control that prevents unexpected changes to the data structure. Specifically, an immutable data structure does not allow you to make any changes to it unless you switch into a special mode that allows changes to be made. You can only create a new data structure with the change having been applied.
+
+This immutability is great, but what are the implications for performance? Remember, we are working in a way that only allows changes to be made to an array or object that is a copy **and** we're talking about making thousands of changes per second. At best, we have a bunch of garbage collection, but at worst there is going to be a ton of CPU churn from making thousands of copies of something per second. Fear not! The way that immutable data structures are designed is  specifically with optimization in mind. In theory, in functional programming, we don't make a new thing, you don't make a change to a thing, you make a new thing with the change applied, which in practice means real cost like garbage collection and CPU churn. Therefore, it is the job of an immutable data structure to mitigate that real practical cost so we get closer back to the theoretical benefit of what an immutable data structure is.
+
+If you use an immutable data structure, what it is actually going to do is not create a whole new copy of the object when you try to change a property, but rather make a new object with the new information in it and internally have a pointer back to the previous object. This is something like a git repo where every time you've committed something you are just storing a diff compared to what it was before. Similarly, the new object is effectively a diff on the previous object. This reduces the CPU usage and garbage collection. This is all wonderful, I want immutable data structures, please give?
+
+> We do not at the present time have immutable data structures natively in JavaScript 🤬
+
+JavaScript having immutable data structures has been discussed at TC39, but that does not mean that it will ever happen. There would be a huge benefit to the language being able to highly optimize immutable data structures.
+
 ### Immutable.js Overview
 
 ### Immutability Exercise
