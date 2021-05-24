@@ -1950,7 +1950,33 @@ JavaScript having immutable data structures has been discussed at TC39, but that
 
 ### Immutable.js Overview
 
+In the interim, of immutable data structures being directly implemented in JavaScript, if it is important for you to manage the mutations on data structures, you are going to need a library that provides an immutable data structure. The most common JavaScript library that provides immutable data structures is, [immutable.js](https://github.com/immutable-js/immutable-js), brought to you by Facebook. There is another library called [mori](https://swannodette.github.io/mori/), this is preferred by functional programmers that prefer closure. Mori has a different take on the way it works, as opposed to immutable.js, and what the API looks like. Both libraries provide structured mutation for data structures. Here is an example using immutable.js:
+
+{% highlight javascript %}
+
+var items = Immutable.List.of(
+  textbook,
+  supplies
+);
+
+var updatedItems = items.push(calculator);
+
+items === updatedItems; // false
+
+items.size; // 2
+updatedItems.size; // 3
+
+{% endhighlight %}
+
+While we don't have any details on what `textbook`, `supplies`, or `calculator` are, that doesn't really matter. When the `updatedItems` variable is created and we push `calculator` to `items`, that doesn't actually happen, well it doesn't get pushed to `items` but rather to the `updatedItems` variable. `items` is immutable whereas `updatedItems` is a copy of `item` and is not immutable. You can see that reflected in the logs of whether the two objects are equal and when we check their size.
+
+Functional programmers tend to minimize the amount of assignments, but for ones that you do have, you will generally do them in small blocks and the `const` keyword will not provide much benefit for you. Therefore, it may be more appropriate to use `var` or `let` if nothing else than for the benefit of the reader of your code. Another way to signify to readers of our code is to wrap the data being passed at a function call site in `Object.freeze`, and if you need to recursively freeze the various levels of your object, make a helper utility function for this. When you receive a data structure, assume it is read-only. If you need to track changes to data structures, you should be doing so with an immutable data structure.
+
+> Immutable Data Structures are data structures that *need* to be mutated.
+
 ### Immutability Exercise
+
+
 
 ### Immutability Solution
 
