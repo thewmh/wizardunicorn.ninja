@@ -2051,13 +2051,140 @@ console.log(luckyLotteryNumbers);
 
 ### Recursion
 
+Ah recursion, the terrifyingly complex concept. But not. The issue might be related to our lack of proper perspective on this topic, it's actually not so complex. And as a person who aspires to use functional techniques, your toolbox would be incomplete if you left recursion out of it. Let's look at some code and get more comfortable!
 
+{% highlight javascript %}
+
+function isVowel(char) {
+  return ["a", "e", "i", "o", "u"].includes(char);
+}
+
+function countVowels(str) {
+  var count = 0;
+  for (var i = 0; i < str.length; i++) {
+    if (isVowel(str[i])) {
+      count++;
+    }
+  }
+  return count;
+}
+
+countVowels(
+  "The quick brown fox jumps over the lazy dog"
+);
+
+// 11
+
+{% endhighlight %}
+
+The above code works, but the "problem" with it is that you have to read it to convince yourself of what it does. So... is there a more declarative approach? Of course! There are multiple ways to solve this problem, recursion is not the only way to do so. But a recursive approach is something that we should get more comfortable with because there will be problems that we come across where recursion is the best answer to the problem and in some cases almost the only practical answer to the problem at hand. In other words; some problems can be solved with recursion while other problems must be solved with recursion. That being the case, we should be familiar with it! As a programmer, our first job is to understand the problem that needs to be solved. That being said, we should (when first presented with a problem) think about how to solve that in a recursive way before trying to write any code. How would we solve the vowel check in a recursive fashion? What if we looked at the characters one by one, as we've done above, but in a slightly different way? Every recursive function should have a base condition which will define the stopping point for the function:
+
+{% highlight javascript %}
+
+function isVowel(char) {
+  return ["a", "e", "i", "o", "u"].includes(char);
+}
+
+function countVowels(str) {
+  if (str.length == 0) return 0;
+  var first = (isVowel(str[0]) ? 1 : 0);
+  return first + countVowels( str.slice(1) );
+}
+
+countVowels(
+  "The quick brown fox jumps over the lazy dog"
+);
+
+// 11
+
+{% endhighlight %}
+
+Recursion gets confusing for people because they try to think about the implementation rather than the outcome, the issue in that being recursion is declarative; which is concerned with the outcome. It is important as a functional programmer to think whether or not you can break problems into easy to understand pieces. There are a few patterns that are repeated over and over in recursion, one of which is solving sub-problems, which is what was used above to determine the number of vowels. Another recursive pattern is called 'divide and conquer', which takes a giant problem set and tries to determine if you can eliminate half of the problem, then eliminate half of the remaining, and then eliminate half of the remaining, and so on. If you can get to the point where you can understand common recursive patterns, then you will be able to see a recursive problem and understand exactly how it is being solved. 
 
 ### Base Condition Location
 
+In the code we just looked at in the last section, the function `countVowels` runs one final time, even when there is nothing of the string left, executing on what is an empty string. Is there a way to preserve the declarativeness of the `countVowels` function and also prevent that final function call when there is an empty string? Of course we can! By moving the base condition within the function definition, we can determine whether or not the function should even be run before running the function. BOOM:
+
+{% highlight javascript %}
+
+function isVowel(char) {
+  return ["a", "e", "i", "o", "u"].includes(char);
+}
+
+function countVowels(str) {
+  var first = (isVowel(str[0]) ? 1 : 0);
+  if (str.length <= 1) return first;
+  return first + countVowels( str.slice(1) );
+}
+
+countVowels(
+  "The quick brown fox jumps over the lazy dog"
+);
+
+// 11
+
+{% endhighlight %}
+
+In the slightly refactored code above, we've moved the base condition one line down and are checking whether the string is less than or equal to 1, rather than zero, which will cause the function to run again **only** if there is more string left. 
+
 ### Recursion Exercise
 
+This is an exercise to practice recursion techniques.
+
+Instructions
+
+1. Define a recursive `isPalidrome(..)` function that returns `true` if the string passed in is a palindrome -- same string when written forwards or backwards -- or `false` otherwise.
+
+2. An empty string and a single character string are both defined as base-condition palindromes. The strings "aba" and "abba" are also palindromes.
+
+3. All the test cases at the bottom of the exercise file should print `true`.
+
+4. Hint: Consider "abcdcba". A handy recursive definition for a palindrome is that the first and last character of a string (ie, the "a" and "a") must be the same character, and the substring in between (ie, "bcdcb") must also be a palindrome.
+
+{% highlight javascript %}
+
+"use strict";
+
+function isPalindrome() {}
+
+console.log( isPalindrome("") === true );
+console.log( isPalindrome("a") === true );
+console.log( isPalindrome("aa") === true );
+console.log( isPalindrome("aba") === true );
+console.log( isPalindrome("abba") === true );
+console.log( isPalindrome("abccba") === true );
+
+console.log( isPalindrome("ab") === false );
+console.log( isPalindrome("abc") === false );
+console.log( isPalindrome("abca") === false );
+console.log( isPalindrome("abcdba") === false );
+
+{% endhighlight %}
+
 ### Recursion Solution
+
+{% capture summary %}Click to view the solution{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+"use strict";
+
+function isPalindrome() {}
+
+console.log( isPalindrome("") === true );
+console.log( isPalindrome("a") === true );
+console.log( isPalindrome("aa") === true );
+console.log( isPalindrome("aba") === true );
+console.log( isPalindrome("abba") === true );
+console.log( isPalindrome("abccba") === true );
+
+console.log( isPalindrome("ab") === false );
+console.log( isPalindrome("abc") === false );
+console.log( isPalindrome("abca") === false );
+console.log( isPalindrome("abcdba") === false );
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %}
 
 ### Stack Frames & Memory Limits
 
