@@ -1791,6 +1791,28 @@
 
 <h3 id="immutablejs-overview">Immutable.js Overview</h3>
 
+<p>In the interim, of immutable data structures being directly implemented in JavaScript, if it is important for you to manage the mutations on data structures, you are going to need a library that provides an immutable data structure. The most common JavaScript library that provides immutable data structures is, <a href="https://github.com/immutable-js/immutable-js">immutable.js</a>, brought to you by Facebook. There is another library called <a href="https://swannodette.github.io/mori/">mori</a>, this is preferred by functional programmers that prefer closure. Mori has a different take on the way it works, as opposed to immutable.js, and what the API looks like. Both libraries provide structured mutation for data structures. Here is an example using immutable.js:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="nx">Immutable</span><span class="p">.</span><span class="nx">List</span><span class="p">.</span><span class="k">of</span><span class="p">(</span>
+  <span class="nx">textbook</span><span class="p">,</span>
+  <span class="nx">supplies</span>
+<span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">updatedItems</span> <span class="o">=</span> <span class="nx">items</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">calculator</span><span class="p">);</span>
+
+<span class="nx">items</span> <span class="o">===</span> <span class="nx">updatedItems</span><span class="p">;</span> <span class="c1">// false</span>
+
+<span class="nx">items</span><span class="p">.</span><span class="nx">size</span><span class="p">;</span> <span class="c1">// 2</span>
+<span class="nx">updatedItems</span><span class="p">.</span><span class="nx">size</span><span class="p">;</span> <span class="c1">// 3</span></code></pre></figure>
+
+<p>While we don’t have any details on what <code class="language-plaintext highlighter-rouge">textbook</code>, <code class="language-plaintext highlighter-rouge">supplies</code>, or <code class="language-plaintext highlighter-rouge">calculator</code> are, that doesn’t really matter. When the <code class="language-plaintext highlighter-rouge">updatedItems</code> variable is created and we push <code class="language-plaintext highlighter-rouge">calculator</code> to <code class="language-plaintext highlighter-rouge">items</code>, that doesn’t actually happen, well it doesn’t get pushed to <code class="language-plaintext highlighter-rouge">items</code> but rather to the <code class="language-plaintext highlighter-rouge">updatedItems</code> variable. <code class="language-plaintext highlighter-rouge">items</code> is immutable whereas <code class="language-plaintext highlighter-rouge">updatedItems</code> is a copy of <code class="language-plaintext highlighter-rouge">item</code> and is not immutable. You can see that reflected in the logs of whether the two objects are equal and when we check their size.</p>
+
+<p>Functional programmers tend to minimize the amount of assignments, but for ones that you do have, you will generally do them in small blocks and the <code class="language-plaintext highlighter-rouge">const</code> keyword will not provide much benefit for you. Therefore, it may be more appropriate to use <code class="language-plaintext highlighter-rouge">var</code> or <code class="language-plaintext highlighter-rouge">let</code> if nothing else than for the benefit of the reader of your code. Another way to signify to readers of our code is to wrap the data being passed at a function call site in <code class="language-plaintext highlighter-rouge">Object.freeze</code>, and if you need to recursively freeze the various levels of your object, make a helper utility function for this. When you receive a data structure, assume it is read-only. If you need to track changes to data structures, you should be doing so with an immutable data structure.</p>
+
+<blockquote>
+  <p>Immutable Data Structures are data structures that <em>need</em> to be mutated.</p>
+</blockquote>
+
 <h3 id="immutability-exercise">Immutability Exercise</h3>
 
 <h3 id="immutability-solution">Immutability Solution</h3>
