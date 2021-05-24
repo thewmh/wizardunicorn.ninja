@@ -1815,7 +1815,78 @@
 
 <h3 id="immutability-exercise">Immutability Exercise</h3>
 
+<p>This is an exercise to practice with assignment and value immutability.</p>
+
+<p>Instructions</p>
+
+<ol>
+  <li>
+    <p>Define <code class="language-plaintext highlighter-rouge">pickNumber(..)</code> so that it’s a pure function. It should the list of lottery numbers and a new lottery number (randomly generated using <code class="language-plaintext highlighter-rouge">lotteryNum()</code>) to add to the list.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">pickNumber(..)</code> should always keep the list of lottery numbers sorted in ascending order. Also, no duplicates!</p>
+  </li>
+  <li>
+    <p>Hint: Array’s <code class="language-plaintext highlighter-rouge">sort()</code> (with no argument) does not do numeric sorting but alphanumeric sorting. You’ll need to pass a custom comparator function to get true numeric sorting.</p>
+  </li>
+</ol>
+
+<p>Bonus</p>
+
+<p>Instead of a read-only array (via <code class="language-plaintext highlighter-rouge">Object.freeze(..)</code>), use Immutable.js’s <code class="language-plaintext highlighter-rouge">List</code> data structure to manage the additions to <code class="language-plaintext highlighter-rouge">luckyLotteryNumbers</code>.</p>
+
+<p>Work from this code:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="dl">"</span><span class="s2">use strict</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">lotteryNum</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="o">%</span> <span class="mi">58</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">pickNumber</span><span class="p">()</span> <span class="p">{}</span>
+
+<span class="kd">var</span> <span class="nx">luckyLotteryNumbers</span> <span class="o">=</span> <span class="p">[];</span>
+
+<span class="k">while</span> <span class="p">(</span><span class="nx">luckyLotteryNumbers</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">pickNumber</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">luckyLotteryNumbers</span><span class="p">);</span></code></pre></figure>
+
 <h3 id="immutability-solution">Immutability Solution</h3>
+
+<details>
+    <summary>Click to view the solution
+</summary>
+    
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="dl">"</span><span class="s2">use strict</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">lotteryNum</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="o">%</span> <span class="mi">58</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">pickNumber</span><span class="p">(</span><span class="nx">num</span><span class="p">,</span> <span class="nx">nums</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">nums</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="nx">num</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nx">num</span> <span class="o">=</span> <span class="p">[...</span><span class="nx">nums</span><span class="p">,</span> <span class="nx">num</span><span class="p">];</span>
+    <span class="nx">nums</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="kd">function</span> <span class="nx">ascending</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">){</span> <span class="k">return</span> <span class="nx">a</span> <span class="o">-</span> <span class="nx">b</span><span class="p">;</span> <span class="p">});</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">nums</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">luckyLotteryNumbers</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="kd">const</span> <span class="nx">STOP_NUM</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+
+<span class="k">while</span> <span class="p">(</span><span class="nx">luckyLotteryNumbers</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="nx">STOP_NUM</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">luckyLotteryNumbers</span> <span class="o">=</span> <span class="nx">pickNumber</span><span class="p">(</span>
+    <span class="nx">lotteryNum</span><span class="p">(),</span>
+    <span class="nb">Object</span><span class="p">.</span><span class="nx">freeze</span><span class="p">(</span><span class="nx">luckyLotteryNumbers</span><span class="p">)</span>
+  <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">luckyLotteryNumbers</span><span class="p">);</span></code></pre></figure>
+
+
+</details>
 
 <h2 id="recursion">Recursion</h2>
 
