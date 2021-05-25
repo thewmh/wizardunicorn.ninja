@@ -2169,7 +2169,13 @@ console.log( isPalindrome("abcdba") === false );
 
 "use strict";
 
-function isPalindrome() {}
+function isPalindrome(str) {
+  if(str.length < 2) return true;
+  if(str[0] === str[str.length -1]) {
+    return isPalindrome( str.substring(1, str.length - 1))
+  }
+  return false;
+}
 
 console.log( isPalindrome("") === true );
 console.log( isPalindrome("a") === true );
@@ -2188,9 +2194,66 @@ console.log( isPalindrome("abcdba") === false );
 
 ### Stack Frames & Memory Limits
 
+Recursion typically doesn't make its way into production applications because of range errors that get thrown when recursion has been running for too long, resulting in a `range error` or `stack overflow exceeded` error. We can address this problem by first thinking about the implementation. Consider what happens when a function is called, it doesn't have to be its own function or recursion, but when one function calls to another function, at that moment, everything that was currently happening in the original function needs to get saved somehow so that whatever happens in the new function call doesn't ruin whatever was happening in the first function. Where is this in-progress function state saved? In something computer scientists call stack frames. Each time a function gets executed, an area of memory is reserved and it is called a stack frame. It is called a stack frame, or memory frame, because when one function calls another and then that one calls another and so on, we actually have a 'stack' (of functions) that is growing.
+
+This idea of a stack data structure is used because when the function 'on-top' of the stack finishes running, it gets 'popped' off of the stack, returning to the function that was underneath it in the stack. But what is in the stack frames? All of the local variables that have been assigned, any memory that is being assigned for those variables, a program counter which tracks what line of code it is on, and any basic low-level things that the computer needs to track what's happening inside of a function. This doesn't take up a lot of memory, not megabytes of memory at least, the stack frame is more likely around a few hundred bytes or 1kb or something small like that. When you call some function, it might go 5, 10, or even 15 calls deep, and in turn add that many layers to the stack, but when you start running recursive functions, the stack can grow to thousands of levels, which **will** start to have an impact on the amount of memory being used.
+
+From a mathematical perspective, recursion works very well, but from the perspective of computer hardware, this is not the case. 
+
 ### Optimization: Tail Calls
 
+The way to address the (potential) computational-heavy effect of recursion is an optimization called tail calls. To understand what a tail call is and how it works, we need to understand that when we make a recursive call, we need to understand why the stack frame that is currently being executed needs to be kept. We can often either reuse the existing stack frame or throw it out in favor of a new one, this is what happens with tail calls. If a function call happens in a position which is referred to as a tail call, meaning it is at the tail of the execution logic, then we don't need the existing stack frame anymore and we can dispatch to another function call and not take up any extra memory. The idea is that at any given time you should only need one stack frame. This idea only holds up for function calls that have happened in a tail position. This is an optimization in the bigger sense of optimization, not of performance or speed, but one of memory use. 
+
+Tail calls are an additional feature that the system, language, compiler, and runtime has to support. So, what about tail calls in JavaScript? Well, the language itself does have a way of checking against how much memory an application is using and a threshold for what a limit is. In Internet Exploder 6, the total stack depth was limited to 13. But what is the right number of function calls that should be allowed? This is a prediction that the JavaScript engine has to make, it doesn't know if the recursive function is about to finish or not. So the JavaScript engine is looking at what is happening in the application and stack, then making a prediction about whether or not what is happening will in fact run the system out of memory. Modern browsers don't have this arbitrary number thrown on the limit of depth of the stack, but it is more likely based on the actual available system memory.
+
+The actual (stack) limit will vary depending on environment, device, etc., which are generally not things you can predict or control. This fact makes it all the more important that JavaScript has support for tail calls. This hasn't happened because the idea of tail calls is antithetical to the way that the JavaScript specification was written. Well, not literally antithetical, but the specification is designed to be as agnostic about implementation details as possible. The JavaScript spec says, this is the final outcome that should happen, and it does also specify algorithms for how things should be accomplished, but if the end goal of any operation is preserved, the JavaScript engines are allowed to decide which corners they are going to cut. As long as they follow the spec, they can implement JavaScript however they like, make optimizations however they see fit. 
+
 ### Proper Tail Calls
+
+Traditionally, there has been a wide range in terms of implementation for JavaScript. If the JavaScript spec steps in and says, "you must absolutely throw away stack frames and allow 0(1) memory usage", that would encroach upon the freedoms that JavaScript engines have had in how they implement. As of yet, the way engines implement JavaScript does not have this sort of restrictions or such a high-level of specificity when it comes to implementation. There's even been push back from JavaScript engines on tail calls, arguing that people don't even really care much about them and that people don't even use recursion, so why should they (the JavaScript engines) modify their implementations? The problem creates an infinite loop of, "no one uses this (recursion) so we are not going to implement it, it's (recursion's) not implemented so we aren't going to use it, no one uses this (recursion) so we are not going to implement it" ∞. There was a proposal in ES6 that aimed to standardize that JavaScript engines should have to do tail calls, specifically, 'proper tail calls' or PTC.
+
+Proper tail calls are the idea that memory gets optimized, that we only use 0(1) memory space. There is a related term, Tail Call Optimizations or TCO, which is a set of optional optimizations on top of PTC that were proposed as well, i.e. garbage collecting old stack frames, or reusing them. The only thing relevant to us (JavaScript developers) though is whether proper tail calls are in the language or nah. So the ES6 PTC proposal was aiming to standardize them. The specific language of the PTC proposal was not worried with any of the TCOs, but with a function in a tail call position to not take up any extra memory. It was actually voted in to the ES6 spec standard. PTC looked like this:
+
+{% highlight javascript %}
+
+"use strict";
+
+function decrement(x) {
+  return sub(x, 1);
+}
+
+function sub(x, y) {
+  return x - y;
+}
+
+decrement(43); // 42
+
+{% endhighlight %}
+
+PTC in ES6 requires that 'strict mode' is on, which if you are not already using strict mode, you should be. So do it. Next, you have to have your function call in what is called a proper tail position. The function call above inside of `decrement`; `sub(x, 1)` is in the proper tail position and this is the proper tail position because once that function is run there is nothing else left to do in `decrement` except return whatever comes from `sub`. Additionally, without the return keyword, it would not be considered to be a proper tail call. Proper tail calls require a return keyword, a single function call, and nothing else in that expression that needs to be computed afterwards. Even if you have a ternary expression and the function call is in one of the positions; i.e. `a ? doSomething() : doSomethingElse()`, that is a proper tail call because nothing else is going to happen, even if it doesn't look like a proper tail call, it is considered to be.
+
+We'll typically see proper tail calls in the case of recursion, here's another code example to examine:
+
+{% highlight javascript %}
+
+"use strict"
+
+function diminish(x) {
+  if (x > 90) {
+    return diminish(Math.trunc(x / 2));
+  }
+  return x - 3;
+}
+
+diminish(367); // 42
+
+{% endhighlight %}
+
+The `diminish` function above takes a number and keeps dividing it and calling the `diminish` function until the condition is met. It is a proper tail call.
+
+Q: What if instead of `Math.trunc` there was instead another function call?
+
+A: That call would contribute to the growth of the call stack and likely lead to a range error. You only get the benefits if the function calls are in the tail call position.
 
 ### Refactoring to PTC Form
 
