@@ -2257,11 +2257,188 @@ A: That call would contribute to the growth of the call stack and likely lead to
 
 ### Refactoring to PTC Form
 
+Let's refactor the `countVowels` recursive function to use PTC, this is what it looked like when we first saw it:
+
+{% highlight javascript %}
+
+function isVowel(char) {
+  return ["a", "e", "i", "o", "u"].includes(char);
+}
+
+function countVowels(str) {
+  var first = (isVowel(str[0]) ? 1 : 0);
+  if (str.length <= 1) return first;
+  return first + countVowels( str.slice(1) );
+}
+
+countVowels(
+  "The quick brown fox jumps over the lazy dog"
+);
+
+// 11
+
+{% endhighlight %}
+
+First, why `countVowels` is not already PTC is because of the addition that is happening within the return statement. That's fine because many forms of recursion can be refactored to take advantage of tail calls. If you are ever going to use recursion, you're going to have to get comfortable with the idea of thinking about proper tail calls. Great, so how can we get that maths out of the return statement? Where else could we keep track of that if not in the return statement / stack frame? If you guessed next stack frame, AKA arguments being passed to the function, you are correct! If not, that's fine, I did guess it, but wasn't 100 on whether or not that is the correct place for it. Here's what the above code looks like when refactored to use a proper tail call:
+
+{% highlight javascript %}
+
+function isVowel(char) {
+  return ["a", "e", "i", "o", "u"].includes(char);
+}
+
+function countVowels(count, str) {
+  count += (isVowel(str[0]) ? 1 : 0);
+  if (str.length <= 1) return count;
+  return countVowels( count, str.slice(1) );
+}
+
+countVowels(
+  0,
+  "The quick brown fox jumps over the lazy dog"
+);
+
+// 11
+
+{% endhighlight %}
+
+The above works fine, but having to pass zero into the function call seems kind of awkward. WHY?! Often, to avoid this kind of very weird thing, functional programmers will create an interface function that has a nice looking signature and then they'll have the recursive function hidden away that has the 'non-clean' signature, which might look more like this:
+
+{% highlight javascript %}
+
+function isVowel(char) {
+  return ["a", "e", "i", "o", "u"].includes(char);
+}
+
+function countVowels = curry(2, function countVowels(count, str) {
+  var count += (isVowel(str[0]) ? 1 : 0);
+  if (str.length <= 1) return count;
+  return countVowels( count str.slice(1) );
+})(0);
+
+countVowels(
+  "The quick brown fox jumps over the lazy dog"
+);
+
+// 11
+
+{% endhighlight %}
+
+The above will now work just fine, and may in fact be a bit slower than a for loop, but we won't end up with a runaway memory situation.
+
 ### Continuation-Passing Style
+
+Because we know that proper tail calls are not something that we can yet rely upon, we have to consider other strategies for writing what are essentially recursive algorithms without having to rely upon the optimization of tail calls. There are a couple of options that we could use, the first of which, continuation-passing style (CPS), you will probably never use 🤔, nonetheless, it is important to know that it exists. A continuation is essentially a call-back and returning to the `countVowels` example from the last section, it would look like this:
+
+{% highlight javascript %}
+
+function isVowel(char) {
+  return ["a", "e", "i", "o", "u"].includes(char);
+}
+
+function countVowels(str, cont = v => v) {
+  var first = (isVowel(str[0]) ? 1 : 0);
+  if (str.length <= 1) return cont(first);
+  return countVowels( count str.slice(1), function f(v){
+    return cont(first + v);
+  });
+}
+
+countVowels(
+  "The quick brown fox jumps over the lazy dog"
+);
+
+// 11
+
+{% endhighlight %}
+
+Notice how some of our `countVowels` function has remained basically the same, but there are some additional additions to talk about. The first is `cont = v => v`, this is what is referred to as the 'identity function', which in functional programming is a function that returns whatever is passed to it. Identity functions are really useful base conditions for a bunch of things in functional programming. Our instructor doesn't particularly care for arrow functions (one was used here for the express purpose of saving space on his slides) and mentions that an identity function would likely exist in whatever functional programming library you might be using. The identity function is only used on the initial function call, later it is replaced by the function  `f` when the `return countVowels` is hit. All of this is exceptionally complex, so if the above looks confusing, that's par for the course. People don't usually write in the continuation-passing style, it **is** usually what is converted code; meaning that you write your code in some other way and your code is converted to CPS style. 
+
+The fact that the code looks confusing is directly related to the fact that it is normally written by a machine, not a human. CPS is kind of a 'cheat', but it is definitely a proper tail call. We won't experience any range error issues, because the function is wrapped in another function, which results in a progressively bigger and bigger function until that is finally executed, but that doesn't actually fix any memory problems. While the above code won't grow our usage of the stack, it will grow our usage of the memory 'heap'. Theoretically, if you were to run a program using CPS, it would eventually exhaust the entire system of all of its memory and crash the system. JavaScript does not have error to check for the exhaustion of the 'heap' memory, only for exhausting the stack. The bottom line is that CPS is not really the solution that we want in JavaScript, it cheats around one error and potentially creates another. 
 
 ### Trampolines
 
+The idea of deferring the work of a function until later is an idea that we want to keep in mind for this last technique, one that is recommended to be used; trampolines. Trampolines are written almost like a regular recursive function, but with an adapter that helps take care of the tail calling. Oddly enough, a trampoline is a way of indicating that we want something to 'bounce' back and forth. But what is being bounced back and forth? Instead of having a function call a function call a function, a trampoline will go something like; function call function, then call that function and return another function, then call that one and return another function, then call that one and return another function. This gets around the stack build-up, in the case of a trampoline, the stack depth never goes beyond 1. Instead of an actual recursive call, we are returning a function that makes the next call.
+
+Here's a utility that demonstrates what a trampoline looks like:
+
+{% highlight javascript %}
+
+function trampoline(fn) {
+  return function trampoline(...args) {
+    var result = fn(...args);
+
+    while (typeof result == "function") {
+      result = result();
+    }
+
+    return result;
+  };
+}
+
+{% endhighlight %}
+
+The above code block is an example of a utility function that would be provided by a functional library. But how it works can be seen in the `while` loop, where it is checking whether or not what is being passed is a function; if yes, run again, if not, return result. And in this way, a trampoline will not cause the stack to overflow or the heap memory to exhaust, because it is only returning and calling one function at a time. Here's what it looks like to actually use the trampoline utility:
+
+{% highlight javascript %}
+
+var countVowels =
+  trampoline(function countVowels( count, str ) {
+    count += (isVowel(str[0]) ? 1 : 0);
+    if (str.length <= 1) return count;
+    return function f() {
+      return countVowels( count, str.slice(1) );
+    };
+  });
+
+// optionally
+countVowels = curry(2, countVowels)(0);
+
+{% endhighlight %}
+
+The above code looks quite familiar to the `countVowels` function that we saw earlier, the only major difference(s) being that it is wrapped in `trampoline` and the `return countVowels...` line is now also wrapped in a function. The way that the added function `f` works is that it has closure over the things that it needs. So that's how trampolining works, and why you should use it over other tail call formats is that at some point if tail calls are implemented in JavaScript, compilers will likely be able to convert trampolines into proper tail calls. Also, if you are doing anything iteratively in your code, try to find opportunities to use recursion, or better yet some implementation of tail calls, better yet, trampolines. In this way you will find that these things will start to make better sense to your understanding of how they work and are implemented.
+
 ### CPS & Trampolines Q&A
+
+Q: So CPS is some sort of memorization where we're trying to call `cont v`?
+
+A: In CPS, the 'trick' to what we are doing is, instead of actually making the recursive call, or doing the work up front, the work is being deferred by wrapping it in a function and passing the function forward. `cont` becomes a bigger and bigger function, all of which are in tail call form, with a bunch of returns.
+
+Q: Why do we have tools to transpile code to CPS if there are issues with memory [use]?
+
+A: Because it does fix the stack issue. The heap allocation issue is actually specific to JavaScript, in C, they do have techniques for dealing with the memory allocation problem.
+
+Q: What are good trampoline libraries?
+
+A: Ramda, Lo Dash, basically any functional utility library will have a trampoline function. They will have slightly different implementations of trampoline, so read the documentation!
+
+Q: Can you summarize the difference between a trampoline and regular recursion?
+
+A: In regular recursion, we stack up the work, which grows the memory usage. In a trampoline, the work is never stacked up in this way, work is done, then returned back to the helper function (trampoline), if it is a function, the work will continue and so on until the returned value is not a function.
+
+Let's take one more look at the code difference between a regular recursive function and one that is 'trampoline-able':
+
+{% highlight javascript %}
+
+// standard recursive function
+function countVowels( count, str ) {
+  count += (isVowel(str[0]) ? 1 : 0);
+  if (str.length <= 1) return count;
+  return countVowels( count, str.slice(1) );
+}
+
+// trampoline-able recursive function
+function countVowels( count, str ) {
+  count += (isVowel(str[0]) ? 1 : 0);
+  if (str.length <= 1) return count;
+  return function f() {
+    return countVowels( count, str.slice(1) );
+  };
+}
+
+{% endhighlight %}
+
+Between the two `countVowels` above, the only real difference is the `return countVowels...` is wrapped in another function in the trampoline-able version, all else it would need is to be wrapped in the `trampoline` utility function.
 
 ## List Operations
 
