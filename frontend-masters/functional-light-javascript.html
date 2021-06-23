@@ -2240,9 +2240,113 @@
 
 <h3 id="map-transformation">Map: Transformation</h3>
 
+<p>When talking about lists, we’re not only going to only be talking about arrays, even though these things are usually illustrated with arrays; we’ll be focussed on data structures. <code class="language-plaintext highlighter-rouge">map</code> and <code class="language-plaintext highlighter-rouge">filter</code>, etc. are actually generalized operations that should be able to be performed across any data structure. It just happens to be that, especially in JavaScript, that it’s convenient to illustrate these concepts in the context of arrays. So far, we’ve learned how to use operations on single (discrete) values, and now we will adapt those operations so that they work across a collection of values. A functional programming term that we should know is functor. A functor is a  value, even a collection of values, over which those values in it can be mapped. In the case of an array, we (probably) know that we can call <code class="language-plaintext highlighter-rouge">.map</code> on an array, the array is a functor. The only purpose of bringing up the word functor is to let you understand that a functor is essentially a value that can be mapped.</p>
+
+<p>Moving on… What is map? It is fundamentally a transformation operation. Meaning that we will take the values in some collection and perform a conversion on each of them. Keep in mind that a data structure does not imply multiple values. A single value in a single data structure can be a functor, and can be mapped over. This is valid. Map transformations are not happening in place, for it to be the functor, to behave according to these (functional programming) principles, it has to be a pure function, it cannot have mutation, it has to produce a new data structure. A map always results in the same kind of data structure as it started with. i.e. you start with an array, map will give you another array. So how can we implement a map-like function?</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">makeRecord</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="nx">uniqID</span><span class="p">(),</span> <span class="nx">name</span> <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">map</span><span class="p">(</span><span class="nx">mapper</span><span class="p">,</span> <span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">newList</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">elem</span> <span class="k">of</span> <span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">newList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">mapper</span><span class="p">(</span><span class="nx">elem</span><span class="p">)</span> <span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">newList</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">map</span><span class="p">(</span><span class="nx">makeRecord</span><span class="p">,</span> <span class="p">[</span><span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Susan</span><span class="dl">"</span><span class="p">]);</span>
+
+<span class="c1">// [ {id: 42, name: "Kyle"}, {id:729, name: "Susan"} ]</span></code></pre></figure>
+
+<p>Technically, the <code class="language-plaintext highlighter-rouge">makeRecord</code> function in the code above is not a pure function in functional programming standards, but technically it is, because the <code class="language-plaintext highlighter-rouge">name</code> value is not being mutated and the returned object is also not a mutation. The above functionality is typically used with arrays and there is in fact a map method for arrays built in to JavaScript:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">makeRecord</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="nx">uniqID</span><span class="p">(),</span> <span class="nx">name</span> <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="p">[</span><span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Susan</span><span class="dl">"</span><span class="p">].</span><span class="nx">map</span><span class="p">(</span><span class="nx">makeRecord</span><span class="p">);</span>
+
+<span class="c1">// [ {id: 42, name: "Kyle"}, {id:729, name: "Susan"} ]</span></code></pre></figure>
+
+<p>Any sort of source value with any sort of transformation can be mapped. The idea of map, and the other methods we will look at, is that we are using the same transformations across all of the values in the data structure. While it would be possible to include some <code class="language-plaintext highlighter-rouge">if</code> statements within a mapper function, this is a polymorphic way of thinking about the purpose of a mapper function and is advised against. Map functions should do only one sort of transformation.</p>
+
 <h3 id="filter-inclusion">Filter: Inclusion</h3>
 
+<p>Filter is often referred to or thought of as an exclusionary activity, i.e. filtering something out; when cooking spaghetti noodles, we filter the water out when pouring the contents of the pot into a strainer. But in development, filter is actually an inclusion; you return true if you want to keep something, false if you do not want to keep something. The main issue with the word filter is that in English, it usually implies that something is being filtered out. Because of this (potential ambiguity or implied meaning), the instructor names his filter operations as <code class="language-plaintext highlighter-rouge">filterIn</code> and <code class="language-plaintext highlighter-rouge">filterOut</code> to be more explicit as to what the implications of using these operations will achieve. Here is an example of how a <code class="language-plaintext highlighter-rouge">filterIn</code> function would look:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">isLoggedIn</span><span class="p">(</span><span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">user</span><span class="p">.</span><span class="nx">session</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">filterIn</span><span class="p">(</span><span class="nx">predicate</span><span class="p">,</span> <span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">newList</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">elem</span> <span class="k">of</span> <span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="nx">predicate</span><span class="p">(</span><span class="nx">elem</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+      <span class="nx">newList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">elem</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">newList</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">filterIn</span><span class="p">(</span><span class="nx">isLoggedIn</span><span class="p">,</span> <span class="p">[</span>
+  <span class="p">{</span> <span class="na">userID</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span> <span class="na">session</span><span class="p">:</span> <span class="dl">"</span><span class="s2">a%klDKF543_9*54</span><span class="dl">"</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="na">userID</span><span class="p">:</span> <span class="mi">17</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="na">userID</span><span class="p">:</span> <span class="mi">729</span><span class="p">,</span> <span class="na">session</span><span class="p">:</span> <span class="dl">"</span><span class="s2">HJ3434k$#.456</span><span class="dl">"</span> <span class="p">},</span>
+<span class="p">]);</span>
+
+<span class="c1">// [</span>
+<span class="c1">//   { userID: 42, session: "a%klDKF543_9*54" },</span>
+<span class="c1">//   { userID: 729, session: "HJ3434k$#.456" },</span>
+<span class="c1">//]</span></code></pre></figure>
+
+<p>In the above <code class="language-plaintext highlighter-rouge">filterIn</code> function, the <code class="language-plaintext highlighter-rouge">predicate</code> argument is used when a function returns a boolean. Using the <code class="language-plaintext highlighter-rouge">filterIn</code> function and passing in the <code class="language-plaintext highlighter-rouge">isLoggedIn</code> function with an array, we will end up ‘filtering in’ the user objects to the <code class="language-plaintext highlighter-rouge">newList</code> array that have a session associated with them. This is exactly the same as JavaScript’s built-in <code class="language-plaintext highlighter-rouge">filter</code> method. That would look like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">isLoggedIn</span><span class="p">(</span><span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">user</span><span class="p">.</span><span class="nx">session</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">[</span>
+  <span class="p">{</span> <span class="na">userID</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span> <span class="na">session</span><span class="p">:</span> <span class="dl">"</span><span class="s2">a%klDKF543_9*54</span><span class="dl">"</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="na">userID</span><span class="p">:</span> <span class="mi">17</span> <span class="p">},</span>
+  <span class="p">{</span> <span class="na">userID</span><span class="p">:</span> <span class="mi">729</span><span class="p">,</span> <span class="na">session</span><span class="p">:</span> <span class="dl">"</span><span class="s2">HJ3434k$#.456</span><span class="dl">"</span> <span class="p">},</span>
+<span class="p">].</span><span class="nx">filter</span><span class="p">(</span><span class="nx">isLoggedIn</span><span class="p">);</span>
+
+<span class="c1">// [</span>
+<span class="c1">//   { userID: 42, session: "a%klDKF543_9*54" },</span>
+<span class="c1">//   { userID: 729, session: "HJ3434k$#.456" },</span>
+<span class="c1">//]</span></code></pre></figure>
+
+<p>Using the <code class="language-plaintext highlighter-rouge">filter</code> method, none of the values get changed, that’s what <code class="language-plaintext highlighter-rouge">map</code> does. With <code class="language-plaintext highlighter-rouge">filter</code>, we are just selecting values based on a predicate check.</p>
+
 <h3 id="reduce-combination">Reduce: Combination</h3>
+
+<p><code class="language-plaintext highlighter-rouge">map</code> does transformation, <code class="language-plaintext highlighter-rouge">filter</code> does inclusion or exclusion, <code class="language-plaintext highlighter-rouge">reduce</code> combines values. Reduce works with multiple values, making its decision based on the current running accumulator, as well as the next value. When working with a collection of values and a reduce function, it is important to select the appropriate initial value for your reduction; i.e. something numeric for math based reduction, an empty string for string concatenation, a resolved promise for promise chaining, etc… There are some implementations of reduce that if you do not provide an initial value, reduce will select the first item in the collection as the initial value, starting the reduction with the next value in the collection.</p>
+
+<p>Reduce, whatever the current accumulator is, whether an initial value or we’re somewhere into the reduction, takes the current accumulated value, adds in the next value in the collection, and they get ‘combined’ (or reduced). In other words, the reducer takes two inputs; the existing accumulator and the next value in the collection, and decides how to combine them (whether by your provided initial value or the initial value of the collection). the idea of reduction is a very general concept, reducing a collection does not have to be combining values, you could have a reducer that picks a value. Reduction is whatever you define it to be, but it is often used for values to ‘end up’ together in some way. However it is reduced, the result is a single value.</p>
+
+<p>Reduce can be thought of a the swiss army knife of functional programming because you don’t <strong>have to</strong> produce a single value, you can produce an entire data structure with reduce. You could start with a list of numbers and ‘reduce’ that list to an object with properties holding those numbers. Reduce is so general in fact that you could implement it to function as <code class="language-plaintext highlighter-rouge">map</code> or <code class="language-plaintext highlighter-rouge">filter</code>. Here is how to implement a reduce function:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">addToRecord</span><span class="p">(</span><span class="nx">record</span><span class="p">,</span> <span class="p">[</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">])</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span> <span class="p">...</span><span class="nx">record</span><span class="p">,</span> <span class="p">[</span><span class="nx">key</span><span class="p">]:</span> <span class="nx">value</span> <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">reduce</span><span class="p">(</span><span class="nx">reducer</span><span class="p">,</span> <span class="nx">initialVal</span><span class="p">,</span> <span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">ret</span> <span class="o">=</span> <span class="nx">initialVal</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">elem</span> <span class="k">of</span> <span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">ret</span> <span class="o">=</span> <span class="nx">reducer</span><span class="p">(</span><span class="nx">ret</span><span class="p">,</span> <span class="nx">elem</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">ret</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">reduce</span><span class="p">(</span><span class="nx">addToRecord</span><span class="p">,{},[</span>
+  <span class="p">[</span> <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span> <span class="p">],</span>
+  <span class="p">[</span> <span class="dl">"</span><span class="s2">age</span><span class="dl">"</span><span class="p">,</span> <span class="mi">39</span> <span class="p">],</span>
+  <span class="p">[</span> <span class="dl">"</span><span class="s2">isTeacher</span><span class="dl">"</span><span class="p">,</span> <span class="kc">true</span> <span class="p">]</span>
+<span class="p">]);</span>
+
+<span class="c1">// { name: "Kyle", age: 39, isTeacher: true }</span></code></pre></figure>
 
 <h3 id="composition-with-reduce">Composition with Reduce</h3>
 
