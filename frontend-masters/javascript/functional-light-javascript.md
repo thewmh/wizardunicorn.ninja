@@ -2444,9 +2444,135 @@ Between the two `countVowels` above, the only real difference is the `return cou
 
 ### Map: Transformation
 
+When talking about lists, we're not only going to only be talking about arrays, even though these things are usually illustrated with arrays; we'll be focussed on data structures. `map` and `filter`, etc. are actually generalized operations that should be able to be performed across any data structure. It just happens to be that, especially in JavaScript, that it's convenient to illustrate these concepts in the context of arrays. So far, we've learned how to use operations on single (discrete) values, and now we will adapt those operations so that they work across a collection of values. A functional programming term that we should know is functor. A functor is a  value, even a collection of values, over which those values in it can be mapped. In the case of an array, we (probably) know that we can call `.map` on an array, the array is a functor. The only purpose of bringing up the word functor is to let you understand that a functor is essentially a value that can be mapped.
+
+Moving on... What is map? It is fundamentally a transformation operation. Meaning that we will take the values in some collection and perform a conversion on each of them. Keep in mind that a data structure does not imply multiple values. A single value in a single data structure can be a functor, and can be mapped over. This is valid. Map transformations are not happening in place, for it to be the functor, to behave according to these (functional programming) principles, it has to be a pure function, it cannot have mutation, it has to produce a new data structure. A map always results in the same kind of data structure as it started with. i.e. you start with an array, map will give you another array. So how can we implement a map-like function?
+
+{% highlight javascript %}
+
+function makeRecord(name) {
+  return { id: uniqID(), name };
+}
+
+function map(mapper, arr) {
+  var newList = [];
+  for (let elem of arr) {
+    newList.push( mapper(elem) );
+  }
+  return newList;
+}
+
+map(makeRecord, ["Kyle", "Susan"]);
+
+// [ {id: 42, name: "Kyle"}, {id:729, name: "Susan"} ]
+
+{% endhighlight %}
+
+Technically, the `makeRecord` function in the code above is not a pure function in functional programming standards, but technically it is, because the `name` value is not being mutated and the returned object is also not a mutation. The above functionality is typically used with arrays and there is in fact a map method for arrays built in to JavaScript:
+
+{% highlight javascript %}
+
+function makeRecord(name) {
+  return { id: uniqID(), name };
+}
+
+["Kyle", "Susan"].map(makeRecord);
+
+// [ {id: 42, name: "Kyle"}, {id:729, name: "Susan"} ]
+
+{% endhighlight %}
+
+Any sort of source value with any sort of transformation can be mapped. The idea of map, and the other methods we will look at, is that we are using the same transformations across all of the values in the data structure. While it would be possible to include some `if` statements within a mapper function, this is a polymorphic way of thinking about the purpose of a mapper function and is advised against. Map functions should do only one sort of transformation. 
+
 ### Filter: Inclusion
 
+Filter is often referred to or thought of as an exclusionary activity, i.e. filtering something out; when cooking spaghetti noodles, we filter the water out when pouring the contents of the pot into a strainer. But in development, filter is actually an inclusion; you return true if you want to keep something, false if you do not want to keep something. The main issue with the word filter is that in English, it usually implies that something is being filtered out. Because of this (potential ambiguity or implied meaning), the instructor names his filter operations as `filterIn` and `filterOut` to be more explicit as to what the implications of using these operations will achieve. Here is an example of how a `filterIn` function would look:
+
+{% highlight javascript %}
+
+function isLoggedIn(user) {
+  return user.session != null;
+}
+
+function filterIn(predicate, arr) {
+  var newList = [];
+  for (let elem of arr) {
+    if ( predicate(elem) ) {
+      newList.push(elem);
+    }
+  }
+  return newList;
+}
+
+filterIn(isLoggedIn, [
+  { userID: 42, session: "a%klDKF543_9*54" },
+  { userID: 17 },
+  { userID: 729, session: "HJ3434k$#.456" },
+]);
+
+// [
+//   { userID: 42, session: "a%klDKF543_9*54" },
+//   { userID: 729, session: "HJ3434k$#.456" },
+//]
+
+{% endhighlight %}
+
+In the above `filterIn` function, the `predicate` argument is used when a function returns a boolean. Using the `filterIn` function and passing in the `isLoggedIn` function with an array, we will end up 'filtering in' the user objects to the `newList` array that have a session associated with them. This is exactly the same as JavaScript's built-in `filter` method. That would look like this:
+
+{% highlight javascript %}
+
+function isLoggedIn(user) {
+  return user.session != null;
+}
+
+[
+  { userID: 42, session: "a%klDKF543_9*54" },
+  { userID: 17 },
+  { userID: 729, session: "HJ3434k$#.456" },
+].filter(isLoggedIn);
+
+// [
+//   { userID: 42, session: "a%klDKF543_9*54" },
+//   { userID: 729, session: "HJ3434k$#.456" },
+//]
+
+{% endhighlight %}
+
+Using the `filter` method, none of the values get changed, that's what `map` does. With `filter`, we are just selecting values based on a predicate check.
+
 ### Reduce: Combination
+
+`map` does transformation, `filter` does inclusion or exclusion, `reduce` combines values. Reduce works with multiple values, making its decision based on the current running accumulator, as well as the next value. When working with a collection of values and a reduce function, it is important to select the appropriate initial value for your reduction; i.e. something numeric for math based reduction, an empty string for string concatenation, a resolved promise for promise chaining, etc... There are some implementations of reduce that if you do not provide an initial value, reduce will select the first item in the collection as the initial value, starting the reduction with the next value in the collection. 
+
+Reduce, whatever the current accumulator is, whether an initial value or we're somewhere into the reduction, takes the current accumulated value, adds in the next value in the collection, and they get 'combined' (or reduced). In other words, the reducer takes two inputs; the existing accumulator and the next value in the collection, and decides how to combine them (whether by your provided initial value or the initial value of the collection). the idea of reduction is a very general concept, reducing a collection does not have to be combining values, you could have a reducer that picks a value. Reduction is whatever you define it to be, but it is often used for values to 'end up' together in some way. However it is reduced, the result is a single value.
+
+Reduce can be thought of a the swiss army knife of functional programming because you don't **have to** produce a single value, you can produce an entire data structure with reduce. You could start with a list of numbers and 'reduce' that list to an object with properties holding those numbers. Reduce is so general in fact that you could implement it to function as `map` or `filter`. Here is how to implement a reduce function:
+
+{% highlight javascript %}
+
+function addToRecord(record, [key, value]) {
+  return { ...record, [key]: value };
+}
+
+function reduce(reducer, initialVal, arr) {
+  var ret = initialVal;
+  for (let elem of arr) {
+    ret = reducer(ret, elem);
+  }
+  return ret;
+}
+
+reduce(addToRecord,{},[
+  [ "name", "Kyle" ],
+  [ "age", 39 ],
+  [ "isTeacher", true ]
+]);
+
+// { name: "Kyle", age: 39, isTeacher: true }
+
+{% endhighlight %}
+
+
 
 ### Composition with Reduce
 
