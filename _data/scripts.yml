@@ -1,8 +1,10 @@
-- src: /assets/js/toggleColorMode.js
-  type: text/javascript
-- src: /assets/js/laCroix.js
-  type: text/javascript
-- src: /assets/js/scrollWatch.js
-  type: text/javascript
-- src: /assets/js/pageNav.js
+# - src: /assets/js/toggleColorMode.js
+#   type: text/javascript
+# - src: /assets/js/laCroix.js
+#   type: text/javascript
+# - src: /assets/js/scrollWatch.js
+#   type: text/javascript
+# - src: /assets/js/pageNav.js
+#   type: text/javascript
+- src: /assets/js/wizardUnicornNinja.js
   type: text/javascript

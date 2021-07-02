@@ -1,9 +1,9 @@
 {%- for script in site.data.scripts -%}
-{%- if page.url == "/" -%}
+<!-- {%- if page.url == "/" -%}
 {%- if script.src != "/assets/js/scrollWatch.js" %}
 <script src="{{ script.src }}" type="{{ script.type }}" async></script>
 {%- endif -%}
-{%- else -%}
+{%- else -%} -->
 <script src="{{ script.src }}" type="{{ script.type }}" async></script>
-{%- endif -%}
+<!-- {%- endif -%} -->
 {%- endfor -%}
