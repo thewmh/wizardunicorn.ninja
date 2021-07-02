@@ -1,3 +1,4 @@
+;(function() {
 let start_date = new Date("Sept 03, 2019 00:00:00");
 let day_diff = (Math.round(new Date().getTime() - start_date.getTime()) / 86400000).toFixed(0);
 let weekends = ((day_diff / 7).toFixed(0))*2;
@@ -19,3 +20,4 @@ if(la_croix_cans) {
         la_croix_cans.innerHTML += '<span id="'+i+'" class="la-croix-can"></span>';
     }
 }
+})();
