@@ -1,8 +1,15 @@
 'use strict';
+const gulp = require('gulp');
 const {dest, src, watch, series, parallel} = require('gulp');
+const clean = require('gulp-clean');``
 const concat = require('gulp-concat');
 const plumber = require('gulp-plumber');
 const terser = require('gulp-terser');
+
+function del() {
+  return src('./assets/js/wizardUnicornNinja.js', {read: false})
+    .pipe(clean())
+}
 
 // Transpile, concatenate and minify scripts
 function js() {
@@ -13,4 +20,4 @@ function js() {
       .pipe(dest('./assets/js', {sourcemaps: '.'}))
 }
 
-exports.js = js;
+exports.scripts = gulp.series(del, js);

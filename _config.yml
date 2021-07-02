@@ -28,7 +28,7 @@ plugins:
 sass:
   sass_dir: _sass
 
-exclude: [build, vendor, node_modules, dist, package-lock.json, package.json, postcss.config.js, tailwind.config.js, _posts, wizard, assets/js/laCroix.js, assets/js/pageNav.js, assets/js/scrollWatch.js, assets/js/toggleColorMode.js]
+exclude: [build, vendor, node_modules, dist, package-lock.json, package.json, postcss.config.js, tailwind.config.js, _posts, wizard, assets/js/laCroix.js, assets/js/pageNav.js, assets/js/scrollWatch.js, assets/js/toggleColorMode.js, gulpfile.js]
 
 webrick:
   headers:
