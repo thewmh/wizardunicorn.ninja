@@ -10,7 +10,7 @@ function js() {
       .pipe(plumber())
       .pipe(terser())
       .pipe(concat('wizardUnicornNinja.js'))
-      .pipe(dest('_site/assets/js', {sourcemaps: '.'}))
+      .pipe(dest('./assets/js', {sourcemaps: '.'}))
 }
 
 exports.js = js;

@@ -17,10 +17,10 @@
   "devDependencies": {},
   "scripts": {
     "serve": "bundle exec jekyll serve",
-    "build": "npm run build:jekyll",
+    "build": "npm run js && npm run build:jekyll",
     "build:jekyll": "JEKYLL_ENV=production bundle exec jekyll build --trace",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "js": "bundle exec gulp js"
+    "js": "gulp js"
   },
   "repository": {
     "type": "git",
