@@ -91,9 +91,46 @@
 
 <h3 id="introduction-1">Introduction</h3>
 
+<p>Our instructor for this workshop, Mike North, leads workshops at LinkedIn. He is also a tech lead on the frontend stack with a focus on TypeScript adoption. Great, but what is <a href="https://www.typescriptlang.org">TypeScript</a>?</p>
+
+<ul>
+  <li>An open-source <code class="language-plaintext highlighter-rouge">typed</code>, <code class="language-plaintext highlighter-rouge">syntactic superset</code> of JavaScript, developed by <strong>Microsoft</strong></li>
+  <li>Compiles to readable JavaScript</li>
+  <li>Comes in three parts: <code class="language-plaintext highlighter-rouge">Language</code>, <code class="language-plaintext highlighter-rouge">Language Server</code>, and <code class="language-plaintext highlighter-rouge">Compiler</code></li>
+  <li>Works seamlessly with <code class="language-plaintext highlighter-rouge">Babel 7</code></li>
+</ul>
+
+<p>The types in TypeScript ‘disappear’ in the final compiled JavaScript, so you can think of TypeScript as a static analysis tool that does a lot of checking on your codebase. This is good in some ways, bad in others. Good because there is no ‘cost’ at runtime, bad because a fetched data response or user input will have no type-checking. You can think of TypeScript as a ‘fancy’ linter or other static analysis tool that verifies everything looks good, but does not produce any output.</p>
+
+<p>Since the original edition of this workshop in 2017, there has been a +300% increase in TypeScript downloads, tying TypeScript’s downloads and prevalence of use with that of React.</p>
+
 <h3 id="rationale">Rationale</h3>
 
+<p>…why add types?</p>
+
+<ul>
+  <li>To encode constraints and assumptions, as part of developer intent</li>
+  <li>Catch common mistakes (i.e. incomplete refactors)</li>
+  <li>Move some runtime errors to compile time</li>
+  <li>Provide your consumers (including you) with a great DX (Developer Experience)</li>
+</ul>
+
 <h3 id="course-overview">Course Overview</h3>
+
+<p>We’re about to learn about:</p>
+
+<ul>
+  <li>Adding type information to variables, functions, and classes</li>
+  <li>Configuring the compiler</li>
+  <li>A practical strategy for incrementally converting JS to TS</li>
+  <li>Parameterizing interfaces and type aliases with generics</li>
+  <li>Conditional, mapped, and branded types</li>
+  <li>TS Compiler API Basics</li>
+</ul>
+
+<p>While we will not be covering every single facet of TypeScript and its capabilities, our instructors goal is to leave us with a great mental model of how to think about TypeScript. Configuring the compiler is important because it can be the difference between shrinking code by 70%, i.e. if we were building for IE6, the code would be much larger because there are less features available in that browser. In the compiler you can also set how strict the rules are. We’ll also get a peek under the ‘hood’ of TypeScript and gain an understanding of how TypeScript understands our code and how it splits it apart and represents our code in data structures.</p>
+
+<p>⚠ from here forward, the workshop will be working from the repository listed at the top of these notes. If you would like to follow along, and get the most out of the workshop, clone the repository and follow the installation instructions before proceeding ⚠️</p>
 
 <h3 id="flags">Flags</h3>
 
