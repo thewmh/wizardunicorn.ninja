@@ -2572,6 +2572,24 @@ reduce(addToRecord,{},[
 
 {% endhighlight %}
 
+The above implementation of reduce will take an array of tuples (an array with two values) and reduce them into an object where the first element of the tuple becomes the key and the second element of the array becomes the value. Notice the spread operator being used in the `addToRecord` function? Why would you want to effectively make a copy of the object every time instead of just adding the new key: value pair to the object? Because, in functional programming, we want to avoid mutation as much as possible. Here's the same code from above, but using JavaScript's built-in `reduce` method:
+
+{% highlight javascript %}
+
+function addToRecord(record, [key, value]) {
+  return { ...record, [key]: value };
+}
+
+[
+  [ "name", "Kyle" ],
+  [ "age", 39 ],
+  [ "isTeacher", true ]
+].reduce(addToRecord,{});
+
+// { name: "Kyle", age: 39, isTeacher: true }
+
+{% endhighlight %}
+
 
 
 ### Composition with Reduce
