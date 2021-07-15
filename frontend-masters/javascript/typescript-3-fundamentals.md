@@ -14,7 +14,7 @@ pagenav:
   - name: Classes
     href: classes
   - name: Converting to TypeScript
-    href: converting-typescript
+    href: converting-to-typescript
   - name: Generics
     href: generics
   - name: Top & Bottom Types
