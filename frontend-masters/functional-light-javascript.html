@@ -2348,6 +2348,20 @@
 
 <span class="c1">// { name: "Kyle", age: 39, isTeacher: true }</span></code></pre></figure>
 
+<p>The above implementation of reduce will take an array of tuples (an array with two values) and reduce them into an object where the first element of the tuple becomes the key and the second element of the array becomes the value. Notice the spread operator being used in the <code class="language-plaintext highlighter-rouge">addToRecord</code> function? Why would you want to effectively make a copy of the object every time instead of just adding the new key: value pair to the object? Because, in functional programming, we want to avoid mutation as much as possible. Here’s the same code from above, but using JavaScript’s built-in <code class="language-plaintext highlighter-rouge">reduce</code> method:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">addToRecord</span><span class="p">(</span><span class="nx">record</span><span class="p">,</span> <span class="p">[</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">])</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span> <span class="p">...</span><span class="nx">record</span><span class="p">,</span> <span class="p">[</span><span class="nx">key</span><span class="p">]:</span> <span class="nx">value</span> <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="p">[</span>
+  <span class="p">[</span> <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Kyle</span><span class="dl">"</span> <span class="p">],</span>
+  <span class="p">[</span> <span class="dl">"</span><span class="s2">age</span><span class="dl">"</span><span class="p">,</span> <span class="mi">39</span> <span class="p">],</span>
+  <span class="p">[</span> <span class="dl">"</span><span class="s2">isTeacher</span><span class="dl">"</span><span class="p">,</span> <span class="kc">true</span> <span class="p">]</span>
+<span class="p">].</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">addToRecord</span><span class="p">,{});</span>
+
+<span class="c1">// { name: "Kyle", age: 39, isTeacher: true }</span></code></pre></figure>
+
 <h3 id="composition-with-reduce">Composition with Reduce</h3>
 
 <h3 id="list-operations-exercise">List Operations Exercise</h3>
