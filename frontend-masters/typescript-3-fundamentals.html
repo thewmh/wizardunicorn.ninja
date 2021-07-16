@@ -87,6 +87,8 @@
 </div><div class="container mx-auto px-10 pb-4 max-w-screen-lg"><article class="mx-auto mt-8 dark:text-blueGray-50 unicorn:text-purple-700 break-words"><h1 class="text-5xl lg:text-8xl font-semibold">TypeScript 3 Fundamentals, v2</h1><p><a href="https://github.com/mike-works/typescript-fundamentals/tree/master">Link to the workshop repository</a>
 <a href="https://drive.google.com/file/d/170oHzpLNeprUa-TMmOAnSU4caEFDSb3e/view">Link to the workshop slides (presentation)</a></p>
 
+<p>Have TypeScript installed ? Continue to workshop : <code class="language-plaintext highlighter-rouge">npm install typescript -g</code></p>
+
 <h2 id="introduction">Introduction</h2>
 
 <h3 id="introduction-1">Introduction</h3>
@@ -134,7 +136,100 @@
 
 <h3 id="flags">Flags</h3>
 
+<p>Right… Hopefully you’ve read the little warning note above. If not, go read it now, we’re waiting…</p>
+
+<p>Now that you have the repository cloned and dependencies installed, take a look at <code class="language-plaintext highlighter-rouge">./examples/hello-ts/</code> because we are going to learn how to use the TypeScript compiler to turn TypeScript into JavaScript. Open up the <code class="language-plaintext highlighter-rouge">index.ts</code> file from the path just mentioned <code class="language-plaintext highlighter-rouge">./examples/hello-ts/src/index.ts</code>. In that file, you will see a couple of functions and then a ‘program’ that runs the functions. If for whatever reason you’ve refused to grab the repository or for some reason cannot, here’s the code from that file:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="cm">/**
+ * Create a promise that resolves after some time
+ * @param n number of milliseconds before promise resolves
+ */</span>
+<span class="kd">function</span> <span class="nx">timeout</span><span class="p">(</span><span class="nx">n</span><span class="p">:</span> <span class="nx">number</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span><span class="nx">res</span> <span class="o">=&gt;</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">res</span><span class="p">,</span> <span class="nx">n</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="cm">/**
+ * Add three numbers
+ * @param a first number
+ * @param b second
+ */</span>
+<span class="k">export</span> <span class="k">async</span> <span class="kd">function</span> <span class="nx">addNumbers</span><span class="p">(</span><span class="nx">a</span><span class="p">:</span> <span class="nx">number</span><span class="p">,</span> <span class="nx">b</span><span class="p">:</span> <span class="nx">number</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">await</span> <span class="nx">timeout</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">//== Run the program ==//</span>
+<span class="p">(</span><span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">await</span> <span class="nx">addNumbers</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span>
+<span class="p">})();</span></code></pre></figure>
+
+<p>The above code is pretty basic; there’s a promise that is basically a <code class="language-plaintext highlighter-rouge">setTimeout</code> wrapped in a promise, a function that adds two numbers, and the ‘run the program’ function. The instructor explains that this was chosen because it is using some modern syntax that is not supported by all browsers, and we should like to see some different ways of compiling the code to support whatever browsers we need. It is important that you are using VS Code for this workshop as it is the editor that is more or less built hand-in-hand with TypeScript. In the terminal, change directories to the example project <code class="language-plaintext highlighter-rouge">cd examples/hello-ts/</code>. Then we should run the TypeScript compiler on the <code class="language-plaintext highlighter-rouge">index.ts</code> file by typing <code class="language-plaintext highlighter-rouge">tsc src/index.ts</code> in the terminal. You should now have a file <code class="language-plaintext highlighter-rouge">index.js</code> in the <code class="language-plaintext highlighter-rouge">src</code> folder. Take a look at them side by side!</p>
+
+<p>You may notice that the file from the TypeScript compiler is significantly larger and hard to decipher, this is ES3 JavaScript! It will work in IE6, this is the default. By default the TypeScript compiler builds JavaScript that you can run basically anywhere. We can add a flag to the compiler command that will allow us to control the level at which the code is compiled, try:</p>
+
+<p><code class="language-plaintext highlighter-rouge">tsc src/index.ts --target ES2015</code></p>
+
+<p>You should see pretty immediately that the amount of code has been dramatically reduced. There is still some (extra) code that is there for compatibility reasons, but now you will see <code class="language-plaintext highlighter-rouge">Promise</code> remains as that is a part of ES6 / ES2015. You might also take not of the fact that async/await are non-existent as they were not a part of JavaScript at ES2015. Now try:</p>
+
+<p><code class="language-plaintext highlighter-rouge">tsc src/index.ts --target ES2017</code></p>
+
+<p>Boom! async / await are back! The only difference now between the <code class="language-plaintext highlighter-rouge">index.ts</code> and <code class="language-plaintext highlighter-rouge">index.js</code> files <em>should be</em> the parameter typing, i.e. <code class="language-plaintext highlighter-rouge">a: number</code> is just <code class="language-plaintext highlighter-rouge">a</code>. Try running the <code class="language-plaintext highlighter-rouge">index.js</code> file with node: <code class="language-plaintext highlighter-rouge">node src/index.js</code> — this should result in an error: <code class="language-plaintext highlighter-rouge">SyntaxError: Unexpected token exoprt</code> The reason for this is how node uses exports. The correct syntax should be <code class="language-plaintext highlighter-rouge">module.exports</code> not <code class="language-plaintext highlighter-rouge">export</code>. Node uses commonjs modules. To fix this issue, lets add another flag to the TypeScript compile command:</p>
+
+<p><code class="language-plaintext highlighter-rouge">tsc src/index.ts --target ES2017 --module commonjs</code></p>
+
+<p>You will see the <code class="language-plaintext highlighter-rouge">index.js</code> file from the compiler has been updated yet again. This time you can run <code class="language-plaintext highlighter-rouge">node src/index.js</code> and, after 500 milliseconds, you will see 7 print out in the console! If you add the ‘watch’ flag, the TypeScript compiler will continue to watch for changes in the source files, compiling them again whenever there are changes made:</p>
+
+<p><code class="language-plaintext highlighter-rouge">tsc src/index.ts --target ES2017 --module commonjs --watch</code></p>
+
 <h3 id="configuring-typescript">Configuring TypeScript</h3>
+
+<p>Having learned some flags and compiler commands is great, but do we have to type all that every time? Nope! Let’s get a configuration file set up! In the <code class="language-plaintext highlighter-rouge">hello-ts</code> folder, create a file called <code class="language-plaintext highlighter-rouge">tsconfig.json</code>. We’ll look at how to set that config file up in a moment. There are 2 things that you need to think about when configuring the compiler; First is defining which files are the inputs. You can do that by specifying a list of files, i.e. <code class="language-plaintext highlighter-rouge">"files": []</code> OR <code class="language-plaintext highlighter-rouge">"include": []</code> (which allows you to include files using ‘globs’ <code class="language-plaintext highlighter-rouge">*.ts</code>). The second to consider when setting up your config file is the compiler options, what are they? Well, the compiler options are basically the flags we saw in the last section but in a <code class="language-plaintext highlighter-rouge">"compilerOptions"</code> object in the <code class="language-plaintext highlighter-rouge">tsconfig.json</code> file. And if you are being a good person and are using VS Code as you’ve been asked to, you will get some helper text / suggestions for setting this file up! Once your config file is set up, you can simply run <code class="language-plaintext highlighter-rouge">tsc</code> and see the file(s) output according to your configuration file! Here’s what we ended up with for the <code class="language-plaintext highlighter-rouge">tsconfig.json</code>:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">{</span>
+  <span class="dl">"</span><span class="s2">compilerOptions</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">module</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">commonjs</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// this was previously a flag</span>
+    <span class="dl">"</span><span class="s2">target</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">es2017</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// this was previously a flag</span>
+    <span class="dl">"</span><span class="s2">outDir</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">lib</span><span class="dl">"</span> <span class="c1">// this is a new directory where we want our files to be output (TypeScript will make it for us, no need to create this directory ourselves)</span>
+  <span class="p">},</span>
+  <span class="dl">"</span><span class="s2">include</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span><span class="dl">"</span><span class="s2">src</span><span class="dl">"</span><span class="p">]</span> <span class="c1">// what files to include when compiling</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Now, with your new <code class="language-plaintext highlighter-rouge">tsconfig.json</code> file, you can type <code class="language-plaintext highlighter-rouge">tsc</code> in the terminal and you should now see a <code class="language-plaintext highlighter-rouge">lib</code> directory with <code class="language-plaintext highlighter-rouge">index.js</code> inside of it! 🔥</p>
+
+<p>Now we could push all this up to source control and deploy only our <code class="language-plaintext highlighter-rouge">lib</code> directory, which is great, but the <code class="language-plaintext highlighter-rouge">index.js</code> output file contains a lot of ‘type’ stuff that is maybe no longer relevant? Let’s add a couple more options to the <code class="language-plaintext highlighter-rouge">"compilerOptions"</code> object in the <code class="language-plaintext highlighter-rouge">tsconfig.json</code> file:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">{</span>
+  <span class="dl">"</span><span class="s2">compilerOptions</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="dl">"</span><span class="s2">declaration</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">sourceMap</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="p">},</span>
+  <span class="dl">"</span><span class="s2">include</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span><span class="dl">"</span><span class="s2">src</span><span class="dl">"</span><span class="p">]</span> <span class="c1">// what files to include when compiling</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Run the compiler again, <code class="language-plaintext highlighter-rouge">tsc</code>, and you should see a couple of new files pop up in the output directory <code class="language-plaintext highlighter-rouge">lib</code>. One of the files is <code class="language-plaintext highlighter-rouge">index.d.ts</code>, if you look at it, kind of looks like a function with no implementation. It is actually a type declaration file that is intended to layer on top of the JavaScript that it represents. If you are using a TypeScript aware code editor :cough:cough: VS Code :cough:cough: it will read this file and understand that this file is intended to be matched with your JavaScript and that the types declared within are meant to go along with the JavaScript code.</p>
+
+<p>The other (new) file is a sourcemap <code class="language-plaintext highlighter-rouge">index.js.map</code> which would allow us, if there were breakpoints in the code, map us back to the original TypeScript source. This gives the developer experience of debugging through TypeScript code when in fact that is not what is running, because what actually runs is JavaScript. Here is a more complex configuration to look at:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">{</span>
+  <span class="dl">"</span><span class="s2">compilerOptions</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">jsx</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// transforms JSX</span>
+    <span class="dl">"</span><span class="s2">strict</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="c1">// Enable "strict" features</span>
+    <span class="dl">"</span><span class="s2">sourceMap</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">noImplicitAny</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="c1">// forbid implicit any - ensures type safety</span>
+    <span class="dl">"</span><span class="s2">strictNullChecks</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">allowJs</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="c1">// check and compile JS</span>
+    <span class="dl">"</span><span class="s2">types</span><span class="dl">"</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="dl">"</span><span class="s2">experimentalDecorators</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">emitDecoratorMetadata</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">moduleResolution</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">node</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">target</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">es2015</span><span class="dl">"</span> <span class="c1">// target environment</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Q: How would your config look if you wanted to support IE11? Or no IE? (Using Babel)</p>
+
+<p>A: Have TypeScript emit very modern JavaScript and have Babel take it (the compilation) the rest of the way. You can leave your <code class="language-plaintext highlighter-rouge">"target"</code> as <code class="language-plaintext highlighter-rouge">"ESNext"</code>, and in the Babel configuration define whatever browsers you want/need to support.</p>
 
 <h2 id="typescript-basics">TypeScript Basics</h2>
 
