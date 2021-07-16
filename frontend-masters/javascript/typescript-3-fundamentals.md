@@ -188,11 +188,63 @@ A: Have TypeScript emit very modern JavaScript and have Babel take it (the compi
 
 ### Variables
 
+We made it through some basic configuration! Let's jump in to how to add types to modern JavaScript. We're about to cover:
 
+* (Simple) Variables
+* Arrays & Tuples - Ordered Data Structures (tuples are as specific kind of array)
+* Objects
+* Union & Intersection Types - The equivalent of AND / OR operators
+
+If you are following along with the repository code and VS Code, head on over to `./notes/1-basics.ts`. In there, you can hover over many different things and VS Code will give feedback about what is going on. I'm not going to post all of the code here, but basically, uncomment the various lines where there is code, then hover over the declarations and see what the code editor has to say about them. Here is one example:
+
+{% highlight javascript %}
+
+/**
+ * (1) x is a string, b/c we’ve initialized it
+ */
+// let x = "hello world"; // uncomment this line and hover over the 'x'
+
+{% endhighlight %}
+
+In the example above, when you uncomment the line of code and hover over the 'x', you will see `(1) x is a string, b/c we’ve initialized it`. In TypeScript, you do not have to explicitly assign a 'type' to everything. By assigning a value to a variable at declaration, a 'type' is inferred. It is in fact considered bad practice to assign a 'type' to every single thing because you then make your program extremely rigid, which is not good.
+
+Moving along... you can reassign the value of 'x' to another string, this causes no issues. But trying to reassign 'x' to anything other than a string will throw an error. TypeScript does not like that. Next up is dealing with `const`. Assigning a value to a variable declared with `const` will give that variable the 'type' of whatever value it has been assigned. In the example, `const y = "hello world";`, the 'type' of `y` is 'hello world'. This is known as a 'literal type', meaning that you are enumerating a specified value rather than a type.
+
+Q: When the code editor shows a tooltip, is that a feature of the code editors compatibility with TypeScript or is it a feature of TypeScript's compatibility with JSDoc?
+
+A: Kind of both. TypeScript can understand the comments and the language server is pushing that comment data up to us.
+
+With a `const` variable that is an object with properties, you can reassign the value of any property as long as the 'type' matches. i.e. you could have something like this:
+
+{% highlight javascript %}
+
+const obj = {
+  foo: 'hello'
+};
+
+obj.foo = 'good bye';
+
+{% endhighlight %}
 
 ### Variable Declarations
 
+Still in the `./notes/1-basics.ts` file, we're going to look at separating variable declarations and initializations (starting at line 32). A scenario where this could pop up is when the value of the variable may need to change according to a set of conditions; switch/case statement anyone? If you uncomment lines 35-37, then hover over the `z` on line 35, you will see that the 'z' has a type of any. This literally means that 'z' can take any value. This behavior is exactly like JavaScript, but kind of misses the point of using TypeScript. There are places where the 'any' type is valid to be used, and your goal is not to purge 'any' from your app, but to be certain that where it exists that you do in fact want to allow it to be 'any'.
 
+To avoid a variable declaration that has not been assigned a value being assigned the type of 'any', when you declare the variable, specify a type:
+
+{% highlight javascript %}
+
+let z: number;
+z = 41;
+z = 'string'; // this will throw an error
+
+{% endhighlight %}
+
+In the above example, `let z: number;` the `: number;` is what is known as a type annotation. The type annotation for a variable that has been declared but is unassigned will tell TypeScript what it is 'designed' to hold, in the above example, a number. The point is that if you have variable declarations that are not assigned a value, it is best to annotate them with a type.
+
+Q: In the TypeScript documentation, they usually have type annotation even when a variable is initialized with a value. Is this the recommended way, is it necessary?
+
+A: It is recommended to do it that way if you are writing docs, because you are being very descriptive in documentation. If you have a variable with an initializer, you do not need to provide a type annotation. We'll be very clear throughout the workshop the places where type information is absolutely necessary. This is a way of setting deliberate boundaries around pieces of code. 
 
 ### Arrays & Tuples
 
