@@ -491,13 +491,119 @@ export class Contact implements HasEmail {
 
 ### Access Modifiers & Initialization
 
-Continuing with the code from above, you can see that it is fairly verbose, with email and name being defined 3 times 😞 TypeScript has a shortcut for this called 'Parameter Properties', and to understand the shortcut, we also need to understand access modifiers; public, protected, and private. 
+Continuing with the code from above, you can see that it is fairly verbose, with email and name being defined 3 times 😞 TypeScript has a shortcut for this called 'Parameter Properties', and to understand the shortcut, we also need to understand access modifiers; public, protected, and private. Here are the access modifier definitions:
+
+* public - everyone 🎉
+* protected - self and subclasses
+* private - only self
+
+By utilizing the access modifiers, we can simplify the code from the previous section to look like this:
+
+{% highlight javascript %}
+
+class ParamPropContact implements HasEmail {
+  constructor(
+    public name: string,
+    public email: string = "no email") {
+    // nothing needed
+  }
+}
+
+{% endhighlight %}
+
+Using the `public` access modifier inside of the constructor tells it to expect to receive a specified property as an argument as well as to place it on the instance of the object it constructs. If we were to change any (or both) of the access modifiers to `protected`, the resulting object would have whichever of the properties have the `protected` unable to be read and it would also throw an error in TypeScript because the class would no longer conform to what the interface it is implementing.
+
+Class fields can have initializers, as seen above `string = "no email"`.
+
+Q: Does TypeScript infer a type if given a default value (to an initializer)?
+
+A: Yes... TypeScript will follow the same rules as we saw for variables, where if given an initial value, TypeScript will make a guess as to what the type should be.
+
+One additional access modifier(ish) method that you can use is `readonly` which will throw an error if you try to write to it. This `readonly` does nothing for us at build, in JavaScript, consumers of our code would have access to `readonly` properties, it is strictly a linting tool for authoring TypeScript.
 
 ### Definite Assignment & Lazy Initialization
 
+{% highlight javascript %}
 
+class OtherContact implements HasEmail, HasPhoneNumber {
+  protected age: number = 0;
+  private password: string;
+  constructor(public name: string, public email: string, public phone: number) {
+    // () password must either be initialized like this, or have a default value
+    this.password = Math.round(Math.random() * 1e14).toString(32);
+  }
+}
+
+{% endhighlight %}
+
+In the above code block, an initializer is being provided in another way. The `Math.round...` could be moved up as a property initializer, but the point is that it could be initialized in either place. If you comment out the `this.password...` line, TypeScript will throw an error message:
+
+"Property 'password' has no initializer and is not definitely assigned in the constructor."
+
+This is because `password` is expected, based on its type, to have a value that is of type string. One way to get around this would be to set its type as `string | undefined`. In this  way, `password` would be either a string or undefined. Another option, if we are 100% absolutely certain that we will have a condition met to then assign something to a property, is to use the definite assignment operator, which is an exclamation point `!`, which would then look like this: `private password!: string;`. We're basically telling TypeScript that it does not need to worry about this having an assignment, we'll take care of it, like for real for real.
+
+But where else would we maybe want to use the definite assignment operator? Have you used any of these? React, Ember, Angular, Polymer, or Vue? Do you directly instantiate components? i.e. `new ComponentName` then putting it directly in the DOM, or does the framework handle it for you? The framework handles it for you. There are often lifecycle hooks where you might be setting things up, setting up properties. In an early lifecycle hook, you might take care of putting a property such as password in place. It would be in this case, of using a framework, where you know that a property will be there, TypeScript is angry, but you want to let TypeScript know that it is going to be ok; the property that you are worried about will be there! Use the definite assignment initializer.
+
+The other option is to 'lazily' create the password like so:
+
+{% highlight javascript %}
+
+class OtherContact implements HasEmail, HasPhoneNumber {
+  protected age: number = 0;
+  private passwordVal: string | undefined;
+  constructor(public name: string, public email: string, public phone: number) {
+    // () password must either be initialized like this, or have a default value
+  }
+  get password(): string {
+    if(!this.passwordVal) {
+      this.passwordVal = Math.round(Math.random() * 1e14).toString(32);
+    }
+    return this.passwordVal;
+  }
+}
+
+{% endhighlight %}
 
 ### Abstract Classes
+
+Abstract classes cannot be instantiated directly, they just serve as base classes. Abstract classes can have implementations.
+
+{% highlight javascript %}
+
+abstract class AbstractContact implements HasEmail, HasPhoneNumber {
+  public abstract phone: number; // must be implemented by non-abstract subclasses
+
+  constructor(
+    public name: string,
+    public email: string // must be public to satisfy HasEmail
+  ) {}
+
+  abstract sendEmail(): void; // must be implemented by non-abstract subclasses
+}
+
+{% endhighlight %}
+
+In addition to the class itself being abstract, fields and methods can be abstract as well.
+
+Here is the implementation of the abstract class from above:
+
+{% highlight javascript %}
+
+class ConcreteContact extends AbstractContact {
+  constructor(
+    public phone: number, // must happen before non property-parameter arguments
+    name: string,
+    email: string
+  ) {
+    super(name, email);
+  }
+  sendEmail() {
+    // mandatory!
+    console.log("sending an email");
+  }
+}
+
+{% endhighlight %}
 
 ## Converting to TypeScript
 
