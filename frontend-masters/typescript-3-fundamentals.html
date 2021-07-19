@@ -494,11 +494,101 @@
 
 <h3 id="access-modifiers--initialization">Access Modifiers &amp; Initialization</h3>
 
-<p>Continuing with the code from above, you can see that it is fairly verbose, with email and name being defined 3 times 😞 TypeScript has a shortcut for this called ‘Parameter Properties’, and to understand the shortcut, we also need to understand access modifiers; public, protected, and private.</p>
+<p>Continuing with the code from above, you can see that it is fairly verbose, with email and name being defined 3 times 😞 TypeScript has a shortcut for this called ‘Parameter Properties’, and to understand the shortcut, we also need to understand access modifiers; public, protected, and private. Here are the access modifier definitions:</p>
+
+<ul>
+  <li>public - everyone 🎉</li>
+  <li>protected - self and subclasses</li>
+  <li>private - only self</li>
+</ul>
+
+<p>By utilizing the access modifiers, we can simplify the code from the previous section to look like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">class</span> <span class="nx">ParamPropContact</span> <span class="kr">implements</span> <span class="nx">HasEmail</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span>
+    <span class="kr">public</span> <span class="nx">name</span><span class="p">:</span> <span class="nx">string</span><span class="p">,</span>
+    <span class="kr">public</span> <span class="nx">email</span><span class="p">:</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">no email</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// nothing needed</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Using the <code class="language-plaintext highlighter-rouge">public</code> access modifier inside of the constructor tells it to expect to receive a specified property as an argument as well as to place it on the instance of the object it constructs. If we were to change any (or both) of the access modifiers to <code class="language-plaintext highlighter-rouge">protected</code>, the resulting object would have whichever of the properties have the <code class="language-plaintext highlighter-rouge">protected</code> unable to be read and it would also throw an error in TypeScript because the class would no longer conform to what the interface it is implementing.</p>
+
+<p>Class fields can have initializers, as seen above <code class="language-plaintext highlighter-rouge">string = "no email"</code>.</p>
+
+<p>Q: Does TypeScript infer a type if given a default value (to an initializer)?</p>
+
+<p>A: Yes… TypeScript will follow the same rules as we saw for variables, where if given an initial value, TypeScript will make a guess as to what the type should be.</p>
+
+<p>One additional access modifier(ish) method that you can use is <code class="language-plaintext highlighter-rouge">readonly</code> which will throw an error if you try to write to it. This <code class="language-plaintext highlighter-rouge">readonly</code> does nothing for us at build, in JavaScript, consumers of our code would have access to <code class="language-plaintext highlighter-rouge">readonly</code> properties, it is strictly a linting tool for authoring TypeScript.</p>
 
 <h3 id="definite-assignment--lazy-initialization">Definite Assignment &amp; Lazy Initialization</h3>
 
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">class</span> <span class="nx">OtherContact</span> <span class="kr">implements</span> <span class="nx">HasEmail</span><span class="p">,</span> <span class="nx">HasPhoneNumber</span> <span class="p">{</span>
+  <span class="kr">protected</span> <span class="nx">age</span><span class="p">:</span> <span class="nx">number</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="kr">private</span> <span class="nx">password</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="kr">public</span> <span class="nx">name</span><span class="p">:</span> <span class="nx">string</span><span class="p">,</span> <span class="kr">public</span> <span class="nx">email</span><span class="p">:</span> <span class="nx">string</span><span class="p">,</span> <span class="kr">public</span> <span class="nx">phone</span><span class="p">:</span> <span class="nx">number</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// () password must either be initialized like this, or have a default value</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">password</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1</span><span class="nx">e14</span><span class="p">).</span><span class="nx">toString</span><span class="p">(</span><span class="mi">32</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>In the above code block, an initializer is being provided in another way. The <code class="language-plaintext highlighter-rouge">Math.round...</code> could be moved up as a property initializer, but the point is that it could be initialized in either place. If you comment out the <code class="language-plaintext highlighter-rouge">this.password...</code> line, TypeScript will throw an error message:</p>
+
+<p>“Property ‘password’ has no initializer and is not definitely assigned in the constructor.”</p>
+
+<p>This is because <code class="language-plaintext highlighter-rouge">password</code> is expected, based on its type, to have a value that is of type string. One way to get around this would be to set its type as <code class="language-plaintext highlighter-rouge">string | undefined</code>. In this  way, <code class="language-plaintext highlighter-rouge">password</code> would be either a string or undefined. Another option, if we are 100% absolutely certain that we will have a condition met to then assign something to a property, is to use the definite assignment operator, which is an exclamation point <code class="language-plaintext highlighter-rouge">!</code>, which would then look like this: <code class="language-plaintext highlighter-rouge">private password!: string;</code>. We’re basically telling TypeScript that it does not need to worry about this having an assignment, we’ll take care of it, like for real for real.</p>
+
+<p>But where else would we maybe want to use the definite assignment operator? Have you used any of these? React, Ember, Angular, Polymer, or Vue? Do you directly instantiate components? i.e. <code class="language-plaintext highlighter-rouge">new ComponentName</code> then putting it directly in the DOM, or does the framework handle it for you? The framework handles it for you. There are often lifecycle hooks where you might be setting things up, setting up properties. In an early lifecycle hook, you might take care of putting a property such as password in place. It would be in this case, of using a framework, where you know that a property will be there, TypeScript is angry, but you want to let TypeScript know that it is going to be ok; the property that you are worried about will be there! Use the definite assignment initializer.</p>
+
+<p>The other option is to ‘lazily’ create the password like so:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">class</span> <span class="nx">OtherContact</span> <span class="kr">implements</span> <span class="nx">HasEmail</span><span class="p">,</span> <span class="nx">HasPhoneNumber</span> <span class="p">{</span>
+  <span class="kr">protected</span> <span class="nx">age</span><span class="p">:</span> <span class="nx">number</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="kr">private</span> <span class="nx">passwordVal</span><span class="p">:</span> <span class="nx">string</span> <span class="o">|</span> <span class="kc">undefined</span><span class="p">;</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="kr">public</span> <span class="nx">name</span><span class="p">:</span> <span class="nx">string</span><span class="p">,</span> <span class="kr">public</span> <span class="nx">email</span><span class="p">:</span> <span class="nx">string</span><span class="p">,</span> <span class="kr">public</span> <span class="nx">phone</span><span class="p">:</span> <span class="nx">number</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// () password must either be initialized like this, or have a default value</span>
+  <span class="p">}</span>
+  <span class="kd">get</span> <span class="nx">password</span><span class="p">():</span> <span class="nx">string</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">passwordVal</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">passwordVal</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1</span><span class="nx">e14</span><span class="p">).</span><span class="nx">toString</span><span class="p">(</span><span class="mi">32</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">passwordVal</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
 <h3 id="abstract-classes">Abstract Classes</h3>
+
+<p>Abstract classes cannot be instantiated directly, they just serve as base classes. Abstract classes can have implementations.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">abstract</span> <span class="kd">class</span> <span class="nx">AbstractContact</span> <span class="kr">implements</span> <span class="nx">HasEmail</span><span class="p">,</span> <span class="nx">HasPhoneNumber</span> <span class="p">{</span>
+  <span class="kr">public</span> <span class="nx">abstract</span> <span class="nx">phone</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span> <span class="c1">// must be implemented by non-abstract subclasses</span>
+
+  <span class="kd">constructor</span><span class="p">(</span>
+    <span class="kr">public</span> <span class="nx">name</span><span class="p">:</span> <span class="nx">string</span><span class="p">,</span>
+    <span class="kr">public</span> <span class="nx">email</span><span class="p">:</span> <span class="nx">string</span> <span class="c1">// must be public to satisfy HasEmail</span>
+  <span class="p">)</span> <span class="p">{}</span>
+
+  <span class="nx">abstract</span> <span class="nx">sendEmail</span><span class="p">():</span> <span class="k">void</span><span class="p">;</span> <span class="c1">// must be implemented by non-abstract subclasses</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>In addition to the class itself being abstract, fields and methods can be abstract as well.</p>
+
+<p>Here is the implementation of the abstract class from above:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">class</span> <span class="nx">ConcreteContact</span> <span class="kd">extends</span> <span class="nx">AbstractContact</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span>
+    <span class="kr">public</span> <span class="nx">phone</span><span class="p">:</span> <span class="nx">number</span><span class="p">,</span> <span class="c1">// must happen before non property-parameter arguments</span>
+    <span class="nx">name</span><span class="p">:</span> <span class="nx">string</span><span class="p">,</span>
+    <span class="nx">email</span><span class="p">:</span> <span class="nx">string</span>
+  <span class="p">)</span> <span class="p">{</span>
+    <span class="k">super</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">email</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nx">sendEmail</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// mandatory!</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">sending an email</span><span class="dl">"</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
 
 <h2 id="converting-to-typescript">Converting to TypeScript</h2>
 
