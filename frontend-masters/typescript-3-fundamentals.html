@@ -402,19 +402,99 @@
 
 <h3 id="type-aliases--extends">Type Aliases &amp; extends</h3>
 
+<p>We’re now moving on to <code class="language-plaintext highlighter-rouge">./notes/3-interface-type-basics.ts</code>. Open it. Look at it. Bask in it’s commented-out glory.</p>
+
+<p>Earlier there had been a question about the difference between interfaces and type aliases. Both interfaces and type aliases are ways of giving a structure a name that can be imported and exported from modules and referred to. The main benefit of this is having one, central place where a type is defined and used throughout a code base. Now we will look at both interfaces and aliases and compare / contrast them. We’ll look at Call, Construct, and Index Signatures. We’ll cover something called “Open interfaces” which is a way to augment types that you may import from another library. We’ll look at ‘Access modifier keywords’ which gives us control over who can see methods and instance data when it comes to classes. And finally, we’ll cover ‘Heritage clauses’ which is just another word for extends and implement (which is specific to TypeScript).</p>
+
+<p>Starting with type aliases, they are a very simple concept. A type alias is literally giving a type a name. Any type that you can use with a variable you can also create a type alias for. Type aliases are defined and ‘figured out’ by the (TypeScript) compiler in terms of what values are allowed, in-line as the file is parsed. This (compiler) behavior prevents you from creating self-referential types (see lines 14 &amp; 15). We will look at this a bit more closely later.</p>
+
+<p>We’ve already looked at interfaces, but let’s look at how interfaces can extend other interfaces, similar syntax to classes. <code class="language-plaintext highlighter-rouge">extends</code> is used for inheritance of like things; i.e. interfaces extend from interfaces as classes extend from classes. Here’s how <code class="language-plaintext highlighter-rouge">extend</code> looks:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">export</span> <span class="kr">interface</span> <span class="nx">HasInternationalPhoneNumber</span> <span class="kd">extends</span> <span class="nx">HasPhoneNumber</span> <span class="p">{</span>
+  <span class="nl">countryCode</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
 <h3 id="call--construct-signatures">Call &amp; Construct Signatures</h3>
+
+<p>In <code class="language-plaintext highlighter-rouge">./notes/3-interface-type-basics.ts</code> line 30.</p>
+
+<p>We can use interface to describe a call signature:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">interface</span> <span class="nx">ContactMessenger1</span> <span class="p">{</span>
+  <span class="p">(</span><span class="nx">contact</span><span class="p">:</span> <span class="nx">HasEmail</span> <span class="o">|</span> <span class="nx">HasPhoneNumber</span><span class="p">,</span> <span class="nx">message</span><span class="p">:</span> <span class="nx">string</span><span class="p">):</span> <span class="k">void</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The parenthesis above are being used to describe a function. Interfaces can describe objects, functions, and we’ll also see how interfaces can describe arrays. We’re dealing exclusively with JavaScript values that extend from the JavaScript object type. There is no way to describe primitive JavaScript types with an interface (string or number). Type aliases, unlike interfaces, can handle the primitives and everything that an interface can handle. A benefit of defining interfaces is that you don’t need type annotations all over the place:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">emailer</span><span class="p">:</span> <span class="nx">ContactMessenger1</span> <span class="o">=</span> <span class="p">(</span><span class="nx">_contact</span><span class="p">,</span> <span class="nx">_message</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="cm">/** ... */</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>The parameters <code class="language-plaintext highlighter-rouge">_contact</code> and <code class="language-plaintext highlighter-rouge">_message</code> will have their type defined by <code class="language-plaintext highlighter-rouge">ContactMessenger1</code>. Constructor signatures look very similar to (function) call signatures, with the <code class="language-plaintext highlighter-rouge">new</code> keyword in front of the parenthesis:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">interface</span> <span class="nx">ContactConstructor</span> <span class="p">{</span>
+  <span class="k">new</span> <span class="p">(...</span><span class="nx">args</span><span class="p">:</span> <span class="nx">any</span><span class="p">[]):</span> <span class="nx">HasEmail</span> <span class="o">|</span> <span class="nx">HasPhoneNumber</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
 
 <h3 id="dictionary-objects--index-signatures">Dictionary Objects &amp; Index Signatures</h3>
 
+<p>Starting at line 50 in <code class="language-plaintext highlighter-rouge">./notes/3-interface-type-basics.ts</code>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">inerface PhoneNumberDict</code> is an example of an Index Signature:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">interface</span> <span class="nx">PhoneNumberDict</span> <span class="p">{</span>
+  <span class="p">[</span><span class="nx">numberName</span><span class="p">:</span> <span class="nx">string</span><span class="p">]:</span>
+    <span class="o">|</span> <span class="kc">undefined</span>
+    <span class="o">|</span> <span class="p">{</span>
+        <span class="na">areaCode</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span>
+        <span class="nl">num</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span>
+      <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">phoneDict</span><span class="p">:</span> <span class="nx">PhoneNumberDict</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">office</span><span class="p">:</span> <span class="p">{</span> <span class="na">areaCode</span><span class="p">:</span> <span class="mi">321</span><span class="p">,</span> <span class="na">num</span><span class="p">:</span> <span class="mi">5551212</span> <span class="p">},</span>
+  <span class="na">home</span><span class="p">:</span> <span class="p">{</span> <span class="na">areaCode</span><span class="p">:</span> <span class="mi">321</span><span class="p">,</span> <span class="na">num</span><span class="p">:</span> <span class="mi">5550010</span> <span class="p">}</span> <span class="c1">// try editing me</span>
+<span class="p">};</span>
+
+<span class="c1">// at most, a type may have one string and one number index signature</span></code></pre></figure>
+
 <h3 id="combining-interfaces">Combining Interfaces</h3>
 
+<p>Index Signatures can be used in combination with other types AND they are considered to be ‘open’ meaning that any declarations of the same name will be merged. In <code class="language-plaintext highlighter-rouge">./notes/3-interface-type-basics.ts</code> lines 82-97, <code class="language-plaintext highlighter-rouge">interface PhoneNumberDict</code> has been augmented in a way where <code class="language-plaintext highlighter-rouge">home</code> and <code class="language-plaintext highlighter-rouge">office</code> numbers are required. This augmentation will be merged with the initial interface definition. The original interface definition for <code class="language-plaintext highlighter-rouge">PhoneNumberDict</code> is property agnostic in the sense that it only cares about the shape of the object and what the type of the key / value is. Augmenting that interface with additional typing allows us to ensure that we receive, and have type checked, an object with minimal key / value pairs (as defined by the interface), while also retaining the ability to type check any additional objects that get assigned to the object.</p>
+
+<p>The last thing to point out about interfaces is that they are parsed like functions. Type aliases are sorted eagerly whereas interfaces are sorted lazily. Interfaces, like functions, get hoisted and can therefore be used before they are defined. Through combining types and interfaces, you do have the ability to create self-referential, or recursive, types. Here’s an example of that from the type alias section we looked at earlier:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">type</span> <span class="nx">NumVal</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">|</span> <span class="mi">2</span> <span class="o">|</span> <span class="mi">3</span> <span class="o">|</span> <span class="nx">NumVal</span><span class="p">[];</span>
+<span class="kr">interface</span> <span class="nx">NumArr</span> <span class="kd">extends</span> <span class="nb">Array</span><span class="o">&lt;</span><span class="nx">NumVal</span><span class="o">&gt;</span> <span class="p">{}</span></code></pre></figure>
+
+<p>Self-referential types are actually available in TypeScript as of version 3.7! (As of these notes, TypeScript was at version 4.3.5).</p>
+
 <h3 id="type-tests">Type Tests</h3>
+
+<p>In TypeScript, you can write tests for types. Microsoft has a library called ‘dtslint’ which uses ‘tslint’ which parses the linting error messages and compares them against special comments that you can leave in your types. This allows you to write test cases around things that are purely types.</p>
+
+<p><a href="https://github.com/microsoft/dtslint">dtslint repository</a></p>
 
 <h2 id="classes">Classes</h2>
 
 <h3 id="classes-1">Classes</h3>
 
+<p>While you may be familiar with using classes in JavaScript, TypeScript adds some new concepts on top of what you’re used to (if you are familiar with classes in JavaScript…). The additions are, fields and access modifier keywords, which allow control over who can see member data and member functions on instances. Head on over to the <code class="language-plaintext highlighter-rouge">./notes/4-class-basics.ts</code> file and we’ll dive right in. Let’s look at this class:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">export</span> <span class="kd">class</span> <span class="nx">Contact</span> <span class="kr">implements</span> <span class="nx">HasEmail</span> <span class="p">{</span>
+  <span class="nl">email</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="nl">name</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="nx">name</span><span class="p">:</span> <span class="nx">string</span><span class="p">,</span> <span class="nx">email</span><span class="p">:</span> <span class="nx">string</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">email</span> <span class="o">=</span> <span class="nx">email</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p><code class="language-plaintext highlighter-rouge">implements</code> is one of the heritage clauses we heard about earlier; extends being the other. implements describes a class that aligns with a particular interface. The <code class="language-plaintext highlighter-rouge">HasEmail</code> interface (which we also saw earlier) has defined both an email and a name property with the type string and when using <code class="language-plaintext highlighter-rouge">implements</code>, we need to define, up-front, these same properties on a class that <code class="language-plaintext highlighter-rouge">implements</code> them.</p>
+
 <h3 id="access-modifiers--initialization">Access Modifiers &amp; Initialization</h3>
+
+<p>Continuing with the code from above, you can see that it is fairly verbose, with email and name being defined 3 times 😞 TypeScript has a shortcut for this called ‘Parameter Properties’, and to understand the shortcut, we also need to understand access modifiers; public, protected, and private.</p>
 
 <h3 id="definite-assignment--lazy-initialization">Definite Assignment &amp; Lazy Initialization</h3>
 
