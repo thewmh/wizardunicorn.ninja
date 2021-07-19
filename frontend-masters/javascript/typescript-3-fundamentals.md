@@ -371,31 +371,127 @@ Lexical scope in JavaScript determines what is the value of `this` when you invo
 
 ### Type Aliases & extends
 
+We're now moving on to `./notes/3-interface-type-basics.ts`. Open it. Look at it. Bask in it's commented-out glory.
 
+Earlier there had been a question about the difference between interfaces and type aliases. Both interfaces and type aliases are ways of giving a structure a name that can be imported and exported from modules and referred to. The main benefit of this is having one, central place where a type is defined and used throughout a code base. Now we will look at both interfaces and aliases and compare / contrast them. We'll look at Call, Construct, and Index Signatures. We'll cover something called "Open interfaces" which is a way to augment types that you may import from another library. We'll look at 'Access modifier keywords' which gives us control over who can see methods and instance data when it comes to classes. And finally, we'll cover 'Heritage clauses' which is just another word for extends and implement (which is specific to TypeScript).
+
+Starting with type aliases, they are a very simple concept. A type alias is literally giving a type a name. Any type that you can use with a variable you can also create a type alias for. Type aliases are defined and 'figured out' by the (TypeScript) compiler in terms of what values are allowed, in-line as the file is parsed. This (compiler) behavior prevents you from creating self-referential types (see lines 14 & 15). We will look at this a bit more closely later.
+
+We've already looked at interfaces, but let's look at how interfaces can extend other interfaces, similar syntax to classes. `extends` is used for inheritance of like things; i.e. interfaces extend from interfaces as classes extend from classes. Here's how `extend` looks:
+
+{% highlight javascript %}
+
+export interface HasInternationalPhoneNumber extends HasPhoneNumber {
+  countryCode: string;
+}
+
+{% endhighlight %}
 
 ### Call & Construct Signatures
 
+In `./notes/3-interface-type-basics.ts` line 30.
 
+We can use interface to describe a call signature:
+
+{% highlight javascript %}
+
+interface ContactMessenger1 {
+  (contact: HasEmail | HasPhoneNumber, message: string): void;
+}
+
+{% endhighlight %}
+
+The parenthesis above are being used to describe a function. Interfaces can describe objects, functions, and we'll also see how interfaces can describe arrays. We're dealing exclusively with JavaScript values that extend from the JavaScript object type. There is no way to describe primitive JavaScript types with an interface (string or number). Type aliases, unlike interfaces, can handle the primitives and everything that an interface can handle. A benefit of defining interfaces is that you don't need type annotations all over the place:
+
+{% highlight javascript %}
+
+const emailer: ContactMessenger1 = (_contact, _message) => {
+  /** ... */
+};
+
+{% endhighlight %}
+
+The parameters `_contact` and `_message` will have their type defined by `ContactMessenger1`. Constructor signatures look very similar to (function) call signatures, with the `new` keyword in front of the parenthesis:
+
+{% highlight javascript %}
+
+interface ContactConstructor {
+  new (...args: any[]): HasEmail | HasPhoneNumber;
+}
+
+{% endhighlight %}
 
 ### Dictionary Objects & Index Signatures
 
+Starting at line 50 in `./notes/3-interface-type-basics.ts`.
 
+`inerface PhoneNumberDict` is an example of an Index Signature:
+
+{% highlight javascript %}
+
+interface PhoneNumberDict {
+  [numberName: string]:
+    | undefined
+    | {
+        areaCode: number;
+        num: number;
+      };
+}
+
+const phoneDict: PhoneNumberDict = {
+  office: { areaCode: 321, num: 5551212 },
+  home: { areaCode: 321, num: 5550010 } // try editing me
+};
+
+// at most, a type may have one string and one number index signature
+
+{% endhighlight %}
 
 ### Combining Interfaces
 
+Index Signatures can be used in combination with other types AND they are considered to be 'open' meaning that any declarations of the same name will be merged. In `./notes/3-interface-type-basics.ts` lines 82-97, `interface PhoneNumberDict` has been augmented in a way where `home` and `office` numbers are required. This augmentation will be merged with the initial interface definition. The original interface definition for `PhoneNumberDict` is property agnostic in the sense that it only cares about the shape of the object and what the type of the key / value is. Augmenting that interface with additional typing allows us to ensure that we receive, and have type checked, an object with minimal key / value pairs (as defined by the interface), while also retaining the ability to type check any additional objects that get assigned to the object.
 
+The last thing to point out about interfaces is that they are parsed like functions. Type aliases are sorted eagerly whereas interfaces are sorted lazily. Interfaces, like functions, get hoisted and can therefore be used before they are defined. Through combining types and interfaces, you do have the ability to create self-referential, or recursive, types. Here's an example of that from the type alias section we looked at earlier:
+
+{% highlight javascript %}
+
+type NumVal = 1 | 2 | 3 | NumVal[];
+interface NumArr extends Array<NumVal> {}
+
+{% endhighlight %}
+
+Self-referential types are actually available in TypeScript as of version 3.7! (As of these notes, TypeScript was at version 4.3.5).
 
 ### Type Tests
+
+In TypeScript, you can write tests for types. Microsoft has a library called 'dtslint' which uses 'tslint' which parses the linting error messages and compares them against special comments that you can leave in your types. This allows you to write test cases around things that are purely types.
+
+[dtslint repository](https://github.com/microsoft/dtslint)
 
 ## Classes
 
 ### Classes
 
+While you may be familiar with using classes in JavaScript, TypeScript adds some new concepts on top of what you're used to (if you are familiar with classes in JavaScript...). The additions are, fields and access modifier keywords, which allow control over who can see member data and member functions on instances. Head on over to the `./notes/4-class-basics.ts` file and we'll dive right in. Let's look at this class:
 
+{% highlight javascript %}
+
+export class Contact implements HasEmail {
+  email: string;
+  name: string;
+  constructor(name: string, email: string) {
+    this.email = email;
+    this.name = name;
+  }
+}
+
+{% endhighlight %}
+
+`implements` is one of the heritage clauses we heard about earlier; extends being the other. implements describes a class that aligns with a particular interface. The `HasEmail` interface (which we also saw earlier) has defined both an email and a name property with the type string and when using `implements`, we need to define, up-front, these same properties on a class that `implements` them. 
 
 ### Access Modifiers & Initialization
 
-
+Continuing with the code from above, you can see that it is fairly verbose, with email and name being defined 3 times 😞 TypeScript has a shortcut for this called 'Parameter Properties', and to understand the shortcut, we also need to understand access modifiers; public, protected, and private. 
 
 ### Definite Assignment & Lazy Initialization
 
