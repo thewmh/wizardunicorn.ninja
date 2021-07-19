@@ -285,17 +285,116 @@
 
 <h3 id="arrays--tuples">Arrays &amp; Tuples</h3>
 
+<p>Starting at line 51 in <code class="language-plaintext highlighter-rouge">./notes/1-basics.ts</code>, let’s look at typing arrays in TypeScript. Consider the following:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">let</span> <span class="nx">aa</span><span class="p">:</span> <span class="nx">number</span><span class="p">[]</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="nx">aa</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">33</span><span class="p">);</span>
+<span class="nx">aa</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="dl">"</span><span class="s2">abc</span><span class="dl">"</span><span class="p">);</span> <span class="c1">// error!</span></code></pre></figure>
+
+<p>The array has been defined to be an array of numbers, pushing a number to that array is fine, pushing anything other than a number is not fine. If you remove <code class="language-plaintext highlighter-rouge">: number[]</code> from the variable declaration, we get a new error. Try it, then hover over the ‘aa’, you should see the <code class="language-plaintext highlighter-rouge">never</code> type next to the array brackets; <code class="language-plaintext highlighter-rouge">never[]</code>. TypeScript has prevented us from using this declaration at all 😞, which may be a good thing because we probably do not want an array of anythings. For array declarations that start out as empty, you do need to have a type annotation; <code class="language-plaintext highlighter-rouge">: number[]</code> for example. If you place a value in the array, TypeScript will be able to infer what type of value is allowed in the array.</p>
+
+<p>Now on lines 64-69 we are looking at tuples (Mike says tup-els, I’ve heard toop-els as well for pronunciations). Either way you say it, tuples are just a special type of array that have a fixed length:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">let</span> <span class="nx">bb</span><span class="p">:</span> <span class="p">[</span><span class="nx">number</span><span class="p">,</span> <span class="nx">string</span><span class="p">,</span> <span class="nx">string</span><span class="p">,</span> <span class="nx">number</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="mi">123</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">Fake Street</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">Nowhere, USA</span><span class="dl">"</span><span class="p">,</span>
+  <span class="mi">10110</span>
+<span class="p">];</span>
+
+<span class="nx">bb</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span> <span class="c1">// error bb[1] and bb[2] are set above to be type string</span></code></pre></figure>
+
+<p>One issue in the code block above is that you can actually use <code class="language-plaintext highlighter-rouge">.push</code> and get around the typing that has been defined. In general, array methods are not type-safe. There is actually no way to safely ‘type’ <code class="language-plaintext highlighter-rouge">.push</code>, it would require watching the type signature of the array and change the type check based on the state of the array. The only way to get a valid type check with tuples is to set everything at once which can then be checked as a whole.</p>
+
+<p>Q: If you did want to have an array that can be either a number or a string, how would you go about doing that?</p>
+
+<p>A: <code class="language-plaintext highlighter-rouge">(string | number)[]</code></p>
+
+<p>When creating tuples, things of fixed length i.e. a pair of numbers in an array, you are always going to specify the type you want and in the format you want; i.e. <code class="language-plaintext highlighter-rouge">const y: [number, number] = [1, 2];</code></p>
+
 <h3 id="object-types--interfaces">Object Types &amp; Interfaces</h3>
+
+<p>Object typing looks similar to object key/value pairs, but is instead key/type pairs. By default all object properties are mandatory. If you would like to make something in an object optional, you can use the optional operator (?) to do so. <code class="language-plaintext highlighter-rouge">let myObj: { key1: number; key2?: string };</code> If you want to re-use a type, you can create an ‘interface’ for it:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">interface</span> <span class="nx">Address</span> <span class="p">{</span>
+  <span class="nl">houseNum</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span>
+  <span class="nx">streetName</span><span class="p">?:</span> <span class="nx">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">let</span> <span class="nx">myThing</span><span class="p">:</span> <span class="nx">Address</span> <span class="o">=</span> <span class="p">{</span> <span class="na">houseNum</span><span class="p">:</span> <span class="mi">00</span> <span class="p">};</span></code></pre></figure>
+
+<p>We’ll cover interface more later.</p>
 
 <h3 id="intersection--union-types">Intersection &amp; Union Types</h3>
 
+<p>Intersection Types - <code class="language-plaintext highlighter-rouge">./notes/1-basics.ts</code> lines 120 - 141</p>
+
+<p>At the section in the file listed above, there have been two types of interfaces created, <code class="language-plaintext highlighter-rouge">HasPhoneNumber</code> &amp; <code class="language-plaintext highlighter-rouge">HasEmail</code>. The interfaces share the <code class="language-plaintext highlighter-rouge">name</code> property, then have a phone or email property respectively. Lines 132 - 143 is going to ‘randomly’ initialize the <code class="language-plaintext highlighter-rouge">contactInfo</code> object where it will be set as either <code class="language-plaintext highlighter-rouge">HasEmail</code> or <code class="language-plaintext highlighter-rouge">HasPhoneNumber</code> depending on the outcome of <code class="language-plaintext highlighter-rouge">Math.random()</code>. Once the function ‘sets up’ the <code class="language-plaintext highlighter-rouge">contactInfo</code> variable, only the <code class="language-plaintext highlighter-rouge">.name</code> property is accessible, because that is the only property that is guaranteed to be there.</p>
+
+<p>Union Types - <code class="language-plaintext highlighter-rouge">./notes/1-basics.ts</code> lines 150 - 160</p>
+
+<p>Union types use the <code class="language-plaintext highlighter-rouge">&amp;</code> operator to define a variable who’s shape contains all of the properties of whatever is included between the objects declared. <code class="language-plaintext highlighter-rouge">let otherContactInfo: HasEmail &amp; HasPhoneNumber</code> would require <code class="language-plaintext highlighter-rouge">otherContactInfo</code> to have a name, phone, and email property. Unlike the Intersection type, Union guarantees that the result will have all of the properties and they are therefore all accessible.</p>
+
 <h3 id="type-systems--object-shapes">Type Systems &amp; Object Shapes</h3>
+
+<p>Type Systems come down to the idea of Type Equivalence. We’ve already seen this when looking at some of the error messages. In nominal type systems, Java and many others, type equivalence is determined based on whether an input to a function is an instance of a class/type named the same as its definition; i.e.:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">validateInputField</span><span class="p">(</span><span class="nx">input</span><span class="p">:</span> <span class="nx">HTMLInputElement</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c">&lt;!--</span>  <span class="o">--&gt;</span>
+<span class="p">}</span>
+
+<span class="nx">validateInputField</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span> <span class="c1">// the nominal type system will check whether 'x' can be regarded as 'HTMLInputElement'</span></code></pre></figure>
+
+<p>Nominal Type Systems require your code to be set up in an Object Oriented way, where you have constructors and you are dealing primarily with instances of classes. JavaScript code is not necessarily written this way. TypeScript is a Structural Type System which only cares about the shape of an object. Shape? Yes, shape refers to the names of properties and types of their values. Not only is shape and keeping it consistent important to TypeScript, but in JavaScript, avoiding introducing new properties to objects, you have a better shot at JavaScript runtimes, like V8, being able to optimize your code.</p>
+
+<p>TypeScript uses the terms, wider and narrower to describe a level of specificity. In order of widest to narrowest, <code class="language-plaintext highlighter-rouge">any</code>, <code class="language-plaintext highlighter-rouge">any[]</code>, <code class="language-plaintext highlighter-rouge">string[]</code>, <code class="language-plaintext highlighter-rouge">[string, string, string]</code>, <code class="language-plaintext highlighter-rouge">["abc", "def", string]</code>, <code class="language-plaintext highlighter-rouge">never</code>. Wide is very general (<code class="language-plaintext highlighter-rouge">any</code>) while narrow is extremely specific. <code class="language-plaintext highlighter-rouge">never</code> is the narrowest level of specificity as it can literally hold no value.</p>
 
 <h3 id="functions">Functions</h3>
 
+<p>You are now commanded to look at this file <code class="language-plaintext highlighter-rouge">./notes/2-function-basics.ts</code>.</p>
+
+<p>Uncomment lines 6-11 (the entire <code class="language-plaintext highlighter-rouge">sendEmail</code> function declaration) and hover over <code class="language-plaintext highlighter-rouge">HasEmail</code>. If you are on a mac, you can ‘command + click’ <code class="language-plaintext highlighter-rouge">HasEmail</code> and you will be taken to the interface definition for <code class="language-plaintext highlighter-rouge">HasEmail</code>. Here’s the <code class="language-plaintext highlighter-rouge">sendEmail</code> function definition:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">sendEmail</span><span class="p">(</span><span class="nx">to</span><span class="p">:</span> <span class="nx">HasEmail</span><span class="p">):</span> <span class="p">{</span> <span class="nl">recipient</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span> <span class="nl">body</span><span class="p">:</span> <span class="nx">string</span> <span class="p">}</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="na">recipient</span><span class="p">:</span> <span class="s2">`</span><span class="p">${</span><span class="nx">to</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="s2"> &lt;</span><span class="p">${</span><span class="nx">to</span><span class="p">.</span><span class="nx">email</span><span class="p">}</span><span class="s2">&gt;`</span><span class="p">,</span> <span class="c1">// Mike &lt;mike@example.com&gt;</span>
+    <span class="na">body</span><span class="p">:</span> <span class="dl">"</span><span class="s2">You're pre-qualified for a loan!</span><span class="dl">"</span>
+  <span class="p">};</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The <code class="language-plaintext highlighter-rouge">{ recipient: string; body: string }</code> is the typing for the return object. Lines 13 - 21  show the arrow-function variant. Return types can also be inferred rather than explicitly defined (lines 23 - 38). If you uncomment those lines and hover over the function name; <code class="language-plaintext highlighter-rouge">getNameParts</code>, you will see the inferred return values: <code class="language-plaintext highlighter-rouge">first: string; middle: string | undefined; last: string;</code> It is important to be intentional in what you are returning from functions and to make sure that the shape of the data your are returning is consistent. Rest parameters work as expected, but the type has to be array-like, because it will be consumed like an array.</p>
+
 <h3 id="function-signature-overloading">Function Signature Overloading</h3>
 
+<table>
+  <tbody>
+    <tr>
+      <td>To understand what is meant by function signature overloading, first check out / uncomment lines (14-21, 53-62, 65, 68, 71). 14-21 are a function that is referenced in 53-62, 65, 68, and 71 are calling the function from lines 53-62. In the <code class="language-plaintext highlighter-rouge">contactPeople</code> function, there are two OR conditions; “email”</td>
+      <td>“phone” and then selecting an object type based on that. The immediate issue is that either “email” OR “phone” are allowed to have either object type, but each object type is actually specific to either of the methods; “email” to <code class="language-plaintext highlighter-rouge">HasEmail</code> and “phone” to <code class="language-plaintext highlighter-rouge">HasPhoneNumber</code>. So we need a way to define that “email” only allows <code class="language-plaintext highlighter-rouge">HasEmail</code> and “phone” only allows <code class="language-plaintext highlighter-rouge">HasPhoneNumber</code>. Uncomment lines 49 &amp; 50, then check line 71; there is now an error: <code class="language-plaintext highlighter-rouge">No overload matches this call.</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Q: With the function signature overload defined, could you then remove the typing from within the actual function definition?</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>A: Yes… but you’d then be removing any type of ‘type safety’, which would be bad for the purpose of maintaining the function. You might make the typing a bit more general if you needed to have more than 2 signature overload definitions; i.e. use <code class="language-plaintext highlighter-rouge">string</code> instead of “email”</td>
+      <td>“phone”</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Q: So the overload signature is a documentation strategy?</p>
+
+<p>A: No. It has documentation benefits but not only this. Overloading signatures also has type checking ramifications. More than providing tooltips, TypeScript is actually greenlighting certain styles of (function) invocation and forbidding anything else that does not fit.</p>
+
 <h3 id="lexical-scope">Lexical Scope</h3>
+
+<p><code class="language-plaintext highlighter-rouge">./notes/2-function-basics.ts</code> lines 75-101</p>
+
+<p>Lexical scope in JavaScript determines what is the value of <code class="language-plaintext highlighter-rouge">this</code> when you invoke a function. The <code class="language-plaintext highlighter-rouge">sendMessage</code> function has its <code class="language-plaintext highlighter-rouge">this</code> set to the union type of <code class="language-plaintext highlighter-rouge">HasEmail</code> and <code class="language-plaintext highlighter-rouge">HasPhoneNumber</code>; an object with name, phone, and email properties. On line 87 an object <code class="language-plaintext highlighter-rouge">c</code> is created that matches the union type. Lines 89-91 defines a function that will ‘destroy’ the <code class="language-plaintext highlighter-rouge">this</code> binding, which can be seen on line 94, the conditions are not met and we see an error. Two ways to fix the binding (which we intentionally broke) are to <code class="language-plaintext highlighter-rouge">bind</code> the object to the function (line 97), or to <code class="language-plaintext highlighter-rouge">apply</code> the object to the function (line 102). You might not run into this very often, but if you do, now you know EVERYTHING you would ever need to know about functions.</p>
 
 <h2 id="interfaces--type-aliases">Interfaces &amp; Type Aliases</h2>
 
