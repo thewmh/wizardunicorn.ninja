@@ -396,6 +396,8 @@
 
 <p>Lexical scope in JavaScript determines what is the value of <code class="language-plaintext highlighter-rouge">this</code> when you invoke a function. The <code class="language-plaintext highlighter-rouge">sendMessage</code> function has its <code class="language-plaintext highlighter-rouge">this</code> set to the union type of <code class="language-plaintext highlighter-rouge">HasEmail</code> and <code class="language-plaintext highlighter-rouge">HasPhoneNumber</code>; an object with name, phone, and email properties. On line 87 an object <code class="language-plaintext highlighter-rouge">c</code> is created that matches the union type. Lines 89-91 defines a function that will ‘destroy’ the <code class="language-plaintext highlighter-rouge">this</code> binding, which can be seen on line 94, the conditions are not met and we see an error. Two ways to fix the binding (which we intentionally broke) are to <code class="language-plaintext highlighter-rouge">bind</code> the object to the function (line 97), or to <code class="language-plaintext highlighter-rouge">apply</code> the object to the function (line 102). You might not run into this very often, but if you do, now you know EVERYTHING you would ever need to know about functions.</p>
 
+<p><a href="https://www.typescriptlang.org/docs/handbook/2/functions.html#declaring-this-in-a-function">As of these notes, here’s the latest TypeScript documentation about <code class="language-plaintext highlighter-rouge">this</code></a></p>
+
 <h2 id="interfaces--type-aliases">Interfaces &amp; Type Aliases</h2>
 
 <h3 id="type-aliases--extends">Type Aliases &amp; extends</h3>
