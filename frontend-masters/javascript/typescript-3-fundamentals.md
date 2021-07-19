@@ -248,31 +248,122 @@ A: It is recommended to do it that way if you are writing docs, because you are 
 
 ### Arrays & Tuples
 
+Starting at line 51 in `./notes/1-basics.ts`, let's look at typing arrays in TypeScript. Consider the following:
 
+{% highlight javascript %}
+
+let aa: number[] = [];
+aa.push(33);
+aa.push("abc"); // error!
+
+{% endhighlight %}
+
+The array has been defined to be an array of numbers, pushing a number to that array is fine, pushing anything other than a number is not fine. If you remove `: number[]` from the variable declaration, we get a new error. Try it, then hover over the 'aa', you should see the `never` type next to the array brackets; `never[]`. TypeScript has prevented us from using this declaration at all 😞, which may be a good thing because we probably do not want an array of anythings. For array declarations that start out as empty, you do need to have a type annotation; `: number[]` for example. If you place a value in the array, TypeScript will be able to infer what type of value is allowed in the array.
+
+Now on lines 64-69 we are looking at tuples (Mike says tup-els, I've heard toop-els as well for pronunciations). Either way you say it, tuples are just a special type of array that have a fixed length:
+
+{% highlight javascript %}
+
+let bb: [number, string, string, number] = [
+  123,
+  "Fake Street",
+  "Nowhere, USA",
+  10110
+];
+
+bb = [1, 2, 3]; // error bb[1] and bb[2] are set above to be type string
+
+{% endhighlight %}
+
+One issue in the code block above is that you can actually use `.push` and get around the typing that has been defined. In general, array methods are not type-safe. There is actually no way to safely 'type' `.push`, it would require watching the type signature of the array and change the type check based on the state of the array. The only way to get a valid type check with tuples is to set everything at once which can then be checked as a whole.
+
+Q: If you did want to have an array that can be either a number or a string, how would you go about doing that?
+
+A: `(string | number)[]`
+
+When creating tuples, things of fixed length i.e. a pair of numbers in an array, you are always going to specify the type you want and in the format you want; i.e. `const y: [number, number] = [1, 2];`
 
 ### Object Types & Interfaces
 
+Object typing looks similar to object key/value pairs, but is instead key/type pairs. By default all object properties are mandatory. If you would like to make something in an object optional, you can use the optional operator (?) to do so. `let myObj: { key1: number; key2?: string };` If you want to re-use a type, you can create an 'interface' for it:
 
+{% highlight javascript %}
+
+interface Address {
+  houseNum: number;
+  streetName?: string;
+}
+
+let myThing: Address = { houseNum: 00 };
+
+{% endhighlight %}
+
+We'll cover interface more later. 
 
 ### Intersection & Union Types
 
+Intersection Types - `./notes/1-basics.ts` lines 120 - 141
 
+At the section in the file listed above, there have been two types of interfaces created, `HasPhoneNumber` & `HasEmail`. The interfaces share the `name` property, then have a phone or email property respectively. Lines 132 - 143 is going to 'randomly' initialize the `contactInfo` object where it will be set as either `HasEmail` or `HasPhoneNumber` depending on the outcome of `Math.random()`. Once the function 'sets up' the `contactInfo` variable, only the `.name` property is accessible, because that is the only property that is guaranteed to be there.
+
+Union Types - `./notes/1-basics.ts` lines 150 - 160
+
+Union types use the `&` operator to define a variable who's shape contains all of the properties of whatever is included between the objects declared. `let otherContactInfo: HasEmail & HasPhoneNumber` would require `otherContactInfo` to have a name, phone, and email property. Unlike the Intersection type, Union guarantees that the result will have all of the properties and they are therefore all accessible. 
 
 ### Type Systems & Object Shapes
 
+Type Systems come down to the idea of Type Equivalence. We've already seen this when looking at some of the error messages. In nominal type systems, Java and many others, type equivalence is determined based on whether an input to a function is an instance of a class/type named the same as its definition; i.e.:
 
+{% highlight javascript %}
+
+function validateInputField(input: HTMLInputElement) {
+  <!--  -->
+}
+
+validateInputField(x); // the nominal type system will check whether 'x' can be regarded as 'HTMLInputElement'
+
+{% endhighlight %}
+
+Nominal Type Systems require your code to be set up in an Object Oriented way, where you have constructors and you are dealing primarily with instances of classes. JavaScript code is not necessarily written this way. TypeScript is a Structural Type System which only cares about the shape of an object. Shape? Yes, shape refers to the names of properties and types of their values. Not only is shape and keeping it consistent important to TypeScript, but in JavaScript, avoiding introducing new properties to objects, you have a better shot at JavaScript runtimes, like V8, being able to optimize your code.
+
+TypeScript uses the terms, wider and narrower to describe a level of specificity. In order of widest to narrowest, `any`, `any[]`, `string[]`, `[string, string, string]`, `["abc", "def", string]`, `never`. Wide is very general (`any`) while narrow is extremely specific. `never` is the narrowest level of specificity as it can literally hold no value. 
 
 ### Functions
 
+You are now commanded to look at this file `./notes/2-function-basics.ts`.
 
+Uncomment lines 6-11 (the entire `sendEmail` function declaration) and hover over `HasEmail`. If you are on a mac, you can 'command + click' `HasEmail` and you will be taken to the interface definition for `HasEmail`. Here's the `sendEmail` function definition:
+
+{% highlight javascript %}
+
+function sendEmail(to: HasEmail): { recipient: string; body: string } {
+  return {
+    recipient: `${to.name} <${to.email}>`, // Mike <mike@example.com>
+    body: "You're pre-qualified for a loan!"
+  };
+}
+
+{% endhighlight %}
+
+The `{ recipient: string; body: string }` is the typing for the return object. Lines 13 - 21  show the arrow-function variant. Return types can also be inferred rather than explicitly defined (lines 23 - 38). If you uncomment those lines and hover over the function name; `getNameParts`, you will see the inferred return values: `first: string; middle: string | undefined; last: string;` It is important to be intentional in what you are returning from functions and to make sure that the shape of the data your are returning is consistent. Rest parameters work as expected, but the type has to be array-like, because it will be consumed like an array.
 
 ### Function Signature Overloading
 
+To understand what is meant by function signature overloading, first check out / uncomment lines (14-21, 53-62, 65, 68, 71). 14-21 are a function that is referenced in 53-62, 65, 68, and 71 are calling the function from lines 53-62. In the `contactPeople` function, there are two OR conditions; "email" | "phone" and then selecting an object type based on that. The immediate issue is that either "email" OR "phone" are allowed to have either object type, but each object type is actually specific to either of the methods; "email" to `HasEmail` and "phone" to `HasPhoneNumber`. So we need a way to define that "email" only allows `HasEmail` and "phone" only allows `HasPhoneNumber`. Uncomment lines 49 & 50, then check line 71; there is now an error: `No overload matches this call.`
 
+Q: With the function signature overload defined, could you then remove the typing from within the actual function definition?
+
+A: Yes... but you'd then be removing any type of 'type safety', which would be bad for the purpose of maintaining the function. You might make the typing a bit more general if you needed to have more than 2 signature overload definitions; i.e. use `string` instead of "email" | "phone"
+
+Q: So the overload signature is a documentation strategy?
+
+A: No. It has documentation benefits but not only this. Overloading signatures also has type checking ramifications. More than providing tooltips, TypeScript is actually greenlighting certain styles of (function) invocation and forbidding anything else that does not fit. 
 
 ### Lexical Scope
 
+`./notes/2-function-basics.ts` lines 75-101
 
+Lexical scope in JavaScript determines what is the value of `this` when you invoke a function. The `sendMessage` function has its `this` set to the union type of `HasEmail` and `HasPhoneNumber`; an object with name, phone, and email properties. On line 87 an object `c` is created that matches the union type. Lines 89-91 defines a function that will 'destroy' the `this` binding, which can be seen on line 94, the conditions are not met and we see an error. Two ways to fix the binding (which we intentionally broke) are to `bind` the object to the function (line 97), or to `apply` the object to the function (line 102). You might not run into this very often, but if you do, now you know EVERYTHING you would ever need to know about functions.
 
 ## Interfaces & Type Aliases
 
