@@ -365,6 +365,8 @@ A: No. It has documentation benefits but not only this. Overloading signatures a
 
 Lexical scope in JavaScript determines what is the value of `this` when you invoke a function. The `sendMessage` function has its `this` set to the union type of `HasEmail` and `HasPhoneNumber`; an object with name, phone, and email properties. On line 87 an object `c` is created that matches the union type. Lines 89-91 defines a function that will 'destroy' the `this` binding, which can be seen on line 94, the conditions are not met and we see an error. Two ways to fix the binding (which we intentionally broke) are to `bind` the object to the function (line 97), or to `apply` the object to the function (line 102). You might not run into this very often, but if you do, now you know EVERYTHING you would ever need to know about functions.
 
+[As of these notes, here's the latest TypeScript documentation about `this`](https://www.typescriptlang.org/docs/handbook/2/functions.html#declaring-this-in-a-function)
+
 ## Interfaces & Type Aliases
 
 ### Type Aliases & extends
