@@ -874,13 +874,58 @@ export function getVcardText(contact: Person, date = new Date()) {
 
 Q: I accidentally added commas instead of semicolons when writing out my interface and it seemed like those are fine to use?
 
-A: Yes, you can use commas between key / type pairs in interface definitions.
+A: Yes, you can use commas between key / type pairs in interface definitions, the reason (the instructor prefers) to use them would be to more readily be able to identify that they are key / type pairs, not key / value pairs.
 
 ## Generics
 
 ### Generics
 
+Generics parameterize types in the same way that functions parameterize values. Let's look at when it is appropriate to use a generic, the ins and outs of type parameters in general, and how to constrain type parameters so that you have what you need to have type safety in a function and the surrounding environment is 'happy' (i.e. tests pass / compiler is not YELLING at you) as well.
 
+Open `./notes/5-generics-basics.ts`. We'll be working from there. Looking at the first function `wrappedValue`:
+
+{% highlight javascript %}
+
+// param determines the value of x
+function wrappedValue(x: any) {
+  return {
+    value: x
+  };
+}
+
+{% endhighlight %}
+
+In the above code, whatever is passed into `wrappedValue` as an argument will determine the value of `x`. We could also create a type that functions similar to the `wrappedValue` function:
+
+{% highlight javascript %}
+
+// type param determines the type of x
+interface WrappedValue<X> {
+  value: X;
+}
+
+let val: WrappedValue<string[]> = { value: [] };
+val.value;
+
+{% endhighlight %}
+
+Setting `val` to the generic type `WrappedValue` and passing in a 'string array' will give `val.value` that same type. You can name the type parameters whatever you want, the `X` could be `SuperAwesomeParameterName`. It doesn't matter, it's almost like an argument passed to a function. However, the (TypeScript) convention is to start with the letter `T` and use capital letters like 'T', 'U', 'V', 'S', or 'R'. This naming convention is a carryover from C++ which uses template parameters that are conceptually identical to what we are seeing here. Cool.
+
+If we were using something like the array filter method, we could type a function that would appropriately filter based on the types of things that might be in the array. i.e. if we were filtering through an array of strings, to remove any empty string we found, we would want our filtering function 
+to take a string as an argument and return a boolean. Like so:
+
+{% highlight javascript %}
+
+// for Array.prototype.filter
+interface FilterFunction<T = any> {
+  (val: T): boolean;
+}
+
+const stringFilter: FilterFunction<string> = val => typeof val === "string";
+stringFilter(0); // 🚨 ERROR
+stringFilter("abc"); // ✅ OK
+
+{% endhighlight %}
 
 ### Type Parameters
 
