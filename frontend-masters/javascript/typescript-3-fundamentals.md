@@ -609,23 +609,156 @@ class ConcreteContact extends AbstractContact {
 
 ### Converting to TypeScript
 
+Let's step outside of the world of code for a moment and get into a delicious recipe: "How to convert JavaScript to TypeScript" 🤔 never mind... that does not sound very tasty. One of the great things about TypeScript is that it can inter-operate with JavaScript very easily, you can have JS and TS modules side-by-side. We should not treat a code base transition from JavaScript to TypeScript as the same kind of change that would result from changing from one programming language to something totally unrelated. i.e. rewriting something from Ruby to Rust. We are going to walk through a step-by-step process so that this change can be made incrementally on a few files at a time. Before we talk about what to do, lets look at what NOT to do:
 
+* Functional changes at the same time - i.e. don't change from checking whether a value is truthy or not to a typeof check
+* Attempt with low test coverage - you need to be able to confirm whether the code still works the way you want it to work
+* Let perfect be the enemy of good - don't try to type things too strongly too early on
+* Forget to add tests for types - `dtslint` is your friend here
+* Publish types for consumer use while they are in a weak state - wait until you are completely happy with your types before publishing them
 
 ### Compiling in "loose mode"
 
+Step one of the "How to convert JavaScript to TypeScript" recipe is as follows:
 
+* Start with tests passing
+* Rename all `.js` to `.ts` allowing implicit `any` - for whenever the TypeScript compiler is unable to infer any of the types; i.e. function arguments might be primary culprits here
+* Fix only the things that are not type-checking or causing compile errors - JavaScript classes are a common culprit here, because in TypeScript you have to state the fields and their types
+* Be careful to avoid changing behavior
+* Get tests passing again
+
+Submit PR.
 
 ### Making Anys Explicit
 
+Step two of the "How to convert JavaScript to TypeScript" recipe is as follows:
 
+* Start with tests passing
+* Ban implicit any ("noImplicitAny": true,) - this will cause TypeScript to throw an error whenever is unable to infer the type of something, instead of falling back to `any`
+* Where possible, provide a specific and appropriate type
+  * Import types for dependencies from `DefinitelyTyped` - `DefinitelyTyped` is an open source project that provides ambient type information for your project's dependencies
+  * otherwise explicit `any` - via type annotation
+* Get tests passing again
+
+Submit PR.
 
 ### Strict Mode
 
+Step three of the "How to convert JavaScript to TypeScript" recipe is as follows:
 
+* Incrementally, in small chunks...
+* Enable strict mode: 
+    {
+      ...
+      "strictNullChecks": true, // the only value that can be null is null
+      "strict": true, // strictness settings
+      "strictFunctionTypes": true, // validates arguments and return callback types
+      "strictBindCallApply": true // makes sure that the arguments passed to bind call and apply all type check appropriately
+      ...
+    }
+* Replace explicit `any`(s) with more appropriate types
+* Try to avoid unsafe casts - avoid using the `as` keyword
+
+Q: What are the benefits of moving an existing code base over to TypeScript?
+
+A: All of the benefits that you would get if you started out using TypeScript from the genesis of your project.
+
+Q: But, for the amount of effort, is it REALLY worth it?
+
+A: It depends, case-by-case. Small JavaScript modules that only do one thing? Probably not much value. You can tell TypeScript to regard entire modules as `any`, but this is losing the value of types.
 
 ### Address Book Exercise
 
+Now that we have completed the overview of the "How to convert JavaScript to TypeScript" recipe, let's put that into practice by actually converting a piece of JavaScript code into TypeScript. There is an example in the project repository: `./challenges/address-book/src/index.js`. I'll drop the code here as well, because it is walked-through so we can understand the places where we might need to think about type information.
 
+The first of our 3 step recipe is to rename the file from `...js` to `...ts` and setting up the TypeScript compiler in a very loose mode to get everything to pass. But step 0 (of course he hid a step from us) is to get the tests to pass before AND after we are done. In the console / terminal, switch into the directory that the exercise file is in: `cd challenges/address-book` (if you were still at the root directory of the repository...), then run `yarn test`. All tests pass, but now the trick is to change the file extension from `.js` to `.ts` and try to get the tests to pass AND go through the 2 other steps after that to complete the recipe 😞
+
+{% capture summary %}Click to view the source code{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+export class AddressBook {
+  contacts = [];
+
+  addContact(contact) {
+    this.contacts.push(contact);
+  }
+
+  findContactByName(filter) {
+    return this.contacts.filter(c => {
+      if (
+        typeof filter.firstName !== "undefined" &&
+        c.firstName !== filter.firstName
+      ) {
+        return false;
+      }
+      if (
+        typeof filter.lastName !== "undefined" &&
+        c.lastName !== filter.lastName
+      ) {
+        return false;
+      }
+      return true;
+    });
+  }
+}
+
+export function formatDate(date) {
+  return (
+    date
+      .toISOString()
+      .replace(/[-:]+/g, "")
+      .split(".")[0] + "Z"
+  );
+}
+
+function getFullName(contact) {
+  return [contact.firstName, contact.middleName, contact.lastName]
+    .filter(Boolean)
+    .join(" ");
+}
+
+export function getVcardText(contact, date = new Date()) {
+  const parts = [
+    "BEGIN:VCARD",
+    "VERSION:2.1",
+    `N:${contact.lastName};${contact.firstName};${contact.middleName ||
+      ""};${contact.salutation || ""}`,
+    `FN:${getFullName(contact)}`,
+    ...Object.keys(contact.phones).map(
+      phName => `TEL;${phName.toUpperCase()};VOICE:${contact.phones[phName]}`
+    ),
+    ...Object.keys(contact.addresses)
+      .map(addrName => {
+        const address = contact.addresses[addrName];
+        if (address) {
+          return `ADR;${addrName.toUpperCase()}:;;${address.houseNumber} ${
+            address.street
+          };${address.city};${address.state};${address.postalCode};${
+            address.country
+          }\nLABEL;${addrName.toUpperCase()};ENCODING=QUOTED-PRINTABLE;CHARSET=UTF-8:${
+            address.houseNumber
+          } ${address.street}.=0D=0A=${address.city}, ${address.state} ${
+            address.postalCode
+          }=0D=0A${address.country}`;
+        } else {
+          return "";
+        }
+      })
+      .filter(Boolean)
+  ];
+
+  if (contact.email) {
+    parts.push(`EMAIL:${contact.email}`);
+  }
+  const d = new Date();
+  parts.push(`REV:${formatDate(date)}`);
+  parts.push("END:VCARD");
+  return parts.join("\n");
+}
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %} 
 
 ### Address Book Solution
 
