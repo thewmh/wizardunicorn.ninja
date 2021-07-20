@@ -594,13 +594,167 @@
 
 <h3 id="converting-to-typescript-1">Converting to TypeScript</h3>
 
+<p>Let’s step outside of the world of code for a moment and get into a delicious recipe: “How to convert JavaScript to TypeScript” 🤔 never mind… that does not sound very tasty. One of the great things about TypeScript is that it can inter-operate with JavaScript very easily, you can have JS and TS modules side-by-side. We should not treat a code base transition from JavaScript to TypeScript as the same kind of change that would result from changing from one programming language to something totally unrelated. i.e. rewriting something from Ruby to Rust. We are going to walk through a step-by-step process so that this change can be made incrementally on a few files at a time. Before we talk about what to do, lets look at what NOT to do:</p>
+
+<ul>
+  <li>Functional changes at the same time - i.e. don’t change from checking whether a value is truthy or not to a typeof check</li>
+  <li>Attempt with low test coverage - you need to be able to confirm whether the code still works the way you want it to work</li>
+  <li>Let perfect be the enemy of good - don’t try to type things too strongly too early on</li>
+  <li>Forget to add tests for types - <code class="language-plaintext highlighter-rouge">dtslint</code> is your friend here</li>
+  <li>Publish types for consumer use while they are in a weak state - wait until you are completely happy with your types before publishing them</li>
+</ul>
+
 <h3 id="compiling-in-loose-mode">Compiling in “loose mode”</h3>
+
+<p>Step one of the “How to convert JavaScript to TypeScript” recipe is as follows:</p>
+
+<ul>
+  <li>Start with tests passing</li>
+  <li>Rename all <code class="language-plaintext highlighter-rouge">.js</code> to <code class="language-plaintext highlighter-rouge">.ts</code> allowing implicit <code class="language-plaintext highlighter-rouge">any</code> - for whenever the TypeScript compiler is unable to infer any of the types; i.e. function arguments might be primary culprits here</li>
+  <li>Fix only the things that are not type-checking or causing compile errors - JavaScript classes are a common culprit here, because in TypeScript you have to state the fields and their types</li>
+  <li>Be careful to avoid changing behavior</li>
+  <li>Get tests passing again</li>
+</ul>
+
+<p>Submit PR.</p>
 
 <h3 id="making-anys-explicit">Making Anys Explicit</h3>
 
+<p>Step two of the “How to convert JavaScript to TypeScript” recipe is as follows:</p>
+
+<ul>
+  <li>Start with tests passing</li>
+  <li>Ban implicit any (“noImplicitAny”: true,) - this will cause TypeScript to throw an error whenever is unable to infer the type of something, instead of falling back to <code class="language-plaintext highlighter-rouge">any</code></li>
+  <li>Where possible, provide a specific and appropriate type
+    <ul>
+      <li>Import types for dependencies from <code class="language-plaintext highlighter-rouge">DefinitelyTyped</code> - <code class="language-plaintext highlighter-rouge">DefinitelyTyped</code> is an open source project that provides ambient type information for your project’s dependencies</li>
+      <li>otherwise explicit <code class="language-plaintext highlighter-rouge">any</code> - via type annotation</li>
+    </ul>
+  </li>
+  <li>Get tests passing again</li>
+</ul>
+
+<p>Submit PR.</p>
+
 <h3 id="strict-mode">Strict Mode</h3>
 
+<p>Step three of the “How to convert JavaScript to TypeScript” recipe is as follows:</p>
+
+<ul>
+  <li>Incrementally, in small chunks…</li>
+  <li>Enable strict mode: 
+  {
+    …
+    “strictNullChecks”: true, // the only value that can be null is null
+    “strict”: true, // strictness settings
+    “strictFunctionTypes”: true, // validates arguments and return callback types
+    “strictBindCallApply”: true // makes sure that the arguments passed to bind call and apply all type check appropriately
+    …
+  }</li>
+  <li>Replace explicit <code class="language-plaintext highlighter-rouge">any</code>(s) with more appropriate types</li>
+  <li>Try to avoid unsafe casts - avoid using the <code class="language-plaintext highlighter-rouge">as</code> keyword</li>
+</ul>
+
+<p>Q: What are the benefits of moving an existing code base over to TypeScript?</p>
+
+<p>A: All of the benefits that you would get if you started out using TypeScript from the genesis of your project.</p>
+
+<p>Q: But, for the amount of effort, is it REALLY worth it?</p>
+
+<p>A: It depends, case-by-case. Small JavaScript modules that only do one thing? Probably not much value. You can tell TypeScript to regard entire modules as <code class="language-plaintext highlighter-rouge">any</code>, but this is losing the value of types.</p>
+
 <h3 id="address-book-exercise">Address Book Exercise</h3>
+
+<p>Now that we have completed the overview of the “How to convert JavaScript to TypeScript” recipe, let’s put that into practice by actually converting a piece of JavaScript code into TypeScript. There is an example in the project repository: <code class="language-plaintext highlighter-rouge">./challenges/address-book/src/index.js</code>. I’ll drop the code here as well, because it is walked-through so we can understand the places where we might need to think about type information.</p>
+
+<p>The first of our 3 step recipe is to rename the file from <code class="language-plaintext highlighter-rouge">...js</code> to <code class="language-plaintext highlighter-rouge">...ts</code> and setting up the TypeScript compiler in a very loose mode to get everything to pass. But step 0 (of course he hid a step from us) is to get the tests to pass before AND after we are done. In the console / terminal, switch into the directory that the exercise file is in: <code class="language-plaintext highlighter-rouge">cd challenges/address-book</code> (if you were still at the root directory of the repository…), then run <code class="language-plaintext highlighter-rouge">yarn test</code>. All tests pass, but now the trick is to change the file extension from <code class="language-plaintext highlighter-rouge">.js</code> to <code class="language-plaintext highlighter-rouge">.ts</code> and try to get the tests to pass AND go through the 2 other steps after that to complete the recipe 😞</p>
+
+<details>
+    <summary>Click to view the source code
+</summary>
+    
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">export</span> <span class="kd">class</span> <span class="nx">AddressBook</span> <span class="p">{</span>
+  <span class="nx">contacts</span> <span class="o">=</span> <span class="p">[];</span>
+
+  <span class="nx">addContact</span><span class="p">(</span><span class="nx">contact</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">contact</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">findContactByName</span><span class="p">(</span><span class="nx">filter</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">c</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span>
+        <span class="k">typeof</span> <span class="nx">filter</span><span class="p">.</span><span class="nx">firstName</span> <span class="o">!==</span> <span class="dl">"</span><span class="s2">undefined</span><span class="dl">"</span> <span class="o">&amp;&amp;</span>
+        <span class="nx">c</span><span class="p">.</span><span class="nx">firstName</span> <span class="o">!==</span> <span class="nx">filter</span><span class="p">.</span><span class="nx">firstName</span>
+      <span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">if</span> <span class="p">(</span>
+        <span class="k">typeof</span> <span class="nx">filter</span><span class="p">.</span><span class="nx">lastName</span> <span class="o">!==</span> <span class="dl">"</span><span class="s2">undefined</span><span class="dl">"</span> <span class="o">&amp;&amp;</span>
+        <span class="nx">c</span><span class="p">.</span><span class="nx">lastName</span> <span class="o">!==</span> <span class="nx">filter</span><span class="p">.</span><span class="nx">lastName</span>
+      <span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">formatDate</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="nx">date</span>
+      <span class="p">.</span><span class="nx">toISOString</span><span class="p">()</span>
+      <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">-:</span><span class="se">]</span><span class="sr">+/g</span><span class="p">,</span> <span class="dl">""</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">"</span><span class="s2">.</span><span class="dl">"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">Z</span><span class="dl">"</span>
+  <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">getFullName</span><span class="p">(</span><span class="nx">contact</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">[</span><span class="nx">contact</span><span class="p">.</span><span class="nx">firstName</span><span class="p">,</span> <span class="nx">contact</span><span class="p">.</span><span class="nx">middleName</span><span class="p">,</span> <span class="nx">contact</span><span class="p">.</span><span class="nx">lastName</span><span class="p">]</span>
+    <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nb">Boolean</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="dl">"</span><span class="s2"> </span><span class="dl">"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">getVcardText</span><span class="p">(</span><span class="nx">contact</span><span class="p">,</span> <span class="nx">date</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">())</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">parts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="dl">"</span><span class="s2">BEGIN:VCARD</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">VERSION:2.1</span><span class="dl">"</span><span class="p">,</span>
+    <span class="s2">`N:</span><span class="p">${</span><span class="nx">contact</span><span class="p">.</span><span class="nx">lastName</span><span class="p">}</span><span class="s2">;</span><span class="p">${</span><span class="nx">contact</span><span class="p">.</span><span class="nx">firstName</span><span class="p">}</span><span class="s2">;</span><span class="p">${</span><span class="nx">contact</span><span class="p">.</span><span class="nx">middleName</span> <span class="o">||</span>
+      <span class="dl">""</span><span class="p">}</span><span class="s2">;</span><span class="p">${</span><span class="nx">contact</span><span class="p">.</span><span class="nx">salutation</span> <span class="o">||</span> <span class="dl">""</span><span class="p">}</span><span class="s2">`</span><span class="p">,</span>
+    <span class="s2">`FN:</span><span class="p">${</span><span class="nx">getFullName</span><span class="p">(</span><span class="nx">contact</span><span class="p">)}</span><span class="s2">`</span><span class="p">,</span>
+    <span class="p">...</span><span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">contact</span><span class="p">.</span><span class="nx">phones</span><span class="p">).</span><span class="nx">map</span><span class="p">(</span>
+      <span class="nx">phName</span> <span class="o">=&gt;</span> <span class="s2">`TEL;</span><span class="p">${</span><span class="nx">phName</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()}</span><span class="s2">;VOICE:</span><span class="p">${</span><span class="nx">contact</span><span class="p">.</span><span class="nx">phones</span><span class="p">[</span><span class="nx">phName</span><span class="p">]}</span><span class="s2">`</span>
+    <span class="p">),</span>
+    <span class="p">...</span><span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">contact</span><span class="p">.</span><span class="nx">addresses</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">addrName</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">address</span> <span class="o">=</span> <span class="nx">contact</span><span class="p">.</span><span class="nx">addresses</span><span class="p">[</span><span class="nx">addrName</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">address</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="s2">`ADR;</span><span class="p">${</span><span class="nx">addrName</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()}</span><span class="s2">:;;</span><span class="p">${</span><span class="nx">address</span><span class="p">.</span><span class="nx">houseNumber</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span>
+            <span class="nx">address</span><span class="p">.</span><span class="nx">street</span>
+          <span class="p">}</span><span class="s2">;</span><span class="p">${</span><span class="nx">address</span><span class="p">.</span><span class="nx">city</span><span class="p">}</span><span class="s2">;</span><span class="p">${</span><span class="nx">address</span><span class="p">.</span><span class="nx">state</span><span class="p">}</span><span class="s2">;</span><span class="p">${</span><span class="nx">address</span><span class="p">.</span><span class="nx">postalCode</span><span class="p">}</span><span class="s2">;</span><span class="p">${</span>
+            <span class="nx">address</span><span class="p">.</span><span class="nx">country</span>
+          <span class="p">}</span><span class="s2">\nLABEL;</span><span class="p">${</span><span class="nx">addrName</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()}</span><span class="s2">;ENCODING=QUOTED-PRINTABLE;CHARSET=UTF-8:</span><span class="p">${</span>
+            <span class="nx">address</span><span class="p">.</span><span class="nx">houseNumber</span>
+          <span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="nx">address</span><span class="p">.</span><span class="nx">street</span><span class="p">}</span><span class="s2">.=0D=0A=</span><span class="p">${</span><span class="nx">address</span><span class="p">.</span><span class="nx">city</span><span class="p">}</span><span class="s2">, </span><span class="p">${</span><span class="nx">address</span><span class="p">.</span><span class="nx">state</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span>
+            <span class="nx">address</span><span class="p">.</span><span class="nx">postalCode</span>
+          <span class="p">}</span><span class="s2">=0D=0A</span><span class="p">${</span><span class="nx">address</span><span class="p">.</span><span class="nx">country</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="dl">""</span><span class="p">;</span>
+        <span class="p">}</span>
+      <span class="p">})</span>
+      <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nb">Boolean</span><span class="p">)</span>
+  <span class="p">];</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">contact</span><span class="p">.</span><span class="nx">email</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">parts</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s2">`EMAIL:</span><span class="p">${</span><span class="nx">contact</span><span class="p">.</span><span class="nx">email</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="kd">const</span> <span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+  <span class="nx">parts</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s2">`REV:</span><span class="p">${</span><span class="nx">formatDate</span><span class="p">(</span><span class="nx">date</span><span class="p">)}</span><span class="s2">`</span><span class="p">);</span>
+  <span class="nx">parts</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="dl">"</span><span class="s2">END:VCARD</span><span class="dl">"</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">parts</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="dl">"</span><span class="se">\n</span><span class="dl">"</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+
+</details>
 
 <h3 id="address-book-solution">Address Book Solution</h3>
 
