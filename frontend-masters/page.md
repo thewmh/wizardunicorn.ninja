@@ -24,11 +24,11 @@ Organized by subject.
 
 [JavaScript: The New Hard Parts](new-hard-parts-js)
 
-**COMING SOON** Functional Light JavaScript, v3 [](functional-light-javascript)
+<!-- **COMING SOON** Functional Light JavaScript, v3 [](functional-light-javascript) -->
 
-**COMING SOON** Hardcore Functional Programming in JavaScript, v2 [](hardcore-functional-programming-js)
+<!-- **COMING SOON** Hardcore Functional Programming in JavaScript, v2 [](hardcore-functional-programming-js) -->
 
-**COMING SOON** TypeScript 3 Fundamentals, v2 [](typescript-3-fundamentals)
+21/07 **IN PROGRESS** TypeScript 3 Fundamentals, v2 [](typescript-3-fundamentals)
 
 ## Webpack
 
@@ -42,4 +42,4 @@ Organized by subject.
 
 [Complete Intro to React, v5](complete-intro-react)
 
-01/2021 **IN PROGRESS** Intermediate React, v2 [🤫](intermediate-react)
+<!-- 01/2021 **IN PROGRESS** Intermediate React, v2 [🤫](intermediate-react) -->
