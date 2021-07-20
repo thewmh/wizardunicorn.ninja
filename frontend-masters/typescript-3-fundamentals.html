@@ -758,6 +758,120 @@
 
 <h3 id="address-book-solution">Address Book Solution</h3>
 
+<p>Everything contained in the solution here has been covered in the sections / workshop until this point. The hardest part was thinking in TypeScript</p>
+
+<details>
+    <summary>Click to view the solution
+</summary>
+    
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">interface</span> <span class="nx">Person</span> <span class="p">{</span>
+  <span class="nx">firstName</span><span class="p">?:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="nx">middleName</span><span class="p">?:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="nx">lastName</span><span class="p">?:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="nx">salutation</span><span class="p">?:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="nl">phones</span><span class="p">:</span> <span class="p">{</span>
+    <span class="p">[</span><span class="na">k</span><span class="p">:</span> <span class="nx">string</span><span class="p">]:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="p">};</span>
+  <span class="nl">addresses</span><span class="p">:</span> <span class="p">{</span>
+    <span class="p">[</span><span class="na">k</span><span class="p">:</span> <span class="nx">string</span><span class="p">]:</span> <span class="p">{</span>
+      <span class="na">houseNumber</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span>
+      <span class="nl">postalCode</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span>
+      <span class="nl">city</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+      <span class="nl">state</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+      <span class="nl">country</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+      <span class="nl">street</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+    <span class="p">};</span>
+  <span class="p">};</span>
+  <span class="nx">email</span><span class="p">?:</span> <span class="nx">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AddressBook</span> <span class="p">{</span>
+  <span class="nl">contacts</span><span class="p">:</span> <span class="nx">Person</span><span class="p">[]</span> <span class="o">=</span> <span class="p">[];</span>
+
+  <span class="nx">addContact</span><span class="p">(</span><span class="nx">contact</span><span class="p">:</span> <span class="nx">Person</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">contact</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">findContactByName</span><span class="p">(</span><span class="nx">filter</span><span class="p">:</span> <span class="p">{</span> <span class="nx">firstName</span><span class="p">?:</span> <span class="nx">string</span><span class="p">;</span> <span class="nx">lastName</span><span class="p">?:</span> <span class="nx">string</span> <span class="p">})</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">c</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span>
+        <span class="k">typeof</span> <span class="nx">filter</span><span class="p">.</span><span class="nx">firstName</span> <span class="o">!==</span> <span class="dl">"</span><span class="s2">undefined</span><span class="dl">"</span> <span class="o">&amp;&amp;</span>
+        <span class="nx">c</span><span class="p">.</span><span class="nx">firstName</span> <span class="o">!==</span> <span class="nx">filter</span><span class="p">.</span><span class="nx">firstName</span>
+      <span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">if</span> <span class="p">(</span>
+        <span class="k">typeof</span> <span class="nx">filter</span><span class="p">.</span><span class="nx">lastName</span> <span class="o">!==</span> <span class="dl">"</span><span class="s2">undefined</span><span class="dl">"</span> <span class="o">&amp;&amp;</span>
+        <span class="nx">c</span><span class="p">.</span><span class="nx">lastName</span> <span class="o">!==</span> <span class="nx">filter</span><span class="p">.</span><span class="nx">lastName</span>
+      <span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">formatDate</span><span class="p">(</span><span class="nx">date</span><span class="p">:</span> <span class="nb">Date</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="nx">date</span>
+      <span class="p">.</span><span class="nx">toISOString</span><span class="p">()</span>
+      <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">-:</span><span class="se">]</span><span class="sr">+/g</span><span class="p">,</span> <span class="dl">""</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">"</span><span class="s2">.</span><span class="dl">"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">Z</span><span class="dl">"</span>
+  <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">getFullName</span><span class="p">(</span><span class="nx">contact</span><span class="p">:</span> <span class="nx">Person</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">[</span><span class="nx">contact</span><span class="p">.</span><span class="nx">firstName</span><span class="p">,</span> <span class="nx">contact</span><span class="p">.</span><span class="nx">middleName</span><span class="p">,</span> <span class="nx">contact</span><span class="p">.</span><span class="nx">lastName</span><span class="p">]</span>
+    <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nb">Boolean</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="dl">"</span><span class="s2"> </span><span class="dl">"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">getVcardText</span><span class="p">(</span><span class="nx">contact</span><span class="p">:</span> <span class="nx">Person</span><span class="p">,</span> <span class="nx">date</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">())</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">parts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="dl">"</span><span class="s2">BEGIN:VCARD</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">VERSION:2.1</span><span class="dl">"</span><span class="p">,</span>
+    <span class="s2">`N:</span><span class="p">${</span><span class="nx">contact</span><span class="p">.</span><span class="nx">lastName</span><span class="p">}</span><span class="s2">;</span><span class="p">${</span><span class="nx">contact</span><span class="p">.</span><span class="nx">firstName</span><span class="p">}</span><span class="s2">;</span><span class="p">${</span><span class="nx">contact</span><span class="p">.</span><span class="nx">middleName</span> <span class="o">||</span>
+      <span class="dl">""</span><span class="p">}</span><span class="s2">;</span><span class="p">${</span><span class="nx">contact</span><span class="p">.</span><span class="nx">salutation</span> <span class="o">||</span> <span class="dl">""</span><span class="p">}</span><span class="s2">`</span><span class="p">,</span>
+    <span class="s2">`FN:</span><span class="p">${</span><span class="nx">getFullName</span><span class="p">(</span><span class="nx">contact</span><span class="p">)}</span><span class="s2">`</span><span class="p">,</span>
+    <span class="p">...</span><span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">contact</span><span class="p">.</span><span class="nx">phones</span><span class="p">).</span><span class="nx">map</span><span class="p">(</span>
+      <span class="nx">phName</span> <span class="o">=&gt;</span> <span class="s2">`TEL;</span><span class="p">${</span><span class="nx">phName</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()}</span><span class="s2">;VOICE:</span><span class="p">${</span><span class="nx">contact</span><span class="p">.</span><span class="nx">phones</span><span class="p">[</span><span class="nx">phName</span><span class="p">]}</span><span class="s2">`</span>
+    <span class="p">),</span>
+    <span class="p">...</span><span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">contact</span><span class="p">.</span><span class="nx">addresses</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">addrName</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">address</span> <span class="o">=</span> <span class="nx">contact</span><span class="p">.</span><span class="nx">addresses</span><span class="p">[</span><span class="nx">addrName</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">address</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="s2">`ADR;</span><span class="p">${</span><span class="nx">addrName</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()}</span><span class="s2">:;;</span><span class="p">${</span><span class="nx">address</span><span class="p">.</span><span class="nx">houseNumber</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span>
+            <span class="nx">address</span><span class="p">.</span><span class="nx">street</span>
+          <span class="p">}</span><span class="s2">;</span><span class="p">${</span><span class="nx">address</span><span class="p">.</span><span class="nx">city</span><span class="p">}</span><span class="s2">;</span><span class="p">${</span><span class="nx">address</span><span class="p">.</span><span class="nx">state</span><span class="p">}</span><span class="s2">;</span><span class="p">${</span><span class="nx">address</span><span class="p">.</span><span class="nx">postalCode</span><span class="p">}</span><span class="s2">;</span><span class="p">${</span>
+            <span class="nx">address</span><span class="p">.</span><span class="nx">country</span>
+          <span class="p">}</span><span class="s2">\nLABEL;</span><span class="p">${</span><span class="nx">addrName</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()}</span><span class="s2">;ENCODING=QUOTED-PRINTABLE;CHARSET=UTF-8:</span><span class="p">${</span>
+            <span class="nx">address</span><span class="p">.</span><span class="nx">houseNumber</span>
+          <span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="nx">address</span><span class="p">.</span><span class="nx">street</span><span class="p">}</span><span class="s2">.=0D=0A=</span><span class="p">${</span><span class="nx">address</span><span class="p">.</span><span class="nx">city</span><span class="p">}</span><span class="s2">, </span><span class="p">${</span><span class="nx">address</span><span class="p">.</span><span class="nx">state</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span>
+            <span class="nx">address</span><span class="p">.</span><span class="nx">postalCode</span>
+          <span class="p">}</span><span class="s2">=0D=0A</span><span class="p">${</span><span class="nx">address</span><span class="p">.</span><span class="nx">country</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="dl">""</span><span class="p">;</span>
+        <span class="p">}</span>
+      <span class="p">})</span>
+      <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nb">Boolean</span><span class="p">)</span>
+  <span class="p">];</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">contact</span><span class="p">.</span><span class="nx">email</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">parts</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s2">`EMAIL:</span><span class="p">${</span><span class="nx">contact</span><span class="p">.</span><span class="nx">email</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="kd">const</span> <span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+  <span class="nx">parts</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s2">`REV:</span><span class="p">${</span><span class="nx">formatDate</span><span class="p">(</span><span class="nx">date</span><span class="p">)}</span><span class="s2">`</span><span class="p">);</span>
+  <span class="nx">parts</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="dl">"</span><span class="s2">END:VCARD</span><span class="dl">"</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">parts</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="dl">"</span><span class="se">\n</span><span class="dl">"</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+
+</details>
+
+<p>Q: I accidentally added commas instead of semicolons when writing out my interface and it seemed like those are fine to use?</p>
+
+<p>A: Yes, you can use commas between key / type pairs in interface definitions.</p>
+
 <h2 id="generics">Generics</h2>
 
 <h3 id="generics-1">Generics</h3>
