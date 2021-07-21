@@ -929,65 +929,535 @@ stringFilter("abc"); // ✅ OK
 
 ### Type Parameters
 
+`T = any` this syntax we saw from the last section has been likened to function arguments. Based on that analogy, what does the `= any` mean in this context? In this context, if no type parameter is provided, the default type is `any`. So far, we've declared that we have a type parameter `T` and we've defined that we are using `T` directly: `(val: T)`, but we are not limited to this, nor do we always have to do that. Here's an example of exactly that (lines 54 - 68 in `./notes/5-generics-basics.ts`):
 
+{% highlight javascript %}
+
+function resolveOrTimeout<T>(promise: Promise<T>, timeout: number): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    // start the timeout, reject when it triggers
+    const task = setTimeout(() => reject("time up!"), timeout);
+
+    promise.then(val => {
+      // cancel the timeout
+      clearTimeout(task);
+
+      // resolve with the value
+      resolve(val);
+    });
+  });
+}
+resolveOrTimeout(fetch(""), 3000);
+
+{% endhighlight %}
+
+In the above code, when passed a `Promise<T>`, the promise type is generic over the type that it resolves to. Generic in the sense that it abstracts the type it resolves to, it takes it as a type parameter. i.e. you could have a promise that resolves to a number or an HTTP response. `<T>` is a parameter, and as an argument we are taking in `Promise<T>` where the type of `T` is inferred based on the provided promise. In the above case, `T` will resolve to being a response type.
 
 ### Constraints & Scope
 
+Type parameters can also have constraints. When you start using type parameters, if you do not have a constraint, you may get a type error where you cannot access a property because you can only do something if you have explicitly asked for it.
 
+{% highlight javascript %}
+
+function arrayToDict<T extends { id: string }>(array: T[]): { [k: string]: T } {
+  const out: { [k: string]: T } = {};
+  array.forEach(val => {
+    out[val.id] = val;
+  });
+  return out;
+}
+
+{% endhighlight %}
+
+The `extends { id: string }` is the constraint, without which you will get a type error because `T` would not have been defined as being an object with an `id` property. The above code could be refactored in such a way that we are expecting to receive an object with an id property that is a string, but this would narrow our constraints too much where we would not be able to access any other properties that may be on the object.
+
+Like function arguments, type parameters are associated with a scope.
+
+{% highlight javascript %}
+
+function startTuple<T>(a: T) {
+  return function finishTuple<U>(b: U) {
+    return [a, b] as [T, U];
+  };
+}
+const myTuple = startTuple(["first"])(42);
+
+{% endhighlight %}
+
+In the above code, before the return statement of `startTuple`, `b` and `U` are inaccessible. Inside of `finishTuple`, all variables are accessible; `a`, `T`, `b`, `U`. This scope is very much the same as standard JavaScript function scope.
 
 ### Use Cases
 
+I know, you're saying, "hey! these generics are lit, but when should I use them?!". Fine, let's talk about that.
 
+Side note: Take blog posts and other sources of content out there in the world **wild** web with a heaping tablespoon of salt. Many of these 'sources' get "When should I use a generic in TypeScript" wrong.
+
+Generics are great for relating two things. i.e. take in an array of `T` and get back a dictionary of `T`. The generic, type parameter, is what ties both `T`(s) together. If you are only using a type parameter once, you can eliminate it. Constraints on type parameters are equivalent to specifying the type on an argument, in that it dictates what you can do within the function.
+
+Q: In the code (lines 110 in `./notes/5-generics-basics.ts`), would it make any difference to use `interface` vs `type`?
+
+A: No, in this example it would not make a difference.
 
 ### Dictionary Exercise
 
+Time to create some familiar looking utilities built around a dictionary type! We are going to build `.map` and `.reduce` for dictionaries and define a dictionary type. The goal is to produce a dictionary with the same keys, but with transformed values. The project file is here: `./challenges/dict/`, and here's the code:
 
+{% capture summary %}Click to view the source code{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+export type Dict = {};
+
+// Array.prototype.map, but for Dict
+export function mapDict() {}
+
+// Array.prototype.reduce, but for Dict
+export function reduceDict() {}
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %} 
 
 ### Dictionary Solution
 
+The workshop does not get to the implementation of the reduce function for a dictionary, but try to figure it out if you can!
 
+{% capture summary %}Click to view the solution{% endcapture %}
+{% capture details %}  
+{% highlight javascript %}
+
+export type Dict<T> = {
+  [k: string]: T | undefined;
+};
+
+// Array.prototype.map, but for Dict
+export function mapDict<T, S>(
+  dict: Dict<T>,
+  fn: (arg: T, idx: number) => S): Dict<S> {
+    const out: Dict<S> = {};
+    Object.keys(dict).forEach((dKey, idx) => {
+      const thisItem = dict[dKey];
+      if (typeof thisItem !== 'undefined') {
+        out[dKey] = fn(thisItem, idx);
+      }
+    })
+    return out;
+  }
+
+// Array.prototype.reduce, but for Dict
+export function reduceDict<T>(dict: Dict<T>) {}
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %}
 
 ## Top & Bottom Types
 
 ### Top Types
 
+We've already seen top and bottom types which are `any` and `never` respectively. We'll now dig deeper into this topic and focus on:
 
+* Passing private values through typed code
+* Exhaustive Conditionals
+* Type Guards
+
+Open up `./notes/6-guards-and-exterme-types.ts` to follow along. Starting with top types. TypeScript actually has two top types; `any` and `unknown`. Like `any`, `unknown` can receive any value, but the difference is in how you can access things off of these types. `unknown` while it is happy to hold any value, you cannot use the value directly, you must narrow it in some way before you can use it. An example use case for `unknown` is for an API response where you know you've got some JSON back, but you need to perform some sort of assertion to make sure it is what you really hope it to be before you continue down the path of using it. We'll look at how you narrow that down using type guards, in the next section. 
+
+When would you want to use `any`? Ideally, in parts of our programs where we want to retain a lot of flexibility. Here's an example:
+
+{% highlight javascript %}
+
+async function logWhenResolved(p: Promise<any>) {
+  const val = await p;
+  console.log("Resolved to: ", val);
+}
+
+{% endhighlight %}
+
+In the above example, we can see that the `logWhenResolved` function is going to print whatever value is returned from the promise. There is no reason to limit what type we are using here, `any` is appropriate.
+
+In terms of when to use `unknown`, this is good for either when values are private, i.e. using a library and you don't want it to know the structure of what it is being passed, not for security, but you don't want it to depend on the structure of the thing. But as is, `unknown` is not usable, as mentioned, we need a type guard in order to sufficiently narrow its type and use it. Here are some built-in type guards that may be familiar:
+
+{% highlight javascript %}
+
+if (typeof myUnknown === "string") {
+  // in here, myUnknown is of type string
+  myUnknown.split(", "); // ✅ OK
+}
+if (myUnknown instanceof Promise) {
+  // in here, myUnknown is of type Promise<any>
+  myUnknown.then(x => console.log(x));
+}
+
+{% endhighlight %}
 
 ### Type Guards
 
+We can also define our own type guards, here is an example of a user-defined type guard:
 
+{% highlight javascript %}
+
+function isHasEmail(x: any): x is HasEmail {
+  return typeof x.name === "string" && typeof x.email === "string";
+}
+
+{% endhighlight %}
+
+The above will check if both `x.name` and `x.email` are strings and return a boolean. Then, we can access the values like so:
+
+{% highlight javascript %}
+
+if (isHasEmail(myUnknown)) {
+  // In here, myUnknown is of type HasEmail
+  console.log(myUnknown.name, myUnknown.email);
+}
+
+{% endhighlight %}
 
 ### Unknowns & Branded Types
 
+When working with unknowns, there is this issue:
 
+{% highlight javascript %}
+
+let aa: unknown = 41;
+let bb: unknown = ["a", "string", "array"];
+bb = aa; // 🚨 yikes
+
+{% endhighlight %}
+
+Any unknown can be assigned to any other unknown, because it is a top type. So as an alternative and safer way to use unknowns, let's look at branded types.
+
+{% highlight javascript %}
+
+interface BrandedA {
+  __this_is_branded_with_a: "a";
+}
+function brandA(value: string): BrandedA {
+  return (value as unknown) as BrandedA;
+}
+function unbrandA(value: BrandedA): string {
+  return (value as unknown) as string;
+}
+
+interface BrandedB {
+  __this_is_branded_with_b: "b";
+}
+function brandB(value: { abc: string }): BrandedB {
+  return (value as unknown) as BrandedB;
+}
+function unbrandB(value: BrandedB): { abc: string } {
+  return (value as unknown) as { abc: string };
+}
+
+let secretA = brandA("This is a secret value");
+let secretB = brandB({ abc: "This is a different secret value" });
+
+secretA = secretB; // ✅ No chance of getting these mixed up
+unbrandB(secretA);
+unbrandA(secretB);
+
+// back to our original values
+let revealedA = unbrandA(secretA);
+let revealedB = unbrandB(secretB);
+
+{% endhighlight %}
+
+In the above code, we have removed the possibility of reassigning an unknown to another unknown. Make sure you keep the above approach to branding and unbranding in one location that no consumer of your code will need to be concerned with so that you can make changes as needed and no one will be any the wiser / have to worry about it.
+
+Q: What is the point of doing things this way versus using an object and adding a `private` property to it?
+
+A: `private` can only be used on class instances. Again, the use of branded types and unknown is not about security, it is about discouraging other developers from intertwining themselves with private parts of your code.
 
 ### Bottom Types
 
+All bottom types can hold no values. A place where you will commonly see a bottom type is through exhaustive narrowing, like so:
 
+{% highlight javascript %}
+
+let x = "abc" as string | number;
+
+if (typeof x === "string") {
+  // x is a string here
+  x.split(", ");
+} else if (typeof x === "number") {
+  // x is a number here
+  x.toFixed(2);
+} else {
+  // x is a never here
+}
+
+{% endhighlight %}
+
+In the above code, if we ever got to the final `else` statement, the type of `x` would be a never. You will not be creating values of the type never, but you may come across them. But what if we wanted to use the type of never for something? Here's a possible scenario:
+
+{% highlight javascript %}
+
+class UnreachableError extends Error {
+  constructor(val: never, message: string) {
+    super(`TypeScript thought we could never end up here\n${message}`);
+  }
+}
+
+let y = 4 as string | number;
+
+if (typeof y === "string") {
+  // y is a string here
+  y.split(", ");
+} else if (typeof y === "number") {
+  // y is a number here
+  y.toFixed(2);
+} else {
+  throw new UnreachableError(y, "y should be a string or number");
+}
+
+{% endhighlight %}
+
+In the `UnreachableError` class, `never` is provided as an argument.
+
+Q: In the above code, under what circumstances would we ever reach the final `else` statement?
+
+A: There are a few ways. One, you could have done some casting, weakening your types in such a way that they are lying to you. Another possibility, because TypeScript is compile-time only, when your code is out in the wild, there is a possibility that a consumer of your code passes something to your function that does not meet any of the conditions which would then hit the final `else` statement. 
 
 ## Advanced Types
 
 ### Mapped & Conditional Types, & Type Queries
 
+Moving into even more advanced types, go have a look at `./notes/7-advanced-types.ts`. It may be useful to get a sense for what is possible as you learn more and more about how to design effective constraints with TypeScript. First up, mapped types which involve using an interface as a way for getting to the interfaces keys to the types associated with those keys. Earlier in the workshop we were using / looking at function signature overloads in order to ensure that there was something that could match for type of `HasPhoneNumber` and `HasEmail`. This methodology would require that as more communication methods are added that there would also need to be more signatures added. A more efficient way would be to use a mapped type. From `./notes/7-advanced-types.ts` (lines 3 - 25):
 
+{% highlight javascript %}
+
+interface CommunicationMethods {
+  email: HasEmail;
+  phone: HasPhoneNumber;
+  fax: { fax: number };
+}
+
+function contact<K extends keyof CommunicationMethods>(
+  method: K,
+  contact: CommunicationMethods[K] // 💡turning key into value -- a *mapped type*
+) {
+  //...
+}
+contact("email", { name: "foo", email: "mike@example.com" });
+contact("phone", { name: "foo", phone: 3213332222 });
+contact("fax", { fax: 1231 });
+
+// we can get all values by mapping through all keys
+type AllCommKeys = keyof CommunicationMethods;
+type AllCommValues = CommunicationMethods[keyof CommunicationMethods];
+
+{% endhighlight %}
+
+Type queries by way of `typeof` allows us to get the type of a value. And that (with little explanation) looks like this:
+
+{% highlight javascript %}
+
+const alreadyResolvedNum = Promise.resolve(4);
+
+type ResolveType = typeof Promise.resolve;
+
+const x: ResolveType = Promise.resolve;
+x(42).then(y => y.toPrecision(2));
+
+{% endhighlight %}
+
+Conditional types allow us to use ternary operators to define the type (can only be used for generics). Conditional types look like this:
+
+{% highlight javascript %}
+
+type EventualType<T> = T extends Promise<infer S> // if T extends Promise<any>
+  ? S // extract the type the promise resolves to
+  : T; // otherwise just let T pass through
+
+{% endhighlight %}
 
 ### Built-In Utility Types
 
+TypeScript comes with a couple of utility types. The first we'll look at is `Partial` which makes everything on a type optional. This is useful if you have an options object where you may have a set of default values and some can pass in a subset of those options and you want to do an object merge. i.e. take whatever is given and merge it in to the fallbacks. `Partial` will put a `?` (optional) in front of all the properties, making them... optional.
 
+{% highlight javascript %}
+
+type MayHaveEmail = Partial<HasEmail>;
+const me: MayHaveEmail = {}; // everything is optional
+
+{% endhighlight %}
+
+The next utility type is `Pick` which allows us to select one or more properties from an object. It allows you to define precisely which properties you want.
+
+{% highlight javascript %}
+
+type HasThen<T> = Pick<Promise<T>, "then" | "catch">;
+
+let hasThen: HasThen<number> = Promise.resolve(4);
+hasThen.then; // .catch is also available
+
+{% endhighlight %}
+
+`Extract` lets us obtain a subset of types that are assignable to something.
+
+{% highlight javascript %}
+
+type OnlyStrings = Extract<"a" | "b" | 1 | 2, number>;
+
+{% endhighlight %}
+
+`Exclude` lets us obtain a subset of types that are NOT assignable to something.
+
+{% highlight javascript %}
+
+type NotStrings = Exclude<"a" | "b" | 1 | 2, string>;
+
+{% endhighlight %}
+
+`Record` helps us create a type with specified property keys and the same value type.
+
+{% highlight javascript %}
+
+type ABCPromises = Record<"a" | "b" | "c", Promise<any>>;
+
+{% endhighlight %}
 
 ## Declaration Merging
 
 ### Declaration Merging
 
+This section is important in terms of forming the right mental model in terms of how TypeScript works. We're going to look at how VS Code's tooltips provide information that we can use to figure out whether something is a value or a type. This should help us understand how we can put small fixes on top of libraries, imperfect type information, or maybe you want to prototype something and the types do not exist for it yet, this will help you augment some of the existing type information in your app. Go on... open up `./notes/8-declaration-merging.ts` and follow along. In TypeScript, identifiers (things you can export) or as TypeScript internally calls them; symbols, can be associated with up to three things; a value, a type, or a namespace.
 
+A namespace is like an object in that it has a type and it has a value. Here's some code to look at:
+
+{% highlight javascript %}
+
+function foo() {}
+interface bar {}
+namespace baz {
+  export const biz = "hello";
+}
+
+{% endhighlight %}
+
+Here are some ways (using the above code as an example) to test for value, type, or namespace:
+
+{% highlight javascript %}
+
+// how to test for a value
+const x = foo; // foo is in the value position (RHS).
+
+// how to test for a type
+const y: bar = {}; // bar is in the type position (LHS).
+
+// how to test for a namespace (hover over baz symbol)
+baz;
+
+export { foo, bar, baz }; // all are importable/exportable
+
+{% endhighlight %}
+
+Functions and variables are purely values. Their types may only be extracted using type queries (`typeof`).
+
+{% highlight javascript %}
+
+const xx = 4;
+const yy: typeof xx = 4;
+
+{% endhighlight %}
+
+Interfaces are purely types.
+
+{% highlight javascript %}
+
+interface Address {
+  street: string;
+}
+
+const z = Address; // 🚨 ERROR (fails value test)
+
+{% endhighlight %}
+
+Classes are both types and values. A class is a factory to produce instances. Using a class as a type is almost like using an interface for the instance.
+
+{% highlight javascript %}
+
+class Contact {
+  name: string;
+}
+
+// passes both the value and type tests
+
+const contactClass = Contact; // value relates to the factory for creating instances
+const contactInstance: Contact = new Contact(); // interface relates to instances
+
+{% endhighlight %}
+
+When declarations have the same name and do not have values that collide with other values, class, namespace, and interface will stack on top of each other. In this way you can add additional types as needed:
+
+{% highlight javascript %}
+
+class Album {
+  label: Album.AlbumLabel = new Album.AlbumLabel();
+}
+namespace Album {
+  export class AlbumLabel {}
+}
+interface Album {
+  artist: string;
+}
+
+let al: Album; // type test
+let alValue = Album; // value test
+
+export { Album }; // 👈 hover over the "Album" -- all three slots filled
+
+{% endhighlight %}
+
+Namespaces, as seen above, are their own entity, they are neither an interface or a class.
+
+{% highlight javascript %}
+
+class AddressBook {
+  contacts!: Contact[];
+}
+namespace AddressBook {
+  export class ABContact extends Contact {} // inner class
+}
+
+const ab = new AddressBook();
+ab.contacts.push(new AddressBook.ABContact());
+
+{% endhighlight %}
+
+Notice the inner class above and how it is accessed. The reason this is allowed is because a namespace serves to tack things on to something, in the above case, `ABContact` is being added to `AddressBook`. Similar to classes, functions can be extended with a namespace:
+
+{% highlight javascript %}
+
+function format(amt: number) {
+  return `${format.currency}${amt.toFixed(2)}`;
+}
+namespace format {
+  export const currency: string = "$ ";
+}
+
+format(2.314); // $ 2.31
+format.currency; // $
+
+{% endhighlight %}
+
+Knowing what is a type and what is a value is a key takeaway here. Also, knowing what can be augmented, interfaces, versus knowing what you have to leave alone (when defined), types and values.
 
 ## Compiler API
 
 ### Initializing
 
+The last thing we are going to look at is how the TypeScript compiler sees code. We will do so by way of creating a quick and dirty documentation generator. So strap yourself in and head on over to `./notes/9-compiler-api.ts`. At the top of the file, there are a couple of wildcard imports `*`. A wildcard import will import all the things from whatever is being imported, in this case, `path` and `typescript`. `ts.createProgram` is quite similar to what you might have seen in a `tsconfig` file and needs both the `options` object and the `rootNames` object (this is using the node `path` module we imported).
 
+Next, step (2) of the file, starting at line 20, we are getting the non-declaration source files because we do not want to include declaration files in our documentation generator. 
 
 ### Type-Checker
 
+Still in `./notes/9-compiler-api.ts`, but now on step (3), we are going to use the `getTypeChecker` method from TypeScript which is part of the compiler. `getTypeChecker` takes all the types and interfaces you create and the AST (abstract syntax tree), which is the in-memory representation of your code, and it binds these things together to identify what is going to be type checked.
+
+Step (4), we are going to use the type checker to obtain the appropriate `ts.Symbol` (interface, namespace) for each source file.
+
+And the last step, (5), is a big one, but we'll walk through it. Immediately, we are just looking to log out the name of each instance of an `sfSymbol`, then if there are `fileExports`, console.log a string `"== Exports =="` and for each export log it's key (name) and stringified type. Finally, we are going to `getJsDocTags` and log them to the console with their tag name and tag text. 
 
 ### Wrapping Up
+
+That's it! Hopefully you have a greater understanding of how typed programming works and where to apply type information. Try to avoid any over-constrain traps when typing. 👏
