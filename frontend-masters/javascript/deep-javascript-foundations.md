@@ -224,6 +224,8 @@ In the (Code Exercises)[https://static.frontendmasters.com/resources/2019-03-07-
 
 ### Type Check Exercise Solution
 
+{% capture summary %}Click to view the solution{% endcapture %}
+{% capture details %}  
 {% highlight javascript %}
 
 if (!Object.is || true) {
@@ -250,6 +252,7 @@ if (!Object.is || true) {
 }
 
 {% endhighlight %}
+{% endcapture %}{% include details.html %} 
 
 ### Fundamental Objects
 
