@@ -913,41 +913,432 @@ to take a string as an argument and return a boolean. Like so:</p>
 
 <h3 id="type-parameters">Type Parameters</h3>
 
+<p><code class="language-plaintext highlighter-rouge">T = any</code> this syntax we saw from the last section has been likened to function arguments. Based on that analogy, what does the <code class="language-plaintext highlighter-rouge">= any</code> mean in this context? In this context, if no type parameter is provided, the default type is <code class="language-plaintext highlighter-rouge">any</code>. So far, we’ve declared that we have a type parameter <code class="language-plaintext highlighter-rouge">T</code> and we’ve defined that we are using <code class="language-plaintext highlighter-rouge">T</code> directly: <code class="language-plaintext highlighter-rouge">(val: T)</code>, but we are not limited to this, nor do we always have to do that. Here’s an example of exactly that (lines 54 - 68 in <code class="language-plaintext highlighter-rouge">./notes/5-generics-basics.ts</code>):</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">resolveOrTimeout</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">promise</span><span class="p">:</span> <span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">,</span> <span class="nx">timeout</span><span class="p">:</span> <span class="nx">number</span><span class="p">):</span> <span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// start the timeout, reject when it triggers</span>
+    <span class="kd">const</span> <span class="nx">task</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">reject</span><span class="p">(</span><span class="dl">"</span><span class="s2">time up!</span><span class="dl">"</span><span class="p">),</span> <span class="nx">timeout</span><span class="p">);</span>
+
+    <span class="nx">promise</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">val</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="c1">// cancel the timeout</span>
+      <span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">task</span><span class="p">);</span>
+
+      <span class="c1">// resolve with the value</span>
+      <span class="nx">resolve</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+<span class="nx">resolveOrTimeout</span><span class="p">(</span><span class="nx">fetch</span><span class="p">(</span><span class="dl">""</span><span class="p">),</span> <span class="mi">3000</span><span class="p">);</span></code></pre></figure>
+
+<p>In the above code, when passed a <code class="language-plaintext highlighter-rouge">Promise&lt;T&gt;</code>, the promise type is generic over the type that it resolves to. Generic in the sense that it abstracts the type it resolves to, it takes it as a type parameter. i.e. you could have a promise that resolves to a number or an HTTP response. <code class="language-plaintext highlighter-rouge">&lt;T&gt;</code> is a parameter, and as an argument we are taking in <code class="language-plaintext highlighter-rouge">Promise&lt;T&gt;</code> where the type of <code class="language-plaintext highlighter-rouge">T</code> is inferred based on the provided promise. In the above case, <code class="language-plaintext highlighter-rouge">T</code> will resolve to being a response type.</p>
+
 <h3 id="constraints--scope">Constraints &amp; Scope</h3>
+
+<p>Type parameters can also have constraints. When you start using type parameters, if you do not have a constraint, you may get a type error where you cannot access a property because you can only do something if you have explicitly asked for it.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">arrayToDict</span><span class="o">&lt;</span><span class="nx">T</span> <span class="kd">extends</span> <span class="p">{</span> <span class="na">id</span><span class="p">:</span> <span class="nx">string</span> <span class="p">}</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">array</span><span class="p">:</span> <span class="nx">T</span><span class="p">[]):</span> <span class="p">{</span> <span class="p">[</span><span class="nx">k</span><span class="p">:</span> <span class="nx">string</span><span class="p">]:</span> <span class="nx">T</span> <span class="p">}</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="na">out</span><span class="p">:</span> <span class="p">{</span> <span class="p">[</span><span class="na">k</span><span class="p">:</span> <span class="nx">string</span><span class="p">]:</span> <span class="nx">T</span> <span class="p">}</span> <span class="o">=</span> <span class="p">{};</span>
+  <span class="nx">array</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">val</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">out</span><span class="p">[</span><span class="nx">val</span><span class="p">.</span><span class="nx">id</span><span class="p">]</span> <span class="o">=</span> <span class="nx">val</span><span class="p">;</span>
+  <span class="p">});</span>
+  <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The <code class="language-plaintext highlighter-rouge">extends { id: string }</code> is the constraint, without which you will get a type error because <code class="language-plaintext highlighter-rouge">T</code> would not have been defined as being an object with an <code class="language-plaintext highlighter-rouge">id</code> property. The above code could be refactored in such a way that we are expecting to receive an object with an id property that is a string, but this would narrow our constraints too much where we would not be able to access any other properties that may be on the object.</p>
+
+<p>Like function arguments, type parameters are associated with a scope.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">startTuple</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">a</span><span class="p">:</span> <span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">finishTuple</span><span class="o">&lt;</span><span class="nx">U</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">b</span><span class="p">:</span> <span class="nx">U</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">]</span> <span class="k">as</span> <span class="p">[</span><span class="nx">T</span><span class="p">,</span> <span class="nx">U</span><span class="p">];</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+<span class="kd">const</span> <span class="nx">myTuple</span> <span class="o">=</span> <span class="nx">startTuple</span><span class="p">([</span><span class="dl">"</span><span class="s2">first</span><span class="dl">"</span><span class="p">])(</span><span class="mi">42</span><span class="p">);</span></code></pre></figure>
+
+<p>In the above code, before the return statement of <code class="language-plaintext highlighter-rouge">startTuple</code>, <code class="language-plaintext highlighter-rouge">b</code> and <code class="language-plaintext highlighter-rouge">U</code> are inaccessible. Inside of <code class="language-plaintext highlighter-rouge">finishTuple</code>, all variables are accessible; <code class="language-plaintext highlighter-rouge">a</code>, <code class="language-plaintext highlighter-rouge">T</code>, <code class="language-plaintext highlighter-rouge">b</code>, <code class="language-plaintext highlighter-rouge">U</code>. This scope is very much the same as standard JavaScript function scope.</p>
 
 <h3 id="use-cases">Use Cases</h3>
 
+<p>I know, you’re saying, “hey! these generics are lit, but when should I use them?!”. Fine, let’s talk about that.</p>
+
+<p>Side note: Take blog posts and other sources of content out there in the world <strong>wild</strong> web with a heaping tablespoon of salt. Many of these ‘sources’ get “When should I use a generic in TypeScript” wrong.</p>
+
+<p>Generics are great for relating two things. i.e. take in an array of <code class="language-plaintext highlighter-rouge">T</code> and get back a dictionary of <code class="language-plaintext highlighter-rouge">T</code>. The generic, type parameter, is what ties both <code class="language-plaintext highlighter-rouge">T</code>(s) together. If you are only using a type parameter once, you can eliminate it. Constraints on type parameters are equivalent to specifying the type on an argument, in that it dictates what you can do within the function.</p>
+
+<p>Q: In the code (lines 110 in <code class="language-plaintext highlighter-rouge">./notes/5-generics-basics.ts</code>), would it make any difference to use <code class="language-plaintext highlighter-rouge">interface</code> vs <code class="language-plaintext highlighter-rouge">type</code>?</p>
+
+<p>A: No, in this example it would not make a difference.</p>
+
 <h3 id="dictionary-exercise">Dictionary Exercise</h3>
 
+<p>Time to create some familiar looking utilities built around a dictionary type! We are going to build <code class="language-plaintext highlighter-rouge">.map</code> and <code class="language-plaintext highlighter-rouge">.reduce</code> for dictionaries and define a dictionary type. The goal is to produce a dictionary with the same keys, but with transformed values. The project file is here: <code class="language-plaintext highlighter-rouge">./challenges/dict/</code>, and here’s the code:</p>
+
+<details>
+    <summary>Click to view the source code
+</summary>
+    
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">export</span> <span class="nx">type</span> <span class="nx">Dict</span> <span class="o">=</span> <span class="p">{};</span>
+
+<span class="c1">// Array.prototype.map, but for Dict</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">mapDict</span><span class="p">()</span> <span class="p">{}</span>
+
+<span class="c1">// Array.prototype.reduce, but for Dict</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">reduceDict</span><span class="p">()</span> <span class="p">{}</span></code></pre></figure>
+
+
+</details>
+
 <h3 id="dictionary-solution">Dictionary Solution</h3>
+
+<p>The workshop does not get to the implementation of the reduce function for a dictionary, but try to figure it out if you can!</p>
+
+<details>
+    <summary>Click to view the solution
+</summary>
+    
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">export</span> <span class="nx">type</span> <span class="nx">Dict</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">[</span><span class="na">k</span><span class="p">:</span> <span class="nx">string</span><span class="p">]:</span> <span class="nx">T</span> <span class="o">|</span> <span class="kc">undefined</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// Array.prototype.map, but for Dict</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">mapDict</span><span class="o">&lt;</span><span class="nx">T</span><span class="p">,</span> <span class="nx">S</span><span class="o">&gt;</span><span class="p">(</span>
+  <span class="nx">dict</span><span class="p">:</span> <span class="nx">Dict</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">,</span>
+  <span class="nx">fn</span><span class="p">:</span> <span class="p">(</span><span class="nx">arg</span><span class="p">:</span> <span class="nx">T</span><span class="p">,</span> <span class="nx">idx</span><span class="p">:</span> <span class="nx">number</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">S</span><span class="p">):</span> <span class="nx">Dict</span><span class="o">&lt;</span><span class="nx">S</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="na">out</span><span class="p">:</span> <span class="nx">Dict</span><span class="o">&lt;</span><span class="nx">S</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">dict</span><span class="p">).</span><span class="nx">forEach</span><span class="p">((</span><span class="nx">dKey</span><span class="p">,</span> <span class="nx">idx</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="kd">const</span> <span class="nx">thisItem</span> <span class="o">=</span> <span class="nx">dict</span><span class="p">[</span><span class="nx">dKey</span><span class="p">];</span>
+      <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">thisItem</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">undefined</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">out</span><span class="p">[</span><span class="nx">dKey</span><span class="p">]</span> <span class="o">=</span> <span class="nx">fn</span><span class="p">(</span><span class="nx">thisItem</span><span class="p">,</span> <span class="nx">idx</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">})</span>
+    <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
+  <span class="p">}</span>
+
+<span class="c1">// Array.prototype.reduce, but for Dict</span>
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">reduceDict</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">dict</span><span class="p">:</span> <span class="nx">Dict</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">)</span> <span class="p">{}</span></code></pre></figure>
+
+
+</details>
 
 <h2 id="top--bottom-types">Top &amp; Bottom Types</h2>
 
 <h3 id="top-types">Top Types</h3>
 
+<p>We’ve already seen top and bottom types which are <code class="language-plaintext highlighter-rouge">any</code> and <code class="language-plaintext highlighter-rouge">never</code> respectively. We’ll now dig deeper into this topic and focus on:</p>
+
+<ul>
+  <li>Passing private values through typed code</li>
+  <li>Exhaustive Conditionals</li>
+  <li>Type Guards</li>
+</ul>
+
+<p>Open up <code class="language-plaintext highlighter-rouge">./notes/6-guards-and-exterme-types.ts</code> to follow along. Starting with top types. TypeScript actually has two top types; <code class="language-plaintext highlighter-rouge">any</code> and <code class="language-plaintext highlighter-rouge">unknown</code>. Like <code class="language-plaintext highlighter-rouge">any</code>, <code class="language-plaintext highlighter-rouge">unknown</code> can receive any value, but the difference is in how you can access things off of these types. <code class="language-plaintext highlighter-rouge">unknown</code> while it is happy to hold any value, you cannot use the value directly, you must narrow it in some way before you can use it. An example use case for <code class="language-plaintext highlighter-rouge">unknown</code> is for an API response where you know you’ve got some JSON back, but you need to perform some sort of assertion to make sure it is what you really hope it to be before you continue down the path of using it. We’ll look at how you narrow that down using type guards, in the next section.</p>
+
+<p>When would you want to use <code class="language-plaintext highlighter-rouge">any</code>? Ideally, in parts of our programs where we want to retain a lot of flexibility. Here’s an example:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">async</span> <span class="kd">function</span> <span class="nx">logWhenResolved</span><span class="p">(</span><span class="nx">p</span><span class="p">:</span> <span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">any</span><span class="o">&gt;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">val</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">p</span><span class="p">;</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Resolved to: </span><span class="dl">"</span><span class="p">,</span> <span class="nx">val</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>In the above example, we can see that the <code class="language-plaintext highlighter-rouge">logWhenResolved</code> function is going to print whatever value is returned from the promise. There is no reason to limit what type we are using here, <code class="language-plaintext highlighter-rouge">any</code> is appropriate.</p>
+
+<p>In terms of when to use <code class="language-plaintext highlighter-rouge">unknown</code>, this is good for either when values are private, i.e. using a library and you don’t want it to know the structure of what it is being passed, not for security, but you don’t want it to depend on the structure of the thing. But as is, <code class="language-plaintext highlighter-rouge">unknown</code> is not usable, as mentioned, we need a type guard in order to sufficiently narrow its type and use it. Here are some built-in type guards that may be familiar:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">myUnknown</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">string</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// in here, myUnknown is of type string</span>
+  <span class="nx">myUnknown</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">"</span><span class="s2">, </span><span class="dl">"</span><span class="p">);</span> <span class="c1">// ✅ OK</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">myUnknown</span> <span class="k">instanceof</span> <span class="nb">Promise</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// in here, myUnknown is of type Promise&lt;any&gt;</span>
+  <span class="nx">myUnknown</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">x</span><span class="p">));</span>
+<span class="p">}</span></code></pre></figure>
+
 <h3 id="type-guards">Type Guards</h3>
+
+<p>We can also define our own type guards, here is an example of a user-defined type guard:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">isHasEmail</span><span class="p">(</span><span class="nx">x</span><span class="p">:</span> <span class="nx">any</span><span class="p">):</span> <span class="nx">x</span> <span class="nx">is</span> <span class="nx">HasEmail</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">typeof</span> <span class="nx">x</span><span class="p">.</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">string</span><span class="dl">"</span> <span class="o">&amp;&amp;</span> <span class="k">typeof</span> <span class="nx">x</span><span class="p">.</span><span class="nx">email</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">string</span><span class="dl">"</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The above will check if both <code class="language-plaintext highlighter-rouge">x.name</code> and <code class="language-plaintext highlighter-rouge">x.email</code> are strings and return a boolean. Then, we can access the values like so:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span> <span class="p">(</span><span class="nx">isHasEmail</span><span class="p">(</span><span class="nx">myUnknown</span><span class="p">))</span> <span class="p">{</span>
+  <span class="c1">// In here, myUnknown is of type HasEmail</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">myUnknown</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="nx">myUnknown</span><span class="p">.</span><span class="nx">email</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
 
 <h3 id="unknowns--branded-types">Unknowns &amp; Branded Types</h3>
 
+<p>When working with unknowns, there is this issue:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">let</span> <span class="nx">aa</span><span class="p">:</span> <span class="nx">unknown</span> <span class="o">=</span> <span class="mi">41</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">bb</span><span class="p">:</span> <span class="nx">unknown</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">string</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">array</span><span class="dl">"</span><span class="p">];</span>
+<span class="nx">bb</span> <span class="o">=</span> <span class="nx">aa</span><span class="p">;</span> <span class="c1">// 🚨 yikes</span></code></pre></figure>
+
+<p>Any unknown can be assigned to any other unknown, because it is a top type. So as an alternative and safer way to use unknowns, let’s look at branded types.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">interface</span> <span class="nx">BrandedA</span> <span class="p">{</span>
+  <span class="nl">__this_is_branded_with_a</span><span class="p">:</span> <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">brandA</span><span class="p">(</span><span class="nx">value</span><span class="p">:</span> <span class="nx">string</span><span class="p">):</span> <span class="nx">BrandedA</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span><span class="nx">value</span> <span class="k">as</span> <span class="nx">unknown</span><span class="p">)</span> <span class="k">as</span> <span class="nx">BrandedA</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">unbrandA</span><span class="p">(</span><span class="nx">value</span><span class="p">:</span> <span class="nx">BrandedA</span><span class="p">):</span> <span class="nx">string</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span><span class="nx">value</span> <span class="k">as</span> <span class="nx">unknown</span><span class="p">)</span> <span class="k">as</span> <span class="nx">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">interface</span> <span class="nx">BrandedB</span> <span class="p">{</span>
+  <span class="nl">__this_is_branded_with_b</span><span class="p">:</span> <span class="dl">"</span><span class="s2">b</span><span class="dl">"</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">brandB</span><span class="p">(</span><span class="nx">value</span><span class="p">:</span> <span class="p">{</span> <span class="nl">abc</span><span class="p">:</span> <span class="nx">string</span> <span class="p">}):</span> <span class="nx">BrandedB</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span><span class="nx">value</span> <span class="k">as</span> <span class="nx">unknown</span><span class="p">)</span> <span class="k">as</span> <span class="nx">BrandedB</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">unbrandB</span><span class="p">(</span><span class="nx">value</span><span class="p">:</span> <span class="nx">BrandedB</span><span class="p">):</span> <span class="p">{</span> <span class="nl">abc</span><span class="p">:</span> <span class="nx">string</span> <span class="p">}</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span><span class="nx">value</span> <span class="k">as</span> <span class="nx">unknown</span><span class="p">)</span> <span class="k">as</span> <span class="p">{</span> <span class="na">abc</span><span class="p">:</span> <span class="nx">string</span> <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">let</span> <span class="nx">secretA</span> <span class="o">=</span> <span class="nx">brandA</span><span class="p">(</span><span class="dl">"</span><span class="s2">This is a secret value</span><span class="dl">"</span><span class="p">);</span>
+<span class="kd">let</span> <span class="nx">secretB</span> <span class="o">=</span> <span class="nx">brandB</span><span class="p">({</span> <span class="na">abc</span><span class="p">:</span> <span class="dl">"</span><span class="s2">This is a different secret value</span><span class="dl">"</span> <span class="p">});</span>
+
+<span class="nx">secretA</span> <span class="o">=</span> <span class="nx">secretB</span><span class="p">;</span> <span class="c1">// ✅ No chance of getting these mixed up</span>
+<span class="nx">unbrandB</span><span class="p">(</span><span class="nx">secretA</span><span class="p">);</span>
+<span class="nx">unbrandA</span><span class="p">(</span><span class="nx">secretB</span><span class="p">);</span>
+
+<span class="c1">// back to our original values</span>
+<span class="kd">let</span> <span class="nx">revealedA</span> <span class="o">=</span> <span class="nx">unbrandA</span><span class="p">(</span><span class="nx">secretA</span><span class="p">);</span>
+<span class="kd">let</span> <span class="nx">revealedB</span> <span class="o">=</span> <span class="nx">unbrandB</span><span class="p">(</span><span class="nx">secretB</span><span class="p">);</span></code></pre></figure>
+
+<p>In the above code, we have removed the possibility of reassigning an unknown to another unknown. Make sure you keep the above approach to branding and unbranding in one location that no consumer of your code will need to be concerned with so that you can make changes as needed and no one will be any the wiser / have to worry about it.</p>
+
+<p>Q: What is the point of doing things this way versus using an object and adding a <code class="language-plaintext highlighter-rouge">private</code> property to it?</p>
+
+<p>A: <code class="language-plaintext highlighter-rouge">private</code> can only be used on class instances. Again, the use of branded types and unknown is not about security, it is about discouraging other developers from intertwining themselves with private parts of your code.</p>
+
 <h3 id="bottom-types">Bottom Types</h3>
+
+<p>All bottom types can hold no values. A place where you will commonly see a bottom type is through exhaustive narrowing, like so:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">let</span> <span class="nx">x</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">abc</span><span class="dl">"</span> <span class="k">as</span> <span class="nx">string</span> <span class="o">|</span> <span class="nx">number</span><span class="p">;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">x</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">string</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// x is a string here</span>
+  <span class="nx">x</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">"</span><span class="s2">, </span><span class="dl">"</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">x</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">number</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// x is a number here</span>
+  <span class="nx">x</span><span class="p">.</span><span class="nx">toFixed</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+  <span class="c1">// x is a never here</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>In the above code, if we ever got to the final <code class="language-plaintext highlighter-rouge">else</code> statement, the type of <code class="language-plaintext highlighter-rouge">x</code> would be a never. You will not be creating values of the type never, but you may come across them. But what if we wanted to use the type of never for something? Here’s a possible scenario:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">class</span> <span class="nx">UnreachableError</span> <span class="kd">extends</span> <span class="nb">Error</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="nx">val</span><span class="p">:</span> <span class="nx">never</span><span class="p">,</span> <span class="nx">message</span><span class="p">:</span> <span class="nx">string</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">super</span><span class="p">(</span><span class="s2">`TypeScript thought we could never end up here\n</span><span class="p">${</span><span class="nx">message</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">let</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">4</span> <span class="k">as</span> <span class="nx">string</span> <span class="o">|</span> <span class="nx">number</span><span class="p">;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">y</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">string</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// y is a string here</span>
+  <span class="nx">y</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">"</span><span class="s2">, </span><span class="dl">"</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">y</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">number</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// y is a number here</span>
+  <span class="nx">y</span><span class="p">.</span><span class="nx">toFixed</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+  <span class="k">throw</span> <span class="k">new</span> <span class="nx">UnreachableError</span><span class="p">(</span><span class="nx">y</span><span class="p">,</span> <span class="dl">"</span><span class="s2">y should be a string or number</span><span class="dl">"</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>In the <code class="language-plaintext highlighter-rouge">UnreachableError</code> class, <code class="language-plaintext highlighter-rouge">never</code> is provided as an argument.</p>
+
+<p>Q: In the above code, under what circumstances would we ever reach the final <code class="language-plaintext highlighter-rouge">else</code> statement?</p>
+
+<p>A: There are a few ways. One, you could have done some casting, weakening your types in such a way that they are lying to you. Another possibility, because TypeScript is compile-time only, when your code is out in the wild, there is a possibility that a consumer of your code passes something to your function that does not meet any of the conditions which would then hit the final <code class="language-plaintext highlighter-rouge">else</code> statement.</p>
 
 <h2 id="advanced-types">Advanced Types</h2>
 
 <h3 id="mapped--conditional-types--type-queries">Mapped &amp; Conditional Types, &amp; Type Queries</h3>
 
+<p>Moving into even more advanced types, go have a look at <code class="language-plaintext highlighter-rouge">./notes/7-advanced-types.ts</code>. It may be useful to get a sense for what is possible as you learn more and more about how to design effective constraints with TypeScript. First up, mapped types which involve using an interface as a way for getting to the interfaces keys to the types associated with those keys. Earlier in the workshop we were using / looking at function signature overloads in order to ensure that there was something that could match for type of <code class="language-plaintext highlighter-rouge">HasPhoneNumber</code> and <code class="language-plaintext highlighter-rouge">HasEmail</code>. This methodology would require that as more communication methods are added that there would also need to be more signatures added. A more efficient way would be to use a mapped type. From <code class="language-plaintext highlighter-rouge">./notes/7-advanced-types.ts</code> (lines 3 - 25):</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">interface</span> <span class="nx">CommunicationMethods</span> <span class="p">{</span>
+  <span class="nl">email</span><span class="p">:</span> <span class="nx">HasEmail</span><span class="p">;</span>
+  <span class="nl">phone</span><span class="p">:</span> <span class="nx">HasPhoneNumber</span><span class="p">;</span>
+  <span class="nl">fax</span><span class="p">:</span> <span class="p">{</span> <span class="na">fax</span><span class="p">:</span> <span class="nx">number</span> <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">contact</span><span class="o">&lt;</span><span class="nx">K</span> <span class="kd">extends</span> <span class="nx">keyof</span> <span class="nx">CommunicationMethods</span><span class="o">&gt;</span><span class="p">(</span>
+  <span class="nx">method</span><span class="p">:</span> <span class="nx">K</span><span class="p">,</span>
+  <span class="nx">contact</span><span class="p">:</span> <span class="nx">CommunicationMethods</span><span class="p">[</span><span class="nx">K</span><span class="p">]</span> <span class="c1">// 💡turning key into value -- a *mapped type*</span>
+<span class="p">)</span> <span class="p">{</span>
+  <span class="c1">//...</span>
+<span class="p">}</span>
+<span class="nx">contact</span><span class="p">(</span><span class="dl">"</span><span class="s2">email</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">foo</span><span class="dl">"</span><span class="p">,</span> <span class="na">email</span><span class="p">:</span> <span class="dl">"</span><span class="s2">mike@example.com</span><span class="dl">"</span> <span class="p">});</span>
+<span class="nx">contact</span><span class="p">(</span><span class="dl">"</span><span class="s2">phone</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">foo</span><span class="dl">"</span><span class="p">,</span> <span class="na">phone</span><span class="p">:</span> <span class="mi">3213332222</span> <span class="p">});</span>
+<span class="nx">contact</span><span class="p">(</span><span class="dl">"</span><span class="s2">fax</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span> <span class="na">fax</span><span class="p">:</span> <span class="mi">1231</span> <span class="p">});</span>
+
+<span class="c1">// we can get all values by mapping through all keys</span>
+<span class="nx">type</span> <span class="nx">AllCommKeys</span> <span class="o">=</span> <span class="nx">keyof</span> <span class="nx">CommunicationMethods</span><span class="p">;</span>
+<span class="nx">type</span> <span class="nx">AllCommValues</span> <span class="o">=</span> <span class="nx">CommunicationMethods</span><span class="p">[</span><span class="nx">keyof</span> <span class="nx">CommunicationMethods</span><span class="p">];</span></code></pre></figure>
+
+<p>Type queries by way of <code class="language-plaintext highlighter-rouge">typeof</code> allows us to get the type of a value. And that (with little explanation) looks like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">alreadyResolvedNum</span> <span class="o">=</span> <span class="nb">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+
+<span class="nx">type</span> <span class="nx">ResolveType</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nb">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">x</span><span class="p">:</span> <span class="nx">ResolveType</span> <span class="o">=</span> <span class="nb">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">;</span>
+<span class="nx">x</span><span class="p">(</span><span class="mi">42</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">y</span> <span class="o">=&gt;</span> <span class="nx">y</span><span class="p">.</span><span class="nx">toPrecision</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span></code></pre></figure>
+
+<p>Conditional types allow us to use ternary operators to define the type (can only be used for generics). Conditional types look like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">type</span> <span class="nx">EventualType</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">T</span> <span class="kd">extends</span> <span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">infer</span> <span class="nx">S</span><span class="o">&gt;</span> <span class="c1">// if T extends Promise&lt;any&gt;</span>
+  <span class="p">?</span> <span class="nx">S</span> <span class="c1">// extract the type the promise resolves to</span>
+  <span class="p">:</span> <span class="nx">T</span><span class="p">;</span> <span class="c1">// otherwise just let T pass through</span></code></pre></figure>
+
 <h3 id="built-in-utility-types">Built-In Utility Types</h3>
+
+<p>TypeScript comes with a couple of utility types. The first we’ll look at is <code class="language-plaintext highlighter-rouge">Partial</code> which makes everything on a type optional. This is useful if you have an options object where you may have a set of default values and some can pass in a subset of those options and you want to do an object merge. i.e. take whatever is given and merge it in to the fallbacks. <code class="language-plaintext highlighter-rouge">Partial</code> will put a <code class="language-plaintext highlighter-rouge">?</code> (optional) in front of all the properties, making them… optional.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">type</span> <span class="nx">MayHaveEmail</span> <span class="o">=</span> <span class="nx">Partial</span><span class="o">&lt;</span><span class="nx">HasEmail</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">me</span><span class="p">:</span> <span class="nx">MayHaveEmail</span> <span class="o">=</span> <span class="p">{};</span> <span class="c1">// everything is optional</span></code></pre></figure>
+
+<p>The next utility type is <code class="language-plaintext highlighter-rouge">Pick</code> which allows us to select one or more properties from an object. It allows you to define precisely which properties you want.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">type</span> <span class="nx">HasThen</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">Pick</span><span class="o">&lt;</span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">,</span> <span class="dl">"</span><span class="s2">then</span><span class="dl">"</span> <span class="o">|</span> <span class="dl">"</span><span class="s2">catch</span><span class="dl">"</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="kd">let</span> <span class="nx">hasThen</span><span class="p">:</span> <span class="nx">HasThen</span><span class="o">&lt;</span><span class="nx">number</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nb">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+<span class="nx">hasThen</span><span class="p">.</span><span class="nx">then</span><span class="p">;</span> <span class="c1">// .catch is also available</span></code></pre></figure>
+
+<p><code class="language-plaintext highlighter-rouge">Extract</code> lets us obtain a subset of types that are assignable to something.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">type</span> <span class="nx">OnlyStrings</span> <span class="o">=</span> <span class="nx">Extract</span><span class="o">&lt;</span><span class="dl">"</span><span class="s2">a</span><span class="dl">"</span> <span class="o">|</span> <span class="dl">"</span><span class="s2">b</span><span class="dl">"</span> <span class="o">|</span> <span class="mi">1</span> <span class="o">|</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">number</span><span class="o">&gt;</span><span class="p">;</span></code></pre></figure>
+
+<p><code class="language-plaintext highlighter-rouge">Exclude</code> lets us obtain a subset of types that are NOT assignable to something.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">type</span> <span class="nx">NotStrings</span> <span class="o">=</span> <span class="nx">Exclude</span><span class="o">&lt;</span><span class="dl">"</span><span class="s2">a</span><span class="dl">"</span> <span class="o">|</span> <span class="dl">"</span><span class="s2">b</span><span class="dl">"</span> <span class="o">|</span> <span class="mi">1</span> <span class="o">|</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">string</span><span class="o">&gt;</span><span class="p">;</span></code></pre></figure>
+
+<p><code class="language-plaintext highlighter-rouge">Record</code> helps us create a type with specified property keys and the same value type.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">type</span> <span class="nx">ABCPromises</span> <span class="o">=</span> <span class="nx">Record</span><span class="o">&lt;</span><span class="dl">"</span><span class="s2">a</span><span class="dl">"</span> <span class="o">|</span> <span class="dl">"</span><span class="s2">b</span><span class="dl">"</span> <span class="o">|</span> <span class="dl">"</span><span class="s2">c</span><span class="dl">"</span><span class="p">,</span> <span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">any</span><span class="o">&gt;&gt;</span><span class="p">;</span></code></pre></figure>
 
 <h2 id="declaration-merging">Declaration Merging</h2>
 
 <h3 id="declaration-merging-1">Declaration Merging</h3>
 
+<p>This section is important in terms of forming the right mental model in terms of how TypeScript works. We’re going to look at how VS Code’s tooltips provide information that we can use to figure out whether something is a value or a type. This should help us understand how we can put small fixes on top of libraries, imperfect type information, or maybe you want to prototype something and the types do not exist for it yet, this will help you augment some of the existing type information in your app. Go on… open up <code class="language-plaintext highlighter-rouge">./notes/8-declaration-merging.ts</code> and follow along. In TypeScript, identifiers (things you can export) or as TypeScript internally calls them; symbols, can be associated with up to three things; a value, a type, or a namespace.</p>
+
+<p>A namespace is like an object in that it has a type and it has a value. Here’s some code to look at:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">foo</span><span class="p">()</span> <span class="p">{}</span>
+<span class="kr">interface</span> <span class="nx">bar</span> <span class="p">{}</span>
+<span class="nx">namespace</span> <span class="nx">baz</span> <span class="p">{</span>
+  <span class="k">export</span> <span class="kd">const</span> <span class="nx">biz</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">hello</span><span class="dl">"</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Here are some ways (using the above code as an example) to test for value, type, or namespace:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// how to test for a value</span>
+<span class="kd">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">foo</span><span class="p">;</span> <span class="c1">// foo is in the value position (RHS).</span>
+
+<span class="c1">// how to test for a type</span>
+<span class="kd">const</span> <span class="nx">y</span><span class="p">:</span> <span class="nx">bar</span> <span class="o">=</span> <span class="p">{};</span> <span class="c1">// bar is in the type position (LHS).</span>
+
+<span class="c1">// how to test for a namespace (hover over baz symbol)</span>
+<span class="nx">baz</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="p">{</span> <span class="nx">foo</span><span class="p">,</span> <span class="nx">bar</span><span class="p">,</span> <span class="nx">baz</span> <span class="p">};</span> <span class="c1">// all are importable/exportable</span></code></pre></figure>
+
+<p>Functions and variables are purely values. Their types may only be extracted using type queries (<code class="language-plaintext highlighter-rouge">typeof</code>).</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">xx</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">yy</span><span class="p">:</span> <span class="k">typeof</span> <span class="nx">xx</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span></code></pre></figure>
+
+<p>Interfaces are purely types.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">interface</span> <span class="nx">Address</span> <span class="p">{</span>
+  <span class="nl">street</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">z</span> <span class="o">=</span> <span class="nx">Address</span><span class="p">;</span> <span class="c1">// 🚨 ERROR (fails value test)</span></code></pre></figure>
+
+<p>Classes are both types and values. A class is a factory to produce instances. Using a class as a type is almost like using an interface for the instance.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">class</span> <span class="nx">Contact</span> <span class="p">{</span>
+  <span class="nl">name</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// passes both the value and type tests</span>
+
+<span class="kd">const</span> <span class="nx">contactClass</span> <span class="o">=</span> <span class="nx">Contact</span><span class="p">;</span> <span class="c1">// value relates to the factory for creating instances</span>
+<span class="kd">const</span> <span class="nx">contactInstance</span><span class="p">:</span> <span class="nx">Contact</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Contact</span><span class="p">();</span> <span class="c1">// interface relates to instances</span></code></pre></figure>
+
+<p>When declarations have the same name and do not have values that collide with other values, class, namespace, and interface will stack on top of each other. In this way you can add additional types as needed:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">class</span> <span class="nx">Album</span> <span class="p">{</span>
+  <span class="nl">label</span><span class="p">:</span> <span class="nx">Album</span><span class="p">.</span><span class="nx">AlbumLabel</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Album</span><span class="p">.</span><span class="nx">AlbumLabel</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="nx">namespace</span> <span class="nx">Album</span> <span class="p">{</span>
+  <span class="k">export</span> <span class="kd">class</span> <span class="nx">AlbumLabel</span> <span class="p">{}</span>
+<span class="p">}</span>
+<span class="kr">interface</span> <span class="nx">Album</span> <span class="p">{</span>
+  <span class="nl">artist</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">let</span> <span class="nx">al</span><span class="p">:</span> <span class="nx">Album</span><span class="p">;</span> <span class="c1">// type test</span>
+<span class="kd">let</span> <span class="nx">alValue</span> <span class="o">=</span> <span class="nx">Album</span><span class="p">;</span> <span class="c1">// value test</span>
+
+<span class="k">export</span> <span class="p">{</span> <span class="nx">Album</span> <span class="p">};</span> <span class="c1">// 👈 hover over the "Album" -- all three slots filled</span></code></pre></figure>
+
+<p>Namespaces, as seen above, are their own entity, they are neither an interface or a class.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">class</span> <span class="nx">AddressBook</span> <span class="p">{</span>
+  <span class="nx">contacts</span><span class="o">!</span><span class="p">:</span> <span class="nx">Contact</span><span class="p">[];</span>
+<span class="p">}</span>
+<span class="nx">namespace</span> <span class="nx">AddressBook</span> <span class="p">{</span>
+  <span class="k">export</span> <span class="kd">class</span> <span class="nx">ABContact</span> <span class="kd">extends</span> <span class="nx">Contact</span> <span class="p">{}</span> <span class="c1">// inner class</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">ab</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AddressBook</span><span class="p">();</span>
+<span class="nx">ab</span><span class="p">.</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="k">new</span> <span class="nx">AddressBook</span><span class="p">.</span><span class="nx">ABContact</span><span class="p">());</span></code></pre></figure>
+
+<p>Notice the inner class above and how it is accessed. The reason this is allowed is because a namespace serves to tack things on to something, in the above case, <code class="language-plaintext highlighter-rouge">ABContact</code> is being added to <code class="language-plaintext highlighter-rouge">AddressBook</code>. Similar to classes, functions can be extended with a namespace:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">format</span><span class="p">(</span><span class="nx">amt</span><span class="p">:</span> <span class="nx">number</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="s2">`</span><span class="p">${</span><span class="nx">format</span><span class="p">.</span><span class="nx">currency</span><span class="p">}${</span><span class="nx">amt</span><span class="p">.</span><span class="nx">toFixed</span><span class="p">(</span><span class="mi">2</span><span class="p">)}</span><span class="s2">`</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">namespace</span> <span class="nx">format</span> <span class="p">{</span>
+  <span class="k">export</span> <span class="kd">const</span> <span class="nx">currency</span><span class="p">:</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">$ </span><span class="dl">"</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">format</span><span class="p">(</span><span class="mf">2.314</span><span class="p">);</span> <span class="c1">// $ 2.31</span>
+<span class="nx">format</span><span class="p">.</span><span class="nx">currency</span><span class="p">;</span> <span class="c1">// $</span></code></pre></figure>
+
+<p>Knowing what is a type and what is a value is a key takeaway here. Also, knowing what can be augmented, interfaces, versus knowing what you have to leave alone (when defined), types and values.</p>
+
 <h2 id="compiler-api">Compiler API</h2>
 
 <h3 id="initializing">Initializing</h3>
 
+<p>The last thing we are going to look at is how the TypeScript compiler sees code. We will do so by way of creating a quick and dirty documentation generator. So strap yourself in and head on over to <code class="language-plaintext highlighter-rouge">./notes/9-compiler-api.ts</code>. At the top of the file, there are a couple of wildcard imports <code class="language-plaintext highlighter-rouge">*</code>. A wildcard import will import all the things from whatever is being imported, in this case, <code class="language-plaintext highlighter-rouge">path</code> and <code class="language-plaintext highlighter-rouge">typescript</code>. <code class="language-plaintext highlighter-rouge">ts.createProgram</code> is quite similar to what you might have seen in a <code class="language-plaintext highlighter-rouge">tsconfig</code> file and needs both the <code class="language-plaintext highlighter-rouge">options</code> object and the <code class="language-plaintext highlighter-rouge">rootNames</code> object (this is using the node <code class="language-plaintext highlighter-rouge">path</code> module we imported).</p>
+
+<p>Next, step (2) of the file, starting at line 20, we are getting the non-declaration source files because we do not want to include declaration files in our documentation generator.</p>
+
 <h3 id="type-checker">Type-Checker</h3>
 
+<p>Still in <code class="language-plaintext highlighter-rouge">./notes/9-compiler-api.ts</code>, but now on step (3), we are going to use the <code class="language-plaintext highlighter-rouge">getTypeChecker</code> method from TypeScript which is part of the compiler. <code class="language-plaintext highlighter-rouge">getTypeChecker</code> takes all the types and interfaces you create and the AST (abstract syntax tree), which is the in-memory representation of your code, and it binds these things together to identify what is going to be type checked.</p>
+
+<p>Step (4), we are going to use the type checker to obtain the appropriate <code class="language-plaintext highlighter-rouge">ts.Symbol</code> (interface, namespace) for each source file.</p>
+
+<p>And the last step, (5), is a big one, but we’ll walk through it. Immediately, we are just looking to log out the name of each instance of an <code class="language-plaintext highlighter-rouge">sfSymbol</code>, then if there are <code class="language-plaintext highlighter-rouge">fileExports</code>, console.log a string <code class="language-plaintext highlighter-rouge">"== Exports =="</code> and for each export log it’s key (name) and stringified type. Finally, we are going to <code class="language-plaintext highlighter-rouge">getJsDocTags</code> and log them to the console with their tag name and tag text.</p>
+
 <h3 id="wrapping-up">Wrapping Up</h3>
+
+<p>That’s it! Hopefully you have a greater understanding of how typed programming works and where to apply type information. Try to avoid any over-constrain traps when typing. 👏</p>
 
         </article>
     </div>
