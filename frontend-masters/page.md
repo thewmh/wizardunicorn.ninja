@@ -28,7 +28,7 @@ Organized by subject.
 
 <!-- **COMING SOON** Hardcore Functional Programming in JavaScript, v2 [](hardcore-functional-programming-js) -->
 
-21/07 **IN PROGRESS** TypeScript 3 Fundamentals, v2 [](typescript-3-fundamentals)
+[TypeScript 3 Fundamentals, v2](typescript-3-fundamentals)
 
 ## Webpack
 
