@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<title>Resources • Wizard Unicorn Ninja</title><meta name="description" content="Hand selected frontend development resources page."><meta name="theme-color" content="#fafafa"/><link rel="shortcut icon" type="image/ico"href="/assets/img/favicons/favicon.ico"><link rel="icon" type="image/png"href="/assets/img/favicons/favicon.png"><link rel="icon" type="image/png"sizes="192x192"href="/assets/img/favicons/favicon-192.png"><link rel="apple-touch-icon" type=""href="/assets/img/favicons/favicon-57.png"><link rel="apple-touch-icon" type=""sizes="72x72"href="/assets/img/favicons/favicon-72.png"><link rel="apple-touch-icon" type=""sizes="114x114"href="/assets/img/favicons/favicon-114.png"><link rel="apple-touch-icon" type=""sizes="144x144"href="/assets/img/favicons/favicon-144.png"><script>
+<title>Introduction to Next.js • Wizard Unicorn Ninja</title><meta name="description" content="These are notes from the 'Introduction to Next.js' course on Frontend Masters."><meta name="theme-color" content="#fafafa"/><link rel="shortcut icon" type="image/ico"href="/assets/img/favicons/favicon.ico"><link rel="icon" type="image/png"href="/assets/img/favicons/favicon.png"><link rel="icon" type="image/png"sizes="192x192"href="/assets/img/favicons/favicon-192.png"><link rel="apple-touch-icon" type=""href="/assets/img/favicons/favicon-57.png"><link rel="apple-touch-icon" type=""sizes="72x72"href="/assets/img/favicons/favicon-72.png"><link rel="apple-touch-icon" type=""sizes="114x114"href="/assets/img/favicons/favicon-114.png"><link rel="apple-touch-icon" type=""sizes="144x144"href="/assets/img/favicons/favicon-144.png"><script>
     if ("serviceWorker" in navigator) {
   if (navigator.serviceWorker.controller) {
     console.log("An active service worker found, no need to register");
@@ -46,7 +46,7 @@
                   <span>Home</span>
                 </a>
             </li><li>
-                <a class="text-blueGray-700 hover:text-blueGray-900 dark:text-blueGray-50 unicorn:text-purple-700 unicorn:hover:text-pink-300 dark:hover:text-blueGray-300  font-semibold" href="/resources/" title="Resources" alt="Resources">
+                <a class="text-blueGray-700 hover:text-blueGray-900 dark:text-blueGray-50 unicorn:text-purple-700 unicorn:hover:text-pink-300 dark:hover:text-blueGray-300 " href="/resources/" title="Resources" alt="Resources">
                   <span>Resources</span>
                 </a>
             </li><li>
@@ -59,80 +59,103 @@
                 </a>
             </li></ul></div>
       </nav>
-</header></div><div class="container mx-auto px-10 pb-4 max-w-screen-lg"><article class="mx-auto mt-8 dark:text-blueGray-50 unicorn:text-purple-700 break-words"><h1 class="text-5xl lg:text-8xl font-semibold">Resources</h1><h2 id="all-encompassing-frontend-development-resources">All-encompassing Frontend Development Resources</h2>
+</header></div><div class="workshop-nav">
+    <div class="workshop-nav--div">
+        <p class="workshop-nav--title">Introduction to Next.js Navigation</p>
+        <ul class="workshop-nav--list hidden"><li class="workshop-nav--item">
+                <a class="workshop-nav--link" href="#introduction">Introduction</a>
+            </li><li class="workshop-nav--item">
+                <a class="workshop-nav--link" href="#routing">Routing</a>
+            </li><li class="workshop-nav--item">
+                <a class="workshop-nav--link" href="#config">config</a>
+            </li><li class="workshop-nav--item">
+                <a class="workshop-nav--link" href="#api">API</a>
+            </li><li class="workshop-nav--item">
+                <a class="workshop-nav--link" href="#deployment">Deployment</a>
+            </li><li class="workshop-nav--item">
+                <a class="workshop-nav--link" href="#wrapping-up">Wrapping Up</a>
+            </li></ul>
+    </div>
+</div><div class="container mx-auto px-10 pb-4 max-w-screen-lg"><article class="mx-auto mt-8 dark:text-blueGray-50 unicorn:text-purple-700 break-words"><h1 class="text-5xl lg:text-8xl font-semibold">Introduction to Next.js</h1><p><a href="">Link to Course Github Repository</a></p>
 
-<p><a href="https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf">Architectural Styles and the Design of Network-based Software Architectures</a></p>
+<p><a href="">Link to Course Notes</a></p>
 
-<p><a href="https://github.com/dexteryy/spellbook-of-modern-webdev">Spellbook of Modern Web Development</a></p>
+<p><a href="">Link to Completed Workshop Project</a></p>
 
-<p><a href="https://github.com/yangshun/front-end-interview-handbook">Frontend Interview Handbook</a></p>
+<h2 id="introduction">Introduction</h2>
 
-<h2 id="sxa">SXA</h2>
+<h3 id="introduction-1">Introduction</h3>
 
-<p><a href="https://www.velir.com/blog/2017/10/16/tour-sitecore-experience-accelerator-sxa-part-1">SXA Overview Part 1</a></p>
+<h3 id="course-overview">Course Overview</h3>
 
-<p><a href="https://www.velir.com/blog/2017/10/16/tour-sitecore-experience-accelerator-sxa-part-2">SXA Overview Part 2</a></p>
+<h3 id="nextjs-overview">Next.js Overview</h3>
 
-<p><a href="https://www.sidewalk.be/articles/the-sitecore-sxa-journey-discover-tips-and-tricks-when-implementing-an-sxa-website">SXA Implementation - Some Tips &amp; Tricks</a></p>
+<h3 id="getting-started-with-nextjs">Getting Started with Next.js</h3>
 
-<p><a href="https://www.reddit.com/r/sitecore/comments/bdihvd/sitecore_sxa_tutorials_sxa_1_8_full_site_step_by/">Video Tutorial Walkthrough</a></p>
+<h2 id="routing">Routing</h2>
 
-<p><a href="http://blog.martinmiles.net/post/how-to-add-id-and-data-attributes-to-a-rendering-variant-in-sxa">Add data attributes to renderings</a></p>
+<h3 id="routing-with-pages-in-nextjs">Routing with Pages in Next.js</h3>
 
-<h2 id="sitecore-jss">Sitecore JSS</h2>
+<h3 id="dynamic-route-parameters-in-nextjs">Dynamic Route Parameters in Next.js</h3>
 
-<p><a href="https://blog.vitaliitylyk.com/guide-on-refactoring-your-sitecore-solution-to-sitecore-jss/">Refactor Sitecore to JSS</a></p>
+<h3 id="catch-all-routes">Catch-All Routes</h3>
 
-<p><a href="https://sitecore.stackexchange.com/questions/18783/can-we-use-helix-principle-into-jss-application">Helix / JSS</a></p>
+<h3 id="page-navigation-with-the-link-component">Page Navigation with the Link Component</h3>
 
-<h2 id="javascript">JavaScript</h2>
+<h3 id="routing-and-navigation-qa">Routing and Navigation Q&amp;A</h3>
 
-<p><a href="https://addyosmani.com/resources/essentialjsdesignpatterns/book/">Essential JavaScript Design Patterns</a> - Complete Book</p>
+<h2 id="config">Config</h2>
 
-<h2 id="css">CSS</h2>
+<h3 id="adding-css--modules">Adding CSS &amp; Modules</h3>
 
-<p><a href="https://philipwalton.com/articles/css-architecture/">CSS Architecture</a></p>
+<h3 id="adding-theme-ui">Adding Theme UI</h3>
 
-<p><a href="https://medium.com/objects-in-space/objects-in-space-f6f404727">Objects in Space</a> - A style-guide for modular SASS development using SMACSS and BEM</p>
+<h3 id="styling-with-theme-ui">Styling with Theme UI</h3>
 
-<h2 id="computer-science">Computer Science</h2>
+<h3 id="variants--styling">Variants &amp; Styling</h3>
 
-<p><a href="https://teachyourselfcs.com/">Teach Yourself Computer Science</a></p>
+<h3 id="customizing-the-nextjs-config">Customizing the Next.js Config</h3>
 
-<h2 id="random-junk--garbage">Random Junk &amp; Garbage</h2>
+<h3 id="plugins">Plugins</h3>
 
-<p><a href="https://vscodecandothat.com">VSCode Can Do That?!</a> - A collection of resources for VSCode, because yes… it CAN do that.</p>
+<h3 id="typescript-with-nextjs">Typescript with Next.js</h3>
 
-<p>VSCode <a href="https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync">Settings Sync</a> - Share your extensions with others or re-populate all your installed extensions into a new computer or instance of VS Code</p>
+<h2 id="api">API</h2>
 
-<p>A Collection of <a href="https://twitter.com/i/moments/994601867987619840">UI Design Tips</a></p>
+<h3 id="creating-api-routes">Creating API Routes</h3>
 
-<p>Make your code snippet screenshots look pretty with <a href="https://carbon.now.sh/">Carbon</a></p>
+<h3 id="api-handlers">API Handlers</h3>
 
-<p><a href="https://github.com/minamarkham/formation">A Script</a> to set up a new Laptop with all the Things</p>
+<h3 id="creating-an-api">Creating an API</h3>
 
-<p><a href="https://hacks.mozilla.org/category/es6-in-depth/">ES6 In Depth</a> - Brought to you by Mozilla</p>
+<h3 id="fetching-data--getstaticprops">Fetching Data &amp; getStaticProps</h3>
 
-<p><a href="http://jsfiddle.net/ak9Lnrjj/10/">Add or Remove classes on things w/ jQuery?</a><br />
-<em>could be a fix for slick carousel variable height slides. add a class that makes all the other slides have ` display: none;`</em></p>
+<h3 id="building-static-pages-with-getstaticpaths">Building Static Pages with getStaticPaths</h3>
 
-<p><a href="https://www.charlesproxy.com">Charles - Web Debugging Proxy Application</a></p>
+<h3 id="building-dynamic-pages-with-getserversideprops">Building Dynamic Pages with getServerSideProps</h3>
 
-<h2 id="svg">SVG</h2>
+<h3 id="methods-of-fetching-data-review-and-auth-qa">Methods of Fetching Data Review and Auth Q&amp;A</h3>
 
-<p><em>read in order</em></p>
+<h3 id="fetching-notes-with-getserversideprops">Fetching Notes with getServerSideProps</h3>
 
-<p><a href="https://dbushell.com/2013/02/04/a-primer-to-front-end-svg-hacking/">A Primer to Frontend SVG Hacking :D</a></p>
+<h3 id="fetching-notes--dynamic-rendering">Fetching Notes &amp; Dynamic Rendering</h3>
 
-<p><a href="https://codepen.io/tigt/post/optimizing-svgs-in-data-uris">Optimizing SVGs in Data URIs</a></p>
+<h3 id="rendering-modes">Rendering Modes</h3>
 
-<p><a href="https://dopiaza.org/tools/datauri/index.php">Data URI Generator</a></p>
+<h3 id="working-with-ssr">Working with SSR</h3>
 
-<p><a href="https://www.urlencoder.org/">URL Encoder</a></p>
+<h2 id="deployment">Deployment</h2>
 
-<h2 id="non-development">Non-Development</h2>
+<h3 id="deploying-nextjs-overview">Deploying Next.js Overview</h3>
 
-<p>Make makgeolli (Korean rice wine / beer) with this <a href="/makgeolli-iyangju-base-recipe">iyangju base recipe</a></p>
+<h3 id="deploying-nextjs-on-vercel">Deploying Next.js on Vercel</h3>
+
+<h3 id="qa">Q&amp;A</h3>
+
+<h2 id="wrapping-up">Wrapping Up</h2>
+
+<h3 id="wrapping-up-1">Wrapping Up</h3>
+
 
         </article>
     </div>
