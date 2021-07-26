@@ -43,3 +43,5 @@ Organized by subject.
 [Complete Intro to React, v5](complete-intro-react)
 
 <!-- 01/2021 **IN PROGRESS** Intermediate React, v2 [🤫](intermediate-react) -->
+
+<!-- 07/2021 **IN PROGRESS** Introduction to Next.js [🤫](introduction-nextjs) -->

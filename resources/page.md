@@ -26,6 +26,12 @@ layout: default
 
 [Add data attributes to renderings](http://blog.martinmiles.net/post/how-to-add-id-and-data-attributes-to-a-rendering-variant-in-sxa)
 
+## Sitecore JSS
+
+[Refactor Sitecore to JSS](https://blog.vitaliitylyk.com/guide-on-refactoring-your-sitecore-solution-to-sitecore-jss/)
+
+[Helix / JSS](https://sitecore.stackexchange.com/questions/18783/can-we-use-helix-principle-into-jss-application)
+
 ## JavaScript
 
 [Essential JavaScript Design Patterns](https://addyosmani.com/resources/essentialjsdesignpatterns/book/) - Complete Book
