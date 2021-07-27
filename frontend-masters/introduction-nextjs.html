@@ -338,7 +338,57 @@ npm or yarn</p>
 
 <h3 id="adding-css--modules">Adding CSS &amp; Modules</h3>
 
+<p>Moving on to our instructors favorite thing, styling! <a href="https://hendrixer.github.io/nextjs-course/styling">Here’s the link to that section of the course website</a>. Scott enjoys CSS and making things look picture perfect. If you have any familiarity with React, you may also be aware that there are a number of different ways to work with CSS and how to style things. So Next.js made a decision(s) for us. In Next.js there are two basic types of styling: global and component.</p>
+
+<p>The only way to get global styling into your Next.js application is through the use of a special page called <code class="language-plaintext highlighter-rouge">pages/_app.jsx</code> (or wherever you’ve placed your pages folder). <code class="language-plaintext highlighter-rouge">_app.jsx</code> allows us to ‘hijack’ the entry point to our Next.js application. This file is created for us by default by Next.js and does not need to be created unless we want to do some global styling. Go ahead and make an <code class="language-plaintext highlighter-rouge">_app.jsx</code> file in the pages folder root, and add this to it:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">App</span><span class="p">({</span> <span class="nx">Component</span><span class="p">,</span> <span class="nx">pageProps</span> <span class="p">})</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="o">&lt;</span><span class="nx">Component</span> <span class="p">{</span> <span class="p">...</span><span class="nx">pageProps</span> <span class="p">}</span> <span class="sr">/</span><span class="err">&gt;
+</span><span class="p">}</span></code></pre></figure>
+
+<p>Straight away, this does nothing different than what Next.js does out of the box, but with this file we are now able to add global styling. In the <code class="language-plaintext highlighter-rouge">_app.jsx</code> file you can now import styles: <code class="language-plaintext highlighter-rouge">import 'directoryname/nameofcssfile.css</code>. And if you try to import a CSS file in to any other page, you will get an error, but you can import CSS as a module in files other than <code class="language-plaintext highlighter-rouge">_app.jsx</code>. We’ll look at that shortly. The reason Next.js has you use global styling in this way has to do with the bundling of the styles and how global styles are treated to make sure they are loaded in properly. Anyway, try to avoid using global CSS.</p>
+
+<p>What we are going to be using is Next.js’ support for CSS modules. The way CSS modules work is that for each import of CSS, even if it is the same CSS, it will get scoped to the component with a unique name before each class so that the CSS styling is unique to each import. This happens at build time. You can use CSS modules anywhere. To create a CSS module, all you have to do is add module to the filename: <code class="language-plaintext highlighter-rouge">styles.module.css</code>. Now you can import that CSS as a module everywhere. The only other thing to know right now is that CSS modules need class names, you are not allowed to target ‘pure’ elements (basically any HTML element; body, div, a, etc…). The reason being that the way the classnames get scoped, they have to be a class and not an element.</p>
+
 <h3 id="adding-theme-ui">Adding Theme UI</h3>
+
+<p>Scott is now going to speak about his approach to working with CSS in React / Next.js, starting with the fact that he likes to use <a href="https://theme-ui.com/">Theme UI</a>. From the Theme UI docs: “Theme UI is a library for creating themeable user interfaces based on constraint-based design principles.”. Basically, you can create an object that represents a theme and use that for all of your components. Let’s get Theme UI installed:</p>
+
+<p>With npm: <code class="language-plaintext highlighter-rouge">npm i theme-ui @theme-ui/presets --save</code></p>
+
+<p>With yarn: <code class="language-plaintext highlighter-rouge">yarn add theme-ui @theme-ui/presets</code></p>
+
+<p>Then, in the root directory of your project, create a theme file: <code class="language-plaintext highlighter-rouge">theme.js</code>. And in your theme file, drop in the following code:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="p">{</span> <span class="nx">roboto</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@theme-ui/presets</span><span class="dl">'</span>
+
+<span class="kd">const</span> <span class="nx">theme</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">...</span><span class="nx">roboto</span><span class="p">,</span>
+  <span class="na">containers</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">card</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">boxShadow</span><span class="p">:</span> <span class="dl">'</span><span class="s1">0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">border</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1px solid</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">borderColor</span><span class="p">:</span> <span class="dl">'</span><span class="s1">muted</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">borderRadius</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4px</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">p</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="na">page</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">width</span><span class="p">:</span> <span class="dl">'</span><span class="s1">100%</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">maxWidth</span><span class="p">:</span> <span class="dl">'</span><span class="s1">960px</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">m</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="na">mx</span><span class="p">:</span> <span class="dl">'</span><span class="s1">auto</span><span class="dl">'</span><span class="p">,</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="na">styles</span><span class="p">:</span> <span class="p">{</span>
+    <span class="p">...</span><span class="nx">roboto</span><span class="p">.</span><span class="nx">styles</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">theme</span></code></pre></figure>
+
+<p>But what is all that stuff?! First, we’re importing a preset which is a starting point for our theme. For the theme object, there is a specific set of properties that should be there and immediately inside of that object, we are spreading out the ‘roboto’ preset. Then at <code class="language-plaintext highlighter-rouge">containers</code>, the nested objects <code class="language-plaintext highlighter-rouge">card</code> &amp; <code class="language-plaintext highlighter-rouge">page</code> are basically CSS components (called variants in Theme UI) that can be added to any component that you want. You can use theme-based values for properties; like ‘muted’, that is not a color in CSS, but is defined in the ‘roboto’ theme preset. And then the <code class="language-plaintext highlighter-rouge">styles</code> object will be used to style things globally.</p>
 
 <h3 id="styling-with-theme-ui">Styling with Theme UI</h3>
 
