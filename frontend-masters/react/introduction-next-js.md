@@ -149,15 +149,150 @@ Now point your browser to `localhost:3000/notes` and you can see the notes page 
 
 ### Dynamic Route Parameters in Next.js
 
+The dynamic route we created `[id].jsx` is nice, but how does it work and how can we use it? Well, to start, we'll have to import the Next.js router module `useRouter`. At the top of `[id].jsx` add the following `impoort` statement:
 
+`import { useRouter } from 'next/router'
+
+`useRouter` is a React hook, most React hooks start with the 'use' keyword. We'll update the `[id].jsx` code in a moment, but are going to touch on the difference between a functional and  class-based component. In a functional component, the whole component is the render function, whereas with a class component, you manually have to create a render function and anything outside of that render function is not a part of it.
+
+Update `[id].jsx` like so:
+
+{% highlight javascript %}
+
+import React from 'react';
+import { useRouter } from 'next/router';
+
+const Page = () => {
+  const router = useRouter();
+
+  const { id } = router.query;
+
+  return (
+    <h1>
+      Note {id}
+    </h1>
+  )
+}
+
+export default Page;
+
+{% endhighlight %}
+
+Now, if you return to `localhost:3000/notes/1`, you should see an `<h1>` element rendered on the page with 'Note 1' displayed.
 
 ### Catch-All Routes
 
+We had used `router.query` to grab the `id` property for a dynamic route in the last section. `router.query` has a lot of other properties and even gives you the ability to create catch-all routes. You might use this if you have a nested folder inside of a nested folder inside of a nested folder. Catch-all routes are similar to a glob pattern `path/folder/**` where the asterisks denote that everything after the last specified directory (folder in this example) is included. In Next.js, we can specify a catch-all route with the following file naming syntax: `[...params].jsx` We can now update our component to use a catch-all route, but let's try to think of why we would even ever use this 🤔
 
+Maybe all of your pages within a nested directory need the same rendering? This would be a good use case. There is another type of catch-all route, the optional catch-all route. The optional catch-all route will also include its parent, and the syntax for an optional catch-all route is `[[...params]].jsx` (notice the 2 sets of brackets, also FYI, the `params` name can be whatever you want). Again, docs and wikis might be great use cases for this approach.
+
+We've learned a bit about pages, but what about things that are not pages? Non-pages! When it comes to components, Next.js doesn't have any opinions or conventions. The community-convention is to create a `/src/componets` folder to house components. This is similar to how people generally structure their React applications. And once you have a `/src/` directory, you can throw your `pages` directory in there as well, to keep your project cleaner, but make sure that you do not also have a `pages` directory in the root of your project because that would take precedence over the one in `/src/`. 
 
 ### Page Navigation with the Link Component
 
+There's some pages in our app now, but navigating through the address bar in the browser is probably not the best for usability. Let's add a link component to our app. Next.js 'gives' us a link component which allows us to route between pages. The link component is strictly for client-side routing, if you are linking to another site, then you should use the `<a>` tag instead. Open up `pages/index.jsx` and update it to use the link component:
 
+{% highlight javascript %}
+
+import React from 'react';
+import Link from 'next/link';
+
+const Page = () => (
+  <div>
+    <h1>Index Page</h1>
+    <Link href="/notes">
+      <a>
+        Link to Notes directory
+      </a>
+    </Link>
+  </div>
+)
+
+export default Page;
+
+{% endhighlight %}
+
+Your main app page will now have a link on it! How about those dynamic routes though? How can we link to them? Open up `pages/notes/index.jsx` and update that page code to this:
+
+{% highlight javascript %}
+
+import React from 'react';
+import Link from 'next/link';
+
+const Page = () => (
+  <div>
+    <h1>Note index page</h1>
+
+    <Link href="/notes/[id]" as={`/notes/1`}>
+      <a>
+        Note 1
+      </a>
+    </Link>
+  </div>
+)
+
+export default Page;
+
+{% endhighlight %}
+
+And if you want to see how that could be set up for when we eventually have a bunch of notes, that would be like this:
+
+{% highlight javascript %}
+
+import React from 'react'
+import Link from 'next/link'
+
+export default () => {
+  const notes = new Array(15).fill(1).map((e, i) => ({id: i+1, title: `Note ${i+1}`}))
+
+  return (
+    <div>
+      <h1>Notes</h1>
+
+      {notes.map(note => (
+        <div>
+          <Link key={note.id} href="/notes/[id]" as={`/notes/${note.id}`}>
+            <a>
+              <strong>{note.title}</strong>
+            </a>
+          </Link>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+{% endhighlight %}
+
+(I added the +1 so that the notes do not start from zero... as arrays do)
+
+What if you need to route programmatically using JavaScript? Like there should be routing based on an event?! The router to the rescue! We'd need to push routes to the browser, which could look like this:
+
+{% highlight javascript %}
+
+import React from 'react'
+import { useRouter } from 'next/router'
+
+export default () => {
+  const router = useRouter()
+  const id = 2
+
+  return (
+    <div>
+      <button onClick={e => router.push('/')}>
+        Go Home
+      </button>
+
+      <button onClick={e => router.push('/user/[id]', `/user/${id}`)}>
+        Dashboard
+      </button>
+    </div>
+  )
+}
+
+{% endhighlight %}
+
+[Refer to the course website - Navigation section for more info](https://hendrixer.github.io/nextjs-course/navigation)
 
 ### Routing and Navigation Q&A
 
