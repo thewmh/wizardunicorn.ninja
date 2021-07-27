@@ -195,9 +195,130 @@ npm or yarn</p>
 
 <h3 id="dynamic-route-parameters-in-nextjs">Dynamic Route Parameters in Next.js</h3>
 
+<p>The dynamic route we created <code class="language-plaintext highlighter-rouge">[id].jsx</code> is nice, but how does it work and how can we use it? Well, to start, we’ll have to import the Next.js router module <code class="language-plaintext highlighter-rouge">useRouter</code>. At the top of <code class="language-plaintext highlighter-rouge">[id].jsx</code> add the following <code class="language-plaintext highlighter-rouge">impoort</code> statement:</p>
+
+<p>`import { useRouter } from ‘next/router’</p>
+
+<p><code class="language-plaintext highlighter-rouge">useRouter</code> is a React hook, most React hooks start with the ‘use’ keyword. We’ll update the <code class="language-plaintext highlighter-rouge">[id].jsx</code> code in a moment, but are going to touch on the difference between a functional and  class-based component. In a functional component, the whole component is the render function, whereas with a class component, you manually have to create a render function and anything outside of that render function is not a part of it.</p>
+
+<p>Update <code class="language-plaintext highlighter-rouge">[id].jsx</code> like so:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useRouter</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">next/router</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">Page</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">router</span> <span class="o">=</span> <span class="nx">useRouter</span><span class="p">();</span>
+
+  <span class="kd">const</span> <span class="p">{</span> <span class="nx">id</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">router</span><span class="p">.</span><span class="nx">query</span><span class="p">;</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span>
+      <span class="nx">Note</span> <span class="p">{</span><span class="nx">id</span><span class="p">}</span>
+    <span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>  <span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">Page</span><span class="p">;</span></code></pre></figure>
+
+<p>Now, if you return to <code class="language-plaintext highlighter-rouge">localhost:3000/notes/1</code>, you should see an <code class="language-plaintext highlighter-rouge">&lt;h1&gt;</code> element rendered on the page with ‘Note 1’ displayed.</p>
+
 <h3 id="catch-all-routes">Catch-All Routes</h3>
 
+<p>We had used <code class="language-plaintext highlighter-rouge">router.query</code> to grab the <code class="language-plaintext highlighter-rouge">id</code> property for a dynamic route in the last section. <code class="language-plaintext highlighter-rouge">router.query</code> has a lot of other properties and even gives you the ability to create catch-all routes. You might use this if you have a nested folder inside of a nested folder inside of a nested folder. Catch-all routes are similar to a glob pattern <code class="language-plaintext highlighter-rouge">path/folder/**</code> where the asterisks denote that everything after the last specified directory (folder in this example) is included. In Next.js, we can specify a catch-all route with the following file naming syntax: <code class="language-plaintext highlighter-rouge">[...params].jsx</code> We can now update our component to use a catch-all route, but let’s try to think of why we would even ever use this 🤔</p>
+
+<p>Maybe all of your pages within a nested directory need the same rendering? This would be a good use case. There is another type of catch-all route, the optional catch-all route. The optional catch-all route will also include its parent, and the syntax for an optional catch-all route is <code class="language-plaintext highlighter-rouge">[[...params]].jsx</code> (notice the 2 sets of brackets, also FYI, the <code class="language-plaintext highlighter-rouge">params</code> name can be whatever you want). Again, docs and wikis might be great use cases for this approach.</p>
+
+<p>We’ve learned a bit about pages, but what about things that are not pages? Non-pages! When it comes to components, Next.js doesn’t have any opinions or conventions. The community-convention is to create a <code class="language-plaintext highlighter-rouge">/src/componets</code> folder to house components. This is similar to how people generally structure their React applications. And once you have a <code class="language-plaintext highlighter-rouge">/src/</code> directory, you can throw your <code class="language-plaintext highlighter-rouge">pages</code> directory in there as well, to keep your project cleaner, but make sure that you do not also have a <code class="language-plaintext highlighter-rouge">pages</code> directory in the root of your project because that would take precedence over the one in <code class="language-plaintext highlighter-rouge">/src/</code>.</p>
+
 <h3 id="page-navigation-with-the-link-component">Page Navigation with the Link Component</h3>
+
+<p>There’s some pages in our app now, but navigating through the address bar in the browser is probably not the best for usability. Let’s add a link component to our app. Next.js ‘gives’ us a link component which allows us to route between pages. The link component is strictly for client-side routing, if you are linking to another site, then you should use the <code class="language-plaintext highlighter-rouge">&lt;a&gt;</code> tag instead. Open up <code class="language-plaintext highlighter-rouge">pages/index.jsx</code> and update it to use the link component:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Link</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">next/link</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">Page</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+  <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">Index</span> <span class="nx">Page</span><span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">Link</span> <span class="nx">href</span><span class="o">=</span><span class="dl">"</span><span class="s2">/notes</span><span class="dl">"</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">a</span><span class="o">&gt;</span>
+        <span class="nx">Link</span> <span class="nx">to</span> <span class="nx">Notes</span> <span class="nx">directory</span>
+      <span class="o">&lt;</span><span class="sr">/a</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/Link</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span><span class="p">)</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">Page</span><span class="p">;</span></code></pre></figure>
+
+<p>Your main app page will now have a link on it! How about those dynamic routes though? How can we link to them? Open up <code class="language-plaintext highlighter-rouge">pages/notes/index.jsx</code> and update that page code to this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Link</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">next/link</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">Page</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+  <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">Note</span> <span class="nx">index</span> <span class="nx">page</span><span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>
+    <span class="o">&lt;</span><span class="nx">Link</span> <span class="nx">href</span><span class="o">=</span><span class="dl">"</span><span class="s2">/notes/[id]</span><span class="dl">"</span> <span class="k">as</span><span class="o">=</span><span class="p">{</span><span class="s2">`/notes/1`</span><span class="p">}</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">a</span><span class="o">&gt;</span>
+        <span class="nx">Note</span> <span class="mi">1</span>
+      <span class="o">&lt;</span><span class="sr">/a</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/Link</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span><span class="p">)</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">Page</span><span class="p">;</span></code></pre></figure>
+
+<p>And if you want to see how that could be set up for when we eventually have a bunch of notes, that would be like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span>
+<span class="k">import</span> <span class="nx">Link</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">next/link</span><span class="dl">'</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">notes</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="mi">15</span><span class="p">).</span><span class="nx">fill</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">map</span><span class="p">((</span><span class="nx">e</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">({</span><span class="na">id</span><span class="p">:</span> <span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="na">title</span><span class="p">:</span> <span class="s2">`Note </span><span class="p">${</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">}</span><span class="s2">`</span><span class="p">}))</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">Notes</span><span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>
+      <span class="p">{</span><span class="nx">notes</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">note</span> <span class="o">=&gt;</span> <span class="p">(</span>
+        <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+          <span class="o">&lt;</span><span class="nx">Link</span> <span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">note</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span> <span class="nx">href</span><span class="o">=</span><span class="dl">"</span><span class="s2">/notes/[id]</span><span class="dl">"</span> <span class="k">as</span><span class="o">=</span><span class="p">{</span><span class="s2">`/notes/</span><span class="p">${</span><span class="nx">note</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="s2">`</span><span class="p">}</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="nx">a</span><span class="o">&gt;</span>
+              <span class="o">&lt;</span><span class="nx">strong</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">note</span><span class="p">.</span><span class="nx">title</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/strong</span><span class="err">&gt;
+</span>            <span class="o">&lt;</span><span class="sr">/a</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="sr">/Link</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>      <span class="p">))}</span>
+    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>  <span class="p">)</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>(I added the +1 so that the notes do not start from zero… as arrays do)</p>
+
+<p>What if you need to route programmatically using JavaScript? Like there should be routing based on an event?! The router to the rescue! We’d need to push routes to the browser, which could look like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">useRouter</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">next/router</span><span class="dl">'</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">router</span> <span class="o">=</span> <span class="nx">useRouter</span><span class="p">()</span>
+  <span class="kd">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="mi">2</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="nx">router</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">)}</span><span class="o">&gt;</span>
+        <span class="nx">Go</span> <span class="nx">Home</span>
+      <span class="o">&lt;</span><span class="sr">/button</span><span class="err">&gt;
+</span>
+      <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="nx">router</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">/user/[id]</span><span class="dl">'</span><span class="p">,</span> <span class="s2">`/user/</span><span class="p">${</span><span class="nx">id</span><span class="p">}</span><span class="s2">`</span><span class="p">)}</span><span class="o">&gt;</span>
+        <span class="nx">Dashboard</span>
+      <span class="o">&lt;</span><span class="sr">/button</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>  <span class="p">)</span>
+<span class="p">}</span></code></pre></figure>
+
+<p><a href="https://hendrixer.github.io/nextjs-course/navigation">Refer to the course website - Navigation section for more info</a></p>
 
 <h3 id="routing-and-navigation-qa">Routing and Navigation Q&amp;A</h3>
 
