@@ -312,11 +312,65 @@ A: No more than if you were using any other client-side router. Client-side rout
 
 ### Adding CSS & Modules
 
+Moving on to our instructors favorite thing, styling! [Here's the link to that section of the course website](https://hendrixer.github.io/nextjs-course/styling). Scott enjoys CSS and making things look picture perfect. If you have any familiarity with React, you may also be aware that there are a number of different ways to work with CSS and how to style things. So Next.js made a decision(s) for us. In Next.js there are two basic types of styling: global and component.
 
+The only way to get global styling into your Next.js application is through the use of a special page called `pages/_app.jsx` (or wherever you've placed your pages folder). `_app.jsx` allows us to 'hijack' the entry point to our Next.js application. This file is created for us by default by Next.js and does not need to be created unless we want to do some global styling. Go ahead and make an `_app.jsx` file in the pages folder root, and add this to it:
+
+{% highlight javascript %}
+
+import React from 'react';
+
+export default function App({ Component, pageProps }) {
+  return <Component { ...pageProps } />
+}
+
+{% endhighlight %}
+
+Straight away, this does nothing different than what Next.js does out of the box, but with this file we are now able to add global styling. In the `_app.jsx` file you can now import styles: `import 'directoryname/nameofcssfile.css`. And if you try to import a CSS file in to any other page, you will get an error, but you can import CSS as a module in files other than `_app.jsx`. We'll look at that shortly. The reason Next.js has you use global styling in this way has to do with the bundling of the styles and how global styles are treated to make sure they are loaded in properly. Anyway, try to avoid using global CSS.
+
+What we are going to be using is Next.js' support for CSS modules. The way CSS modules work is that for each import of CSS, even if it is the same CSS, it will get scoped to the component with a unique name before each class so that the CSS styling is unique to each import. This happens at build time. You can use CSS modules anywhere. To create a CSS module, all you have to do is add module to the filename: `styles.module.css`. Now you can import that CSS as a module everywhere. The only other thing to know right now is that CSS modules need class names, you are not allowed to target 'pure' elements (basically any HTML element; body, div, a, etc...). The reason being that the way the classnames get scoped, they have to be a class and not an element. 
 
 ### Adding Theme UI
 
+Scott is now going to speak about his approach to working with CSS in React / Next.js, starting with the fact that he likes to use [Theme UI](https://theme-ui.com/). From the Theme UI docs: "Theme UI is a library for creating themeable user interfaces based on constraint-based design principles.". Basically, you can create an object that represents a theme and use that for all of your components. Let's get Theme UI installed:
 
+With npm: `npm i theme-ui @theme-ui/presets --save`
+
+With yarn: `yarn add theme-ui @theme-ui/presets`
+
+Then, in the root directory of your project, create a theme file: `theme.js`. And in your theme file, drop in the following code:
+
+{% highlight javascript %}
+
+import { roboto } from '@theme-ui/presets'
+
+const theme = {
+  ...roboto,
+  containers: {
+    card: {
+      boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
+      border: '1px solid',
+      borderColor: 'muted',
+      borderRadius: '4px',
+      p: 2,
+    },
+    page: {
+      width: '100%',
+      maxWidth: '960px',
+      m: 0,
+      mx: 'auto',
+    }
+  },
+  styles: {
+    ...roboto.styles
+  }
+}
+
+export default theme
+
+{% endhighlight %}
+
+But what is all that stuff?! First, we're importing a preset which is a starting point for our theme. For the theme object, there is a specific set of properties that should be there and immediately inside of that object, we are spreading out the 'roboto' preset. Then at `containers`, the nested objects `card` & `page` are basically CSS components (called variants in Theme UI) that can be added to any component that you want. You can use theme-based values for properties; like 'muted', that is not a color in CSS, but is defined in the 'roboto' theme preset. And then the `styles` object will be used to style things globally.
 
 ### Styling with Theme UI
 
