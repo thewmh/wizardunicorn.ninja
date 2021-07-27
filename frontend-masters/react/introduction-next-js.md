@@ -296,6 +296,17 @@ export default () => {
 
 ### Routing and Navigation Q&A
 
+Q: Is there a reason that we have to use `as` on the `<Link>` component? Can we use it without?
+
+A: If we left `as` off of the `<Link>` component, how would Next.js know what the value of `[id]` is? It wouldn't. `as` is only required for dynamic routes.
+
+Q: Do all routes have to be declared from the root of the pages folder?
+
+A: Yes, links are relative to the pages folder.
+
+Q: Are there any SEO considerations when using `<Link>`?
+
+A: No more than if you were using any other client-side router. Client-side routing usually proxies the HTML5 pushState experience. Google now crawls JavaScript for page indexing, but Twitter and Facebook do not, so with any client-side routing, you may run into issues. 
 
 ## Config
 
