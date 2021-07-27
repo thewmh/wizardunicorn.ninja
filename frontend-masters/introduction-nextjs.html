@@ -322,6 +322,18 @@ npm or yarn</p>
 
 <h3 id="routing-and-navigation-qa">Routing and Navigation Q&amp;A</h3>
 
+<p>Q: Is there a reason that we have to use <code class="language-plaintext highlighter-rouge">as</code> on the <code class="language-plaintext highlighter-rouge">&lt;Link&gt;</code> component? Can we use it without?</p>
+
+<p>A: If we left <code class="language-plaintext highlighter-rouge">as</code> off of the <code class="language-plaintext highlighter-rouge">&lt;Link&gt;</code> component, how would Next.js know what the value of <code class="language-plaintext highlighter-rouge">[id]</code> is? It wouldn’t. <code class="language-plaintext highlighter-rouge">as</code> is only required for dynamic routes.</p>
+
+<p>Q: Do all routes have to be declared from the root of the pages folder?</p>
+
+<p>A: Yes, links are relative to the pages folder.</p>
+
+<p>Q: Are there any SEO considerations when using <code class="language-plaintext highlighter-rouge">&lt;Link&gt;</code>?</p>
+
+<p>A: No more than if you were using any other client-side router. Client-side routing usually proxies the HTML5 pushState experience. Google now crawls JavaScript for page indexing, but Twitter and Facebook do not, so with any client-side routing, you may run into issues.</p>
+
 <h2 id="config">Config</h2>
 
 <h3 id="adding-css--modules">Adding CSS &amp; Modules</h3>
