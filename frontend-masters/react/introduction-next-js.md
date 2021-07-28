@@ -764,11 +764,114 @@ A: There are 2 types of authentication: authenticating APIs and front-end routes
 
 ### Fetching Notes with getServerSideProps
 
+Now we get to put some of this API business to use! Open up the `src/data/data.js` file, or create one if you haven't already done so. In that file, add the following:
 
+{% highlight javascript %}
+
+const notes = new Array(15)
+  .fill(1)
+  .map((_, i) => ({
+    id: Date.now() + i,
+    title: `Note ${i}`
+  }))
+
+module.exports = notes
+
+{% endhighlight %}
+
+The above code makes an array of 15 elements, then fills each element with the number 1, and finally maps over the array and makes each element into an object with an id and a title property. This will function as our 'database'. Now we have to fetch all the data. As we've seen, there are a few different ways we could approach this, but we are going to use `getServerSideProps` so that we can observe how that method works at runtime and really understand what is happening. This is not the recommended approach and `getServerSideProps` should only be used when absolutely necessary because if there were thousands or even more notes, this could become a very slow method of retrieving our data. In `pages/notes/index.jsx` add the following code at the bottom of the file:
+
+{% highlight javascript %}
+
+//...
+
+export async function getServerSideProps() {
+  const res = await fetch(`http://localhost:3000/api/note/`);
+  const { data } = await res.json()
+
+  console.log(data)
+
+  return {
+    props: {notes: data}
+  }
+}
+
+{% endhighlight %}
+
+You should now be able to refresh the page and it will look the same, but we are now getting our notes from the `data.js` file!
 
 ### Fetching Notes & Dynamic Rendering
 
+Now we will set up the retrieval of a single note. We'll set this up in the event that a note is not found, the application will redirect back to the main notes page. Open up the `pages/notes/[id].jsx` file and update the code like this:
 
+{% highlight javascript %}
+
+//... import statements above here
+
+export default ({note}) => {
+
+  return (
+    <div sx={{variant: 'containers.page'}}>
+      <h1>Note: {note.title} </h1>
+    </div>
+  )
+}
+
+export async function getServerSideProps({params, req, res}) {
+  const response = await fetch(`http://localhost:3000/api/note/${params.id}`)
+
+  if (!response.ok) {
+    res.writeHead(302, {
+      Location: '/notes'
+    })
+
+    res.end()
+
+    return {
+      props: {}
+    }
+  }
+
+  const {data} = await response.json()
+
+  return {
+    props: {note: data}
+  }
+}
+
+{% endhighlight %}
+
+Now, you should be able to go to the notes page and click on a note and be taken to the page for that note. It may take a moment the first time as it prerenders the page.
+
+The last thing we are going to do is `getStaticProps` on the homepage of our app. Open up `pages/index.jsx` and update the code as follows:
+
+{% highlight javascript %}
+
+//... import statements above here
+
+export default ({content}) => (
+  <div sx={{ height: `calc(100vh - 60px)`}}>
+    <div sx={{variant: 'containers.page', display: 'flex', alignItems: 'center', height: '100%'}}>
+      <h1 sx={{fontSize: 8, my: 0}}>{content.title}</h1>
+    </div>
+  </div> 
+)
+
+export function getStaticProps() {
+
+  return {
+    props: {content: {
+        title: 'This is my really nice app'
+      }
+    }
+  }
+}
+
+{% endhighlight %}
+
+Q: Is data fetching in components any different?
+
+A: It would be the same way that you would do it in React, which is purely client-side. 
 
 ### Rendering Modes
 
