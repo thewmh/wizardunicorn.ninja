@@ -823,6 +823,16 @@ get all notes =&gt; GET /api/note/</p>
 
 <h3 id="rendering-modes">Rendering Modes</h3>
 
+<p>Next.js looks at the data fetching in page components to determine how and when to prerender the page. The 3 different modes are:</p>
+
+<ul>
+  <li>Static Generation - Pages built at build time into HTML. CDN cacheable.</li>
+  <li>Server-side Rendering - Pages built at run time into HTML. Cached after the initial hit.</li>
+  <li>Client-side Rendering - Single-page application.</li>
+</ul>
+
+<p>By default, all of the pages are prerendered. If you choose <code class="language-plaintext highlighter-rouge">getStaticProps</code>, the page will be statically generated. <code class="language-plaintext highlighter-rouge">getServerSideProps</code> will server-side render the page.</p>
+
 <h3 id="working-with-ssr">Working with SSR</h3>
 
 <h2 id="deployment">Deployment</h2>
