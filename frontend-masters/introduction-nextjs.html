@@ -728,7 +728,98 @@ get all notes =&gt; GET /api/note/</p>
 
 <h3 id="fetching-notes-with-getserversideprops">Fetching Notes with getServerSideProps</h3>
 
+<p>Now we get to put some of this API business to use! Open up the <code class="language-plaintext highlighter-rouge">src/data/data.js</code> file, or create one if you haven’t already done so. In that file, add the following:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">notes</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">fill</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">_</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">({</span>
+    <span class="na">id</span><span class="p">:</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">+</span> <span class="nx">i</span><span class="p">,</span>
+    <span class="na">title</span><span class="p">:</span> <span class="s2">`Note </span><span class="p">${</span><span class="nx">i</span><span class="p">}</span><span class="s2">`</span>
+  <span class="p">}))</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">notes</span></code></pre></figure>
+
+<p>The above code makes an array of 15 elements, then fills each element with the number 1, and finally maps over the array and makes each element into an object with an id and a title property. This will function as our ‘database’. Now we have to fetch all the data. As we’ve seen, there are a few different ways we could approach this, but we are going to use <code class="language-plaintext highlighter-rouge">getServerSideProps</code> so that we can observe how that method works at runtime and really understand what is happening. This is not the recommended approach and <code class="language-plaintext highlighter-rouge">getServerSideProps</code> should only be used when absolutely necessary because if there were thousands or even more notes, this could become a very slow method of retrieving our data. In <code class="language-plaintext highlighter-rouge">pages/notes/index.jsx</code> add the following code at the bottom of the file:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+
+<span class="k">export</span> <span class="k">async</span> <span class="kd">function</span> <span class="nx">getServerSideProps</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">res</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="s2">`http://localhost:3000/api/note/`</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="p">{</span> <span class="nx">data</span> <span class="p">}</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="na">props</span><span class="p">:</span> <span class="p">{</span><span class="na">notes</span><span class="p">:</span> <span class="nx">data</span><span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>You should now be able to refresh the page and it will look the same, but we are now getting our notes from the <code class="language-plaintext highlighter-rouge">data.js</code> file!</p>
+
 <h3 id="fetching-notes--dynamic-rendering">Fetching Notes &amp; Dynamic Rendering</h3>
+
+<p>Now we will set up the retrieval of a single note. We’ll set this up in the event that a note is not found, the application will redirect back to the main notes page. Open up the <code class="language-plaintext highlighter-rouge">pages/notes/[id].jsx</code> file and update the code like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//... import statements above here</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="p">({</span><span class="nx">note</span><span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">sx</span><span class="o">=&gt;</span>
+      <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="na">Note</span><span class="p">:</span> <span class="p">{</span><span class="nx">note</span><span class="p">.</span><span class="nx">title</span><span class="p">}</span> <span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>  <span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="k">async</span> <span class="kd">function</span> <span class="nx">getServerSideProps</span><span class="p">({</span><span class="nx">params</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">})</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="s2">`http://localhost:3000/api/note/</span><span class="p">${</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">response</span><span class="p">.</span><span class="nx">ok</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">302</span><span class="p">,</span> <span class="p">{</span>
+      <span class="na">Location</span><span class="p">:</span> <span class="dl">'</span><span class="s1">/notes</span><span class="dl">'</span>
+    <span class="p">})</span>
+
+    <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="na">props</span><span class="p">:</span> <span class="p">{}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="kd">const</span> <span class="p">{</span><span class="nx">data</span><span class="p">}</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
+
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="na">props</span><span class="p">:</span> <span class="p">{</span><span class="na">note</span><span class="p">:</span> <span class="nx">data</span><span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Now, you should be able to go to the notes page and click on a note and be taken to the page for that note. It may take a moment the first time as it prerenders the page.</p>
+
+<p>The last thing we are going to do is <code class="language-plaintext highlighter-rouge">getStaticProps</code> on the homepage of our app. Open up <code class="language-plaintext highlighter-rouge">pages/index.jsx</code> and update the code as follows:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//... import statements above here</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="p">({</span><span class="nx">content</span><span class="p">})</span> <span class="o">=&gt;</span> <span class="p">(</span>
+  <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">sx</span><span class="o">=&gt;</span>
+    <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">sx</span><span class="o">=&gt;</span>
+      <span class="o">&lt;</span><span class="nx">h1</span> <span class="nx">sx</span><span class="o">=&gt;</span><span class="p">{</span><span class="nx">content</span><span class="p">.</span><span class="nx">title</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="sr">/div&gt;</span><span class="err"> 
+</span><span class="p">)</span>
+
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">getStaticProps</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="na">props</span><span class="p">:</span> <span class="p">{</span><span class="na">content</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">title</span><span class="p">:</span> <span class="dl">'</span><span class="s1">This is my really nice app</span><span class="dl">'</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Q: Is data fetching in components any different?</p>
+
+<p>A: It would be the same way that you would do it in React, which is purely client-side.</p>
 
 <h3 id="rendering-modes">Rendering Modes</h3>
 
