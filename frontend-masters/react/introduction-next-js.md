@@ -875,9 +875,16 @@ A: It would be the same way that you would do it in React, which is purely clien
 
 ### Rendering Modes
 
+Next.js looks at the data fetching in page components to determine how and when to prerender the page. The 3 different modes are:
 
+* Static Generation - Pages built at build time into HTML. CDN cacheable.
+* Server-side Rendering - Pages built at run time into HTML. Cached after the initial hit.
+* Client-side Rendering - Single-page application.
+
+By default, all of the pages are prerendered. If you choose `getStaticProps`, the page will be statically generated. `getServerSideProps` will server-side render the page. 
 
 ### Working with SSR
+
 
 
 ## Deployment
