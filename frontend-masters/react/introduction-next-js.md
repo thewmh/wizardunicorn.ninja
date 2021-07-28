@@ -370,26 +370,165 @@ export default theme
 
 {% endhighlight %}
 
-But what is all that stuff?! First, we're importing a preset which is a starting point for our theme. For the theme object, there is a specific set of properties that should be there and immediately inside of that object, we are spreading out the 'roboto' preset. Then at `containers`, the nested objects `card` & `page` are basically CSS components (called variants in Theme UI) that can be added to any component that you want. You can use theme-based values for properties; like 'muted', that is not a color in CSS, but is defined in the 'roboto' theme preset. And then the `styles` object will be used to style things globally.
+But what is all that stuff?! First, we're importing a preset which is a starting point for our theme. For the theme object, there is a specific set of properties that should be there and immediately inside of that object, we are spreading out the 'roboto' preset. Then at `containers`, the nested objects `card` & `page` are basically CSS components (called variants in Theme UI) that can be added to any component that you want. You can use theme-based values for properties; like 'muted', that is not a color in CSS, but is defined in the 'roboto' theme preset. And then the `styles` object will be used to style things globally. To really see what is happening with the theme and what it is, add a `console.log` statement in the file: `console.log(theme)` then add it to the (entire) site, in `_app.jsx`, update that file code to:
+
+{% highlight javascript %}
+
+import React from 'react';
+import { ThemeProvider } from 'theme-ui';
+import theme from '../../theme';
+
+export default function App({ Component, pageProps }) {
+  return (
+    <ThemeProvider theme={theme}>
+      <Component { ...pageProps } />
+    </ThemeProvider>
+  )
+}
+
+{% endhighlight %}
+
+If you've updated all the things, you should be able to reload the page and see that the fonts and colors have changed. If you are having an issue, try restarting the app: In the terminal; press ctrl + c to terminate the process, hit the up arrow to select the last command, press enter to restart. You can also check the console in the browser to see the theme object. Theme UI also handles responsive design very well, another great reason to use it. There is some more code / instructions to continue making out application look nice [over here](https://hendrixer.github.io/nextjs-course/themeui).
 
 ### Styling with Theme UI
 
+You may have noticed quite a few different things going on if you followed the last bit above where I directed you to the course website:
 
+* `/** @jsx jsx */
+* `import { jsx } from 'theme-ui'`
+* `sx={{...}}...`
+
+What are those things and why?!
+
+Side note: Adding `/** @jsx jsx */` resulted in an error, so I also had to add `/** @jsxRuntime classic */` to get this working properly.
+
+This bit: `/** @jsx jsx */`, is called JavaScript pragma which is a directive to tell the compiler, in the case of Next.js, the compiler is Babel, that when it compiles jsx we want it to use a specific tool (jsx from theme-ui) and not React's jsx. Have you ever noticed that in every jsx file you are always importing React? This is for the compiler to be able to know how to compile jsx, and that information comes from React.
+
+The Theme UI jsx compiler is what gives us the ability to use the `sx` property on the HTML elements in our components. The `sx` property is essentially inline styles, the difference being that the `sx` property will not actually be an inline style that you can inspect in the browser, but the `sx` properties will be transformed into CSS and added the the head of the document, with class names that are scoped to the elements. `sx` also gives you the ability to interact with / use theme variables, and is TypeScript, so you get a lot of useful and informative tooltips. None of this is specific to Next.js, this is all specific to Theme UI.
+
+Q: Theme UI vs Tailwind?
+
+A: Theme UI is associated with Gatsby, and Theme UI is the next iteration of Tailwind?
+
+Q: Is this (Theme UI) built on top of Emotion? Can you use the styled interface that Emotion has?
+
+A: Yep, you just have to import it like you normally would.
 
 ### Variants & Styling
 
+[Continue updating your files following the notes here](https://hendrixer.github.io/nextjs-course/themeui). After you have updated all of your files, have a look at the result. Now go have a look at [Baseweb](https://baseweb.design/) it is similar to Theme UI, but is not Theme UI.
 
+Another thing to check out is the [Theme UI components](https://theme-ui.com/components/). Another thing to note is that Theme UI is not restricted to Next.js usage. You can use it with a variety of applications.
 
 ### Customizing the Next.js Config
 
+Right out of the box, Next.js handles a lot of things for us, but if you want to change anything or opt-in or opt-out of various things, create a `next-config.js` file in the root directory of your project. You have 2 options for the configuration export, an object or a function. The object format looks like this:
 
+{% highlight javascript %}
+
+module.exports = {
+  webpack: {
+    // webpack config properties
+  },
+  env: {
+    MY_ENV_VAR: process.env.SECRET
+  }
+}
+
+{% endhighlight %}
+
+...and the function format:
+
+{% highlight javascript %}
+
+const { PHASE_PRODUCTION_SERVER } = require('next/constants')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+
+module.exports = (phase, { defaultConfig }) => {
+  if (phase === PHASE_PRODUCTION_SERVER) {
+    return {
+      ...defaultConfig,
+      webpack: {
+        plugins: [new BundleAnalyzerPlugin()]
+      }
+    }
+  }
+
+  return defaultConfig
+}
+
+{% endhighlight %}
+
+In the function example above, we've set a condition to check the `phase` value, which if the condition is met will run. Also, we have to use commonJS require instead of import statements. You can see the [other available phases here](https://github.com/vercel/next.js/blob/canary/packages/next/shared/lib/constants.ts).
+
+Q: Do you have o modify the `defaultConfig`?
+
+A: I usually don't modify arguments, so it is safest to spread over the `defaultConfig` and then add your changes. 
 
 ### Plugins
 
+The Next.js config file gives us the ability to do some powerful stuff with plugins, which are basically extended configurations. The plugin naming convention is `withPluginName` and using a plugin looks something like this:
 
+{% highlight javascript %}
+
+// in next.config.js
+
+const config = {}; // config options
+module.exports = withPluginName(config) // some plugins have arguments, those would appear first, followed by the config object; i.e. withPluginName(argument, config)
+
+{% endhighlight %}
+
+Let's add a plugin that allows us to add environment variables to out Next.js app! Start by making a `.env` file in the root of your application. Now, let's install a couple of dependencies:
+
+With npm: `npm i next-env dotenv-load --dev`
+
+With yarn: `yarn add next-env dotenv-load --dev`
+
+Once those dependencies are installed, add the following to the `next.config.js` file:
+
+{% highlight javascript %}
+
+const nextEnv = require('next-env');
+const dotenvLoad = require('dotenv-load');
+
+dotenvLoad();
+
+const withNextEnv = nextEnv();
+module.exports = withNextEnv();
+
+{% endhighlight %}
+
+And in the `.env` file at the root of your application (create the file if needed):
+
+{% highlight javascript %}
+
+HELP_APP_URL=https://google.com
+
+{% endhighlight %}
+
+Now that we have the ability to use environment variables and have one set up, let's use it in the nav component:
+
+{% highlight javascript %}
+
+//...
+<a sx={{
+    color: 'text',
+    fontSize: 3,
+    cursor: 'pointer'
+  }}
+  href={process.env.HELP_APP_URL}
+>
+  Help
+</a>
+//...
+
+{% endhighlight %}
+
+Note: I could not get this section to work 😞
 
 ### Typescript with Next.js
 
+If you want to use TypeScript with Next.js, all you have to do is make a `tsconfig.json` file and install the things: `npm install typescript @types/react --dev`. Then start your app again and Next.js should auto-populate your `tsconfig.json` file (also did not work for me). 
 
 ## API
 
