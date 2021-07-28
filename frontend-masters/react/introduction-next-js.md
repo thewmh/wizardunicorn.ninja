@@ -534,31 +534,233 @@ If you want to use TypeScript with Next.js, all you have to do is make a `tsconf
 
 ### Creating API Routes
 
-
+We've already looked at API Routes with Next.js, but let's look at it in a bit more detail. Next.js is a full-stack framework, it has a server for rendering components on the server, but also for an API. If you want to make an API for your app, just make an `api` folder inside of your `pages` folder. The routing for an API works exactly the same as it does for pages, so if you want to make an endpoint that is at the root of the `api`, add an `index.js` file inside of the `api` folder. If you want to nest routes for your API, it is again the same as pages, make a folder inside of the `api` folder, then add your files there.
 
 ### API Handlers
 
+We're in [this section of the course website](https://hendrixer.github.io/nextjs-course/api-handlers)
 
+In `pages/api/index.js` add:
+
+{% highlight javascript %}
+
+export default (req, res) => {
+  res.statusCode = 200
+  res.setHeader('Content-Type', 'application/json')
+  res.end(JSON.stringify({ message: 'hello' }))
+}
+
+{% endhighlight %}
+
+Then load `localhost:3000/api` and you should see the message display on the page. This is super easy to set up out of the box, but is a bit lacking in what it offers, we'd like to be able to split up some logic based on GET, PUT, DELETE, etc... To do that, we need to install `next-connect`: `npm install next-connect` and in the `pages/api/index.js` file:
+
+{% highlight javascript %}
+
+import nc from 'next-connect';
+
+const handler = nc()
+  .get((req, res) => {
+    res.json({message: 'get ok'})
+  })
+  .post((req, res) => {
+    res.json({message: 'post ok'})
+  })
+
+export default handler
+
+{% endhighlight %}
 
 ### Creating an API
 
+To have an actual CRUD (Create, Read, Update, Delete) application, we need to be able to do the following:
 
+create note => POST /api/note
+update note => PATCH /api/note/:id
+delete note => DELETE /api/note/:id
+get one note => GET /api/note/:id
+get all notes => GET /api/note/
+
+Looking at the above, we only need 2 routes: `/api/note/:id` and `/api/note/`. Create a folder in the `api` folder, `note` and add an `index.js` and an `[id].js` file there. We are not going to be connecting to a database in this workshop, so to store our data, make a folder in `src`, `data` and add a file `data.js` there, with the following content:
+
+{% highlight javascript %}
+
+const notes = [];
+
+module.exports = notes;
+
+{% endhighlight %}
+
+In `pages/api/note/index.js` add the following code:
+
+{% highlight javascript %}
+
+import nc from 'next-connect';
+import notes from '../../../src/data/data'
+
+const handler = nc()
+  .post((req, res) => {
+    const note = {
+      ...req.body,
+      id: Date.now()
+    }
+    notes.push(note)
+    res.json({data: note})
+  })
+  .get((req, res) => {
+    res.json({data: notes})
+  })
+
+export default handler
+
+{% endhighlight %}
+
+That handles the GET and POST for notes, now we need to build out the functionality or note by id:
+
+{% highlight javascript %}
+
+import nc from 'next-connect'
+import notes from '../../../src/data/data'
+
+const getNote = id => notes.find(n => n.id === parseInt(id))
+
+const handler = nc()
+  .get((req, res) => {
+    
+    const note = getNote(req.query.id)
+
+    if (!note) {
+      res.status(404)
+      res.end()
+      return
+    }
+
+    res.json({data: note})
+  })
+  .patch((req, res) => {
+    const note = getNote(req.query.id)
+
+    if (!note) {
+      res.status(404)
+      res.end()
+      return
+    }
+    
+    const i = notes.findIndex(n => n.id === parseInt(req.query.id))
+    const updated = {...note, ...req.body}
+
+    notes[i] = updated
+    res.json({data: updated})
+  })
+  .delete((req, res) => {
+    const note = getNote(req.query.id)
+
+    if (!note) {
+      res.status(404)
+      res.end()
+      return
+    }
+    const i = notes.findIndex(n => n.id === parseInt(req.query.id))
+    
+    notes.splice(i, 1)
+
+    res.json({data: req.query.id})
+  })
+  
+
+export default handler
+
+{% endhighlight %}
+
+Q: How to interact with your api on pages?
+
+A: We'll get to that in a bit.
 
 ### Fetching Data & getStaticProps
 
+There are many ways to fetch data with Next.js. Depending on when you need the data and what you are going to do with the data, there are options. If you want to fetch data ahead of time, you have the following options:
 
+* getStaticProps
+* getStaticPaths
+* getServerSideProps
+
+All of the above methods are for prerendering pages only. You cannot use them in components or client-side data fetching, let's look at `getStaticProps` first:
+
+{% highlight javascript %}
+
+// /pages/index.js
+
+const IndexPage = () => {// jsx }
+export default IndexPage
+
+export async function getStaticProps(context) {
+  return {
+    props: {}
+  }
+}
+
+{% endhighlight %}
+
+Whatever is in the props object will be passed into the exported page. The `async` function `getStaticProps` will only ever run on the server. The actual code will not be bundled with client-side code. That means you can do things like; file system work, connect to a database, crawl a website, etc... 
 
 ### Building Static Pages with getStaticPaths
 
+The `context` object is useful when the page is dynamic. The context will contain the value of the params. This function is not at runtime in the browser, so where do the params come from?
 
+`getStatcPaths`! Imagine you have a documentation website with a catch-all route (`[..params].js`). `getStatcPaths` allows us to get the paths for static pages that need to be generated. If we had the following dynamic route: `/pages/blog/:slug.js`, we could use `getStatcPaths` like so:
+
+{% highlight javascript %}
+
+// /pages/blog/:slug.js
+
+const IndexPage = () => {// jsx }
+export default IndexPage
+
+export async function getStaticPaths() {
+  // get all the paths for your posts from an API
+  // or file system
+  const results = await fetch('/api/posts')
+  const posts = await results.json()
+  const paths = posts.map(post => ({params: {slug: 
+  post.slug}}))
+  /*
+  [
+    {params: {slug: 'get-started-with-node'}},
+    {params: {slug: 'top-frameworks'}}
+  ]
+  */
+  return {paths}
+}
+
+export async function getStaticProps({ params }) {
+  const res = await fetch(`/api/post/${params.slug}`)
+  const post = await res.json()
+  return {
+    props: {post}
+  }
+}
+
+{% endhighlight %}
 
 ### Building Dynamic Pages with getServerSideProps
 
-
+`getServerSideProps` will be called at runtime during every request, you will have runtime data like query params, HTTP headers, and the req and res objects from API handlers. `getServerSideProps` is probably a better place to get dynamic ids or routes.
 
 ### Methods of Fetching Data Review and Auth Q&A
 
+When to use what...
 
+* Do you need data at runtime but don't need SSR? Use client-side data fetching.
+* Do you need data at runtime but do need SSR? Use `getServerSideProps`
+* Do you have pages that rely on data that is cacheable and accessible at build time? Like from a CMS? Use `getStaticProps`
+* Do you have the same as above but the pages have dynamic URL params? Use `getStaticProps` and `getStaticPaths`
+
+Q: Are there any issues with using `getServerSideProps` and `getStaticProps`?
+
+A: Yeah, it is not recommended to use `getServerSideProps` unless you absolutely need it.
+
+Q: How would you think about authentication and where would you put it?
+
+A: There are 2 types of authentication: authenticating APIs and front-end routes. Authenticating front-end routes is similar to what you would do now; use a hook to see if someone is authenticated. For an API route, you would check your auth middleware.
 
 ### Fetching Notes with getServerSideProps
 
