@@ -522,17 +522,209 @@ npm or yarn</p>
 
 <h3 id="creating-api-routes">Creating API Routes</h3>
 
+<p>We’ve already looked at API Routes with Next.js, but let’s look at it in a bit more detail. Next.js is a full-stack framework, it has a server for rendering components on the server, but also for an API. If you want to make an API for your app, just make an <code class="language-plaintext highlighter-rouge">api</code> folder inside of your <code class="language-plaintext highlighter-rouge">pages</code> folder. The routing for an API works exactly the same as it does for pages, so if you want to make an endpoint that is at the root of the <code class="language-plaintext highlighter-rouge">api</code>, add an <code class="language-plaintext highlighter-rouge">index.js</code> file inside of the <code class="language-plaintext highlighter-rouge">api</code> folder. If you want to nest routes for your API, it is again the same as pages, make a folder inside of the <code class="language-plaintext highlighter-rouge">api</code> folder, then add your files there.</p>
+
 <h3 id="api-handlers">API Handlers</h3>
+
+<p>We’re in <a href="https://hendrixer.github.io/nextjs-course/api-handlers">this section of the course website</a></p>
+
+<p>In <code class="language-plaintext highlighter-rouge">pages/api/index.js</code> add:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">export</span> <span class="k">default</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">=</span> <span class="mi">200</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span><span class="p">)</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span> <span class="na">message</span><span class="p">:</span> <span class="dl">'</span><span class="s1">hello</span><span class="dl">'</span> <span class="p">}))</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Then load <code class="language-plaintext highlighter-rouge">localhost:3000/api</code> and you should see the message display on the page. This is super easy to set up out of the box, but is a bit lacking in what it offers, we’d like to be able to split up some logic based on GET, PUT, DELETE, etc… To do that, we need to install <code class="language-plaintext highlighter-rouge">next-connect</code>: <code class="language-plaintext highlighter-rouge">npm install next-connect</code> and in the <code class="language-plaintext highlighter-rouge">pages/api/index.js</code> file:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">nc</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">next-connect</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">handler</span> <span class="o">=</span> <span class="nx">nc</span><span class="p">()</span>
+  <span class="p">.</span><span class="kd">get</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span><span class="na">message</span><span class="p">:</span> <span class="dl">'</span><span class="s1">get ok</span><span class="dl">'</span><span class="p">})</span>
+  <span class="p">})</span>
+  <span class="p">.</span><span class="nx">post</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span><span class="na">message</span><span class="p">:</span> <span class="dl">'</span><span class="s1">post ok</span><span class="dl">'</span><span class="p">})</span>
+  <span class="p">})</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">handler</span></code></pre></figure>
 
 <h3 id="creating-an-api">Creating an API</h3>
 
+<p>To have an actual CRUD (Create, Read, Update, Delete) application, we need to be able to do the following:</p>
+
+<p>create note =&gt; POST /api/note
+update note =&gt; PATCH /api/note/:id
+delete note =&gt; DELETE /api/note/:id
+get one note =&gt; GET /api/note/:id
+get all notes =&gt; GET /api/note/</p>
+
+<p>Looking at the above, we only need 2 routes: <code class="language-plaintext highlighter-rouge">/api/note/:id</code> and <code class="language-plaintext highlighter-rouge">/api/note/</code>. Create a folder in the <code class="language-plaintext highlighter-rouge">api</code> folder, <code class="language-plaintext highlighter-rouge">note</code> and add an <code class="language-plaintext highlighter-rouge">index.js</code> and an <code class="language-plaintext highlighter-rouge">[id].js</code> file there. We are not going to be connecting to a database in this workshop, so to store our data, make a folder in <code class="language-plaintext highlighter-rouge">src</code>, <code class="language-plaintext highlighter-rouge">data</code> and add a file <code class="language-plaintext highlighter-rouge">data.js</code> there, with the following content:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">notes</span> <span class="o">=</span> <span class="p">[];</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">notes</span><span class="p">;</span></code></pre></figure>
+
+<p>In <code class="language-plaintext highlighter-rouge">pages/api/note/index.js</code> add the following code:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">nc</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">next-connect</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">notes</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">../../../src/data/data</span><span class="dl">'</span>
+
+<span class="kd">const</span> <span class="nx">handler</span> <span class="o">=</span> <span class="nx">nc</span><span class="p">()</span>
+  <span class="p">.</span><span class="nx">post</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">note</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="p">...</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">,</span>
+      <span class="na">id</span><span class="p">:</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="nx">notes</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">note</span><span class="p">)</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span><span class="na">data</span><span class="p">:</span> <span class="nx">note</span><span class="p">})</span>
+  <span class="p">})</span>
+  <span class="p">.</span><span class="kd">get</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span><span class="na">data</span><span class="p">:</span> <span class="nx">notes</span><span class="p">})</span>
+  <span class="p">})</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">handler</span></code></pre></figure>
+
+<p>That handles the GET and POST for notes, now we need to build out the functionality or note by id:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">nc</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">next-connect</span><span class="dl">'</span>
+<span class="k">import</span> <span class="nx">notes</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">../../../src/data/data</span><span class="dl">'</span>
+
+<span class="kd">const</span> <span class="nx">getNote</span> <span class="o">=</span> <span class="nx">id</span> <span class="o">=&gt;</span> <span class="nx">notes</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">n</span> <span class="o">=&gt;</span> <span class="nx">n</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">id</span><span class="p">))</span>
+
+<span class="kd">const</span> <span class="nx">handler</span> <span class="o">=</span> <span class="nx">nc</span><span class="p">()</span>
+  <span class="p">.</span><span class="kd">get</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    
+    <span class="kd">const</span> <span class="nx">note</span> <span class="o">=</span> <span class="nx">getNote</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">note</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span>
+      <span class="k">return</span>
+    <span class="p">}</span>
+
+    <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span><span class="na">data</span><span class="p">:</span> <span class="nx">note</span><span class="p">})</span>
+  <span class="p">})</span>
+  <span class="p">.</span><span class="nx">patch</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">note</span> <span class="o">=</span> <span class="nx">getNote</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">note</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span>
+      <span class="k">return</span>
+    <span class="p">}</span>
+    
+    <span class="kd">const</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">notes</span><span class="p">.</span><span class="nx">findIndex</span><span class="p">(</span><span class="nx">n</span> <span class="o">=&gt;</span> <span class="nx">n</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">id</span><span class="p">))</span>
+    <span class="kd">const</span> <span class="nx">updated</span> <span class="o">=</span> <span class="p">{...</span><span class="nx">note</span><span class="p">,</span> <span class="p">...</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">}</span>
+
+    <span class="nx">notes</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">updated</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span><span class="na">data</span><span class="p">:</span> <span class="nx">updated</span><span class="p">})</span>
+  <span class="p">})</span>
+  <span class="p">.</span><span class="k">delete</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">note</span> <span class="o">=</span> <span class="nx">getNote</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">note</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span>
+      <span class="k">return</span>
+    <span class="p">}</span>
+    <span class="kd">const</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">notes</span><span class="p">.</span><span class="nx">findIndex</span><span class="p">(</span><span class="nx">n</span> <span class="o">=&gt;</span> <span class="nx">n</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">id</span><span class="p">))</span>
+    
+    <span class="nx">notes</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span><span class="na">data</span><span class="p">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">id</span><span class="p">})</span>
+  <span class="p">})</span>
+  
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">handler</span></code></pre></figure>
+
+<p>Q: How to interact with your api on pages?</p>
+
+<p>A: We’ll get to that in a bit.</p>
+
 <h3 id="fetching-data--getstaticprops">Fetching Data &amp; getStaticProps</h3>
+
+<p>There are many ways to fetch data with Next.js. Depending on when you need the data and what you are going to do with the data, there are options. If you want to fetch data ahead of time, you have the following options:</p>
+
+<ul>
+  <li>getStaticProps</li>
+  <li>getStaticPaths</li>
+  <li>getServerSideProps</li>
+</ul>
+
+<p>All of the above methods are for prerendering pages only. You cannot use them in components or client-side data fetching, let’s look at <code class="language-plaintext highlighter-rouge">getStaticProps</code> first:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// /pages/index.js</span>
+
+<span class="kd">const</span> <span class="nx">IndexPage</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="c1">// jsx }</span>
+<span class="k">export</span> <span class="k">default</span> <span class="nx">IndexPage</span>
+
+<span class="k">export</span> <span class="k">async</span> <span class="kd">function</span> <span class="nx">getStaticProps</span><span class="p">(</span><span class="nx">context</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="na">props</span><span class="p">:</span> <span class="p">{}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Whatever is in the props object will be passed into the exported page. The <code class="language-plaintext highlighter-rouge">async</code> function <code class="language-plaintext highlighter-rouge">getStaticProps</code> will only ever run on the server. The actual code will not be bundled with client-side code. That means you can do things like; file system work, connect to a database, crawl a website, etc…</p>
 
 <h3 id="building-static-pages-with-getstaticpaths">Building Static Pages with getStaticPaths</h3>
 
+<p>The <code class="language-plaintext highlighter-rouge">context</code> object is useful when the page is dynamic. The context will contain the value of the params. This function is not at runtime in the browser, so where do the params come from?</p>
+
+<p><code class="language-plaintext highlighter-rouge">getStatcPaths</code>! Imagine you have a documentation website with a catch-all route (<code class="language-plaintext highlighter-rouge">[..params].js</code>). <code class="language-plaintext highlighter-rouge">getStatcPaths</code> allows us to get the paths for static pages that need to be generated. If we had the following dynamic route: <code class="language-plaintext highlighter-rouge">/pages/blog/:slug.js</code>, we could use <code class="language-plaintext highlighter-rouge">getStatcPaths</code> like so:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// /pages/blog/:slug.js</span>
+
+<span class="kd">const</span> <span class="nx">IndexPage</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="c1">// jsx }</span>
+<span class="k">export</span> <span class="k">default</span> <span class="nx">IndexPage</span>
+
+<span class="k">export</span> <span class="k">async</span> <span class="kd">function</span> <span class="nx">getStaticPaths</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// get all the paths for your posts from an API</span>
+  <span class="c1">// or file system</span>
+  <span class="kd">const</span> <span class="nx">results</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="dl">'</span><span class="s1">/api/posts</span><span class="dl">'</span><span class="p">)</span>
+  <span class="kd">const</span> <span class="nx">posts</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">results</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
+  <span class="kd">const</span> <span class="nx">paths</span> <span class="o">=</span> <span class="nx">posts</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">post</span> <span class="o">=&gt;</span> <span class="p">({</span><span class="na">params</span><span class="p">:</span> <span class="p">{</span><span class="na">slug</span><span class="p">:</span> 
+  <span class="nx">post</span><span class="p">.</span><span class="nx">slug</span><span class="p">}}))</span>
+  <span class="cm">/*
+  [
+    {params: {slug: 'get-started-with-node'}},
+    {params: {slug: 'top-frameworks'}}
+  ]
+  */</span>
+  <span class="k">return</span> <span class="p">{</span><span class="nx">paths</span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="k">async</span> <span class="kd">function</span> <span class="nx">getStaticProps</span><span class="p">({</span> <span class="nx">params</span> <span class="p">})</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">res</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="s2">`/api/post/</span><span class="p">${</span><span class="nx">params</span><span class="p">.</span><span class="nx">slug</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+  <span class="kd">const</span> <span class="nx">post</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="na">props</span><span class="p">:</span> <span class="p">{</span><span class="nx">post</span><span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
 <h3 id="building-dynamic-pages-with-getserversideprops">Building Dynamic Pages with getServerSideProps</h3>
 
+<p><code class="language-plaintext highlighter-rouge">getServerSideProps</code> will be called at runtime during every request, you will have runtime data like query params, HTTP headers, and the req and res objects from API handlers. <code class="language-plaintext highlighter-rouge">getServerSideProps</code> is probably a better place to get dynamic ids or routes.</p>
+
 <h3 id="methods-of-fetching-data-review-and-auth-qa">Methods of Fetching Data Review and Auth Q&amp;A</h3>
+
+<p>When to use what…</p>
+
+<ul>
+  <li>Do you need data at runtime but don’t need SSR? Use client-side data fetching.</li>
+  <li>Do you need data at runtime but do need SSR? Use <code class="language-plaintext highlighter-rouge">getServerSideProps</code></li>
+  <li>Do you have pages that rely on data that is cacheable and accessible at build time? Like from a CMS? Use <code class="language-plaintext highlighter-rouge">getStaticProps</code></li>
+  <li>Do you have the same as above but the pages have dynamic URL params? Use <code class="language-plaintext highlighter-rouge">getStaticProps</code> and <code class="language-plaintext highlighter-rouge">getStaticPaths</code></li>
+</ul>
+
+<p>Q: Are there any issues with using <code class="language-plaintext highlighter-rouge">getServerSideProps</code> and <code class="language-plaintext highlighter-rouge">getStaticProps</code>?</p>
+
+<p>A: Yeah, it is not recommended to use <code class="language-plaintext highlighter-rouge">getServerSideProps</code> unless you absolutely need it.</p>
+
+<p>Q: How would you think about authentication and where would you put it?</p>
+
+<p>A: There are 2 types of authentication: authenticating APIs and front-end routes. Authenticating front-end routes is similar to what you would do now; use a hook to see if someone is authenticated. For an API route, you would check your auth middleware.</p>
 
 <h3 id="fetching-notes-with-getserversideprops">Fetching Notes with getServerSideProps</h3>
 
