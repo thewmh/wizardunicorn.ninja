@@ -388,17 +388,135 @@ npm or yarn</p>
 
 <span class="k">export</span> <span class="k">default</span> <span class="nx">theme</span></code></pre></figure>
 
-<p>But what is all that stuff?! First, we’re importing a preset which is a starting point for our theme. For the theme object, there is a specific set of properties that should be there and immediately inside of that object, we are spreading out the ‘roboto’ preset. Then at <code class="language-plaintext highlighter-rouge">containers</code>, the nested objects <code class="language-plaintext highlighter-rouge">card</code> &amp; <code class="language-plaintext highlighter-rouge">page</code> are basically CSS components (called variants in Theme UI) that can be added to any component that you want. You can use theme-based values for properties; like ‘muted’, that is not a color in CSS, but is defined in the ‘roboto’ theme preset. And then the <code class="language-plaintext highlighter-rouge">styles</code> object will be used to style things globally.</p>
+<p>But what is all that stuff?! First, we’re importing a preset which is a starting point for our theme. For the theme object, there is a specific set of properties that should be there and immediately inside of that object, we are spreading out the ‘roboto’ preset. Then at <code class="language-plaintext highlighter-rouge">containers</code>, the nested objects <code class="language-plaintext highlighter-rouge">card</code> &amp; <code class="language-plaintext highlighter-rouge">page</code> are basically CSS components (called variants in Theme UI) that can be added to any component that you want. You can use theme-based values for properties; like ‘muted’, that is not a color in CSS, but is defined in the ‘roboto’ theme preset. And then the <code class="language-plaintext highlighter-rouge">styles</code> object will be used to style things globally. To really see what is happening with the theme and what it is, add a <code class="language-plaintext highlighter-rouge">console.log</code> statement in the file: <code class="language-plaintext highlighter-rouge">console.log(theme)</code> then add it to the (entire) site, in <code class="language-plaintext highlighter-rouge">_app.jsx</code>, update that file code to:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">ThemeProvider</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">theme-ui</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">theme</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">../../theme</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">App</span><span class="p">({</span> <span class="nx">Component</span><span class="p">,</span> <span class="nx">pageProps</span> <span class="p">})</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">ThemeProvider</span> <span class="nx">theme</span><span class="o">=</span><span class="p">{</span><span class="nx">theme</span><span class="p">}</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">Component</span> <span class="p">{</span> <span class="p">...</span><span class="nx">pageProps</span> <span class="p">}</span> <span class="sr">/</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/ThemeProvider</span><span class="err">&gt;
+</span>  <span class="p">)</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>If you’ve updated all the things, you should be able to reload the page and see that the fonts and colors have changed. If you are having an issue, try restarting the app: In the terminal; press ctrl + c to terminate the process, hit the up arrow to select the last command, press enter to restart. You can also check the console in the browser to see the theme object. Theme UI also handles responsive design very well, another great reason to use it. There is some more code / instructions to continue making out application look nice <a href="https://hendrixer.github.io/nextjs-course/themeui">over here</a>.</p>
 
 <h3 id="styling-with-theme-ui">Styling with Theme UI</h3>
 
+<p>You may have noticed quite a few different things going on if you followed the last bit above where I directed you to the course website:</p>
+
+<ul>
+  <li>`/** @jsx jsx */</li>
+  <li><code class="language-plaintext highlighter-rouge">import { jsx } from 'theme-ui'</code></li>
+  <li><code class="language-plaintext highlighter-rouge">sx=...</code></li>
+</ul>
+
+<p>What are those things and why?!</p>
+
+<p>Side note: Adding <code class="language-plaintext highlighter-rouge">/** @jsx jsx */</code> resulted in an error, so I also had to add <code class="language-plaintext highlighter-rouge">/** @jsxRuntime classic */</code> to get this working properly.</p>
+
+<p>This bit: <code class="language-plaintext highlighter-rouge">/** @jsx jsx */</code>, is called JavaScript pragma which is a directive to tell the compiler, in the case of Next.js, the compiler is Babel, that when it compiles jsx we want it to use a specific tool (jsx from theme-ui) and not React’s jsx. Have you ever noticed that in every jsx file you are always importing React? This is for the compiler to be able to know how to compile jsx, and that information comes from React.</p>
+
+<p>The Theme UI jsx compiler is what gives us the ability to use the <code class="language-plaintext highlighter-rouge">sx</code> property on the HTML elements in our components. The <code class="language-plaintext highlighter-rouge">sx</code> property is essentially inline styles, the difference being that the <code class="language-plaintext highlighter-rouge">sx</code> property will not actually be an inline style that you can inspect in the browser, but the <code class="language-plaintext highlighter-rouge">sx</code> properties will be transformed into CSS and added the the head of the document, with class names that are scoped to the elements. <code class="language-plaintext highlighter-rouge">sx</code> also gives you the ability to interact with / use theme variables, and is TypeScript, so you get a lot of useful and informative tooltips. None of this is specific to Next.js, this is all specific to Theme UI.</p>
+
+<p>Q: Theme UI vs Tailwind?</p>
+
+<p>A: Theme UI is associated with Gatsby, and Theme UI is the next iteration of Tailwind?</p>
+
+<p>Q: Is this (Theme UI) built on top of Emotion? Can you use the styled interface that Emotion has?</p>
+
+<p>A: Yep, you just have to import it like you normally would.</p>
+
 <h3 id="variants--styling">Variants &amp; Styling</h3>
+
+<p><a href="https://hendrixer.github.io/nextjs-course/themeui">Continue updating your files following the notes here</a>. After you have updated all of your files, have a look at the result. Now go have a look at <a href="https://baseweb.design/">Baseweb</a> it is similar to Theme UI, but is not Theme UI.</p>
+
+<p>Another thing to check out is the <a href="https://theme-ui.com/components/">Theme UI components</a>. Another thing to note is that Theme UI is not restricted to Next.js usage. You can use it with a variety of applications.</p>
 
 <h3 id="customizing-the-nextjs-config">Customizing the Next.js Config</h3>
 
+<p>Right out of the box, Next.js handles a lot of things for us, but if you want to change anything or opt-in or opt-out of various things, create a <code class="language-plaintext highlighter-rouge">next-config.js</code> file in the root directory of your project. You have 2 options for the configuration export, an object or a function. The object format looks like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">webpack</span><span class="p">:</span> <span class="p">{</span>
+    <span class="c1">// webpack config properties</span>
+  <span class="p">},</span>
+  <span class="na">env</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">MY_ENV_VAR</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">SECRET</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>…and the function format:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="p">{</span> <span class="nx">PHASE_PRODUCTION_SERVER</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">next/constants</span><span class="dl">'</span><span class="p">)</span>
+<span class="kd">const</span> <span class="nx">BundleAnalyzerPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">webpack-bundle-analyzer</span><span class="dl">'</span><span class="p">).</span><span class="nx">BundleAnalyzerPlugin</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">(</span><span class="nx">phase</span><span class="p">,</span> <span class="p">{</span> <span class="nx">defaultConfig</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">phase</span> <span class="o">===</span> <span class="nx">PHASE_PRODUCTION_SERVER</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="p">...</span><span class="nx">defaultConfig</span><span class="p">,</span>
+      <span class="na">webpack</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">plugins</span><span class="p">:</span> <span class="p">[</span><span class="k">new</span> <span class="nx">BundleAnalyzerPlugin</span><span class="p">()]</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="nx">defaultConfig</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>In the function example above, we’ve set a condition to check the <code class="language-plaintext highlighter-rouge">phase</code> value, which if the condition is met will run. Also, we have to use commonJS require instead of import statements. You can see the <a href="https://github.com/vercel/next.js/blob/canary/packages/next/shared/lib/constants.ts">other available phases here</a>.</p>
+
+<p>Q: Do you have o modify the <code class="language-plaintext highlighter-rouge">defaultConfig</code>?</p>
+
+<p>A: I usually don’t modify arguments, so it is safest to spread over the <code class="language-plaintext highlighter-rouge">defaultConfig</code> and then add your changes.</p>
+
 <h3 id="plugins">Plugins</h3>
 
+<p>The Next.js config file gives us the ability to do some powerful stuff with plugins, which are basically extended configurations. The plugin naming convention is <code class="language-plaintext highlighter-rouge">withPluginName</code> and using a plugin looks something like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// in next.config.js</span>
+
+<span class="kd">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{};</span> <span class="c1">// config options</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">withPluginName</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span> <span class="c1">// some plugins have arguments, those would appear first, followed by the config object; i.e. withPluginName(argument, config)</span></code></pre></figure>
+
+<p>Let’s add a plugin that allows us to add environment variables to out Next.js app! Start by making a <code class="language-plaintext highlighter-rouge">.env</code> file in the root of your application. Now, let’s install a couple of dependencies:</p>
+
+<p>With npm: <code class="language-plaintext highlighter-rouge">npm i next-env dotenv-load --dev</code></p>
+
+<p>With yarn: <code class="language-plaintext highlighter-rouge">yarn add next-env dotenv-load --dev</code></p>
+
+<p>Once those dependencies are installed, add the following to the <code class="language-plaintext highlighter-rouge">next.config.js</code> file:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">const</span> <span class="nx">nextEnv</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">next-env</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">dotenvLoad</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">dotenv-load</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">dotenvLoad</span><span class="p">();</span>
+
+<span class="kd">const</span> <span class="nx">withNextEnv</span> <span class="o">=</span> <span class="nx">nextEnv</span><span class="p">();</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">withNextEnv</span><span class="p">();</span></code></pre></figure>
+
+<p>And in the <code class="language-plaintext highlighter-rouge">.env</code> file at the root of your application (create the file if needed):</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">HELP_APP_URL</span><span class="o">=</span><span class="nx">https</span><span class="p">:</span><span class="c1">//google.com</span></code></pre></figure>
+
+<p>Now that we have the ability to use environment variables and have one set up, let’s use it in the nav component:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//...</span>
+<span class="o">&lt;</span><span class="nx">a</span> <span class="nx">sx</span><span class="o">=</span>
+  <span class="nx">href</span><span class="o">=</span><span class="p">{</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">HELP_APP_URL</span><span class="p">}</span>
+<span class="o">&gt;</span>
+  <span class="nx">Help</span>
+<span class="o">&lt;</span><span class="sr">/a</span><span class="err">&gt;
+</span><span class="c1">//...</span></code></pre></figure>
+
+<p>Note: I could not get this section to work 😞</p>
+
 <h3 id="typescript-with-nextjs">Typescript with Next.js</h3>
+
+<p>If you want to use TypeScript with Next.js, all you have to do is make a <code class="language-plaintext highlighter-rouge">tsconfig.json</code> file and install the things: <code class="language-plaintext highlighter-rouge">npm install typescript @types/react --dev</code>. Then start your app again and Next.js should auto-populate your <code class="language-plaintext highlighter-rouge">tsconfig.json</code> file (also did not work for me).</p>
 
 <h2 id="api">API</h2>
 
