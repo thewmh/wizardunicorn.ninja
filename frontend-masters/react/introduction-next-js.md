@@ -370,7 +370,7 @@ export default theme
 
 {% endhighlight %}
 
-But what is all that stuff?! First, we're importing a preset which is a starting point for our theme. For the theme object, there is a specific set of properties that should be there and immediately inside of that object, we are spreading out the 'roboto' preset. Then at `containers`, the nested objects `card` & `page` are basically CSS components (called variants in Theme UI) that can be added to any component that you want. You can use theme-based values for properties; like 'muted', that is not a color in CSS, but is defined in the 'roboto' theme preset. And then the `styles` object will be used to style things globally. To really see what is happening with the theme and what it is, add a `console.log` statement in the file: `console.log(theme)` then add it to the (entire) site, in `_app.jsx`, update that file code to:
+But what is all that stuff?! First, we're importing a preset which is a starting point for our theme. For the theme object, there is a specific set of properties that should be there and immediately inside of that object, we are spreading out the `roboto` preset. Then at `containers`, the nested objects `card` & `page` are basically CSS components (called variants in Theme UI) that can be added to any component that you want. You can use theme-based values for properties; like 'muted', that is not a color in CSS, but is defined in the `roboto` theme preset. And then the `styles` object will be used to style things globally. To really see what is happening with the theme and what it is, add a `console.log` statement in the file: `console.log(theme)` then add it to the (entire) site, in `_app.jsx`, update that file code to:
 
 {% highlight javascript %}
 
@@ -885,7 +885,28 @@ By default, all of the pages are prerendered. If you choose `getStaticProps`, th
 
 ### Working with SSR
 
+One of the biggest 'gotchas' with Server-Side Rendering (SSR) is using browser-specific things; i.e. DOM APIs. This will trigger an error because, on the server, `window` and `document` will not be defined. Next.js gives us some tools to help avoid these errors.
 
+Sometimes you may need to skip SSR some components:
+
+* [component] depends on the DOM API - `window`, `navigator`, GPS...
+* [component] depends on client-side data
+* something else?!
+
+Next.js supports dynamic imports that, when used with components, will opt out of SSR. Dynamic imports look like this:
+
+{% highlight javascript %}
+
+import dynamic from 'next/dynamic'
+
+const MyAwesomeDynamicComponent = dynamic(
+  () => import('../components/myAwesomeDynamicComponent'),
+  { ssr: false }
+)
+
+{% endhighlight %}
+
+Dynamic components, similar to routes, don't get rendered / built with the other files. 
 
 ## Deployment
 
