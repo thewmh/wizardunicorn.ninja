@@ -388,7 +388,7 @@ npm or yarn</p>
 
 <span class="k">export</span> <span class="k">default</span> <span class="nx">theme</span></code></pre></figure>
 
-<p>But what is all that stuff?! First, we’re importing a preset which is a starting point for our theme. For the theme object, there is a specific set of properties that should be there and immediately inside of that object, we are spreading out the ‘roboto’ preset. Then at <code class="language-plaintext highlighter-rouge">containers</code>, the nested objects <code class="language-plaintext highlighter-rouge">card</code> &amp; <code class="language-plaintext highlighter-rouge">page</code> are basically CSS components (called variants in Theme UI) that can be added to any component that you want. You can use theme-based values for properties; like ‘muted’, that is not a color in CSS, but is defined in the ‘roboto’ theme preset. And then the <code class="language-plaintext highlighter-rouge">styles</code> object will be used to style things globally. To really see what is happening with the theme and what it is, add a <code class="language-plaintext highlighter-rouge">console.log</code> statement in the file: <code class="language-plaintext highlighter-rouge">console.log(theme)</code> then add it to the (entire) site, in <code class="language-plaintext highlighter-rouge">_app.jsx</code>, update that file code to:</p>
+<p>But what is all that stuff?! First, we’re importing a preset which is a starting point for our theme. For the theme object, there is a specific set of properties that should be there and immediately inside of that object, we are spreading out the <code class="language-plaintext highlighter-rouge">roboto</code> preset. Then at <code class="language-plaintext highlighter-rouge">containers</code>, the nested objects <code class="language-plaintext highlighter-rouge">card</code> &amp; <code class="language-plaintext highlighter-rouge">page</code> are basically CSS components (called variants in Theme UI) that can be added to any component that you want. You can use theme-based values for properties; like ‘muted’, that is not a color in CSS, but is defined in the <code class="language-plaintext highlighter-rouge">roboto</code> theme preset. And then the <code class="language-plaintext highlighter-rouge">styles</code> object will be used to style things globally. To really see what is happening with the theme and what it is, add a <code class="language-plaintext highlighter-rouge">console.log</code> statement in the file: <code class="language-plaintext highlighter-rouge">console.log(theme)</code> then add it to the (entire) site, in <code class="language-plaintext highlighter-rouge">_app.jsx</code>, update that file code to:</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
 <span class="k">import</span> <span class="p">{</span> <span class="nx">ThemeProvider</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">theme-ui</span><span class="dl">'</span><span class="p">;</span>
@@ -834,6 +834,27 @@ get all notes =&gt; GET /api/note/</p>
 <p>By default, all of the pages are prerendered. If you choose <code class="language-plaintext highlighter-rouge">getStaticProps</code>, the page will be statically generated. <code class="language-plaintext highlighter-rouge">getServerSideProps</code> will server-side render the page.</p>
 
 <h3 id="working-with-ssr">Working with SSR</h3>
+
+<p>One of the biggest ‘gotchas’ with Server-Side Rendering (SSR) is using browser-specific things; i.e. DOM APIs. This will trigger an error because, on the server, <code class="language-plaintext highlighter-rouge">window</code> and <code class="language-plaintext highlighter-rouge">document</code> will not be defined. Next.js gives us some tools to help avoid these errors.</p>
+
+<p>Sometimes you may need to skip SSR some components:</p>
+
+<ul>
+  <li>[component] depends on the DOM API - <code class="language-plaintext highlighter-rouge">window</code>, <code class="language-plaintext highlighter-rouge">navigator</code>, GPS…</li>
+  <li>[component] depends on client-side data</li>
+  <li>something else?!</li>
+</ul>
+
+<p>Next.js supports dynamic imports that, when used with components, will opt out of SSR. Dynamic imports look like this:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">dynamic</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">next/dynamic</span><span class="dl">'</span>
+
+<span class="kd">const</span> <span class="nx">MyAwesomeDynamicComponent</span> <span class="o">=</span> <span class="nx">dynamic</span><span class="p">(</span>
+  <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">import</span><span class="p">(</span><span class="dl">'</span><span class="s1">../components/myAwesomeDynamicComponent</span><span class="dl">'</span><span class="p">),</span>
+  <span class="p">{</span> <span class="na">ssr</span><span class="p">:</span> <span class="kc">false</span> <span class="p">}</span>
+<span class="p">)</span></code></pre></figure>
+
+<p>Dynamic components, similar to routes, don’t get rendered / built with the other files.</p>
 
 <h2 id="deployment">Deployment</h2>
 
