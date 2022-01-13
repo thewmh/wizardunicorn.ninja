@@ -2364,9 +2364,105 @@
 
 <h3 id="composition-with-reduce">Composition with Reduce</h3>
 
+<p>Let’s talk about composition. In the last section, we looked at a reduce function. There is a companion to reduce, which is called <code class="language-plaintext highlighter-rouge">reduceRight</code>. <code class="language-plaintext highlighter-rouge">reduce</code> goes from left to right in an array, and <code class="language-plaintext highlighter-rouge">reduceRight</code> goes from right to left. Earlier, there was another thing we looked at which also goes from right to left, which was foreshadowing for this discussion, and that was <code class="language-plaintext highlighter-rouge">composeTwo</code> (in <a href="#composition">associativity of the composition section</a>). If you look at the shape of the <code class="language-plaintext highlighter-rouge">composeTwo</code> function, you might notice that the shape of it matches that of the reducer that we just covered, in fact, <code class="language-plaintext highlighter-rouge">composeTwo</code> is a reducer! Here’s another look at the <code class="language-plaintext highlighter-rouge">composeTwo</code> function:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">add1</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">v</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">mul2</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">v</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">div3</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">v</span> <span class="o">/</span> <span class="mi">3</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">composeTwo</span><span class="p">(</span><span class="nx">fn2</span><span class="p">,</span> <span class="nx">fn1</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">composed</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">fn2</span><span class="p">(</span><span class="nx">fn1</span><span class="p">(</span><span class="nx">v</span><span class="p">));</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="p">[</span><span class="nx">div3</span><span class="p">,</span> <span class="nx">mul2</span><span class="p">,</span> <span class="nx">add1</span><span class="p">].</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">composeTwo</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="p">[</span><span class="nx">add1</span><span class="p">,</span> <span class="nx">mul2</span><span class="p">,</span> <span class="nx">div3</span><span class="p">].</span><span class="nx">reduceRight</span><span class="p">(</span><span class="nx">composeTwo</span><span class="p">);</span>
+
+<span class="nx">f</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span> <span class="c1">// 6</span>
+<span class="nx">p</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span> <span class="c1">// 6</span></code></pre></figure>
+
+<p>And here’s an implementation of compose with <code class="language-plaintext highlighter-rouge">reduceRight</code>:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">componse</span><span class="p">(...</span><span class="nx">fns</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">composed</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">fns</span><span class="p">.</span><span class="nx">reduceRight</span><span class="p">(</span><span class="kd">function</span> <span class="nx">invoke</span><span class="p">(</span><span class="nx">val</span><span class="p">,</span> <span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">fn</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
+    <span class="p">},</span> <span class="nx">v</span><span class="p">);</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="nx">compose</span><span class="p">(</span><span class="nx">div3</span><span class="p">,</span> <span class="nx">mul2</span><span class="p">,</span> <span class="nx">add1</span><span class="p">);</span>
+
+<span class="nx">f</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span> <span class="c1">// 6</span></code></pre></figure>
+
 <h3 id="list-operations-exercise">List Operations Exercise</h3>
 
+<p>This is an exercise to practice list operations (map/reduce/filter). We also revisit a variety of previous FP concepts (closure, recursion, etc).</p>
+
+<p>Instructions</p>
+
+<ol>
+  <li>
+    <p>Write two functions, each which return a fixed number (different from each other) when called.</p>
+  </li>
+  <li>
+    <p>Write an <code class="language-plaintext highlighter-rouge">add(..)</code> function that takes two numbers and adds them and returns the result. Call <code class="language-plaintext highlighter-rouge">add(..)</code> with the results of your two functions from (1) and print the result to the console.</p>
+  </li>
+  <li>
+    <p>Write an <code class="language-plaintext highlighter-rouge">add2(..)</code> that takes two functions instead of two numbers, and it calls those two functions and then sends those values to <code class="language-plaintext highlighter-rouge">add(..)</code>, just like you did in (2) above.</p>
+  </li>
+  <li>
+    <p>Replace your two functions from (1) with a single function that takes a value and returns a function back, where the returned function will return the value when it’s called.</p>
+  </li>
+  <li>
+    <p>Write an <code class="language-plaintext highlighter-rouge">addn(..)</code> that can take an array of 2 or more functions, and using only <code class="language-plaintext highlighter-rouge">add2(..)</code>, adds them together. Try it with a loop. Try it without a loop (recursion). Try it with built-in array functional helpers (hint: reduce).</p>
+  </li>
+  <li>
+    <p>Start with an array of odd and even numbers (with some duplicates), and trim it down to only have unique values.</p>
+  </li>
+  <li>
+    <p>Filter your array to only have even numbers in it.</p>
+  </li>
+  <li>
+    <p>Map your values to functions, using (4), and pass the new list of functions to the <code class="language-plaintext highlighter-rouge">addn(..)</code> from (5).</p>
+  </li>
+</ol>
+
+<p>Bonus</p>
+
+<p>Write tests for your functions.</p>
+
 <h3 id="list-operations-solution-add--constant">List Operations Solution: add &amp; constant</h3>
+
+<details>
+    <summary>Click to view the solution
+</summary>
+    
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">eight</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="mi">8</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">four</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="mi">4</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">add</span><span class="p">(</span><span class="nx">num1</span><span class="p">,</span> <span class="nx">num2</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">num1</span> <span class="o">+</span> <span class="nx">num2</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">add2</span><span class="p">(</span><span class="nx">fn1</span><span class="p">,</span> <span class="nx">fn2</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">add</span><span class="p">(</span><span class="nx">fn1</span><span class="p">(),</span> <span class="nx">fn2</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">constant</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="nx">f</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">v</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+
+</details>
 
 <h3 id="list-operations-solution-addn">List Operations Solution: addn</h3>
 
