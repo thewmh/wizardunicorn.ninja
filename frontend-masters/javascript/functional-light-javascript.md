@@ -2590,13 +2590,104 @@ function addToRecord(record, [key, value]) {
 
 {% endhighlight %}
 
-
-
 ### Composition with Reduce
+
+Let's talk about composition. In the last section, we looked at a reduce function. There is a companion to reduce, which is called `reduceRight`. `reduce` goes from left to right in an array, and `reduceRight` goes from right to left. Earlier, there was another thing we looked at which also goes from right to left, which was foreshadowing for this discussion, and that was `composeTwo` (in [associativity of the composition section](#composition)). If you look at the shape of the `composeTwo` function, you might notice that the shape of it matches that of the reducer that we just covered, in fact, `composeTwo` is a reducer! Here's another look at the `composeTwo` function:
+
+{% highlight javascript %}
+
+function add1(v) { return v + 1; }
+function mul2(v) { return v * 2; }
+function div3(v) { return v / 3; }
+
+function composeTwo(fn2, fn1) {
+  return function composed(v) {
+    return fn2(fn1(v));
+  };
+}
+
+var f = [div3, mul2, add1].reduce(composeTwo);
+var p = [add1, mul2, div3].reduceRight(composeTwo);
+
+f(8); // 6
+p(8); // 6
+
+{% endhighlight %}
+
+And here's an implementation of compose with `reduceRight`:
+
+{% highlight javascript %}
+
+function componse(...fns) {
+  return function composed(v) {
+    return fns.reduceRight(function invoke(val, fn) {
+      return fn(val);
+    }, v);
+  };
+}
+
+var f = compose(div3, mul2, add1);
+
+f(8); // 6
+
+{% endhighlight %}
 
 ### List Operations Exercise
 
+This is an exercise to practice list operations (map/reduce/filter). We also revisit a variety of previous FP concepts (closure, recursion, etc).
+
+Instructions
+
+1. Write two functions, each which return a fixed number (different from each other) when called.
+
+2. Write an `add(..)` function that takes two numbers and adds them and returns the result. Call `add(..)` with the results of your two functions from (1) and print the result to the console.
+
+3. Write an `add2(..)` that takes two functions instead of two numbers, and it calls those two functions and then sends those values to `add(..)`, just like you did in (2) above.
+
+4. Replace your two functions from (1) with a single function that takes a value and returns a function back, where the returned function will return the value when it's called.
+
+5. Write an `addn(..)` that can take an array of 2 or more functions, and using only `add2(..)`, adds them together. Try it with a loop. Try it without a loop (recursion). Try it with built-in array functional helpers (hint: reduce).
+
+6. Start with an array of odd and even numbers (with some duplicates), and trim it down to only have unique values.
+
+7. Filter your array to only have even numbers in it.
+
+8. Map your values to functions, using (4), and pass the new list of functions to the `addn(..)` from (5).
+
+Bonus
+
+Write tests for your functions.
+
 ### List Operations Solution: add & constant
+
+{% capture summary %}Click to view the solution{% endcapture %}
+{% capture details %}
+{% highlight javascript %}
+
+function eight() {
+  return 8;
+}
+
+function four() {
+  return 4;
+}
+
+function add(num1, num2) {
+  return num1 + num2;
+}
+
+function add2(fn1, fn2) {
+  return add(fn1(), fn2());
+}
+
+function constant(v) {
+  return function f() {
+    return v;
+  }
+}
+
+{% endhighlight %}
+{% endcapture %}{% include details.html %}
 
 ### List Operations Solution: addn
 
