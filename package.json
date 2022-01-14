@@ -4,6 +4,7 @@
   "description": "",
   "main": "postcss.config.js",
   "dependencies": {
+    "astro": "^0.22.12",
     "autoprefixer": "^10.2.5",
     "cssnano": "^5.0.6",
     "gulp": "^4.0.2",
@@ -12,11 +13,16 @@
     "gulp-plumber": "^1.2.1",
     "gulp-terser": "^2.0.1",
     "postcss": "^8.2.15",
+    "postcss-easy-import": "^3.0.0",
     "postcss-import": "^14.0.2",
     "tailwindcss": "^2.1.2"
   },
-  "devDependencies": {},
   "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "old_scripts": {
     "serve": "bundle exec jekyll serve",
     "build": "npm run scripts && npm run build:jekyll",
     "build:jekyll": "JEKYLL_ENV=production bundle exec jekyll build --trace",

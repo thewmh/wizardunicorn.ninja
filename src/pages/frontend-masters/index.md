@@ -2,8 +2,7 @@
 title: Frontend Masters Workshop Notes
 description: These are the links to notes from the Frontend Masters workshops I have taken.
 permalink: /frontend-masters/
-
-layout: default
+layout: '../../layouts/BaseLayout.astro'
 ---
 
 These are notes from all of the Frontend Masters workshops that I've taken.

@@ -6,6 +6,7 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 
 gem "jekyll", "~> 4.2.0"
 
-group :jekyll_plugins do
-    gem "jekyll-postcss"
-end
+gem "jekyll-postcss"
+# group :jekyll_plugins do
+# end
+gem "webrick", "~> 1.7"

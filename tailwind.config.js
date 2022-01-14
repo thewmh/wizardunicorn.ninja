@@ -5,9 +5,8 @@ module.exports = {
   purge: {
       enabled: true,
       content: [
-          '**/*.html',
-          '*.html',
-          '**/*.js'
+        './public/**/*.html',
+        './src/**/*.{astro, js, jsx, svelte, ts, tsx, vue}',
         ]
     },
   darkMode: 'class', // or 'media' or 'class'
