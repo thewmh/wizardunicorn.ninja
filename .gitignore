@@ -3,6 +3,7 @@
 _posts
 _site
 node_modules
+dist/
 # .github
 vendor
 .DS_Store
