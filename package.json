@@ -6,14 +6,14 @@
   "dependencies": {
     "autoprefixer": "^10.2.5",
     "cssnano": "^5.0.6",
-    "gulp": "^4.0.2",
+    "gulp": "^5.0.0",
     "gulp-clean": "^0.4.0",
     "gulp-concat": "^2.6.1",
     "gulp-plumber": "^1.2.1",
     "gulp-terser": "^2.0.1",
     "postcss": "^8.2.15",
     "postcss-import": "^14.0.2",
-    "tailwindcss": "^2.1.2"
+    "tailwindcss": "^2.2.19"
   },
   "devDependencies": {},
   "scripts": {
