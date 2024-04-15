@@ -87,6 +87,9 @@
     if (typeof window !== 'undefined') {
       localStorage.setItem('theme', newTheme.icon);
     }
+    if (themeButton !== null) {
+      themeButton.innerHTML = currentTheme.icon;
+    }
   }
 
   // Check if a theme is saved in localStorage
@@ -113,5 +116,7 @@
     if (themeButton !== null) {
       themeButton.innerHTML = currentTheme.icon;
     }
+  } else {
+    setTheme(themes[0]);
   }
 </script>
