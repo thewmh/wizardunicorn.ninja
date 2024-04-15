@@ -1,0 +1,31 @@
+---
+import ThemeSwitcher from "../components/ThemeSwitcher.astro";
+import '../styles/global.css';
+
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body>
+		<article class="max-w-[50rem] mx-auto p-20">
+			<ThemeSwitcher client:load />
+			<slot />
+		</article>
+	</body>
+</html>
+
+<style is:global>
+	p {
+		@apply mb-4;
+	}
+
+	a {
+		@apply relative hover:underline;
+	}
+</style>
