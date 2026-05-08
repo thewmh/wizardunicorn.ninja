@@ -1,0 +1,16 @@
+---
+/**
+ * Tag — A small rounded badge for categorizing content
+ */
+interface Props {
+  label: string;
+  href?: string;
+}
+
+const { label, href } = Astro.props;
+---
+
+{href
+  ? <a href={href} class="tag no-underline">{label}</a>
+  : <span class="tag">{label}</span>
+}

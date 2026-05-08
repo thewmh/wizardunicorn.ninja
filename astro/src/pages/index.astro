@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EssayCard from '../components/EssayCard.astro';
+import NoteCard from '../components/NoteCard.astro';
+
+const title = 'Wizard Unicorn Ninja';
+const description = 'Frontend Development Worknotes and Resources';
+
+// Sample recent content — replace with content collection queries in Phase 1
+const recentEssays = [
+  {
+    title: 'The Role of Design Systems in Modern Development',
+    description: 'A design system isn\'t just a set of reusable components—it\'s the blueprint for creating consistent, scalable, and efficient digital products.',
+    date: 'Dec 15, 2025',
+    tags: ['design', 'systems', 'frontend'],
+    href: '/essays/design-systems',
+  },
+  {
+    title: 'The Value of Developer Roadmaps to Guide Learning Journeys',
+    description: 'Staying updated on new development tools and trends can feel overwhelming. Developer roadmaps help by providing a clear path for learning.',
+    date: 'Jan 3, 2026',
+    tags: ['career', 'learning'],
+    href: '/essays/dev-roadmap',
+  },
+];
+
+const recentNotes = [
+  {
+    title: 'Frontend AI Roadmap',
+    description: 'Key takeaways from the AI frontend workshop — tools, patterns, and where the landscape is heading.',
+    date: 'Feb 10, 2026',
+    tags: ['ai', 'frontend'],
+    noteType: 'workshop',
+    href: '/notes/fe-ai-roadmap',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} pageType="website">
+  <div class="max-w-[65ch] mx-auto px-4 py-12">
+    <!-- Hero -->
+    <section class="mb-16">
+      <h1 class="font-heading font-bold text-[2.75rem] text-[var(--text)] mb-4">
+        👋 I'm William Harrison
+      </h1>
+      <p class="text-[var(--text)] text-lg" style="line-height: 1.7;">
+        I build things on the internet. I write about design systems, developer roadmaps,
+        and occasionally about things that don't matter. I also have opinions about class names.
+      </p>
+    </section>
+
+    <!-- Recent Essays -->
+    <section class="mb-16">
+      <h2 class="font-heading font-bold text-xl text-[var(--text)] mb-6">Recent Essays</h2>
+      <div class="flex flex-col gap-4">
+        {recentEssays.map(essay => (
+          <EssayCard
+            title={essay.title}
+            description={essay.description}
+            date={essay.date}
+            tags={essay.tags}
+            href={essay.href}
+          />
+        ))}
+      </div>
+    </section>
+
+    <!-- Recent Notes -->
+    <section class="mb-16">
+      <h2 class="font-heading font-bold text-xl text-[var(--text)] mb-6">Recent Notes</h2>
+      <div class="flex flex-col gap-4">
+        {recentNotes.map(note => (
+          <NoteCard
+            title={note.title}
+            description={note.description}
+            date={note.date}
+            tags={note.tags}
+            noteType={note.noteType}
+            href={note.href}
+          />
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>

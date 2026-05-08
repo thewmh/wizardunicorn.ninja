@@ -1,23 +1,324 @@
-/* Light theme */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========================================================================
+   Theme System — CSS Custom Properties
+   ======================================================================== */
+
+/* Wizard (Light) — "Clean Paper" */
 [data-theme='light'] {
-  --bg-color: #f5f5f5;
-  --text-color: #333;
+  --bg: #FAF9F6;
+  --bg-elevated: #FFFFFF;
+  --text: #1a1a1a;
+  --text-muted: #6b7280;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --border: #e5e5e5;
+  --code-bg: #f3f4f6;
+  --code-block-bg: #1a1a1a;
 }
 
-/* Dark theme */
+/* Ninja (Dark) — "Deep Room" */
 [data-theme='dark'] {
-  --bg-color: #333;
-  --text-color: #f5f5f5;
+  --bg: #111111;
+  --bg-elevated: #1a1a1a;
+  --text: #e5e5e5;
+  --text-muted: #9ca3af;
+  --accent: #60a5fa;
+  --accent-hover: #93bbfd;
+  --border: #262626;
+  --code-bg: #1e1e1e;
+  --code-block-bg: #1a1a1a;
 }
 
-/* Ocean theme */
-[data-theme='ocean'] {
-  --bg-color: #007bff;
-  --text-color: #fff;
+/* Unicorn (Colorful) — "Sunset Gradient" */
+[data-theme='colorful'] {
+  --bg-start: #7c3aed;
+  --bg-mid: #c026d3;
+  --bg-end: #ea580c;
+  --bg: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-mid) 50%, var(--bg-end) 100%);
+  --bg-elevated: rgba(255, 255, 255, 0.1);
+  --text: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.7);
+  --accent: #fde68a;
+  --accent-hover: #fef3c7;
+  --border: rgba(255, 255, 255, 0.2);
+  --code-bg: rgba(0, 0, 0, 0.3);
+  --code-block-bg: rgba(0, 0, 0, 0.5);
+}
+
+/* ========================================================================
+   Base Styles
+   ======================================================================== */
+
+html {
+  transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
 }
 
 body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  height: 100vh;
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
+}
+
+/* Unicorn theme needs gradient on body, not just a property */
+[data-theme='colorful'] body {
+  background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-mid) 50%, var(--bg-end) 100%);
+}
+
+/* ========================================================================
+   Typography
+   ======================================================================== */
+
+@layer base {
+  html {
+    font-family: Inter, system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  h1 {
+    font-size: 2.75rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-size: 2rem;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  p {
+    line-height: 1.7;
+  }
+
+  code {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.875rem;
+  }
+
+  a {
+    color: var(--accent);
+    transition: color 150ms ease;
+  }
+
+  a:hover {
+    color: var(--accent-hover);
+  }
+
+  /* Focus styles */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+/* ========================================================================
+   Content Typography (prose)
+   ======================================================================== */
+
+@layer components {
+  .prose {
+    max-width: 65ch;
+    margin: 0 auto;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4 {
+    color: var(--text);
+  }
+
+  .prose p {
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  .prose a {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .prose a:hover {
+    color: var(--accent-hover);
+  }
+
+  .prose code {
+    background-color: var(--code-bg);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    color: var(--text);
+    font-size: 0.875em;
+  }
+
+  .prose pre {
+    background-color: var(--code-block-bg);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+  .prose pre code {
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+    color: inherit;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .prose blockquote {
+    border-left: 3px solid var(--border);
+    padding-left: 1rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .prose hr {
+    border-color: var(--border);
+    margin: 2rem 0;
+  }
+
+  .prose ul,
+  .prose ol {
+    color: var(--text);
+  }
+
+  .prose li {
+    color: var(--text);
+  }
+}
+
+/* ========================================================================
+   Components
+   ======================================================================== */
+
+@layer components {
+  /* Container */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  /* Card */
+  .card {
+    background-color: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    transition: all 150ms ease;
+  }
+
+  .card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Tag */
+  .tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    background-color: var(--border);
+    color: var(--text-muted);
+    transition: all 150ms ease;
+    cursor: pointer;
+  }
+
+  .tag:hover {
+    background-color: var(--accent);
+    color: #ffffff;
+    transform: scale(1.1);
+  }
+
+  /* Theme switcher */
+  .theme-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .theme-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    width: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.25rem;
+    line-height: 1;
+    padding: 0;
+    transition: transform 150ms ease;
+    opacity: 0.5;
+    filter: grayscale(1);
+  }
+
+  .theme-btn:hover {
+    opacity: 0.8;
+  }
+
+  .theme-btn.active {
+    opacity: 1;
+    filter: grayscale(0);
+  }
+
+  .theme-btn.bounce {
+    animation: theme-bounce 200ms ease-out;
+  }
+
+  @keyframes theme-bounce {
+    0% { transform: scale(1) }
+    50% { transform: scale(1.15) }
+    100% { transform: scale(1) }
+  }
+
+  /* Reading progress bar */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    background-color: var(--accent);
+    z-index: 50;
+    transition: width 100ms ease;
+  }
+}
+
+/* ========================================================================
+   Reduced Motion
+   ======================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

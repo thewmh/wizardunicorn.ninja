@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const title = 'Not Found';
+const description = 'The page you\'re looking for couldn\'t be found.';
+---
+
+<BaseLayout title={title} description={description} pageType="webpage">
+  <div class="prose py-20 text-center">
+    <h1 class="mb-4">404 — Not Found</h1>
+    <p class="text-[var(--text-muted)] text-lg">
+      Even wizards can't find this page. Not even unicorns. And definitely not ninjas.
+    </p>
+    <a href="/" class="inline-block mt-6 text-[var(--accent)] no-underline hover:underline">
+      &larr; Go back to safety
+    </a>
+  </div>
+</BaseLayout>

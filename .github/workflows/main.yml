@@ -1,4 +1,4 @@
-name: Build and deploy Jekyll to GitHub Pages
+name: Build and deploy Astro to GitHub Pages
 
 on:
   push:
@@ -6,39 +6,28 @@ on:
       - main
 
 jobs:
-  jekyll:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout main branch ✅
-        uses: actions/checkout@v2
-      # Install Ruby to be able to build the site using Jekyll
-      - name: Setup Ruby 💎
-        uses: ruby/setup-ruby@v1
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          ruby-version: 2.6.3
-          bundler-cache: true
-      # Install Node
-      - name: Setup Node 🖥
-        uses: actions/setup-node@v1
-        with:
-          node-version: 'v12.12.0'
-      # Install Node Modules
-      - name: Install Node Modules
+          node-version: 20
+
+      - name: Install dependencies
+        working-directory: ./astro
         run: npm ci
-      # Build Jekyll
-      - name: Build Jekyll
+
+      - name: Build
+        working-directory: ./astro
         run: npm run build
-      # Make CNAME record for Github Deployment to custom domain
-      - name: Make CNAME File 📄
-        uses: finnp/create-file-action@master
-        env:
-          FILE_NAME: "./CNAME"
-          FILE_DATA: "wizardunicorn.ninja"
-      # Push the compiled _site-folder as (dev) branch into your GitHub repository
-      - name: Deploy to GitHub Pages 🐣
+
+      - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site
+          publish_dir: ./astro/dist
           publish_branch: dev

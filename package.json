@@ -15,7 +15,9 @@
     "postcss-import": "^14.0.2",
     "tailwindcss": "^2.1.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@kceall/know-agents-md": "bitbucket:kceall/know.agents.md#feature/package-scripts"
+  },
   "scripts": {
     "serve": "bundle exec jekyll serve",
     "build": "npm run scripts && npm run build:jekyll",
