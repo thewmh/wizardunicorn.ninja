@@ -1,0 +1,82 @@
+---
+/**
+ * FitnessCard — Plain list row for a fitness log entry
+ *
+ * Responsibilities:
+ *   - Render activity label, duration, optional distance/pace, date
+ *   - Optionally render exercises, notes, and observations
+ *   - Row layout: activity + stats on line 1; date on line 2; optional
+ *     exercises, notes, observations below in muted text
+ *   - Divider via border-b; last item removes bottom border via last:border-b-0
+ *
+ * Non-responsibilities:
+ *   - Data fetching (fitness.ts)
+ *   - Section headings / grouping (fitness.astro — renders flat)
+ *
+ * Props:
+ *   date         — ISO date string; rendered as human-readable
+ *   activity     — activity type; capitalised as the row heading
+ *   duration     — minutes; always shown
+ *   distance     — optional miles (run / cycle / hike)
+ *   pace         — optional pace string (run only, e.g. '9:15/mi')
+ *   exercises    — optional freeform lift description
+ *   notes        — optional post-session reflection; rendered as muted paragraph
+ *   observations — optional in-session observations; rendered italic with label
+ *
+ * Behavioral guarantees:
+ *   - Date is parsed with a noon-UTC anchor (T12:00:00Z) to avoid off-by-one
+ *     from timezone shifts in SSG builds
+ *   - All optional fields render only when present
+ */
+
+import type { ExerciseSession } from '../data/fitness';
+
+interface Props {
+  date: string;
+  activity: ExerciseSession['activity'];
+  duration: number;
+  notes?: string;
+  observations?: string;
+  distance?: number;
+  pace?: string;
+  exercises?: string;
+}
+
+const { date, activity, duration, notes, observations, distance, pace, exercises } = Astro.props;
+
+const activityLabel = activity.charAt(0).toUpperCase() + activity.slice(1);
+
+// Build the stats segment shown inline after the activity label.
+const stats: string[] = [`${duration} min`];
+if (distance !== undefined) stats.push(`${distance} mi`);
+if (pace) stats.push(pace);
+const statLine = stats.join(' · ');
+
+// Parse date at noon UTC to avoid date shifting across timezone boundaries in SSG.
+const formattedDate = new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<article class="py-4 border-b border-[var(--border)] last:border-b-0">
+  <h3 class="font-heading font-semibold text-[var(--text)] m-0 leading-snug text-base">
+    {activityLabel}
+    <span class="font-normal text-sm text-[var(--text-muted)] ml-2">{statLine}</span>
+  </h3>
+  <p class="text-sm text-[var(--text-muted)] m-0 mt-1"><time datetime={date}>{formattedDate}</time></p>
+  {exercises && (
+    <p class="text-sm text-[var(--text-muted)] m-0 mt-1">{exercises}</p>
+  )}
+  {notes && (
+    <p class="text-sm text-[var(--text-muted)] m-0 mt-2" style="line-height: 1.7;">
+      {notes}
+    </p>
+  )}
+  {observations && (
+    <p class="text-sm text-[var(--text-muted)] italic m-0 mt-1" style="line-height: 1.7;">
+      <span class="not-italic font-normal">Observations:</span> {observations}
+    </p>
+  )}
+</article>

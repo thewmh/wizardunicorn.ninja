@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FitnessCard from '../../components/FitnessCard.astro';
+import { sessions } from '../../data/fitness';
+---
+
+<BaseLayout title="Fitness Log" description="Training sessions — runs, lifts, hikes, and everything in between." pageType="website">
+  <div class="max-w-[65ch] mx-auto px-4 py-12">
+    <!-- Page header -->
+    <section class="mb-12">
+      <h1 class="font-heading font-bold text-[2.75rem] text-[var(--text)] mb-4">Fitness Log</h1>
+      <p class="text-[var(--text-muted)] text-lg" style="line-height: 1.7;">
+        Training sessions — runs, lifts, hikes, and everything in between.
+      </p>
+    </section>
+
+    <!-- Session list — sessions are pre-sorted newest-first in fitness.ts -->
+    <section class="mb-10">
+      <!-- sr-only h2 establishes h1→h2→h3 heading hierarchy for AT users
+           (FitnessCard renders h3; this page has no visible section headings) -->
+      <h2 class="sr-only">Sessions</h2>
+      <div>
+        {sessions.map(session => (
+          <FitnessCard
+            date={session.date}
+            activity={session.activity}
+            duration={session.duration}
+            notes={session.notes}
+            observations={session.observations}
+            distance={session.distance}
+            pace={session.pace}
+            exercises={session.exercises}
+          />
+        ))}
+      </div>
+    </section>
+
+    <!-- Back to about link -->
+    <hr class="my-12" />
+    <a href="/about/" class="text-[var(--accent)] hover:text-[var(--accent-hover)] text-sm no-underline transition-colors duration-150">
+      &larr; All about
+    </a>
+  </div>
+</BaseLayout>
