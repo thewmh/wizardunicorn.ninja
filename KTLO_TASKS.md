@@ -21,7 +21,7 @@ Include the ID in the task heading.
 
 ---
 
-- **KTLO-000001 — Remove unused `NoteCard` import from `notes/[...slug].astro`**
+- **KTLO-000001 — Remove unused `NoteCard` import from `notes/[...slug].astro`** — RESOLVED
   - **Location:** `astro/src/pages/notes/[...slug].astro` line 2
   - **Nature:** `NoteCard` is imported but never referenced in the template. Flagged by `astro check` (ts(6133)).
   - **Risk:** No runtime impact. Adds noise to type checker output; could mislead a future maintainer who assumes the component is used.

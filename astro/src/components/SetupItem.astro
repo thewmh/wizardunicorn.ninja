@@ -1,0 +1,47 @@
+---
+/**
+ * SetupItem — Plain list row for a desk / dev / everyday setup entry
+ *
+ * Responsibilities:
+ *   - Render name (optionally linked), optional description
+ *   - Row layout: name on one line; description below in muted text
+ *   - Divider via border-b; last item removes bottom border via last:border-b-0
+ *
+ * Non-responsibilities:
+ *   - Data fetching (setup.ts)
+ *   - Section grouping / category headings (setup.astro — groups by category)
+ *
+ * Props:
+ *   name        — item name; wrapped in an accent anchor when link is provided
+ *   category    — 'desk' | 'dev' | 'everyday' | 'other' (accepted; grouping handled by caller)
+ *   description — optional prose description rendered in muted text
+ *   link        — optional URL; when present wraps the name in an accent anchor (new tab)
+ *
+ * Behavioral guarantees:
+ *   - External link opens in a new tab
+ *   - No description: row renders compactly with just the name
+ */
+
+interface Props {
+  name: string;
+  category: 'desk' | 'dev' | 'everyday' | 'other';
+  description?: string;
+  link?: string;
+}
+
+const { name, description, link } = Astro.props;
+---
+
+<article class="py-4 border-b border-[var(--border)] last:border-b-0">
+  <h3 class="font-heading font-semibold text-[var(--text)] m-0 text-base">
+    {link
+      ? <a href={link} target="_blank" rel="noopener noreferrer" class="text-[var(--accent)] hover:text-[var(--accent-hover)] no-underline transition-colors duration-150">{name}</a>
+      : name
+    }
+  </h3>
+  {description && (
+    <p class="text-sm text-[var(--text-muted)] m-0 mt-1" style="line-height: 1.7;">
+      {description}
+    </p>
+  )}
+</article>

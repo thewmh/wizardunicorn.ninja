@@ -1,0 +1,54 @@
+---
+/**
+ * HobbyCard — Plain list row for a hobby or side pursuit entry
+ *
+ * Responsibilities:
+ *   - Render name, description, optional link
+ *   - Row layout: name on one line; description below in muted text;
+ *     link (when present) as a small inline anchor on its own line after description
+ *   - Divider via border-b; last item removes bottom border via last:border-b-0
+ *
+ * Non-responsibilities:
+ *   - Data fetching (hobbies.ts)
+ *   - Section grouping / status headings (hobbies.astro — groups by status)
+ *
+ * Props:
+ *   name        — hobby name
+ *   description — prose description rendered in muted text
+ *   status      — 'active' | 'paused' | 'completed' (accepted; grouping handled by caller)
+ *   link        — optional URL; rendered as a small accent anchor below the description
+ *
+ * Behavioral guarantees:
+ *   - Link opens in a new tab when present
+ *   - Name is always plain text
+ */
+
+interface Props {
+  name: string;
+  description: string;
+  status: 'active' | 'paused' | 'completed';
+  link?: string;
+}
+
+const { name, description, link } = Astro.props;
+---
+
+<article class="py-4 border-b border-[var(--border)] last:border-b-0">
+  <h3 class="font-heading font-semibold text-[var(--text)] m-0 text-base">
+    {name}
+  </h3>
+  <p class="text-sm text-[var(--text-muted)] m-0 mt-1" style="line-height: 1.7;">
+    {description}
+  </p>
+  {link && (
+    <a
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`External link: ${name}`}
+      class="inline-block mt-1 text-xs text-[var(--accent)] hover:text-[var(--accent-hover)] no-underline transition-colors duration-150"
+    >
+      ↗ link
+    </a>
+  )}
+</article>

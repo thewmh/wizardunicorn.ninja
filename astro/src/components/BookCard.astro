@@ -1,0 +1,60 @@
+---
+/**
+ * BookCard — Plain list row for a reading list entry
+ *
+ * Responsibilities:
+ *   - Render title, author, optional star rating, optional notes
+ *   - Row layout: title on one line; author (+ rating) and notes below in muted text
+ *   - Divider via border-b; last item removes bottom border via last:border-b-0
+ *
+ * Non-responsibilities:
+ *   - Data fetching (books.ts)
+ *   - Section headings / status grouping (books.astro — groups by status)
+ *
+ * Props:
+ *   title   — book title
+ *   author  — author string (may include co-authors / editors)
+ *   status  — 'reading' | 'finished' | 'want-to-read' (accepted; grouping handled by caller)
+ *   rating  — optional 1–5 integer; rendered as ★★★★☆ string
+ *   notes   — optional prose note rendered as a muted line below author
+ *
+ * Behavioral guarantees:
+ *   - Rating aria-label spells out the numeric value for screen readers
+ *   - Notes render only when present
+ */
+
+interface Props {
+  title: string;
+  author: string;
+  status: 'reading' | 'finished' | 'want-to-read';
+  rating?: number;
+  notes?: string;
+}
+
+const { title, author, rating, notes } = Astro.props;
+
+function starRating(n: number): string {
+  const filled = '★'.repeat(Math.min(5, Math.max(1, n)));
+  const empty = '☆'.repeat(5 - filled.length);
+  return filled + empty;
+}
+---
+
+<article class="py-4 border-b border-[var(--border)] last:border-b-0">
+  <h3 class="font-heading font-semibold text-[var(--text)] m-0 leading-snug text-base">
+    {title}
+  </h3>
+  <p class="text-sm text-[var(--text-muted)] m-0 mt-1">
+    {author}
+    {rating !== undefined && (
+      <span class="ml-2" aria-label={`${rating} out of 5 stars`}>
+        {starRating(rating)}
+      </span>
+    )}
+  </p>
+  {notes && (
+    <p class="text-xs text-[var(--text-muted)] mt-1 m-0" style="line-height: 1.7;">
+      {notes}
+    </p>
+  )}
+</article>

@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HobbyCard from '../../components/HobbyCard.astro';
+import { hobbies } from '../../data/hobbies';
+
+const active = hobbies.filter(h => h.status === 'active');
+const paused = hobbies.filter(h => h.status === 'paused');
+const completed = hobbies.filter(h => h.status === 'completed');
+---
+
+<BaseLayout title="Hobbies" description="Current pursuits — what I experiment with off the clock." pageType="website">
+  <div class="max-w-[65ch] mx-auto px-4 py-12">
+    <!-- Page header -->
+    <section class="mb-12">
+      <h1 class="font-heading font-bold text-[2.75rem] text-[var(--text)] mb-4">Hobbies</h1>
+      <p class="text-[var(--text-muted)] text-lg" style="line-height: 1.7;">
+        What I experiment with when the IDE is closed.
+      </p>
+    </section>
+
+    <!-- Active -->
+    {active.length > 0 && (
+      <section class="mb-10">
+        <h2 class="font-heading font-bold text-xl text-[var(--text)] mb-4">Active</h2>
+        <div>
+          {active.map(hobby => (
+            <HobbyCard
+              name={hobby.name}
+              description={hobby.description}
+              status={hobby.status}
+              link={hobby.link}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Paused -->
+    {paused.length > 0 && (
+      <section class="mb-10">
+        <h2 class="font-heading font-bold text-xl text-[var(--text)] mb-4">Paused</h2>
+        <div>
+          {paused.map(hobby => (
+            <HobbyCard
+              name={hobby.name}
+              description={hobby.description}
+              status={hobby.status}
+              link={hobby.link}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Completed -->
+    {completed.length > 0 && (
+      <section class="mb-10">
+        <h2 class="font-heading font-bold text-xl text-[var(--text)] mb-4">Completed</h2>
+        <div>
+          {completed.map(hobby => (
+            <HobbyCard
+              name={hobby.name}
+              description={hobby.description}
+              status={hobby.status}
+              link={hobby.link}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Inspiration note (retained from original) -->
+    <section class="prose mb-8">
+      <h2>Inspiration</h2>
+      <p class="text-[var(--text-muted)]">
+        If you're curious about what else I'm into or have similar interests — especially food-related
+        ones — reach out. Always happy to swap recipes, recommendations, or war stories from Beijing.
+      </p>
+    </section>
+
+    <!-- Back to about link -->
+    <hr class="my-12" />
+    <a href="/about/" class="text-[var(--accent)] hover:text-[var(--accent-hover)] text-sm no-underline transition-colors duration-150">
+      &larr; All about
+    </a>
+  </div>
+</BaseLayout>

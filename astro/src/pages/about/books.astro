@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BookCard from '../../components/BookCard.astro';
+import { books } from '../../data/books';
+
+const reading = books.filter(b => b.status === 'reading');
+const finished = books.filter(b => b.status === 'finished');
+const wantToRead = books.filter(b => b.status === 'want-to-read');
+---
+
+<BaseLayout title="Books" description="Current reads, recently finished, and things to read next." pageType="website">
+  <div class="max-w-[65ch] mx-auto px-4 py-12">
+    <!-- Page header -->
+    <section class="mb-12">
+      <h1 class="font-heading font-bold text-[2.75rem] text-[var(--text)] mb-4">Books</h1>
+      <p class="text-[var(--text-muted)] text-lg" style="line-height: 1.7;">
+        Current reads, recently finished, and a backlog of things to read next.
+      </p>
+    </section>
+
+    <!-- Reading list intro -->
+    <section class="prose mb-8">
+      <p>
+        I maintain my reading list in
+        <a href="https://goodreads.com/user/thewmh" target="_blank" rel="noopener noreferrer">my Goodreads profile</a>.
+        A curated version with personal notes lives here.
+      </p>
+    </section>
+
+    <!-- Currently Reading -->
+    {reading.length > 0 && (
+      <section class="mb-10">
+        <h2 class="font-heading font-bold text-xl text-[var(--text)] mb-4">Currently Reading</h2>
+        <div>
+          {reading.map(book => (
+            <BookCard
+              title={book.title}
+              author={book.author}
+              status={book.status}
+              rating={book.rating}
+              notes={book.notes}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Recently Finished -->
+    {finished.length > 0 && (
+      <section class="mb-10">
+        <h2 class="font-heading font-bold text-xl text-[var(--text)] mb-4">Recently Finished</h2>
+        <div>
+          {finished.map(book => (
+            <BookCard
+              title={book.title}
+              author={book.author}
+              status={book.status}
+              rating={book.rating}
+              notes={book.notes}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Want to Read -->
+    {wantToRead.length > 0 && (
+      <section class="mb-10">
+        <h2 class="font-heading font-bold text-xl text-[var(--text)] mb-4">Want to Read</h2>
+        <div>
+          {wantToRead.map(book => (
+            <BookCard
+              title={book.title}
+              author={book.author}
+              status={book.status}
+              rating={book.rating}
+              notes={book.notes}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Back to about link -->
+    <hr class="my-12" />
+    <a href="/about/" class="text-[var(--accent)] hover:text-[var(--accent-hover)] text-sm no-underline transition-colors duration-150">
+      &larr; All about
+    </a>
+  </div>
+</BaseLayout>

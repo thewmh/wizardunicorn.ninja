@@ -2,6 +2,8 @@
 /**
  * EssayCard — Card for essay listings
  */
+import Tag from './Tag.astro';
+
 interface Props {
   title: string;
   description: string;
@@ -28,7 +30,7 @@ const { title, description, date, tags = [], href } = Astro.props;
       <>
         <span class="text-[var(--text-muted)] text-xs">&middot;</span>
         {tags.map(tag => (
-          <span class="tag text-xs">{tag}</span>
+          <Tag label={tag} />
         ))}
       </>
     )}

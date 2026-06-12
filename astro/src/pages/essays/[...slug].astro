@@ -2,13 +2,15 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Tag from '../../components/Tag.astro';
 import { getCollection } from 'astro:content';
-// Note: NoteCard import removed — it was unused on this page (KTLO-000001 resolved).
 
 export async function getStaticPaths() {
-  const notes = await getCollection('notes');
-  return notes.map((note) => ({
-    params: { slug: note.slug },
-    props: { data: note },
+  const essays = await getCollection('essays');
+  const sortedEssays = essays.sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+  );
+  return sortedEssays.map((essay) => ({
+    params: { slug: essay.slug },
+    props: { data: essay },
   }));
 }
 
@@ -17,15 +19,8 @@ const { data } = Astro.props;
 
 <BaseLayout title={data.data.title} description={data.data.description} pageType="article">
   <div class="max-w-[65ch] mx-auto px-4 py-12">
-    <!-- Note header -->
+    <!-- Essay header -->
     <header class="mb-12">
-      <!-- Type badge -->
-      {data.data.noteType ? (
-        <span class="text-xs text-[var(--text-muted)] uppercase tracking-wide mb-2 block">
-          {data.data.noteType}
-        </span>
-      ) : null}
-
       <h1 class="font-heading font-bold text-[2.75rem] text-[var(--text)] mb-4">
         {data.data.title}
       </h1>
@@ -48,14 +43,14 @@ const { data } = Astro.props;
       <hr class="my-8" />
     </header>
 
-    <!-- Note content -->
+    <!-- Essay content -->
     <article class="prose" set:html={data.rendered?.html}></article>
 
     <hr class="my-12" />
 
-    <!-- Back to notes link -->
-    <a href="/notes/" class="text-[var(--accent)] hover:text-[var(--accent-hover)] text-sm no-underline transition-colors duration-150">
-      &larr; All notes
+    <!-- Back to essays link -->
+    <a href="/essays/" class="text-[var(--accent)] hover:text-[var(--accent-hover)] text-sm no-underline transition-colors duration-150">
+      &larr; All essays
     </a>
   </div>
 </BaseLayout>

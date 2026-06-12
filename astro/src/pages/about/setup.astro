@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SetupItem from '../../components/SetupItem.astro';
+import { setupItems } from '../../data/setup';
+
+const desk = setupItems.filter(i => i.category === 'desk');
+const dev = setupItems.filter(i => i.category === 'dev');
+const everyday = setupItems.filter(i => i.category === 'everyday');
+const other = setupItems.filter(i => i.category === 'other');
+---
+
+<BaseLayout title="Setup" description="What's on my desk and how I work." pageType="website">
+  <div class="max-w-[65ch] mx-auto px-4 py-12">
+    <!-- Page header -->
+    <section class="mb-12">
+      <h1 class="font-heading font-bold text-[2.75rem] text-[var(--text)] mb-4">Setup</h1>
+      <p class="text-[var(--text-muted)] text-lg" style="line-height: 1.7;">
+        Gear, hardware, and dev environment.
+      </p>
+    </section>
+
+    <!-- Desk — physical workstation hardware -->
+    {desk.length > 0 && (
+      <section class="mb-10">
+        <h2 class="font-heading font-bold text-xl text-[var(--text)] mb-4">Desk</h2>
+        <div>
+          {desk.map(item => (
+            <SetupItem
+              name={item.name}
+              category={item.category}
+              description={item.description}
+              link={item.link}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Dev — editor, browsers, tooling -->
+    {dev.length > 0 && (
+      <section class="mb-10">
+        <h2 class="font-heading font-bold text-xl text-[var(--text)] mb-4">Dev</h2>
+        <div>
+          {dev.map(item => (
+            <SetupItem
+              name={item.name}
+              category={item.category}
+              description={item.description}
+              link={item.link}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Everyday — accessories used across contexts -->
+    {everyday.length > 0 && (
+      <section class="mb-10">
+        <h2 class="font-heading font-bold text-xl text-[var(--text)] mb-4">Everyday</h2>
+        <div>
+          {everyday.map(item => (
+            <SetupItem
+              name={item.name}
+              category={item.category}
+              description={item.description}
+              link={item.link}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Other (rendered only if entries exist) -->
+    {other.length > 0 && (
+      <section class="mb-10">
+        <h2 class="font-heading font-bold text-xl text-[var(--text)] mb-4">Other</h2>
+        <div>
+          {other.map(item => (
+            <SetupItem
+              name={item.name}
+              category={item.category}
+              description={item.description}
+              link={item.link}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Closing note (retained from original) -->
+    <p class="text-[var(--text-muted)] mt-4 text-sm" style="line-height: 1.7;">
+      This list evolves. I don't chase new gear — when something works, I keep using it until
+      something fundamentally better comes along.
+    </p>
+
+    <!-- Back to about link -->
+    <hr class="my-12" />
+    <a href="/about/" class="text-[var(--accent)] hover:text-[var(--accent-hover)] text-sm no-underline transition-colors duration-150">
+      &larr; All about
+    </a>
+  </div>
+</BaseLayout>

@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Resources" description="Curated links — tools, articles, and references worth bookmarking." pageType="website">
+  <div class="max-w-[65ch] mx-auto px-4 py-12">
+    <!-- Page header -->
+    <section class="mb-12">
+      <h1 class="font-heading font-bold text-[2.75rem] text-[var(--text)] mb-4">Resources</h1>
+      <p class="text-[var(--text-muted)] text-lg" style="line-height: 1.7;">
+        Curated links — tools, articles, and references worth bookmarking.
+      </p>
+    </section>
+
+    <section class="prose mb-8">
+      <h2>Astro Ecosystem</h2>
+      <ul class="text-[var(--text-muted)]">
+        <li><a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro Documentation</a> — Islands architecture for the web</li>
+        <li><a href="https://github.com/withastro/astro" target="_blank" rel="noopener noreferrer">Astro on GitHub</a></li>
+      </ul>
+
+      <h2>Tailwind CSS</h2>
+      <ul class="text-[var(--text-muted)]">
+        <li><a href="https://tailwindcss.com/docs" target="_blank" rel="noopener noreferrer">Tailwind CSS Documentation</a></li>
+        <li><a href="https://github.com/tailwindlabs/tailwindcss" target="_blank" rel="noopener noreferrer">Tailwind CSS on GitHub</a></li>
+      </ul>
+
+      <h2>CSS Architecture</h2>
+      <ul class="text-[var(--text-muted)]">
+        <li><a href="https://cubecodeworks.com/design-system-design-patterns/" target="_blank" rel="noopener noreferrer">CUBE CSS</a> — A flexible methodology for scalable stylesheets</li>
+        <li><a href="https://css-tricks.com/organizing-css-with-naming-conventions/" target="_blank" rel="noopener noreferrer">CSS Naming Conventions</a> — BEM, ITCSS, and beyond</li>
+      </ul>
+
+      <h2>Developer Learning</h2>
+      <ul class="text-[var(--text-muted)]">
+        <li><a href="https://frontendmasters.com" target="_blank" rel="noopener noreferrer">Frontend Masters</a> — Where I've done most of my formal learning</li>
+        <li><a href="https://github.com/kamranahmedse/developer-roadmap" target="_blank" rel="noopener noreferrer">Roadmap.sh</a> — Visual roadmaps for developers</li>
+      </ul>
+
+      <h2>SICP / Foundations</h2>
+      <ul class="text-[var(--text-muted)]">
+        <li><a href="https://sicp.us/" target="_blank" rel="noopener noreferrer">Structure and Interpretation of Computer Programs (online edition)</a></li>
+        <li><a href="https://www.cl.cam.ac.uk/teaching/2122/LectComp/" target="_blank" rel="noopener noreferrer">Cambridge Lecture Notes on Computation</a></li>
+      </ul>
+
+      <p class="text-[var(--text-muted)] mt-4">
+        This page is a living collection. Things I learn stick here when they prove useful more
+        than once.
+      </p>
+    </section>
+
+    <!-- Back to about link -->
+    <hr class="my-12" />
+    <a href="/about/" class="text-[var(--accent)] hover:text-[var(--accent-hover)] text-sm no-underline transition-colors duration-150">
+      &larr; All about
+    </a>
+  </div>
+</BaseLayout>

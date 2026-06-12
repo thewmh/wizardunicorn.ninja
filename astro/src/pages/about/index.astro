@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="About" description="Who I am, what I build, what I read, and what's on my desk." pageType="website">
+  <div class="max-w-[65ch] mx-auto px-4 py-12">
+    <!-- Page header -->
+    <section class="mb-12">
+      <h1 class="font-heading font-bold text-[2.75rem] text-[var(--text)] mb-4">About</h1>
+    </section>
+
+    <!-- Bio -->
+    <section class="prose mb-16">
+      <p>
+        I'm William Harrison, a frontend architect who once moved to Beijing on a whim, still has
+        strong opinions about CSS class names, and has a habit of starting projects that seem simple
+        until they aren't.
+      </p>
+
+      <p>
+        This site is my personal knowledge base — a garden with both cultivated essays and wild notes.
+        It's where I store things I've learned, built, and care about. Not a portfolio, not a publication
+        platform. Just a place that makes sense to me.
+      </p>
+
+      <h2>What You'll Find Here</h2>
+      <ul>
+        <li><a href="/essays/"><strong>Essays</strong></a> — longer, polished pieces on design systems, developer roadmaps, and frontend architecture</li>
+        <li><a href="/notes/"><strong>Notes</strong></a> — small, focused pieces of knowledge from workshops and daily work</li>
+        <li><a href="/projects/"><strong>Projects</strong></a> — interactive things I've built, broken, and fixed again</li>
+      </ul>
+
+      <h2>Beyond the Site</h2>
+      <p>
+        When I'm not crafting CSS or wrestling with design systems, I'm usually thinking about how
+        things could be simpler. That tendency has led to side projects, random experiments, and a
+        growing collection of half-finished hobbies.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        You can find me on
+        <a href="https://x.com/afedev" target="_blank" rel="noopener noreferrer">Twitter/X @afedev</a>.
+        For other inquiries, email <a href="mailto:william@wizardunicorn.ninja">william@wizardunicorn.ninja</a>.
+      </p>
+
+      <h2>Links of Interest</h2>
+      <ul>
+        <li><a href="/about/books">Books I'm reading</a></li>
+        <li><a href="/about/hobbies">Hobbies and side projects</a></li>
+        <li><a href="/about/setup">My setup — what's on my desk</a></li>
+        <li><a href="/about/resources">Curated resources</a></li>
+      </ul>
+    </section>
+  </div>
+</BaseLayout>
