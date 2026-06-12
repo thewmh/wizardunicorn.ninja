@@ -7,7 +7,7 @@ node_modules
 vendor
 .DS_Store
 
-astro/.astro
+.astro
 astro/dist
 astro/node_modules
 .opencode/agents/know-*.md

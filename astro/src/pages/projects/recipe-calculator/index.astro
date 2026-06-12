@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import RecipeCalc from '../../../components/RecipeCalc.tsx';
+---
+
+<BaseLayout title="Recipe Calculator" description="A responsive recipe ingredient scaling tool that adapts servings and calculates exact measurements for any recipe size." pageType="website">
+  <div class="max-w-2xl mx-auto px-4 py-12">
+    <!-- Project header -->
+    <header class="mb-12">
+      <h1 class="font-heading font-bold text-[2.75rem] text-[var(--text)] mb-4">Recipe Calculator</h1>
+      <p class="text-[var(--text-muted)] text-lg mb-4" style="line-height: 1.7;">A responsive recipe ingredient scaling tool built as a standalone interactive page. Select your base serving size, pick a new target, and watch all ingredient quantities update proportionally with intelligent rounding.</p>
+    </header>
+
+    <hr class="my-8" />
+
+    <!-- Recipe Calculator island -->
+    <RecipeCalc client:load />
+
+    <hr class="my-12" />
+    <a href="/projects/" class="text-[var(--accent)] hover:text-[var(--accent-hover)] text-sm no-underline transition-colors duration-150">&larr; All projects</a>
+  </div>
+</BaseLayout>
