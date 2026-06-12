@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NoteCard from '../../components/NoteCard.astro';
+import { getCollection } from 'astro:content';
+
+const notes = await getCollection('notes');
+const sortedNotes = notes.sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<BaseLayout title="Notes" description="Small, focused pieces of knowledge — workshop takeaways, quick explanations, and things learned." pageType="website">
+  <div class="max-w-[65ch] mx-auto px-4 py-12">
+    <!-- Page header -->
+    <section class="mb-12">
+      <h1 class="font-heading font-bold text-[2.75rem] text-[var(--text)] mb-4">Notes</h1>
+      <p class="text-[var(--text-muted)] text-lg" style="line-height: 1.7;">
+        Small, focused pieces of knowledge — workshop takeaways, quick explanations, and things learned.
+      </p>
+    </section>
+
+    <!-- Note list -->
+    {sortedNotes.length > 0 ? (
+      <div class="flex flex-col gap-6">
+        {sortedNotes.map((note) => (
+          <NoteCard
+            title={note.data.title}
+            description={note.data.description}
+            date={note.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+            tags={note.data.tags}
+            noteType={note.data.noteType}
+            href={`/notes/${note.slug}/`}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="text-[var(--text-muted)]">No notes yet. Check back soon.</p>
+    )}
+  </div>
+</BaseLayout>

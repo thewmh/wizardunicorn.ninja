@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NoteCard from '../../components/NoteCard.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notes');
+  return notes.map((note) => ({
+    params: { slug: note.slug },
+    props: { data: note },
+  }));
+}
+
+const { data } = Astro.props;
+---
+
+<BaseLayout title={data.data.title} description={data.data.description} pageType="article">
+  <div class="max-w-[65ch] mx-auto px-4 py-12">
+    <!-- Note header -->
+    <header class="mb-12">
+      <!-- Type badge -->
+      {data.data.noteType ? (
+        <span class="text-xs text-[var(--text-muted)] uppercase tracking-wide mb-2 block">
+          {data.data.noteType}
+        </span>
+      ) : null}
+
+      <h1 class="font-heading font-bold text-[2.75rem] text-[var(--text)] mb-4">
+        {data.data.title}
+      </h1>
+      <p class="text-[var(--text-muted)] text-lg mb-4" style="line-height: 1.7;">
+        {data.data.description}
+      </p>
+      <div class="flex items-center gap-2 flex-wrap">
+        <time class="text-xs text-[var(--text-muted)]">
+          {data.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </time>
+        {data.data.tags.length > 0 && (
+          <>
+            <span class="text-[var(--text-muted)] text-xs">&middot;</span>
+            {data.data.tags.map((tag) => (
+              <span class="tag text-xs">{tag}</span>
+            ))}
+          </>
+        )}
+      </div>
+      <hr class="my-8" />
+    </header>
+
+    <!-- Note content -->
+    <article class="prose" set:html={data.rendered?.html}></article>
+
+    <hr class="my-12" />
+
+    <!-- Back to notes link -->
+    <a href="/notes/" class="text-[var(--accent)] hover:text-[var(--accent-hover)] text-sm no-underline transition-colors duration-150">
+      &larr; All notes
+    </a>
+  </div>
+</BaseLayout>

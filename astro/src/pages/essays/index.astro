@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EssayCard from '../../components/EssayCard.astro';
+import { getCollection } from 'astro:content';
+
+const essays = await getCollection('essays');
+const sortedEssays = essays.sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<BaseLayout title="Essays" description="Long-form essays on design systems, developer roadmaps, and frontend architecture." pageType="website">
+  <div class="max-w-[65ch] mx-auto px-4 py-12">
+    <!-- Page header -->
+    <section class="mb-12">
+      <h1 class="font-heading font-bold text-[2.75rem] text-[var(--text)] mb-4">Essays</h1>
+      <p class="text-[var(--text-muted)] text-lg" style="line-height: 1.7;">
+        Long-form writing about design systems, developer roadmaps, and frontend architecture.
+      </p>
+    </section>
+
+    <!-- Essay list -->
+    {sortedEssays.length > 0 ? (
+      <div class="flex flex-col gap-6">
+        {sortedEssays.map((essay) => (
+          <EssayCard
+            title={essay.data.title}
+            description={essay.data.description}
+            date={essay.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+            tags={essay.data.tags}
+            href={`/essays/${essay.slug}/`}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="text-[var(--text-muted)]">No essays yet. Check back soon.</p>
+    )}
+  </div>
+</BaseLayout>
