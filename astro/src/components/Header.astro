@@ -3,12 +3,41 @@ import { nav } from "../config/navigation";
 import ThemeSwitcher from "./ThemeSwitcher.tsx";
 ---
 
-<header class="border-b border-[var(--border)] bg-[var(--bg)] transition-colors duration-300">
+<!--
+  Header
+  ------
+  Renders the site-wide header bar with:
+  - Site logo/name link (always visible)
+  - Desktop nav: horizontal link list + ThemeSwitcher (md and wider; hidden on mobile)
+  - Mobile controls: ThemeSwitcher + hamburger toggle (mobile only; hidden on desktop)
+  - Mobile nav drawer: stacked link list shown below the header bar (mobile only)
+
+  Toggle interactivity is handled by vanilla JS in the <script> block below.
+  Open/close state is driven by the [data-open] attribute on <header>;
+  all visual transitions are CSS-only — no JS style mutations.
+
+  The ThemeSwitcher is instantiated twice (desktop nav + mobile controls bar) so it is
+  always reachable without opening the drawer. Only one instance is ever visible at a
+  time, so React state drift between the two instances has no user-facing impact.
+
+  Stacking context note: the drawer is position:absolute inside this position:relative
+  header and carries z-index:60 (see global.css), which places it above .progress-bar
+  (z-index:50).
+-->
+<header
+  class="relative border-b border-[var(--border)] bg-[var(--bg)] transition-colors duration-300"
+>
+  <!-- Primary header bar — always visible at all viewports -->
   <div class="max-w-[65ch] mx-auto px-4 py-4 flex items-center justify-between">
-    <a href="/" class="font-heading font-bold text-lg text-[var(--text)] no-underline hover:text-[var(--accent)] transition-colors duration-150">
+    <a
+      href="/"
+      class="font-heading font-bold text-lg text-[var(--text)] no-underline hover:text-[var(--accent)] transition-colors duration-150"
+    >
       Wizard Unicorn Ninja
     </a>
-    <nav class="flex items-center gap-6" aria-label="Main navigation">
+
+    <!-- Desktop nav — hidden on mobile, flex on md and wider -->
+    <nav class="hidden md:flex items-center gap-6" aria-label="Main navigation">
       <ul class="flex items-center gap-5 list-none m-0 p-0">
         {nav.map(item => (
           <li>
@@ -23,5 +52,153 @@ import ThemeSwitcher from "./ThemeSwitcher.tsx";
       </ul>
       <ThemeSwitcher client:load />
     </nav>
+
+    <!--
+      Mobile controls — flex on mobile, hidden on md and wider.
+      ThemeSwitcher sits here so it is reachable without opening the drawer.
+      The hamburger button sits alongside it on the right.
+    -->
+    <div class="flex md:hidden items-center gap-3">
+      <ThemeSwitcher client:load />
+      <button
+        id="mobile-nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobile-nav-drawer"
+        aria-label="Open navigation menu"
+        class="flex items-center justify-center w-8 h-8 text-[var(--text)] hover:text-[var(--accent)] transition-colors duration-150"
+      >
+        <!-- Hamburger — visible when drawer closed; hidden via CSS when header[data-open] -->
+        <svg
+          class="mobile-nav-hamburger"
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+        <!-- Close (×) — hidden when drawer closed; visible via CSS when header[data-open] -->
+        <svg
+          class="mobile-nav-close"
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!--
+    Mobile nav drawer
+    - Positioned absolute, top:100% of the relative <header>, full width
+    - Hidden by default (display:none in global.css); shown when header[data-open]
+    - md:hidden ensures it never renders on desktop (belt-and-suspenders alongside
+      the explicit @media override in global.css that handles the specificity tie)
+    - aria-hidden reflects open/closed state for assistive technologies
+  -->
+  <div
+    id="mobile-nav-drawer"
+    class="mobile-nav-drawer md:hidden"
+    aria-hidden="true"
+  >
+    <nav aria-label="Mobile navigation">
+      <ul class="list-none m-0 p-0 px-4 py-3 flex flex-col gap-1">
+        {nav.map(item => (
+          <li>
+            <a
+              href={item.href}
+              class="block py-2 text-[var(--text-muted)] no-underline text-base hover:text-[var(--text)] transition-colors duration-150"
+            >
+              {item.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
   </div>
 </header>
+
+<script>
+  /**
+   * Mobile nav toggle — vanilla JS, no React hydration needed for a single boolean.
+   *
+   * State lives as the presence/absence of [data-open] on the <header> element.
+   * All visual changes are driven by CSS attribute selectors in global.css; this
+   * script only manages the attribute and ARIA properties.
+   *
+   * Behavioral guarantees:
+   *   - Toggle button click opens/closes the drawer
+   *   - Escape key closes the drawer and returns focus to the toggle button
+   *   - Viewport resize above 768px closes the drawer to prevent stale open state
+   *   - aria-expanded on the button always reflects the true open/closed state
+   *   - aria-hidden on the drawer always reflects the true open/closed state
+   */
+  const toggleBtn = document.getElementById('mobile-nav-toggle');
+  const drawer = document.getElementById('mobile-nav-drawer');
+
+  if (toggleBtn && drawer) {
+    const header = toggleBtn.closest('header');
+
+    if (header) {
+      const openNav = () => {
+        header.setAttribute('data-open', '');
+        toggleBtn.setAttribute('aria-expanded', 'true');
+        toggleBtn.setAttribute('aria-label', 'Close navigation menu');
+        // Remove aria-hidden rather than setting it to "false" — absent attribute and
+        // aria-hidden="false" are spec-equivalent, but explicit "false" is flagged as
+        // advisory by some AT auditing tools and is non-idiomatic for disclosure widgets.
+        drawer.removeAttribute('aria-hidden');
+      };
+
+      const closeNav = () => {
+        header.removeAttribute('data-open');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        toggleBtn.setAttribute('aria-label', 'Open navigation menu');
+        drawer.setAttribute('aria-hidden', 'true');
+      };
+
+      // Toggle on button click
+      toggleBtn.addEventListener('click', () => {
+        if (toggleBtn.getAttribute('aria-expanded') === 'true') {
+          closeNav();
+        } else {
+          openNav();
+        }
+      });
+
+      // Close on Escape key — return focus to toggle button so user stays oriented
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && toggleBtn.getAttribute('aria-expanded') === 'true') {
+          closeNav();
+          toggleBtn.focus();
+        }
+      });
+
+      // Close nav when viewport widens past md breakpoint (768px)
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 768 && toggleBtn.getAttribute('aria-expanded') === 'true') {
+          closeNav();
+        }
+      }, { passive: true });
+    }
+  }
+</script>

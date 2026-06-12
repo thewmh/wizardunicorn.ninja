@@ -310,6 +310,93 @@ body {
 }
 
 /* ========================================================================
+   Mobile Navigation
+   ======================================================================== */
+
+/**
+ * Drawer container — hidden by default, absolutely positioned below the
+ * header bar so it overlays page content rather than pushing it down.
+ *
+ * z-index: 60 places the drawer above .progress-bar (z-index: 50).
+ *
+ * The <header> carries position:relative so top:100% resolves to the
+ * bottom edge of the header bar.
+ */
+.mobile-nav-drawer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--bg);
+  border-bottom: 1px solid var(--border);
+  z-index: 60;
+  /* Hidden by default — display:none removes drawer from tab order and layout */
+  display: none;
+}
+
+/**
+ * Colorful theme: --bg is set to a gradient string, which is not a valid
+ * value for background-color. Apply the gradient via background shorthand
+ * so the drawer participates in the colorful theme the same way the body does.
+ */
+[data-theme='colorful'] .mobile-nav-drawer {
+  background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-mid) 50%, var(--bg-end) 100%);
+}
+
+/* Open state — driven by [data-open] attribute on <header> */
+header[data-open] .mobile-nav-drawer {
+  display: block;
+}
+
+/**
+ * Always hidden at md+ (768px and wider).
+ * Specificity matches the open-state rule above (0,2,1); this rule wins by
+ * source order (later in file). This guards against the drawer remaining
+ * visually open when the viewport is resized from mobile to desktop between
+ * JS resize events, and against Tailwind's md:hidden (0,1,0) losing to the
+ * higher-specificity open-state selector.
+ */
+@media (min-width: 768px) {
+  header[data-open] .mobile-nav-drawer {
+    display: none;
+  }
+}
+
+/* Hamburger icon: visible when drawer closed */
+.mobile-nav-hamburger { display: block; }
+/* Close icon: hidden when drawer closed */
+.mobile-nav-close     { display: none;  }
+
+/* Swap icons when drawer is open */
+header[data-open] .mobile-nav-hamburger { display: none;  }
+header[data-open] .mobile-nav-close     { display: block; }
+
+/**
+ * Slide-in animation.
+ * @keyframes is defined at top level (not inside the media guard) so it is
+ * always available; the animation property is only applied inside the
+ * no-preference guard, so reduced-motion users see an instant display change.
+ * The global prefers-reduced-motion:reduce rule in this file provides a
+ * belt-and-suspenders suppression even if this guard were somehow bypassed.
+ */
+@keyframes mobileNavSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  header[data-open] .mobile-nav-drawer {
+    animation: mobileNavSlideIn 200ms ease forwards;
+  }
+}
+
+/* ========================================================================
    Reduced Motion
    ======================================================================== */
 
