@@ -1,0 +1,82 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  const sortedProjects = projects.sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+  );
+  return sortedProjects.map((project) => ({
+    params: { slug: project.id },
+    props: { data: project },
+  }));
+}
+
+const { data } = Astro.props;
+---
+
+<BaseLayout title={data.data.title} description={data.data.description} pageType="article">
+  <div class="max-w-[65ch] mx-auto px-4 py-12">
+    <!-- Project header -->
+    <header class="mb-12">
+      <h1 class="font-heading font-bold text-[2.75rem] text-[var(--text)] mb-4">
+        {data.data.title}
+      </h1>
+      <p class="text-[var(--text-muted)] text-lg mb-4" style="line-height: 1.7;">
+        {data.data.description}
+      </p>
+      <div class="flex items-center gap-2 flex-wrap">
+        <time
+          class="text-xs text-[var(--text-muted)]"
+          datetime={data.data.date.toISOString().split('T')[0]}
+        >
+          {data.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </time>
+        {data.data.tags.length > 0 && (
+          <>
+            <span class="text-[var(--text-muted)] text-xs">&middot;</span>
+            {data.data.tags.map((tag) => (
+              <span class="tag text-xs">{tag}</span>
+            ))}
+          </>
+        )}
+      </div>
+      {(data.data.liveUrl || data.data.repoUrl) && (
+        <div class="flex items-center gap-4 mt-4">
+          {data.data.liveUrl && (
+            <a
+              href={data.data.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-[var(--accent)] hover:text-[var(--accent-hover)] text-sm no-underline transition-colors duration-150"
+            >
+              Live demo &nearr;
+            </a>
+          )}
+          {data.data.repoUrl && (
+            <a
+              href={data.data.repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-[var(--accent)] hover:text-[var(--accent-hover)] text-sm no-underline transition-colors duration-150"
+            >
+              Source code &lt;/&gt;
+            </a>
+          )}
+        </div>
+      )}
+      <hr class="my-8" />
+    </header>
+
+    <!-- Project content -->
+    <article class="prose" set:html={data.rendered?.html}></article>
+
+    <hr class="my-12" />
+
+    <!-- Back to projects link -->
+    <a href="/projects/" class="text-[var(--accent)] hover:text-[var(--accent-hover)] text-sm no-underline transition-colors duration-150">
+      &larr; All projects
+    </a>
+  </div>
+</BaseLayout>

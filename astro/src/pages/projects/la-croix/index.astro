@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import LaCroixTracker from '../../../components/LaCroixTracker.tsx';
+---
+
+<BaseLayout title="La Croix Tracker" description="An interactive experimental page celebrating the canned beverage phenomenon — a CSS animation and DOM manipulation exercise." pageType="website">
+  <div class="max-w-2xl mx-auto px-4 py-12">
+    <!-- Project header -->
+    <header class="mb-12">
+      <h1 class="font-heading font-bold text-[2.75rem] text-[var(--text)] mb-4">La Croix Tracker</h1>
+      <p class="text-[var(--text-muted)] text-lg mb-4" style="line-height: 1.7;">An interactive experimental page celebrating the canned beverage phenomenon. Built as a CSS animation and DOM manipulation exercise — bubbles rise, cans shake, and the page comes alive with playful micro-interactions.</p>
+    </header>
+
+    <hr class="my-8" />
+
+    <!-- La Croix island -->
+    <LaCroixTracker client:load />
+
+    <hr class="my-12" />
+    <a href="/projects/" class="text-[var(--accent)] hover:text-[var(--accent-hover)] text-sm no-underline transition-colors duration-150">&larr; All projects</a>
+  </div>
+</BaseLayout>

@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const projects = await getCollection('projects');
+const sortedProjects = projects.sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+---
+
+<BaseLayout title="Projects" description="Interactive tools and experiments — things built, broken, and fixed again." pageType="website">
+  <div class="max-w-[65ch] mx-auto px-4 py-12">
+    <!-- Page header -->
+    <section class="mb-12">
+      <h1 class="font-heading font-bold text-[2.75rem] text-[var(--text)] mb-4">Projects</h1>
+      <p class="text-[var(--text-muted)] text-lg" style="line-height: 1.7;">
+        Interactive tools and experiments — things built, broken, and fixed again.
+      </p>
+    </section>
+
+    <!-- Project list -->
+    {sortedProjects.length > 0 ? (
+      <div class="flex flex-col gap-6">
+        {sortedProjects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            description={project.data.description}
+            date={formatDate(project.data.date)}
+            tags={project.data.tags}
+            liveUrl={project.data.liveUrl}
+            repoUrl={project.data.repoUrl}
+            href={`/projects/${project.id}/`}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="text-[var(--text-muted)]">No projects yet. Check back soon.</p>
+    )}
+  </div>
+</BaseLayout>
