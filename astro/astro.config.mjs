@@ -7,6 +7,7 @@ import rehypePrettyCode from 'rehype-pretty-code';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://wizardunicorn.ninja',
   integrations: [
     react(),
     tailwind(),
