@@ -20,7 +20,7 @@ export interface ExerciseSession {
   notes?: string;       // post-session reflection
   observations?: string; // in-session observations
   // run / cycle / hike
-  distance?: number;    // miles
+  distance?: string;    // miles
   pace?: string;        // e.g. '9:15/mi' — run only
   // lift
   exercises?: string;   // freeform e.g. 'squat 3x5, deadlift 1x5'
@@ -29,10 +29,19 @@ export interface ExerciseSession {
 // Sorted newest-first.
 export const sessions: ExerciseSession[] = [
   {
+    date: '2026-06-19',
+    activity: 'run',
+    duration: 42,
+    distance: '7km',
+    pace: '5:55/km',
+    notes: 'Longer run this week. Also longest run so far. Pace was best overall since I started running again. Had to stop once at about the halfway point.',
+    observations: 'Tons of deer out this morning, saw a tiny one today. The squirrels seem to be fed by other park visitors as they stop and wait to see if I have anything for them.'
+  },
+  {
     date: '2026-06-07',
     activity: 'run',
     duration: 32,
-    distance: 3.4,
+    distance: '3.4',
     pace: '9:25/mi',
     notes:
       'Felt strong through mile 2, faded a bit on the last stretch but still finished under pace target. Good sign heading into the weekend long run.',
@@ -51,7 +60,7 @@ export const sessions: ExerciseSession[] = [
     date: '2026-04-26',
     activity: 'hike',
     duration: 110,
-    distance: 4.8,
+    distance: '4.8',
     observations:
       'Trail was muddy after Thursday\'s rain but the ridge views made it absolutely worth it. Descent was slower than expected — rocky surface kept pace honest.',
   },
@@ -59,7 +68,7 @@ export const sessions: ExerciseSession[] = [
     date: '2026-04-03',
     activity: 'run',
     duration: 22,
-    distance: 2.1,
+    distance: '2.1',
     pace: '10:28/mi',
     notes:
       'First run back after two weeks off. Kept it deliberately easy and short — just getting the legs going again. No complaints.',

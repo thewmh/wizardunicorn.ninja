@@ -48,7 +48,7 @@ const activityLabel = activity.charAt(0).toUpperCase() + activity.slice(1);
 
 // Build the stats segment shown inline after the activity label.
 const stats: string[] = [`${duration} min`];
-if (distance !== undefined) stats.push(`${distance} mi`);
+if (distance !== undefined) stats.push(`${distance}`);
 if (pace) stats.push(pace);
 const statLine = stats.join(' · ');
 
