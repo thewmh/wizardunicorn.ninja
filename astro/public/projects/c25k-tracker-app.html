@@ -945,7 +945,6 @@
     render();
   }
 
-  let tickTimerID = null; // kept for any stray references
 
   function finish(){
     running=false; elapsed=TOTAL;
@@ -1039,14 +1038,10 @@
       _unlockClicks();
       _fireClick();
       setTimeout(()=>{
-        audioStatusNote.textContent = 'Played a test click. If you didn't hear it, check the ring/silent switch on your iPhone.';
+        audioStatusNote.textContent = 'Played a test click. If you did not hear it, check the ring/silent switch on your iPhone.';
       }, 200);
     }catch(e){
       audioStatusNote.textContent = 'Audio playback failed in this browser.';
-    }
-  });
-    }catch(e){
-      audioStatusNote.textContent = 'Web Audio isn\'t available in this browser.';
     }
   });
   document.getElementById('metroToggle').addEventListener('click', ()=>{
