@@ -917,11 +917,18 @@
     completedIds.add(activeWorkout.id);
     persist();
     releaseWakeLock(); stopMetro();
+    document.getElementById('silentUnlock').pause();
   }
 
   function startRun(){
     show('runScreen');
     running=true; lastWallTime=Date.now(); announcedThisPhase=false;
+    // Play the silent audio element. This opens the OS audio session and
+    // is what tells iOS Safari to keep Web Audio alive through the lock screen.
+    // A real <audio> element must be playing — AudioContext alone is not enough.
+    const silentEl = document.getElementById('silentUnlock');
+    silentEl.volume = 0.001; // inaudible but non-zero; muted or 0 won't work
+    silentEl.play().catch(()=>{});
     ensureCtxRunning();
     setupMediaSession();
     requestWakeLock();
@@ -940,11 +947,13 @@
       requestWakeLock();
       startMetro();
       ensureCtxRunning();
+      document.getElementById('silentUnlock').play().catch(()=>{});
       if('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
     } else {
       clearTimeout(tickTimerID);
       releaseWakeLock();
       stopMetro();
+      document.getElementById('silentUnlock').pause();
       if('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
     }
   }
@@ -959,12 +968,14 @@
   function restart(){
     clearTimeout(tickTimerID); running=false; stopMetro(); releaseWakeLock();
     el.pauseBtn.textContent='Pause';
+    document.getElementById('silentUnlock').pause();
     loadWorkout(activeWorkout);
   }
 
   function exitRun(){
     clearTimeout(tickTimerID); running=false; stopMetro(); releaseWakeLock();
     el.pauseBtn.textContent='Pause';
+    document.getElementById('silentUnlock').pause();
     if('mediaSession' in navigator) navigator.mediaSession.playbackState = 'none';
     show('detailScreen');
   }
