@@ -743,6 +743,17 @@
     _silentLoop.src = URL.createObjectURL(wavBlob);
   })();
 
+  // Cue audio elements (created lazily, reused across the session)
+  let _cueEls = null;
+  function _getCueEls(){
+    if(!_cueEls) _cueEls = {
+      go:        _makeAudio(_WAV_GO),
+      countdown: _makeAudio(_WAV_COUNTDOWN),
+      done:      _makeAudio(_WAV_DONE),
+    };
+    return _cueEls;
+  }
+
   // Unlock audio on first gesture (iOS requirement) — start the silent
   // loop which is both the unlock mechanism and the persistent keeper.
   let _cuesUnlocked = false;
