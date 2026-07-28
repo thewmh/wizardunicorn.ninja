@@ -713,30 +713,46 @@
     const el = document.createElement('audio');
     el.src = src;
     el.preload = 'auto';
+    el.setAttribute('playsinline', '');
+    el.playsInline = true;
     document.body.appendChild(el);
     return el;
   }
 
-  // Unlock cue elements on first gesture (iOS requirement)
-  let _cueEls = null;
-  function _getCueEls(){
-    if(!_cueEls) _cueEls = {
-      go:        _makeAudio(_WAV_GO),
-      countdown: _makeAudio(_WAV_COUNTDOWN),
-      done:      _makeAudio(_WAV_DONE),
-    };
-    return _cueEls;
-  }
+  // ── Silent loop — keeps iOS audio session alive while locked ────
+  // A continuously looping silent audio element ensures Safari's
+  // audio session stays active even when metronome is off and no
+  // cues are playing. Without this, background playback can be
+  // suspended as soon as the last cue finishes.
+  const _silentLoop = document.getElementById('silentUnlock');
 
+  // Generate a ~2s silent WAV blob (44100 Hz, mono, 16-bit) for the loop
+  (function _makeSilentWav(){
+    const sr = 44100, dur = 2;
+    const nSamples = sr * dur;
+    const buf = new ArrayBuffer(44 + nSamples * 2);
+    const v = new DataView(buf);
+    const ws = (off, s) => { for(let i=0;i<s.length;i++) v.setUint8(off+i, s.charCodeAt(i)); };
+    ws(0,'RIFF'); v.setUint32(4, 36+nSamples*2, true);
+    ws(8,'WAVE'); ws(12,'fmt '); v.setUint32(16,16,true);
+    v.setUint16(20,1,true); v.setUint16(22,1,true);
+    v.setUint32(24,sr,true); v.setUint32(28,sr*2,true);
+    v.setUint16(32,2,true); v.setUint16(34,16,true);
+    ws(36,'data'); v.setUint32(40,nSamples*2,true);
+    const wavBlob = new Blob([buf], {type:'audio/wav'});
+    _silentLoop.src = URL.createObjectURL(wavBlob);
+  })();
+
+  // Unlock audio on first gesture (iOS requirement) — start the silent
+  // loop which is both the unlock mechanism and the persistent keeper.
   let _cuesUnlocked = false;
   function _unlockAudio(){
     if(_cuesUnlocked) return;
     _cuesUnlocked = true;
-    const els = _getCueEls();
-    Object.values(els).forEach(el=>{
-      el.muted = true;
-      el.play().then(()=>{ el.pause(); el.currentTime=0; el.muted=false; }).catch(()=>{ el.muted=false; });
-    });
+    _silentLoop.loop = true;
+    _silentLoop.play().catch(()=>{});
+    // Also instantiate the cue elements so they're unlocked too
+    _getCueEls();
   }
   document.addEventListener('touchstart', _unlockAudio, {once:true, capture:true});
   document.addEventListener('click',      _unlockAudio, {once:true, capture:true});
@@ -842,6 +858,8 @@
       _metroBlobUrl = URL.createObjectURL(blob);
       if(!_metroEl){
         _metroEl = document.createElement('audio');
+        _metroEl.setAttribute('playsinline', '');
+        _metroEl.playsInline = true;
         document.body.appendChild(_metroEl);
       }
       _metroEl.src = _metroBlobUrl;
@@ -926,11 +944,17 @@
     if(document.visibilityState==='visible' && running){
       requestWakeLock();
       lastWallTime = Date.now();
-      // Sync metro playback position on return to foreground
+      // Sync metro playback position on return to foreground.
+      // iOS may need a brief moment before accepting .play(), so retry.
       if(_metroEl && settings.metroOn){
         _metroEl.currentTime = elapsed;
-        if(_metroEl.paused) _metroEl.play().catch(()=>{});
+        try{ if(_metroEl.paused) _metroEl.play(); }catch(e){}
+        setTimeout(()=>{
+          try{ if(_metroEl && _metroEl.paused){ _metroEl.currentTime=elapsed; _metroEl.play(); }}catch(e){}
+        }, 300);
       }
+      // Ensure the silent loop is still running (iOS may have paused it)
+      try{ if(_silentLoop.paused) _silentLoop.play(); }catch(e){}
     }
   });
 
@@ -980,12 +1004,16 @@
     completedIds.add(activeWorkout.id);
     persist();
     releaseWakeLock(); stopMetro(); stopTickWorker();
+    try{ _silentLoop.pause(); }catch(e){}
   }
 
   function startRun(){
     show('runScreen');
     running=true; lastWallTime=Date.now(); announcedThisPhase=false;
     _unlockAudio();
+    // Ensure the silent loop is playing — this is what keeps iOS's
+    // audio session alive when the phone is locked.
+    try{ if(_silentLoop.paused) _silentLoop.play(); }catch(e){}
     setupMediaSession();
     requestWakeLock();
     announcePhaseStart();
@@ -1020,6 +1048,7 @@
 
   function restart(){
     stopTickWorker(); running=false; stopMetro(); releaseWakeLock();
+    try{ _silentLoop.pause(); }catch(e){}
     el.pauseBtn.textContent='Pause';
     loadWorkout(activeWorkout);
   }
@@ -1027,6 +1056,7 @@
   function exitRun(){
     stopTickWorker(); running=false; stopMetro(); releaseWakeLock();
     el.pauseBtn.textContent='Pause';
+    try{ _silentLoop.pause(); }catch(e){}
     if('mediaSession' in navigator) navigator.mediaSession.playbackState = 'none';
     show('detailScreen');
   }
