@@ -368,7 +368,6 @@
   ];
   PRESETS.forEach(p=>{ p.source='preset'; });
 
-  // in-memory only — see note in chat about persistence
   // =========================================================
   // Persistence — saved to this device via localStorage so your
   // custom workouts, settings, and completed sessions survive
@@ -601,7 +600,7 @@
   // =========================================================
   let phases = [], TOTAL = 0;
   let idx=0, remaining=0, elapsed=0;
-  let running=false, rafId=null, lastTick=null, announcedThisPhase=false;
+  let running=false, tickTimerID=null, lastWallTime=null, announcedThisPhase=false;
   let wakeLock=null;
 
   const trackEl = document.getElementById('track');
@@ -690,15 +689,29 @@
     el.remainLabel.textContent = '-'+fmtClock(TOTAL-elapsed);
     runner.style.left = Math.min(100, elapsed/TOTAL*100)+'%';
     renderDots();
+    updateMediaSession();
   }
 
-  // ---------- audio ----------
+  // =========================================================
+  // Audio — Web Audio API
+  // scheduleAheadTime is large (2 s) so notes are committed to
+  // the hardware buffer before the screen locks. The metronome
+  // scheduler runs every 50 ms to keep that window filled.
+  // =========================================================
   let actx=null;
-  function ctx(){ if(!actx) actx = new (window.AudioContext||window.webkitAudioContext)(); return actx; }
+  function ctx(){
+    if(!actx) actx = new (window.AudioContext||window.webkitAudioContext)();
+    return actx;
+  }
+  function ensureCtxRunning(){
+    try{ if(actx && actx.state==='suspended') actx.resume(); }catch(e){}
+  }
+
   function beep(freq,dur,delay,vol){
     if(!settings.soundOn) return;
     try{
-      const c=ctx(); const o=c.createOscillator(); const g=c.createGain();
+      const c=ctx(); ensureCtxRunning();
+      const o=c.createOscillator(); const g=c.createGain();
       o.type='sine'; o.frequency.value=freq; g.gain.value=vol||0.15;
       o.connect(g); g.connect(c.destination);
       const t=c.currentTime+(delay||0);
@@ -711,10 +724,23 @@
   function cueCountdown(){ beep(660,0.12,0); beep(660,0.12,0.3); beep(880,0.18,0.6); }
   function cueGo(){ beep(1046,0.28,0); }
   function cueDone(){ beep(784,0.2,0); beep(988,0.2,0.22); beep(1318,0.3,0.44); }
+
+  // =========================================================
+  // Voice cues via SpeechSynthesis.
+  // iOS Safari kills speechSynthesis when the screen locks, so
+  // we attempt it but do not rely on it — the tones + vibration
+  // are the primary background signal.
+  // =========================================================
   function speak(text){
     if(!settings.voiceOn || !('speechSynthesis' in window)) return;
-    try{ window.speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.rate=1.02; window.speechSynthesis.speak(u); }catch(e){}
+    try{
+      window.speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(text);
+      u.rate=1.02;
+      window.speechSynthesis.speak(u);
+    }catch(e){}
   }
+
   function announcePhaseStart(){
     const p = phases[idx];
     speak(LABELS[p.type].speak);
@@ -722,11 +748,16 @@
     if(navigator.vibrate) navigator.vibrate(p.type==='jog' ? [40,60,40] : 40);
   }
 
-  // ---------- metronome ----------
+  // =========================================================
+  // Metronome — look-ahead scheduler
+  // scheduleAheadTime=2 s means beats are already in the audio
+  // hardware buffer well before the lock screen kicks in.
+  // =========================================================
   const beatDot = document.getElementById('beatDot');
   let metroTimerID=null, nextNoteTime=0;
-  const lookahead=25, scheduleAheadTime=0.1;
+  const lookahead=50, scheduleAheadTime=2.0;
   let woodblockBuffer = null;
+
   function getWoodblockBuffer(c){
     if(woodblockBuffer) return woodblockBuffer;
     const len = Math.floor(c.sampleRate * 0.06);
@@ -739,10 +770,10 @@
     woodblockBuffer = buf;
     return buf;
   }
+
   function scheduleClick(time){
     try{
       const c=ctx();
-      // filtered noise burst = the "knock" body of the woodblock
       const noise = c.createBufferSource();
       noise.buffer = getWoodblockBuffer(c);
       const bp = c.createBiquadFilter();
@@ -753,7 +784,6 @@
       noise.connect(bp); bp.connect(noiseGain); noiseGain.connect(c.destination);
       noise.start(time); noise.stop(time+0.08);
 
-      // short pitched thump = tonal core so it reads as a "tock" not just noise
       const o=c.createOscillator(); const og=c.createGain();
       o.type='triangle'; o.frequency.setValueAtTime(500, time);
       o.frequency.exponentialRampToValueAtTime(220, time+0.05);
@@ -767,13 +797,23 @@
       setTimeout(()=>{ beatDot.classList.add('flash'); setTimeout(()=>beatDot.classList.remove('flash'),90); }, delay);
     }catch(e){}
   }
+
   function metroScheduler(){
+    ensureCtxRunning();
     const c=ctx();
-    while(nextNoteTime < c.currentTime+scheduleAheadTime){ scheduleClick(nextNoteTime); nextNoteTime += 60/settings.metroBpm; }
+    while(nextNoteTime < c.currentTime+scheduleAheadTime){
+      scheduleClick(nextNoteTime);
+      nextNoteTime += 60/settings.metroBpm;
+    }
     metroTimerID = setTimeout(metroScheduler, lookahead);
   }
-  function startMetro(){ if(metroTimerID || !settings.metroOn) return; nextNoteTime = ctx().currentTime+0.05; metroScheduler(); }
+  function startMetro(){
+    if(metroTimerID || !settings.metroOn) return;
+    nextNoteTime = ctx().currentTime+0.05;
+    metroScheduler();
+  }
   function stopMetro(){ clearTimeout(metroTimerID); metroTimerID=null; }
+
   function refreshMetroUI(){
     document.getElementById('metroBpmLive').textContent = settings.metroBpm;
     document.getElementById('val-metroBpm').textContent = settings.metroBpm;
@@ -782,31 +822,95 @@
     document.getElementById('metroToggle').classList.toggle('on', settings.metroOn);
   }
 
-  // ---------- wake lock ----------
-  async function requestWakeLock(){ try{ if('wakeLock' in navigator){ wakeLock = await navigator.wakeLock.request('screen'); } }catch(e){} }
-  function releaseWakeLock(){ try{ if(wakeLock){ wakeLock.release(); wakeLock=null; } }catch(e){} }
-  document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='visible' && running) requestWakeLock(); });
+  // =========================================================
+  // Media Session API
+  // Registering this tells iOS/Android "I am a media player."
+  // The OS then keeps the AudioContext alive through the lock
+  // screen, exactly like Spotify or Bandcamp do.
+  // =========================================================
+  function setupMediaSession(){
+    if(!('mediaSession' in navigator)) return;
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: activeWorkout ? activeWorkout.title : 'Interval Run',
+      artist: 'C25K Tracker',
+      album: 'Couch to 5K',
+    });
+    navigator.mediaSession.setActionHandler('pause', ()=>{ if(running) pauseToggle(); });
+    navigator.mediaSession.setActionHandler('play',  ()=>{ if(!running) pauseToggle(); });
+    navigator.mediaSession.setActionHandler('stop',  ()=>{ exitRun(); });
+  }
 
-  // ---------- main loop ----------
-  function tick(ts){
+  function updateMediaSession(){
+    if(!('mediaSession' in navigator)) return;
+    try{
+      navigator.mediaSession.playbackState = running ? 'playing' : 'paused';
+      // Update position so the lock-screen scrubber reflects elapsed time
+      if(TOTAL > 0){
+        navigator.mediaSession.setPositionState({
+          duration: TOTAL,
+          playbackRate: 1,
+          position: Math.min(elapsed, TOTAL),
+        });
+      }
+    }catch(e){}
+  }
+
+  // =========================================================
+  // Wake lock
+  // =========================================================
+  async function requestWakeLock(){
+    try{ if('wakeLock' in navigator){ wakeLock = await navigator.wakeLock.request('screen'); } }catch(e){}
+  }
+  function releaseWakeLock(){
+    try{ if(wakeLock){ wakeLock.release(); wakeLock=null; } }catch(e){}
+  }
+
+  // On visibility restore: re-acquire wake lock, resume AudioContext,
+  // and recalibrate the wall-clock so we don't lose time while hidden.
+  document.addEventListener('visibilitychange', ()=>{
+    if(document.visibilityState==='visible' && running){
+      requestWakeLock();
+      ensureCtxRunning();
+      // Reset wall-clock reference so we don't count hidden time twice
+      lastWallTime = Date.now();
+    }
+  });
+
+  // =========================================================
+  // Main loop — uses Date.now() (wall clock) instead of
+  // requestAnimationFrame so the timer keeps running when the
+  // page is backgrounded or the screen is locked.
+  // =========================================================
+  function tick(){
     if(!running) return;
-    if(lastTick==null) lastTick=ts;
-    const dt=(ts-lastTick)/1000; lastTick=ts;
-    remaining -= dt; elapsed = Math.min(TOTAL, elapsed+dt);
-    if(remaining<=3.05 && remaining>0 && !announcedThisPhase){ announcedThisPhase=true; cueCountdown(); }
-    if(remaining<=0){
+    const now = Date.now();
+    const dt = lastWallTime != null ? (now - lastWallTime) / 1000 : 0;
+    lastWallTime = now;
+
+    remaining -= dt;
+    elapsed = Math.min(TOTAL, elapsed + dt);
+
+    if(remaining <= 3.05 && remaining > 0 && !announcedThisPhase){
+      announcedThisPhase = true;
+      cueCountdown();
+    }
+    if(remaining <= 0){
       idx++;
-      if(idx>=phases.length){ finish(); return; }
-      remaining = phases[idx].duration; announcedThisPhase=false;
+      if(idx >= phases.length){ finish(); return; }
+      remaining = phases[idx].duration;
+      announcedThisPhase = false;
       announcePhaseStart();
     }
     render();
-    rafId = requestAnimationFrame(tick);
+    tickTimerID = setTimeout(tick, 250);
   }
+
   function finish(){
     running=false; elapsed=TOTAL;
+    clearTimeout(tickTimerID);
     cueDone(); speak('Workout complete. Nice work.');
     if(navigator.vibrate) navigator.vibrate([80,60,80,60,160]);
+    if('mediaSession' in navigator) navigator.mediaSession.playbackState = 'none';
     render();
     el.doneSub.textContent = 'You covered the full '+fmtMMSS(TOTAL)+' — '+activeWorkout.title+'.';
     document.getElementById('doneScreen').classList.remove('hidden');
@@ -814,36 +918,54 @@
     persist();
     releaseWakeLock(); stopMetro();
   }
+
   function startRun(){
     show('runScreen');
-    running=true; lastTick=null; announcedThisPhase=false;
-    try{ ctx().resume && ctx().resume(); }catch(e){}
+    running=true; lastWallTime=Date.now(); announcedThisPhase=false;
+    ensureCtxRunning();
+    setupMediaSession();
     requestWakeLock();
     announcePhaseStart();
     render();
-    rafId = requestAnimationFrame(tick);
+    tickTimerID = setTimeout(tick, 250);
     startMetro();
   }
+
   function pauseToggle(){
     running=!running;
     el.pauseBtn.textContent = running?'Pause':'Resume';
-    if(running){ lastTick=null; rafId=requestAnimationFrame(tick); requestWakeLock(); startMetro(); }
-    else { cancelAnimationFrame(rafId); releaseWakeLock(); stopMetro(); }
+    if(running){
+      lastWallTime=Date.now();
+      tickTimerID = setTimeout(tick, 250);
+      requestWakeLock();
+      startMetro();
+      ensureCtxRunning();
+      if('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
+    } else {
+      clearTimeout(tickTimerID);
+      releaseWakeLock();
+      stopMetro();
+      if('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
+    }
   }
+
   function skip(){
     if(idx>=phases.length-1){ finish(); return; }
     idx++; remaining=phases[idx].duration; announcedThisPhase=false;
     if(running) announcePhaseStart();
     render();
   }
+
   function restart(){
-    cancelAnimationFrame(rafId); running=false; stopMetro(); releaseWakeLock();
+    clearTimeout(tickTimerID); running=false; stopMetro(); releaseWakeLock();
     el.pauseBtn.textContent='Pause';
     loadWorkout(activeWorkout);
   }
+
   function exitRun(){
-    cancelAnimationFrame(rafId); running=false; stopMetro(); releaseWakeLock();
+    clearTimeout(tickTimerID); running=false; stopMetro(); releaseWakeLock();
     el.pauseBtn.textContent='Pause';
+    if('mediaSession' in navigator) navigator.mediaSession.playbackState = 'none';
     show('detailScreen');
   }
 
@@ -867,8 +989,7 @@
     });
   });
   function previewMetroClick(){
-    try{ ctx().resume && ctx().resume(); }catch(e){}
-    scheduleClick(ctx().currentTime + 0.03);
+    try{ ensureCtxRunning(); scheduleClick(ctx().currentTime + 0.03); }catch(e){}
   }
   const audioStatusNote = document.getElementById('audioStatusNote');
   document.getElementById('testSoundBtn').addEventListener('click', ()=>{
@@ -912,5 +1033,6 @@
   show('libraryScreen');
 })();
 </script>
+
 </body>
 </html>
