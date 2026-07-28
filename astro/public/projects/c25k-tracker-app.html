@@ -866,6 +866,7 @@
     stopMetro(); // clean up any previous track
     try{
       const blob = await _renderMetroTrack(TOTAL, settings.metroBpm);
+      if(!settings.metroOn || !running) return; // may have been cancelled while rendering
       _metroBlobUrl = URL.createObjectURL(blob);
       if(!_metroEl){
         _metroEl = document.createElement('audio');
@@ -875,9 +876,14 @@
       }
       _metroEl.src = _metroBlobUrl;
       _metroEl.loop = false;
+      // Wait for enough data to seek, then play
+      await new Promise(resolve => {
+        if(_metroEl.readyState >= 1){ resolve(); return; }
+        _metroEl.addEventListener('loadedmetadata', resolve, {once:true});
+      });
       // Sync start: seek to match elapsed time
       _metroEl.currentTime = elapsed;
-      _metroEl.play().catch(()=>{});
+      await _metroEl.play();
       // Flash the beat dot in sync
       _syncBeatDot(settings.metroBpm, elapsed);
     }catch(e){}
