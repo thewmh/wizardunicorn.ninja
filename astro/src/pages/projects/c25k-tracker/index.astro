@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="C25K Interval Tracker"
+  description="A Couch to 5K interval run tracker — follow the full 9-week program or build your own interval sessions, with voice cues, metronome, and wake lock."
+  pageType="website"
+>
+  <div class="max-w-[65ch] mx-auto px-4 py-12">
+    <!-- Project header -->
+    <header class="mb-8">
+      <h1 class="font-heading font-bold text-[2.75rem] text-[var(--text)] mb-4">C25K Interval Tracker</h1>
+      <p class="text-[var(--text-muted)] text-lg mb-4" style="line-height: 1.7;">
+        A Couch to 5K interval run tracker. Pick a week, hit Start, and follow along — voice cues, metronome, and screen wake lock included. Or build your own interval session from scratch.
+      </p>
+      <a
+        href="/projects/c25k-tracker-app.html"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-[var(--accent)] hover:text-[var(--accent-hover)] text-sm no-underline transition-colors duration-150"
+      >
+        Open full screen &nearr;
+      </a>
+    </header>
+
+    <hr class="my-8" />
+
+    <!-- Embedded app -->
+    <div class="rounded-2xl overflow-hidden border border-[var(--border)] shadow-lg" style="height: 680px;">
+      <iframe
+        src="/projects/c25k-tracker-app.html"
+        title="C25K Interval Tracker"
+        class="w-full h-full border-0"
+        allow="autoplay; microphone; screen-wake-lock; vibrate"
+        loading="lazy"
+      ></iframe>
+    </div>
+
+    <hr class="my-12" />
+    <a href="/projects/" class="text-[var(--accent)] hover:text-[var(--accent-hover)] text-sm no-underline transition-colors duration-150">
+      &larr; All projects
+    </a>
+  </div>
+</BaseLayout>
