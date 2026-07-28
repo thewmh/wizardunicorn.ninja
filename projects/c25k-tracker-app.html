@@ -723,19 +723,20 @@
     return _audioPool[key];
   }
 
-  // Unlock all audio elements on first user gesture (iOS requirement)
+  // Unlock all audio elements on first user gesture (iOS requirement).
+  // Mute during the unlock play so nothing is audible to the user.
   let _audioUnlocked = false;
   function _unlockAudio(){
     if(_audioUnlocked) return;
     _audioUnlocked = true;
     Object.keys(_CUE).forEach(key=>{
       const el = _getAudio(key);
-      el.play().then(()=>el.pause()).catch(()=>{});
-      el.currentTime = 0;
+      el.muted = true;
+      el.play().then(()=>{ el.pause(); el.currentTime = 0; el.muted = false; }).catch(()=>{ el.muted = false; });
     });
   }
-  document.addEventListener('touchstart', _unlockAudio, {once:true});
-  document.addEventListener('click',      _unlockAudio, {once:true});
+  document.addEventListener('touchstart', _unlockAudio, {once:true, capture:true});
+  document.addEventListener('click',      _unlockAudio, {once:true, capture:true});
 
   function _play(key){
     try{
@@ -791,8 +792,8 @@
 
   function _unlockClicks(){
     _getClickPool().forEach(el=>{
-      el.play().then(()=>el.pause()).catch(()=>{});
-      el.currentTime = 0;
+      el.muted = true;
+      el.play().then(()=>{ el.pause(); el.currentTime = 0; el.muted = false; }).catch(()=>{ el.muted = false; });
     });
   }
 
