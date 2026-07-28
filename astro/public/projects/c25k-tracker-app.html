@@ -721,21 +721,50 @@
   }
 
   function _startAnchor(){
+    // Ensure AudioContext is initialised (creates the srcObject link) then play
+    _ctx();
     _getAnchor().play().catch(()=>{});
   }
   function _stopAnchor(){
-    const el = _getAnchor();
-    el.pause();
-    el.currentTime = 0;
+    _getAnchor().pause();
   }
 
   // ── Web Audio API ──────────────────────────────────────────
+  // The AudioContext output is routed through a GainNode that
+  // connects to BOTH actx.destination (for normal output) AND
+  // a MediaStreamDestinationNode whose stream is fed into the
+  // anchor <audio> element. This makes the anchor element
+  // literally play the AudioContext output — iOS sees a real
+  // <audio> element playing and keeps the audio session alive.
   let _actx = null;
+  let _masterGain = null;
 
   function _ctx(){
-    if(!_actx) _actx = new (window.AudioContext || window.webkitAudioContext)();
+    if(!_actx){
+      _actx = new (window.AudioContext || window.webkitAudioContext)();
+      // Create master bus
+      _masterGain = _actx.createGain();
+      _masterGain.gain.value = 1.0;
+      _masterGain.connect(_actx.destination);
+      // Also pipe to a MediaStream and into the anchor element
+      try{
+        const dest = _actx.createMediaStreamDestination();
+        _masterGain.connect(dest);
+        const anchor = _getAnchor();
+        anchor.srcObject = dest.stream;
+        // Remove the static src so srcObject takes over
+        anchor.removeAttribute('src');
+      }catch(e){}
+    }
     return _actx;
   }
+
+  // All oscillators/buffers connect to _masterGain instead of actx.destination
+  function _dest(){
+    _ctx(); // ensure initialised
+    return _masterGain || _actx.destination;
+  }
+
   function _resumeCtx(){
     if(_actx && _actx.state === 'suspended') _actx.resume();
   }
@@ -746,10 +775,8 @@
     if(_audioReady) return;
     _audioReady = true;
     try{ _ctx().resume(); }catch(e){}
-    // Prime the anchor element so .play() works later without a gesture
-    const a = _getAnchor();
-    a.muted = true;
-    a.play().then(()=>{ a.pause(); a.currentTime = 0; a.muted = false; }).catch(()=>{ a.muted = false; });
+    // Play the anchor — it now carries live AudioContext output
+    _getAnchor().play().catch(()=>{});
   }
   document.addEventListener('touchstart', _unlockAudio, {once:true, capture:true});
   document.addEventListener('click',      _unlockAudio, {once:true, capture:true});
@@ -764,7 +791,7 @@
       o.type = 'sine';
       o.frequency.value = freq;
       g.gain.value = vol || 0.3;
-      o.connect(g); g.connect(c.destination);
+      o.connect(g); g.connect(_dest());
       const t = c.currentTime + (delay || 0);
       o.start(t);
       g.gain.setValueAtTime(g.gain.value, t + dur - 0.02);
@@ -824,7 +851,7 @@
       src.buffer = _getWoodblock();
       const g = c.createGain();
       g.gain.value = 0.9;
-      src.connect(g); g.connect(c.destination);
+      src.connect(g); g.connect(_dest());
       src.start(time);
       const delay = Math.max(0, (time - c.currentTime) * 1000);
       setTimeout(()=>{
