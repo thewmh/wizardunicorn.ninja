@@ -1110,11 +1110,18 @@
     try{
       _unlockAudio();
       cueGo();
-      setTimeout(()=>{
-        audioStatusNote.textContent = 'Played a test click. If you did not hear it, check the ring/silent switch on your iPhone.';
-      }, 200);
+      const ctx = _getAudioCtx();
+      const liveSR = ctx.sampleRate;
+      _loadClickBuffer().then(buf => {
+        const clickSR = buf ? buf.sampleRate : 'n/a';
+        const clickCh = buf ? buf.numberOfChannels : 'n/a';
+        const beatFrames = buf ? Math.round(liveSR * 60 / settings.metroBpm) : 'n/a';
+        audioStatusNote.textContent =
+          `AudioContext SR: ${liveSR} | click SR: ${clickSR} ch:${clickCh} | `+
+          `beatFrames@${settings.metroBpm}bpm: ${beatFrames}`;
+      });
     }catch(e){
-      audioStatusNote.textContent = 'Audio playback failed in this browser.';
+      audioStatusNote.textContent = 'Audio playback failed: ' + e.message;
     }
   });
   document.getElementById('metroToggle').addEventListener('click', ()=>{
