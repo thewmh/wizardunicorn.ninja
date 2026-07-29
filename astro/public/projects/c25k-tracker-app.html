@@ -753,6 +753,7 @@
     _audioUnlocked = true;
     _getAudioCtx();
     _loadSpriteBuffer();
+    _loadClickBuffer();
   }
   document.addEventListener('touchstart', _unlockAudio, {once:true, capture:true});
   document.addEventListener('click',      _unlockAudio, {once:true, capture:true});
@@ -805,9 +806,10 @@
     if(navigator.vibrate) navigator.vibrate(p.type==='jog' ? [40,60,40] : 40);
   }
 
-  // ── Metronome anchor element ───────────────────────────────
-  // Loops the click WAV (audible) or a tiny silent WAV (inaudible)
-  // for the full run. One element, always playing = iOS session held.
+  // ── Metronome ──────────────────────────────────────────────
+  // _anchorEl loops a silent WAV for the full run to hold the iOS
+  // audio session open. Clicks are scheduled via AudioContext so
+  // BPM is accurate — looping a raw WAV file ignores BPM entirely.
   const beatDot = document.getElementById('beatDot');
   const _SILENT_WAV = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
   const _anchorEl = document.getElementById('silentUnlock');
@@ -815,37 +817,63 @@
   _anchorEl.playsInline = true;
   _anchorEl.loop = true;
 
+  let _clickBuffer = null; // decoded AudioBuffer for Synth_Square_E_hi.wav
+  let _metroTimer = null;  // setTimeout handle for next scheduled beat
   let _beatDotInterval = null;
+
+  async function _loadClickBuffer(){
+    if(_clickBuffer) return _clickBuffer;
+    try{
+      const ctx = _getAudioCtx();
+      const res = await fetch(AUDIO_BASE + 'Synth_Square_E_hi.wav');
+      const arr = await res.arrayBuffer();
+      _clickBuffer = await ctx.decodeAudioData(arr);
+    }catch(e){}
+    return _clickBuffer;
+  }
+
+  function _fireClick(){
+    if(!_clickBuffer) return;
+    try{
+      const ctx = _getAudioCtx();
+      const src = ctx.createBufferSource();
+      src.buffer = _clickBuffer;
+      src.connect(ctx.destination);
+      src.start();
+    }catch(e){}
+  }
+
+  function _scheduleMetro(bpm){
+    clearTimeout(_metroTimer);
+    if(!settings.metroOn || !running) return;
+    _fireClick();
+    beatDot.classList.add('flash');
+    setTimeout(()=>beatDot.classList.remove('flash'), 90);
+    const interval = (60 / bpm) * 1000;
+    _metroTimer = setTimeout(()=>_scheduleMetro(settings.metroBpm), interval);
+  }
 
   function startMetro(){
     stopMetro();
-    _anchorEl.src = settings.metroOn
-      ? (AUDIO_BASE + 'Synth_Square_E_hi.wav')
-      : _SILENT_WAV;
-    _anchorEl.volume = settings.metroOn ? 1 : 0;
+    // Always keep anchor playing to hold the iOS audio session
+    _anchorEl.src = _SILENT_WAV;
+    _anchorEl.volume = 0;
     _anchorEl.loop = true;
     _anchorEl.play().catch(()=>{});
-    if(settings.metroOn) _syncBeatDot(settings.metroBpm);
+    if(settings.metroOn){
+      _loadClickBuffer().then(()=>{ if(running && settings.metroOn) _scheduleMetro(settings.metroBpm); });
+    }
   }
 
   function stopMetro(){
+    clearTimeout(_metroTimer);
     clearInterval(_beatDotInterval);
     _anchorEl.pause();
     _anchorEl.src = '';
   }
 
-  function _syncBeatDot(bpm){
-    clearInterval(_beatDotInterval);
-    const interval = 60/bpm * 1000;
-    _beatDotInterval = setInterval(()=>{
-      if(!settings.metroOn || !running){ clearInterval(_beatDotInterval); return; }
-      beatDot.classList.add('flash');
-      setTimeout(()=>beatDot.classList.remove('flash'), 90);
-    }, interval);
-  }
-
   function previewMetroClick(){
-    if(settings.soundOn) _playTone(1046, 0.18, 'square');
+    _loadClickBuffer().then(()=>_fireClick());
   }
 
 
