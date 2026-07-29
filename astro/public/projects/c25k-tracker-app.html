@@ -860,11 +860,14 @@
     const click = audible ? await _loadClickBuffer() : null;
     if(audible && !click) return null;
     try{
-      const sr = _getAudioCtx().sampleRate;
-      const totalFrames = Math.ceil(durationSec * sr) + sr; // +1s pad
-      const ch = click ? click.numberOfChannels : 1;
-      const offCtx = new OfflineAudioContext(ch, totalFrames, sr);
-      if(audible){
+      // Always render mono at 22050 Hz — clicks don't need stereo or high
+      // fidelity, and this keeps the blob to ~63 MB for a 25-min workout.
+      // Connecting a stereo BufferSource to a mono OfflineAudioContext
+      // destination causes the browser to automatically downmix to mono.
+      const SR = 22050;
+      const totalFrames = Math.ceil(durationSec * SR);
+      const offCtx = new OfflineAudioContext(1, totalFrames, SR);
+      if(audible && click){
         const beatInterval = 60 / bpm;
         let t = 0.05;
         while(t < durationSec){
@@ -875,7 +878,6 @@
           t += beatInterval;
         }
       }
-      // silent track: nothing connected → pure silence
       const rendered = await offCtx.startRendering();
       return _encodeWav(rendered);
     }catch(e){ return null; }
