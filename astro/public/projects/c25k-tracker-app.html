@@ -841,7 +841,11 @@
     if(!_metroRunning || !settings.metroOn || !_clickBuffer) return;
     const ctx = _getAudioCtx();
     const interval = 60 / settings.metroBpm;
-    const until = ctx.currentTime + METRO_LOOKAHEAD;
+    const now = ctx.currentTime;
+    // If _nextBeatTime drifted behind now (e.g. tab was suspended),
+    // jump it forward to avoid scheduling a burst of catch-up beats.
+    if(_nextBeatTime < now) _nextBeatTime = now + 0.01;
+    const until = now + METRO_LOOKAHEAD;
     while(_nextBeatTime < until){
       const src = ctx.createBufferSource();
       src.buffer = _clickBuffer;
@@ -865,10 +869,12 @@
     _anchorEl.play().catch(()=>{});
     if(!settings.metroOn) return;
     _metroRunning = true;
-    const ctx = _getAudioCtx();
-    _nextBeatTime = ctx.currentTime + 0.05; // small startup delay
     _loadClickBuffer().then(()=>{
       if(!_metroRunning) return;
+      // Set _nextBeatTime HERE, after the async fetch/decode, so it's
+      // not stale by the time _scheduleBeats() runs.
+      const ctx = _getAudioCtx();
+      _nextBeatTime = ctx.currentTime + 0.05;
       _scheduleBeats();
       _syncBeatDot(settings.metroBpm);
     });
