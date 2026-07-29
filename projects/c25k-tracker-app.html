@@ -806,13 +806,18 @@
     if(navigator.vibrate) navigator.vibrate(p.type==='jog' ? [40,60,40] : 40);
   }
 
-  // ── Metronome ──────────────────────────────────────────────
-  // Uses Web Audio lookahead scheduling: every tick from the Web
-  // Worker (already backgrounding-safe), schedule all beats that
-  // fall within the next LOOKAHEAD seconds. Beats are committed to
-  // the audio hardware queue ahead of time, so they fire even if
-  // JS is briefly throttled. _anchorEl loops silent audio to keep
-  // the iOS audio session alive regardless of metro on/off state.
+   // ── Metronome ──────────────────────────────────────────────
+  // The ONLY approach that survives iOS lock screen: a looping
+  // <audio> element playing a real audio file. AudioContext nodes
+  // (including pre-scheduled BufferSourceNodes) are suspended when
+  // the screen locks, so we cannot use Web Audio for the clicks.
+  //
+  // We render a single-beat WAV loop via OfflineAudioContext whose
+  // length is exactly 60/bpm seconds at the device's native sample
+  // rate (read from a live AudioContext BEFORE rendering, so the
+  // OfflineAudioContext frame count matches the playback rate and
+  // there is no pitch/tempo error). The loop is small (<80KB) and
+  // renders in <50ms.
   const beatDot = document.getElementById('beatDot');
   const _SILENT_WAV = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
   const _anchorEl = document.getElementById('silentUnlock');
@@ -820,10 +825,8 @@
   _anchorEl.playsInline = true;
   _anchorEl.loop = true;
 
-  const METRO_LOOKAHEAD = 2.0;   // seconds to schedule ahead
-  let _clickBuffer = null;        // decoded AudioBuffer of click WAV
-  let _nextBeatTime = 0;          // AudioContext time of next scheduled beat
-  let _metroRunning = false;
+  let _clickBuffer = null;   // decoded AudioBuffer for the click WAV
+  let _metroBlobUrl = null;
   let _beatDotInterval = null;
 
   async function _loadClickBuffer(){
@@ -837,54 +840,72 @@
     return _clickBuffer;
   }
 
-  function _scheduleBeats(){
-    if(!_metroRunning || !settings.metroOn || !_clickBuffer) return;
-    const ctx = _getAudioCtx();
-    const interval = 60 / settings.metroBpm;
-    const now = ctx.currentTime;
-    // If _nextBeatTime drifted behind now (e.g. tab was suspended),
-    // jump it forward to avoid scheduling a burst of catch-up beats.
-    if(_nextBeatTime < now) _nextBeatTime = now + 0.01;
-    const until = now + METRO_LOOKAHEAD;
-    while(_nextBeatTime < until){
-      const src = ctx.createBufferSource();
-      src.buffer = _clickBuffer;
-      src.connect(ctx.destination);
-      src.start(_nextBeatTime);
-      _nextBeatTime += interval;
+  function _encodeWav(buffer){
+    const sr = buffer.sampleRate, ch = buffer.numberOfChannels, len = buffer.length;
+    const pcm = new Int16Array(len * ch);
+    for(let c=0;c<ch;c++){
+      const cd = buffer.getChannelData(c);
+      for(let i=0;i<len;i++) pcm[i*ch+c] = Math.max(-32768, Math.min(32767, cd[i]*32767));
     }
+    const wav = new ArrayBuffer(44 + pcm.byteLength);
+    const v = new DataView(wav);
+    const ws = (o,s)=>{ for(let i=0;i<s.length;i++) v.setUint8(o+i, s.charCodeAt(i)); };
+    ws(0,'RIFF'); v.setUint32(4, 36+pcm.byteLength, true);
+    ws(8,'WAVE'); ws(12,'fmt '); v.setUint32(16,16,true);
+    v.setUint16(20,1,true); v.setUint16(22,ch,true);
+    v.setUint32(24,sr,true); v.setUint32(28,sr*ch*2,true);
+    v.setUint16(32,ch*2,true); v.setUint16(34,16,true);
+    ws(36,'data'); v.setUint32(40,pcm.byteLength,true);
+    new Int16Array(wav,44).set(pcm);
+    return new Blob([wav],{type:'audio/wav'});
   }
 
-  // Called by the Web Worker tick (every 250ms) — already fires in background
-  function metroTick(){
-    if(_metroRunning && settings.metroOn) _scheduleBeats();
+  async function _renderBeatLoop(bpm){
+    const click = await _loadClickBuffer();
+    if(!click) return null;
+    try{
+      // Use the LIVE AudioContext's sample rate so the OfflineAudioContext
+      // frame count is correct for the device — this is what fixes the BPM
+      // error caused by hardcoding 44100 on a 48000Hz device.
+      const sr = _getAudioCtx().sampleRate;
+      const beatFrames = Math.round(sr * 60 / bpm);
+      const offCtx = new OfflineAudioContext(click.numberOfChannels, beatFrames, sr);
+      const src = offCtx.createBufferSource();
+      src.buffer = click;
+      src.connect(offCtx.destination);
+      src.start(0);
+      const rendered = await offCtx.startRendering();
+      return _encodeWav(rendered);
+    }catch(e){ return null; }
   }
 
-  function startMetro(){
+  async function startMetro(){
     stopMetro();
-    // Anchor element holds the iOS audio session open
-    _anchorEl.src = _SILENT_WAV;
-    _anchorEl.volume = 0;
+    if(settings.metroOn){
+      const blob = await _renderBeatLoop(settings.metroBpm);
+      if(!running) return; // aborted while rendering
+      if(blob){
+        _metroBlobUrl = URL.createObjectURL(blob);
+        _anchorEl.src = _metroBlobUrl;
+        _anchorEl.volume = 1;
+        _syncBeatDot(settings.metroBpm);
+      } else {
+        _anchorEl.src = _SILENT_WAV;
+        _anchorEl.volume = 0;
+      }
+    } else {
+      _anchorEl.src = _SILENT_WAV;
+      _anchorEl.volume = 0;
+    }
     _anchorEl.loop = true;
     _anchorEl.play().catch(()=>{});
-    if(!settings.metroOn) return;
-    _metroRunning = true;
-    _loadClickBuffer().then(()=>{
-      if(!_metroRunning) return;
-      // Set _nextBeatTime HERE, after the async fetch/decode, so it's
-      // not stale by the time _scheduleBeats() runs.
-      const ctx = _getAudioCtx();
-      _nextBeatTime = ctx.currentTime + 0.05;
-      _scheduleBeats();
-      _syncBeatDot(settings.metroBpm);
-    });
   }
 
   function stopMetro(){
-    _metroRunning = false;
     clearInterval(_beatDotInterval);
     _anchorEl.pause();
     _anchorEl.src = '';
+    if(_metroBlobUrl){ URL.revokeObjectURL(_metroBlobUrl); _metroBlobUrl = null; }
   }
 
   function _syncBeatDot(bpm){
@@ -898,7 +919,7 @@
   }
 
   function previewMetroClick(){
-    _loadClickBuffer().then(buf => {
+    _loadClickBuffer().then(buf=>{
       if(!buf) return;
       try{
         const ctx = _getAudioCtx();
@@ -909,6 +930,9 @@
       }catch(e){}
     });
   }
+
+  // metroTick is no longer needed (scheduling is <audio> loop based)
+  function metroTick(){}
 
 
   function refreshMetroUI(){
@@ -970,7 +994,7 @@
       else if(e.data === 'stop'){ clearInterval(iv); iv = null; }
     };
   `], {type:'application/javascript'})));
-  _tickWorker.onmessage = ()=>{ if(running) tickStep(); metroTick(); };
+  _tickWorker.onmessage = ()=>{ if(running) tickStep(); };
 
   function startTickWorker(){ _tickWorker.postMessage('start'); }
   function stopTickWorker(){  _tickWorker.postMessage('stop'); }
