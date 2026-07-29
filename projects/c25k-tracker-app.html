@@ -806,18 +806,21 @@
   }
 
   // ── Metronome ──────────────────────────────────────────────
-  // Renders a full-duration click track (matching the workout
-  // length) via OfflineAudioContext and plays it ONCE through a
-  // single <audio> element — no looping, so no iOS loop-gap bug.
-  // iOS keeps a playing <audio> element alive through the lock
-  // screen. When the metronome is off we play a silent track of
-  // the same duration to keep the audio session open for cues.
-  // If BPM changes mid-run we re-render and seek to current position.
+  // Single-beat WAV looped via <audio loop> — the only mechanism
+  // iOS keeps alive through the lock screen.
+  // iOS Safari inserts an ~88ms gap at every loop boundary. We
+  // compensate by making the WAV that many frames shorter so the
+  // gap fills the missing time and the effective interval is correct.
   const beatDot = document.getElementById('beatDot');
+  const _SILENT_WAV = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
   const _anchorEl = document.getElementById('silentUnlock');
   _anchorEl.setAttribute('playsinline', '');
   _anchorEl.playsInline = true;
-  _anchorEl.loop = false;
+  _anchorEl.loop = true;
+
+  // Measured iOS <audio loop> gap. Subtracting this from the WAV
+  // length means the gap fills in the remainder, giving correct BPM.
+  const IOS_LOOP_GAP_S = 0.088;
 
   let _clickBuffer = null;
   let _metroBlobUrl = null;
@@ -854,30 +857,19 @@
     return new Blob([wav],{type:'audio/wav'});
   }
 
-  // Render a full-length click track for the entire workout duration.
-  // Click at every beat interval, silence elsewhere. No looping needed.
-  async function _renderTrack(durationSec, bpm, audible){
-    const click = audible ? await _loadClickBuffer() : null;
-    if(audible && !click) return null;
+  async function _renderBeatLoop(bpm){
+    const click = await _loadClickBuffer();
+    if(!click) return null;
     try{
-      // Always render mono at 22050 Hz — clicks don't need stereo or high
-      // fidelity, and this keeps the blob to ~63 MB for a 25-min workout.
-      // Connecting a stereo BufferSource to a mono OfflineAudioContext
-      // destination causes the browser to automatically downmix to mono.
-      const SR = 22050;
-      const totalFrames = Math.ceil(durationSec * SR);
-      const offCtx = new OfflineAudioContext(1, totalFrames, SR);
-      if(audible && click){
-        const beatInterval = 60 / bpm;
-        let t = 0.05;
-        while(t < durationSec){
-          const src = offCtx.createBufferSource();
-          src.buffer = click;
-          src.connect(offCtx.destination);
-          src.start(t);
-          t += beatInterval;
-        }
-      }
+      const sr = _getAudioCtx().sampleRate;
+      // Subtract the iOS loop gap so the WAV plays short by exactly the
+      // amount the gap adds back — net interval = 60/bpm seconds.
+      const beatFrames = Math.round(sr * (60 / bpm - IOS_LOOP_GAP_S));
+      const offCtx = new OfflineAudioContext(click.numberOfChannels, beatFrames, sr);
+      const src = offCtx.createBufferSource();
+      src.buffer = click;
+      src.connect(offCtx.destination);
+      src.start(0);
       const rendered = await offCtx.startRendering();
       return _encodeWav(rendered);
     }catch(e){ return null; }
@@ -885,17 +877,24 @@
 
   async function startMetro(){
     stopMetro();
-    const audible = settings.metroOn;
-    const blob = await _renderTrack(TOTAL, settings.metroBpm, audible);
-    if(!running) return; // aborted while rendering
-    if(!blob){ return; }
-    _metroBlobUrl = URL.createObjectURL(blob);
-    _anchorEl.src = _metroBlobUrl;
-    _anchorEl.volume = audible ? 1 : 0;
-    _anchorEl.loop = false;
-    _anchorEl.currentTime = elapsed;
+    if(settings.metroOn){
+      const blob = await _renderBeatLoop(settings.metroBpm);
+      if(!running) return;
+      if(blob){
+        _metroBlobUrl = URL.createObjectURL(blob);
+        _anchorEl.src = _metroBlobUrl;
+        _anchorEl.volume = 1;
+        _syncBeatDot(settings.metroBpm);
+      } else {
+        _anchorEl.src = _SILENT_WAV;
+        _anchorEl.volume = 0;
+      }
+    } else {
+      _anchorEl.src = _SILENT_WAV;
+      _anchorEl.volume = 0;
+    }
+    _anchorEl.loop = true;
     _anchorEl.play().catch(()=>{});
-    if(audible) _syncBeatDot(settings.metroBpm);
   }
 
   function stopMetro(){
