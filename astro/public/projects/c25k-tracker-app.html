@@ -694,10 +694,9 @@
   // Audio
   //
   // All sounds use real audio files in /assets/audio/.
-  // _anchorEl (<audio id="silentUnlock">) loops continuously for
-  // the entire run — the click WAV when metro is on, a tiny silent
-  // WAV when off. This single always-playing element holds the iOS
-  // audio session open through the lock screen.
+  // _anchorEl (<audio id="silentUnlock">) plays a full-duration rendered
+  // WAV track (click track or silence) for the entire run — no looping,
+  // so no iOS loop-gap timing error.
   //
   // Voice cues are decoded into an AudioBuffer once at unlock time
   // and sliced with AudioBufferSourceNode — zero latency, works in
@@ -806,26 +805,21 @@
     if(navigator.vibrate) navigator.vibrate(p.type==='jog' ? [40,60,40] : 40);
   }
 
-   // ── Metronome ──────────────────────────────────────────────
-  // The ONLY approach that survives iOS lock screen: a looping
-  // <audio> element playing a real audio file. AudioContext nodes
-  // (including pre-scheduled BufferSourceNodes) are suspended when
-  // the screen locks, so we cannot use Web Audio for the clicks.
-  //
-  // We render a single-beat WAV loop via OfflineAudioContext whose
-  // length is exactly 60/bpm seconds at the device's native sample
-  // rate (read from a live AudioContext BEFORE rendering, so the
-  // OfflineAudioContext frame count matches the playback rate and
-  // there is no pitch/tempo error). The loop is small (<80KB) and
-  // renders in <50ms.
+  // ── Metronome ──────────────────────────────────────────────
+  // Renders a full-duration click track (matching the workout
+  // length) via OfflineAudioContext and plays it ONCE through a
+  // single <audio> element — no looping, so no iOS loop-gap bug.
+  // iOS keeps a playing <audio> element alive through the lock
+  // screen. When the metronome is off we play a silent track of
+  // the same duration to keep the audio session open for cues.
+  // If BPM changes mid-run we re-render and seek to current position.
   const beatDot = document.getElementById('beatDot');
-  const _SILENT_WAV = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
   const _anchorEl = document.getElementById('silentUnlock');
   _anchorEl.setAttribute('playsinline', '');
   _anchorEl.playsInline = true;
-  _anchorEl.loop = true;
+  _anchorEl.loop = false;
 
-  let _clickBuffer = null;   // decoded AudioBuffer for the click WAV
+  let _clickBuffer = null;
   let _metroBlobUrl = null;
   let _beatDotInterval = null;
 
@@ -860,20 +854,28 @@
     return new Blob([wav],{type:'audio/wav'});
   }
 
-  async function _renderBeatLoop(bpm){
-    const click = await _loadClickBuffer();
-    if(!click) return null;
+  // Render a full-length click track for the entire workout duration.
+  // Click at every beat interval, silence elsewhere. No looping needed.
+  async function _renderTrack(durationSec, bpm, audible){
+    const click = audible ? await _loadClickBuffer() : null;
+    if(audible && !click) return null;
     try{
-      // Use the LIVE AudioContext's sample rate so the OfflineAudioContext
-      // frame count is correct for the device — this is what fixes the BPM
-      // error caused by hardcoding 44100 on a 48000Hz device.
       const sr = _getAudioCtx().sampleRate;
-      const beatFrames = Math.round(sr * 60 / bpm);
-      const offCtx = new OfflineAudioContext(click.numberOfChannels, beatFrames, sr);
-      const src = offCtx.createBufferSource();
-      src.buffer = click;
-      src.connect(offCtx.destination);
-      src.start(0);
+      const totalFrames = Math.ceil(durationSec * sr) + sr; // +1s pad
+      const ch = click ? click.numberOfChannels : 1;
+      const offCtx = new OfflineAudioContext(ch, totalFrames, sr);
+      if(audible){
+        const beatInterval = 60 / bpm;
+        let t = 0.05;
+        while(t < durationSec){
+          const src = offCtx.createBufferSource();
+          src.buffer = click;
+          src.connect(offCtx.destination);
+          src.start(t);
+          t += beatInterval;
+        }
+      }
+      // silent track: nothing connected → pure silence
       const rendered = await offCtx.startRendering();
       return _encodeWav(rendered);
     }catch(e){ return null; }
@@ -881,24 +883,17 @@
 
   async function startMetro(){
     stopMetro();
-    if(settings.metroOn){
-      const blob = await _renderBeatLoop(settings.metroBpm);
-      if(!running) return; // aborted while rendering
-      if(blob){
-        _metroBlobUrl = URL.createObjectURL(blob);
-        _anchorEl.src = _metroBlobUrl;
-        _anchorEl.volume = 1;
-        _syncBeatDot(settings.metroBpm);
-      } else {
-        _anchorEl.src = _SILENT_WAV;
-        _anchorEl.volume = 0;
-      }
-    } else {
-      _anchorEl.src = _SILENT_WAV;
-      _anchorEl.volume = 0;
-    }
-    _anchorEl.loop = true;
+    const audible = settings.metroOn;
+    const blob = await _renderTrack(TOTAL, settings.metroBpm, audible);
+    if(!running) return; // aborted while rendering
+    if(!blob){ return; }
+    _metroBlobUrl = URL.createObjectURL(blob);
+    _anchorEl.src = _metroBlobUrl;
+    _anchorEl.volume = audible ? 1 : 0;
+    _anchorEl.loop = false;
+    _anchorEl.currentTime = elapsed;
     _anchorEl.play().catch(()=>{});
+    if(audible) _syncBeatDot(settings.metroBpm);
   }
 
   function stopMetro(){
@@ -931,7 +926,6 @@
     });
   }
 
-  // metroTick is no longer needed (scheduling is <audio> loop based)
   function metroTick(){}
 
 
