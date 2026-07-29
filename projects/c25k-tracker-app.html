@@ -1094,6 +1094,7 @@
       settings[key] = Math.min(hi, Math.max(lo, settings[key]+step));
       refreshMetroUI();
       persist();
+      if(running && settings.metroOn) startMetro();
     });
   });
 
@@ -1117,8 +1118,8 @@
   });
   document.getElementById('voiceToggle').addEventListener('click', function(){ settings.voiceOn=!settings.voiceOn; this.classList.toggle('on', settings.voiceOn); persist(); });
   document.getElementById('soundToggle').addEventListener('click', function(){ settings.soundOn=!settings.soundOn; this.classList.toggle('on', settings.soundOn); persist(); });
-  document.getElementById('metroMinus').addEventListener('click', ()=>{ settings.metroBpm=Math.max(limits.metroBpm[0], settings.metroBpm-2); refreshMetroUI(); persist(); if(!running) previewMetroClick(); });
-  document.getElementById('metroPlus').addEventListener('click', ()=>{ settings.metroBpm=Math.min(limits.metroBpm[1], settings.metroBpm+2); refreshMetroUI(); persist(); if(!running) previewMetroClick(); });
+  document.getElementById('metroMinus').addEventListener('click', ()=>{ settings.metroBpm=Math.max(limits.metroBpm[0], settings.metroBpm-2); refreshMetroUI(); persist(); if(running && settings.metroOn) startMetro(); else if(!running) previewMetroClick(); });
+  document.getElementById('metroPlus').addEventListener('click', ()=>{ settings.metroBpm=Math.min(limits.metroBpm[1], settings.metroBpm+2); refreshMetroUI(); persist(); if(running && settings.metroOn) startMetro(); else if(!running) previewMetroClick(); });
   document.getElementById('metroMute').addEventListener('click', ()=>{
     settings.metroOn=!settings.metroOn; refreshMetroUI(); persist();
     if(settings.metroOn && !running) previewMetroClick();
