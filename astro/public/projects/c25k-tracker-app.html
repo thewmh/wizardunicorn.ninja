@@ -941,14 +941,25 @@
   // ── Media Session ──────────────────────────────────────────
   function setupMediaSession(){
     if(!('mediaSession' in navigator)) return;
+    _updateMediaSessionMetadata();
+    try{ navigator.mediaSession.setActionHandler('pause',        ()=>{ if(running) pauseToggle(); }); }catch(e){}
+    try{ navigator.mediaSession.setActionHandler('play',         ()=>{ if(!running) pauseToggle(); }); }catch(e){}
+    try{ navigator.mediaSession.setActionHandler('stop',         ()=>{ exitRun(); }); }catch(e){}
+    try{ navigator.mediaSession.setActionHandler('seekto',       (d)=>{ /* position-only seek, no audio seek needed */ }); }catch(e){}
+    try{ navigator.mediaSession.setActionHandler('seekforward',  ()=>{ skip(); }); }catch(e){}
+    try{ navigator.mediaSession.setActionHandler('seekbackward', ()=>{ /* no back-skip */ }); }catch(e){}
+  }
+
+  function _updateMediaSessionMetadata(){
+    if(!('mediaSession' in navigator)) return;
+    const phase = phases[idx];
+    const phaseLabel = phase ? LABELS[phase.type].label : '';
+    const workoutTitle = activeWorkout ? activeWorkout.title : 'Interval Run';
     navigator.mediaSession.metadata = new MediaMetadata({
-      title: activeWorkout ? activeWorkout.title : 'Interval Run',
-      artist: 'C25K Tracker',
-      album: 'Couch to 5K',
+      title: phaseLabel ? phaseLabel + ' · ' + workoutTitle : workoutTitle,
+      artist: 'Interval Run · C25K',
+      album: fmtMMSS(remaining) + ' remaining',
     });
-    try{ navigator.mediaSession.setActionHandler('pause', ()=>{ if(running) pauseToggle(); }); }catch(e){}
-    try{ navigator.mediaSession.setActionHandler('play',  ()=>{ if(!running) pauseToggle(); }); }catch(e){}
-    try{ navigator.mediaSession.setActionHandler('stop',  ()=>{ exitRun(); }); }catch(e){}
   }
 
   function updateMediaSession(){
@@ -958,6 +969,7 @@
       if(TOTAL > 0) navigator.mediaSession.setPositionState({
         duration: TOTAL, playbackRate: 1, position: Math.min(elapsed, TOTAL),
       });
+      _updateMediaSessionMetadata();
     }catch(e){}
   }
 
