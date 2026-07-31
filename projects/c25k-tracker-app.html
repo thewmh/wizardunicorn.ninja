@@ -1061,6 +1061,9 @@
   function skip(){
     if(idx>=phases.length-1){ finish(); return; }
     idx++; remaining=phases[idx].duration; announcedThisPhase=false;
+    // Snap elapsed to the start of the new phase so the progress bar
+    // and runner position update immediately.
+    elapsed = phases.slice(0, idx).reduce((s,p)=>s+p.duration, 0);
     if(running) announcePhaseStart();
     render();
   }
